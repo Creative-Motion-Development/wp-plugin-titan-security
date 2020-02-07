@@ -1,0 +1,17 @@
+<?php
+/**
+ * Usually in this file places the code that is responsible for the notification, compatibility with other plugins,
+ * minor functions that must be performed on all pages of the admin panel.
+ *
+ * This file should contain code that applies only to the administration area.
+ *
+ * @author    Webcraftic <wordpress.webraftic@gmail.com>
+ * @copyright Webcraftic 20.11.2019
+ * @version   1.0
+ */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
