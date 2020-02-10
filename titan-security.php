@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Titan security
-Plugin URI: http://wordpress.org/plugins/anti-spam/
+Plugin URI: http://wordpress.org/plugins/titan-security/
 Description: Wordfence Security - Anti-virus, Firewall and Malware Scan
 Version: 1.0.0
 Author: CreativeMotion
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once( dirname( __FILE__ ) . '/libs/factory/core/includes/class-factory-requirements.php' );
 
 // @formatter:off
-$cm_antspam_plugin_info = [
+$wtitan_plugin_info = [
 	'prefix'               => 'titan_',
 	'plugin_name'          => 'titan_security',
 	'plugin_title'         => __( 'Titan security', 'anti-spam' ),
@@ -91,8 +91,8 @@ $cm_antspam_plugin_info = [
 	]
 ];
 
-$cm_antspam_compatibility = new Wbcr_Factory000_Requirements( __FILE__, array_merge( $cm_antspam_plugin_info, [
-	'plugin_already_activate'          => defined( 'WANTISPAM_PLUGIN_ACTIVE' ),
+$wtitan_compatibility = new Wbcr_Factory000_Requirements( __FILE__, array_merge( $wtitan_plugin_info, [
+	'plugin_already_activate'          => defined( 'WTITAN_PLUGIN_ACTIVE' ),
 	'required_php_version'             => '5.4',
 	'required_wp_version'              => '4.2.0',
 	'required_clearfy_check_component' => false
@@ -102,7 +102,7 @@ $cm_antspam_compatibility = new Wbcr_Factory000_Requirements( __FILE__, array_me
  * If the plugin is compatible, then it will continue its work, otherwise it will be stopped,
  * and the user will throw a warning.
  */
-if ( ! $cm_antspam_compatibility->check() ) {
+if ( ! $wtitan_compatibility->check() ) {
 	return;
 }
 
@@ -115,11 +115,11 @@ if ( ! $cm_antspam_compatibility->check() ) {
  */
 
 // This plugin is activated
-define( 'WANTISPAM_PLUGIN_ACTIVE', true );
-define( 'WANTISPAM_PLUGIN_VERSION', $cm_antspam_compatibility->get_plugin_version() );
-define( 'WANTISPAM_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'WANTISPAM_PLUGIN_BASE', plugin_basename( __FILE__ ) );
-define( 'WANTISPAM_PLUGIN_URL', plugins_url( null, __FILE__ ) );
+define( 'WTITAN_PLUGIN_ACTIVE', true );
+define( 'WTITAN_PLUGIN_VERSION', $wtitan_compatibility->get_plugin_version() );
+define( 'WTITAN_PLUGIN_DIR', dirname( __FILE__ ) );
+define( 'WTITAN_PLUGIN_BASE', plugin_basename( __FILE__ ) );
+define( 'WTITAN_PLUGIN_URL', plugins_url( null, __FILE__ ) );
 
 #comp remove
 // Эта часть кода для компилятора, не требует редактирования.
@@ -161,7 +161,7 @@ if ( ! defined( 'FACTORY_MIGRATIONS_DEBUG' ) ) {
 	 * в тестовом режиме миграций, старая версия плагина берется не
 	 * из опции в базе данных, а из текущей константы.
 	 *
-	 * Новая версия плагина всегда берется из константы WANTISPAM_PLUGIN_VERSION
+	 * Новая версия плагина всегда берется из константы WTITAN_PLUGIN_VERSION
 	 * или из комментариев к входному файлу плагина.
 	 */
 	//define( 'FACTORY_MIGRATIONS_FORCE_OLD_VERSION', '1.1.9' );
@@ -202,7 +202,7 @@ if ( ! defined( 'FACTORY_ADVERTS_BLOCK' ) ) {
 // the compiler library provides a set of functions like onp_build and onp_license
 // to check how the plugin work for diffrent builds on developer machines
 
-require_once( WANTISPAM_PLUGIN_DIR . '/libs/onepress/compiler/boot.php' );
+require_once( WTITAN_PLUGIN_DIR . '/libs/onepress/compiler/boot.php' );
 // creating a plugin via the factory
 
 // #fix compiller bug new Factory000_Plugin
@@ -214,25 +214,25 @@ require_once( WANTISPAM_PLUGIN_DIR . '/libs/onepress/compiler/boot.php' );
  * -----------------------------------------------------------------------------
  */
 
-require_once( WANTISPAM_PLUGIN_DIR . '/libs/factory/core/boot.php' );
-//require_once( WANTISPAM_PLUGIN_DIR . '/includes/functions.php' );
-//require_once( WANTISPAM_PLUGIN_DIR . '/includes/class-anti-spam-plugin.php' );
+require_once( WTITAN_PLUGIN_DIR . '/libs/factory/core/boot.php' );
+require_once( WTITAN_PLUGIN_DIR . '/includes/functions.php' );
+require_once( WTITAN_PLUGIN_DIR . '/includes/class-titan-security-plugin.php' );
 
 try {
-	new \WBCR\Antispam\Plugin( __FILE__, array_merge( $cm_antspam_plugin_info, [
-		'plugin_version'     => WANTISPAM_PLUGIN_VERSION,
-		'plugin_text_domain' => $cm_antspam_compatibility->get_text_domain(),
+	new \WBCR\Titan\Plugin( __FILE__, array_merge( $wtitan_plugin_info, [
+		'plugin_version'     => WTITAN_PLUGIN_VERSION,
+		'plugin_text_domain' => $wtitan_compatibility->get_text_domain(),
 	] ) );
 } catch( Exception $e ) {
 	// Plugin wasn't initialized due to an error
-	define( 'WANTISPAM_PLUGIN_THROW_ERROR', true );
+	define( 'WTITAN_PLUGIN_THROW_ERROR', true );
 
-	$cm_antspam_plugin_error_func = function () use ( $e ) {
+	$wtitan_plugin_error_func = function () use ( $e ) {
 		$error = sprintf( "The %s plugin has stopped. <b>Error:</b> %s Code: %s", 'CreativeMotion Titan security', $e->getMessage(), $e->getCode() );
 		echo '<div class="notice notice-error"><p>' . $error . '</p></div>';
 	};
 
-	add_action( 'admin_notices', $cm_antspam_plugin_error_func );
-	add_action( 'network_admin_notices', $cm_antspam_plugin_error_func );
+	add_action( 'admin_notices', $wtitan_plugin_error_func );
+	add_action( 'network_admin_notices', $wtitan_plugin_error_func );
 }
 // @formatter:on

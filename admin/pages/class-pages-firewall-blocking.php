@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium\Page;
+namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -47,7 +47,7 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $show_right_sidebar_in_options = true;
+	public $show_right_sidebar_in_options = false;
 
 	/**
 	 * WBCR\Page\Settings constructor.
@@ -76,12 +76,6 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
-
-		$this->styles->add( WANTISPAM_PLUGIN_URL . '/admin/assets/css/settings.css' );
-		$this->scripts->add( WANTISPAM_PLUGIN_URL . '/admin/assets/js/settings.js', [
-			'jquery',
-			'wbcr-factory-clearfy-000-global'
-		], 'wantispam-settings' );
 	}
 
 	/**

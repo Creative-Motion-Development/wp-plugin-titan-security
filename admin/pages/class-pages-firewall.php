@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium\Page;
+namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,6 +42,22 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	public $page_menu_position = 0;
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
+	 * @var bool
+	 */
+	public $internal = false;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
+	 * @var bool
+	 */
+	public $add_link_to_plugin_actions = true;
+
+	/**
 	 * Logs constructor.
 	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
@@ -67,8 +83,8 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
-		$this->styles->add( WANTISPAMP_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css' );
-		$this->scripts->add( WANTISPAMP_PLUGIN_URL . '/admin/assets/js/circular-progress.js', [ 'jquery' ] );
+		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css' );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/circular-progress.js', [ 'jquery' ] );
 	}
 
 

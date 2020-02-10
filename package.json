@@ -91,16 +91,16 @@
     }
   },
   "constants": {
-    "version": "6.5.4",
+    "version": "1.0.0",
     "api": "http://api.byonepress.com/1.1/",
     "name": [
       {
-        "value": "anti-spam"
+        "value": "titan-security"
       }
     ],
     "pluginUrl": [
       {
-        "value": "https://wordpress.org/plugins/anti-spam/"
+        "value": "https://wordpress.org/plugins/titan-security/"
       }
     ]
   }
