@@ -47,14 +47,6 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $internal = false;
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since  6.0
-	 * @var bool
-	 */
 	public $add_link_to_plugin_actions = true;
 
 	/**

@@ -45,6 +45,14 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	 * {@inheritDoc}
 	 *
 	 * @since  6.0
+	 * @var string
+	 */
+	public $menu_target = 'options-general.php';
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
 	 * @var bool
 	 */
 	public $internal = false;
@@ -68,10 +76,14 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
 		$this->plugin = $plugin;
 
-		$this->menu_title                  = __( 'Firewall', 'anti-spam' );
+		$this->menu_title                  = __( 'Titan security', 'anti-spam' );
 		$this->page_menu_short_description = __( 'Stops Complex Attacks', 'anti-spam' );
 
 		parent::__construct( $plugin );
+	}
+
+	public function getPageTitle() {
+		return __( 'Firewall', 'anti-spam' );
 	}
 
 	/**
