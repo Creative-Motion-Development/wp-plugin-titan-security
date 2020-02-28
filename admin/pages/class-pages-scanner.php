@@ -50,7 +50,24 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	public $add_link_to_plugin_actions = true;
 
 	/**
-	 * Logs constructor.
+	 * Module URL
+	 *
+	 * @since  1.0
+	 * @var string
+	 */
+	public $MODULE_URL = WTITAN_PLUGIN_URL."/includes/scanner";
+
+	/**
+	 * Module path
+	 *
+	 * @since  1.0
+	 * @var string
+	 */
+	public $MODULE_PATH = WTITAN_PLUGIN_DIR."/includes/scanner";
+
+
+	/**
+	 * Scanner constructor.
 	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
 	 *
@@ -60,8 +77,10 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
 		$this->plugin = $plugin;
 
-		$this->menu_title                  = __( 'Scanner', 'anti-spam' );
-		$this->page_menu_short_description = __( 'Find malware and viruses', 'anti-spam' );
+		$this->menu_title                  = __( 'Scanner', 'titan-security' );
+		$this->page_menu_short_description = __( 'Find malware and viruses', 'titan-security' );
+
+		require_once $this->MODULE_PATH."/boot.php";
 
 		parent::__construct( $plugin );
 	}
@@ -75,18 +94,35 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
-		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css' );
-		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/circular-progress.js', [ 'jquery' ] );
+		$this->styles->add(  $this->MODULE_URL . '/assets/css/scanner-dashboard.css' );
+		$this->scripts->add( $this->MODULE_URL . '/assets/js/scanner.js', [ 'jquery' ]);
 	}
 
+	/**
+	 * Method renders layout template
+	 *
+	 * @param string $template_name Template name without ".php"
+	 * @param array|string|int|float|bool|object $args Template arguments
+	 *
+	 * @return false|string
+	 */
+	private function render_template( $template_name, $args = array()) {
+		$path = $this->MODULE_PATH."/views/$template_name.php";
+		if( file_exists($path) ) {
+			ob_start();
+			include $path;
+			unset($path);
+			return ob_get_clean();
+		} else {
+			return 'This template does not exist!';
+		}
+	}
 
 	/**
-	 * {@inheritdoc}
+	 * Show page content
 	 */
 	public function showPageContent() {
-		?>
-        Html code
-		<?php
+	    echo $this->render_template( 'scanner');
 	}
 
 }
