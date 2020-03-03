@@ -89,13 +89,14 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * {@inheritdoc}
 	 *
 	 * @return void
-	 * @since 1.1.4
+	 * @since 1.0.0
 	 */
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
 		$this->styles->add(  $this->MODULE_URL . '/assets/css/scanner-dashboard.css' );
 		$this->scripts->add( $this->MODULE_URL . '/assets/js/scanner.js', [ 'jquery' ]);
+		$this->scripts->localize( 'update_nonce', wp_create_nonce("updates"));
 	}
 
 	/**
@@ -114,7 +115,31 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 			unset($path);
 			return ob_get_clean();
 		} else {
-			return 'This template does not exist!';
+			return __('This template does not exist!', 'titan-security');
+		}
+	}
+
+	/**
+	 * Method renders Java Script
+	 *
+	 * @param string $module Module name
+	 * @param string $script_name Template name with ".js" "/module/assets/js/$script_name"
+	 *
+	 * @param array|string|int|float|bool|object $args  arguments
+	 *
+	 * @return false|string
+	 */
+	private function render_script( $module, $script_name, $args = array()) {
+		$path = WTITAN_PLUGIN_DIR."/includes/".$module."/assets/js/$script_name";
+		if( file_exists($path) ) {
+			ob_start();
+			echo "<script>";
+			echo file_get_contents( $path);
+			echo "</script>";
+			unset($path);
+			return ob_get_clean();
+		} else {
+			return __('This script file does not exist!', 'titan-security');
 		}
 	}
 
@@ -122,7 +147,16 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * Show page content
 	 */
 	public function showPageContent() {
-	    echo $this->render_template( 'scanner');
+		$modules = explode(',', $this->getOption( 'security_check_list', array()));
+		$args = array(
+			'modules' => array(
+				'vulnerability' => __('Vulnerabilities', 'titan-security'),
+				'audit' =>  __('Security audit', 'titan-security'),
+			),
+			'active_modules' => $modules,
+		);
+		echo $this->render_script('vulnerabilities','vulnerability_ajax.js', $args);
+		echo $this->render_template( 'scanner', $args);
 	}
 
 }

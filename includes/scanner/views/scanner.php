@@ -1,7 +1,7 @@
 <?php
 // !! Обязательно, чтобы редактор знал что такая переменная тут существует
-/* @var array|string|int|float|bool|object $args account data
- * @var string $template_name account username
+/* @var array|string|int|float|bool|object $args data
+ * @var string $template_name template username
  */
 ?>
 <div class="wbcr-content-section">
@@ -14,42 +14,26 @@
                 </td>
                 <td>
                     <h4>Description</h4>
-                    <p>После запуска сканер проверить всё, что у вас выбрано в настройках Сканера
+                    <p>После запуска сканер проверит всё, что у вас выбрано в настройках Сканера
                     </p>
                 </td>
             </tr>
         </table>
         <div class="wt-scan-progress">
+	        <?php if(isset($args['modules'])): ?>
             <ul class="wt-scan-progress-ul">
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
+	            <?php foreach ( $args['modules'] as $module => $name ) {
+	            if(in_array( $module, $args['active_modules'])) $icon = 'none';
+	            else $icon = 'off';
+	            ?>
+                <li class="wt-scan-progress-li" id="wt-scan-progress-<?php echo $module; ?>">
+                    <div class="wt-scan-step-icon wt-scan-step-icon-<?php echo $icon; ?>"></div>
+                    <div class="wt-scan-step-title"><?php echo $name; ?></div>
                 </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
-                <li class="wt-scan-progress-li">
-                    <div class="wt-scan-step-icon-ok"></div>
-                    <div class="wt-scan-step-title">Public Files</div>
-                </li>
+	            <?php } ?>
             </ul>
+	        <?php endif; ?>
+
         </div>
 	</div>
 	<!-- ############################### -->

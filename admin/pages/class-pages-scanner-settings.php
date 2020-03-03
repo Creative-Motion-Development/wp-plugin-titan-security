@@ -110,11 +110,11 @@ class Scanner_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 		$options[] = [
 			'type'    => 'list',
 			'way'     => 'checklist',
-			'name'    => 'security_check',
+			'name'    => 'security_check_list',
 			'title'   => __( 'Select the scan type', 'titan-security' ),
 			'data'    => [
-				[ 'audit', 'Security audit' ],
 				[ 'vulnerability', 'Scan for vulnerabilities in Wordpress, plugins and themes' ],
+				[ 'audit', 'Security audit' ],
 			],
 			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
 			'hint'    => __( 'Select what the scanner should check', 'titan-security' ),

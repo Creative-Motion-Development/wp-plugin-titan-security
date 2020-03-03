@@ -154,6 +154,11 @@ class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 				case 'wp':
 					$vulners  = new WordpressVulnerabilities();
 					break;
+                default:
+	                $vulners  = new PluginsVulnerabilities();
+	                $vulners  = new ThemesVulnerabilities();
+	                $vulners  = new WordpressVulnerabilities();
+                    break;
 			}
 			echo $vulners->render_html_table();
 			die();
