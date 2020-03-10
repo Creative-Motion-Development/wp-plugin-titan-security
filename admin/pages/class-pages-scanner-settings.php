@@ -115,6 +115,7 @@ class Scanner_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 			'data'    => [
 				[ 'vulnerability', 'Scan for vulnerabilities in Wordpress, plugins and themes' ],
 				[ 'audit', 'Security audit' ],
+				[ 'malware', 'Malware scan' ],
 			],
 			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
 			'hint'    => __( 'Select what the scanner should check', 'titan-security' ),

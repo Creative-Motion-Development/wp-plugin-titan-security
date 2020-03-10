@@ -4,7 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+//API Client
+require_once WTITAN_PLUGIN_DIR."/api-client/boot.php";
+
+// Base module class
+require_once WTITAN_PLUGIN_DIR."/includes/class.module-base.php";
+
+//Main Class
 require_once "classes/class.vulnerabilities.php";
-require_once "classes/class.wordpress.php";
-require_once "classes/class.plugins.php";
-require_once "classes/class.themes.php";

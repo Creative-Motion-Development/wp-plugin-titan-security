@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
         jQuery.post ( ajaxurl, {
             action:      'wtitan_get_vulners',
             target:      target,
-            _ajax_nonce: update_nonce,
+            _ajax_nonce: wtvulner.nonce,
         }).done( function( result ) {
             wtitan_target.removeClass('wtitan-vulner-loader');
             wtitan_target.html(result);
@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
             action:      'update-plugin',
             plugin:      $(this).data('plugin'),
             slug:        $(this).data('slug'),
-            _ajax_nonce: update_nonce,
+            _ajax_nonce: wtvulner.nonce,
         }).done( function( result ) {
             console.log(result);
             if(result.success)
@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
         jQuery.post ( ajaxurl, {
             action:      'update-theme',
             slug:        $(this).data('slug'),
-            _ajax_nonce: update_nonce,
+            _ajax_nonce: wtvulner.nonce,
         }).done( function( result ) {
             console.log(result);
             if(result.success)

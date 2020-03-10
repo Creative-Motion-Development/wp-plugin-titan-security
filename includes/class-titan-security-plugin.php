@@ -89,7 +89,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php' );
 		self::app()->registerPage( 'WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php' );
 		self::app()->registerPage( 'WBCR\Titan\Page\Scanner_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner-settings.php' );
-		self::app()->registerPage( 'WBCR\Titan\Page\Vulnerabilities', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-vulnerabilities.php' );
+		//self::app()->registerPage( 'WBCR\Titan\Page\Vulnerabilities', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-vulnerabilities.php' );
 		self::app()->registerPage( 'WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php' );
 	}
 

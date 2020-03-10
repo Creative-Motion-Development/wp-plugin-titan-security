@@ -7,7 +7,7 @@
 {
   max-height: 30em;
   margin: 0px 0px 15px 0px;
-  overflow: visible;
+  overflow-y: auto;
 }
 .wtitan-vulner-container
 {
@@ -91,6 +91,37 @@
 {
   width: 100%;
 }
+.wtitan-scanner-vulner-table-container table thead td {
+  border-top: 0;
+  /*border-bottom: 1px !important;*/
+  border-left: 0;
+  border-right: 0;
+  border-color: rgba(0,0,0,0.1);
+  border-style: solid;
+  border-collapse: collapse;
+  background-color: #ffffff !important;
+  vertical-align: middle !important;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px !important;
+  line-height: 1.1 !important;
+}
+
+.wtitan-scanner-vulner-table-container table td:first-of-type {
+  padding-left: 20px !important;
+}
+
+.wtitan-scanner-vulner-table-container table td:last-of-type {
+  padding-right: 20px !important;
+}
+td.wtitan-vulner-table-section
+{
+  background-color: #efefef !important;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+/*--------------------*/
 .wtitan-spinner
 {
   background: url(../img/loader.gif) no-repeat center;

@@ -2,6 +2,10 @@
 {
   margin: 15px 15px 15px 15px;
 }
+h2.nav-tab-wrapper
+{
+  margin-left: 10px !important;
+}
 /*----------------*/
 .wt-scanner-block-scan
 {
@@ -142,4 +146,30 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 60px;
+}
+/*----------TABS-----------*/
+.wtitan-page-group-header
+{
+  margin:0 !important;
+  padding-bottom: 10px !important;
+}
+.wtitan-tab-table-container
+{
+  padding: 20px 0px;
+  border-bottom: 1px solid #ddd;
+  background-color: white;
+}
+.wt-scanner-tabs-container
+{
+  margin: 0 0 15px 0;
+  background: #efefef;
+}
+.nav-tabs a:active, .nav-tabs a:focus
+{
+  outline: none !important;
+  box-shadow: none !important;
+}
+#wtitan-scanner-tabs li:first-child
+{
+  margin-left: 20px;
 }

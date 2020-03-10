@@ -1,6 +1,9 @@
 <?php
 namespace WBCR\Titan;
 
+use WBCR\Titan\Client\Client;
+use WBCR\Titan\Client\Request\SetNoticeData;
+
 /**
  * The file contains a short help info.
  *
@@ -8,125 +11,64 @@ namespace WBCR\Titan;
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class Scanner {
+class Scanner extends Module_Base {
 
 	/**
-	 * @var string
+	 * Vulnerabilities object
+	 *
+	 * @var Vulnerabilities
 	 */
-	private $api_url = "http://dev.anti-spam.space/api/v1.0/vulnerability/";
-
-	/**
-	 * @var string
-	 */
-	public $api_endpoint = "";
-
-	/**
-	 * @var array
-	 */
-	public $vulnerabilities = array();
+	public $vulnerabilities;
 
 	/**
 	 * Vulnerabilities_API constructor.
 	 *
 	 */
 	public function __construct() {
+		parent::__construct();
 
+		$this->module_dir = WTITAN_PLUGIN_DIR."/includes/scanner";
+		$this->module_url = WTITAN_PLUGIN_URL."/includes/scanner";
+		$this->vulnerabilities = new Vulnerabilities();
 	}
 
 	/**
-	 * @return array
+	 * Show page content
 	 */
-	public function getVulnerabilities() {
-		return $this->vulnerabilities;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getApiUrl() {
-		return $this->api_url.$this->api_endpoint;
-	}
-
-	/**
-	 * Render HTML for displaying a vulnerabilities
-	 *
-	 * @return string
-	 */
-	public function render_html_table() {
-		return "";
-	}
-
-	/**
-	 * @param array $params
-	 *      array(
-	 *          'plugin-slug-1' => '1.7.0',
-	 *          'plugin-slug-2' => '2.1.5',
-	 *      )
-	 * @param string $method
-	 *
-	 * @return array
-	 */
-	public function request($params, $method = 'POST') {
-
-		if(\WBCR\Titan\Plugin::app()->premium->is_activate())
-			$key = \WBCR\Titan\Plugin::app()->premium->get_license()->get_key();
-		else
-			$key = "";
-
-		$headers = array(
-			"Authorization" => "Bearer ".base64_encode( $key),
-			"Accept"        => "application/json",
-			"Content-Type"  => "application/json",
+	public function showPageContent() {
+		$modules = explode(',', $this->plugin->getOption( 'security_check_list', array()));
+		$vuln_args = array(
+			'wordpress' => $this->vulnerabilities->getWordpress(),
+			'plugins'   => $this->vulnerabilities->getPlugins(),
+			'themes'    => $this->vulnerabilities->getThemes(),
 		);
-		$args    = array(
-			'headers'     => $headers,
-			'sslverify'   => false,
+		$content_vulner = $this->vulnerabilities->render_template( 'all-table', $vuln_args);
+
+
+		$args = array(
+			'modules' => array(
+				'vulnerability' => array(
+					'name' => __('Vulnerabilities', 'titan-security'),
+					'content' => $content_vulner,
+				),
+				'audit' => array(
+					'name' => __('Security audit', 'titan-security'),
+					'content' => '',
+				),
+				'malware' => array(
+					'name' => __('Malware scan', 'titan-security'),
+					'content' => '',
+				),
+			),
+			'active_modules' => $modules,
 		);
-		if($method == 'POST') { //POST
-			$body = array( 'data' => $params );
-			$args['body'] = json_encode( $body );
-			$response = wp_remote_post( $this->getApiUrl(), $args );
-		}
-		else //GET
-		{
-			$response = wp_remote_get( add_query_arg( $params, $this->getApiUrl() ), $args );
-		}
-
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
-			$vulners = json_decode( wp_remote_retrieve_body( $response ), true );
-			if ( isset( $vulners['status'] ) && $vulners['status'] == 'ok' ) {
-				return $this->validate( $vulners['response'], $method );
-			}
-		}
-		return array();
-	}
-
-	/**
-	 * @param array $response
-	 * @param array $method
-	 *
-	 * @return array
-	 */
-	public function validate($response, $method = 'POST') {
-		$result = array();
-		if($method == 'POST') { //POST
-			foreach ( $response as $key_p => $plugin ) {
-				foreach ( $plugin as $vulner ) {
-					$vulner['description'] = wp_strip_all_tags( $vulner['description'] );
-					$result[ $key_p ][]    = $vulner;
-				}
-			}
-		}
-		else
-		{
-			foreach ( $response as $item ) {
-				$item['description'] = wp_strip_all_tags( $item['description'] );
-				$result[]            = $item;
-			}
-
-		}
-
-		return $result;
+		$script_args = array(
+			'wtvulner' => array(
+				'nonce' => wp_create_nonce('get_vulners'),
+			),
+		);
+		echo $this->vulnerabilities->render_script('vulnerability_ajax.js', $script_args);
+		echo $this->render_template( 'scanner', $args);
 	}
 
 }

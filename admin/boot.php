@@ -14,4 +14,3 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
