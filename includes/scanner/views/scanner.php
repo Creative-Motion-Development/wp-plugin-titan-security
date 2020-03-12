@@ -3,14 +3,16 @@
 /* @var array|string|int|float|bool|object $args data
  * @var string $template_name template username
  */
-$active = 'active';
-$scanner_menu = "";
+$scanner_menu    = "";
 $scanner_content = "";
+$count = "";
 foreach ( $args['modules'] as $key => $module ) {
-	//if(!in_array( $module, $args['active_modules'])) continue;
-	$scanner_menu    .= "<li class='{$active}'><a href='#wtitan-{$key}'><span class='dashicons dashicons-buddicons-replies'></span> {$module['name']}</a></li>\n";
+	$active = "";
+	if($key !== "hided" && !in_array( $key, $args['active_modules'])) continue;
+    if(isset($module['active']) && !empty($module['active'])) $active = $module['active'];
+    if(isset($module['count'])) $count = " ({$module['count']})";
+	$scanner_menu    .= "<li class='{$active}'><a href='#wtitan-{$key}'><span class='dashicons {$module['icon']}'></span> {$module['name']}{$count}</a></li>\n";
 	$scanner_content .= "<div class='wtitan-tab-table-container tab-pane {$active}' id='wtitan-{$key}'>{$module['content']}</div>\n";
-	$active = '';
 }
 ?>
 <div class="wbcr-content-section">
@@ -18,12 +20,12 @@ foreach ( $args['modules'] as $key => $module ) {
         <table>
             <tr>
                 <td>
-                    <h4>Scaning</h4>
+                    <h4><?php echo __('Scaning','titan-security'); ?></h4>
                     <button class="button button-primary wt-scanner-scanbutton" id="wt-scanner-scan">Scan now</button>
                 </td>
                 <td>
-                    <h4>Description</h4>
-                    <p>После запуска сканер проверит всё, что у вас выбрано в настройках Сканера
+                    <h4><?php echo __('Description','titan-security'); ?></h4>
+                    <p><?php echo __('After launching, the scanner will check everything that you have selected in the Scanner settings. After you solve the detected security problems , you need to run the scan again.','titan-security'); ?>
                     </p>
                 </td>
             </tr>
@@ -32,9 +34,10 @@ foreach ( $args['modules'] as $key => $module ) {
 	        <?php if(isset($args['modules'])): ?>
             <ul class="wt-scan-progress-ul">
 	            <?php foreach ( $args['modules'] as $key => $module ) {
-	            if(!empty($module['name'])) $icon = 'ok';
+	            if("hided" == $key) continue;
 	            if(in_array( $key, $args['active_modules'])) $icon = 'none';
 	            else $icon = 'off';
+	            if(!empty($module['content'])) $icon = 'warning';
 	            ?>
                 <li class="wt-scan-progress-li" id="wt-scan-progress-<?php echo $key; ?>">
                     <div class="wt-scan-step-icon wt-scan-step-icon-<?php echo $icon; ?>"></div>

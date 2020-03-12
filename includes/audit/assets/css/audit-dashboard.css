@@ -1,0 +1,16 @@
+.wt-severity-low
+{
+  box-shadow: inset 20px 0px 0px 0px rgb(128, 128, 128);
+}
+.wt-severity-medium
+{
+  box-shadow: inset 20px 0px 0px 0px rgb(255, 177, 0);
+}
+.wt-severity-high
+{
+  box-shadow: inset 20px 0px 0px 0px rgb(255, 0, 0);
+}
+.wt-scanner-hide-button
+{
+  margin-bottom: 5px !important;
+}

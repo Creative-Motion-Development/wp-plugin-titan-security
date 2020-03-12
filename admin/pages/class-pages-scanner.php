@@ -49,7 +49,7 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $add_link_to_plugin_actions = true;
+	public $add_link_to_plugin_actions = false;
 
 	/**
 	 * Module URL
@@ -118,9 +118,11 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 		$this->scripts->localize( 'update_nonce', wp_create_nonce("updates"));
 		$this->scripts->localize( 'wtscanner', [
 			'update_nonce'  => wp_create_nonce("updates"),
+			'hide_nonce'  => wp_create_nonce("hide"),
 		] );
 
 		$this->styles->add( WTITAN_PLUGIN_URL.'/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css' );
+		$this->styles->add( WTITAN_PLUGIN_URL.'/includes/audit/assets/css/audit-dashboard.css' );
 
 	}
 

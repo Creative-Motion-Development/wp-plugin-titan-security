@@ -1,6 +1,11 @@
 <?php
 namespace WBCR\Titan;
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WBCR\Titan\Client\Client;
 use WBCR\Titan\Client\Request\SetNoticeData;
 

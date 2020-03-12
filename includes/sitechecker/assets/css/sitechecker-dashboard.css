@@ -23,9 +23,9 @@
 /*-------------------*/
 .wtitan-sitechecker-table-container
 {
-  max-height: 30em;
+  /*max-height: 30em;
   margin: 0px 0px 15px 0px;
-  overflow: visible;
+  overflow: visible;*/
 }
 .wtitan-sitechecker-container
 {

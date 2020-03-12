@@ -1,6 +1,11 @@
 <?php
 namespace WBCR\Titan;
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WBCR\Titan\Client\Client;
 use WBCR\Titan\Client\Entity\Vulnerability;
 use WBCR\Titan\Client\Request\SetNoticeData;
@@ -54,6 +59,10 @@ class Vulnerabilities extends Module_Base {
 		$this->module_url = WTITAN_PLUGIN_URL."/includes/vulnerabilities";
 		$this->client = new Client($this->license_key);
 
+		$this->getWordpress();
+		$this->getPlugins();
+		$this->getThemes();
+
 		add_action( 'wp_ajax_wtitan_get_vulners', array( $this, 'showVulnerabilities' ) );
 	}
 
@@ -69,9 +78,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getWordpress() {
-		$wps = maybe_serialize( $this->plugin->getOption('vulnerabilities_wordpress', array()));
-		$wps = maybe_unserialize( $wps);
-		$this->wordpress = $wps;
+		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', array());
 		return $this->wordpress;
 	}
 
@@ -79,9 +86,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getPlugins() {
-		$plugs = maybe_serialize( $this->plugin->getOption('vulnerabilities_plugins', array()));
-		$plugs = maybe_unserialize( $plugs);
-		$this->plugins = $plugs;
+		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', array());
 		return $this->plugins;
 	}
 
@@ -89,10 +94,38 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getThemes() {
-		$themes = maybe_serialize( $this->plugin->getOption('vulnerabilities_themes', array()));
-		$themes = maybe_unserialize( $themes);
-		$this->themes = $themes;
+		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', array());
 		return $this->themes;
+	}
+
+	/**
+	 * Get all vulnerabilities
+	 *
+	 * @return void
+	 */
+	public function get_vulnerabilities() {
+		$this->getWordpress();
+		$this->getPlugins();
+		$this->getThemes();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_count() {
+		$plugin_vulner_count = 0;
+		$theme_vulner_count = 0;
+		foreach ( $this->plugins as $plugin ) {
+			foreach ( $plugin as $vulner ) {
+				$plugin_vulner_count++;
+			}
+		}
+		foreach ( $this->themes as $theme ) {
+			foreach ( $theme as $vulner ) {
+				$theme_vulner_count++;
+			}
+		}
+		return count($this->wordpress) + $plugin_vulner_count + $theme_vulner_count;
 	}
 
 	/**
@@ -103,7 +136,7 @@ class Vulnerabilities extends Module_Base {
 	public function get_wordpress_vulners() {
 		global $wp_version;
 		$this->wordpress = $this->validate($this->client->get_vuln_cms( $wp_version));
-		$this->plugin->updateOption( "vulnerabilities_wordpress", $this->wordpress);
+		update_option( $this->plugin->getPrefix()."vulnerabilities_wordpress", $this->wordpress, 'no');
 	}
 
 	/**
@@ -129,7 +162,7 @@ class Vulnerabilities extends Module_Base {
 				$this->plugins[$key][$k]->path = $plugins_wp[ $vuln->slug ];
 			}
 		}
-		$this->plugin->updateOption( "vulnerabilities_plugins", $this->plugins);
+		update_option( $this->plugin->getPrefix()."vulnerabilities_plugins", $this->plugins, 'no');
 	}
 
 	/**
@@ -145,7 +178,7 @@ class Vulnerabilities extends Module_Base {
 			$params->add_theme( $key, (string)$theme['Version']);
 		}
 		$this->themes = $this->validate( $this->client->get_vuln_theme( $params));
-		$this->plugin->updateOption( "vulnerabilities_themes", $this->themes);
+		update_option( $this->plugin->getPrefix()."vulnerabilities_themes", $this->themes, 'no');
 	}
 
 	/**
@@ -153,7 +186,7 @@ class Vulnerabilities extends Module_Base {
 	 *
 	 * @return void
 	 */
-	public function get_vulnerabilities() {
+	public function get_all_vulners() {
 		$this->get_wordpress_vulners();
 		$this->get_plugins_vulners();
 		$this->get_themes_vulners();
@@ -192,35 +225,38 @@ class Vulnerabilities extends Module_Base {
 	 * {@inheritdoc}
 	 */
 	public function showVulnerabilities() {
-		check_ajax_referer('get_vulners');
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( - 2 );
+		} else {
+			check_ajax_referer( 'get_vulners' );
 
-		if(isset($_POST['target'])) {
-			$target  = $_POST['target'];
-			switch ($target)
-			{
-				case 'plugin':
-					$this->get_plugins_vulners();
-					echo $this->render_template( 'plugins-table', $this->plugins);
-					break;
-				case 'theme':
-					$this->get_themes_vulners();
-					echo $this->render_template( 'themes-table', $this->themes);
-					break;
-				case 'wp':
-					$this->get_wordpress_vulners();
-					echo $this->render_template( 'wordpress-table', $this->wordpress);
-					break;
-				default:
-					$this->get_vulnerabilities();
-					$args = array(
-						'wordpress' => $this->wordpress,
-						'plugins' => $this->plugins,
-						'themes' => $this->themes,
-					);
-					echo $this->render_template( 'all-table', $args);
-					break;
+			if ( isset( $_POST['target'] ) ) {
+				$target = $_POST['target'];
+				switch ( $target ) {
+					case 'plugin':
+						$this->get_plugins_vulners();
+						echo $this->render_template( 'plugins-table', $this->plugins );
+						break;
+					case 'theme':
+						$this->get_themes_vulners();
+						echo $this->render_template( 'themes-table', $this->themes );
+						break;
+					case 'wp':
+						$this->get_wordpress_vulners();
+						echo $this->render_template( 'wordpress-table', $this->wordpress );
+						break;
+					default:
+						$this->get_all_vulners();
+						$args = array(
+							'wordpress' => $this->wordpress,
+							'plugins'   => $this->plugins,
+							'themes'    => $this->themes,
+						);
+						echo $this->render_template( 'all-table', $args );
+						break;
+				}
+				die();
 			}
-			die();
 		}
 	}
 

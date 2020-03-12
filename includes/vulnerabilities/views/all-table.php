@@ -36,7 +36,7 @@ if( is_array($args) && !empty($args)) {
                     <tr>
                         <td>Wordpress</td>
                         <td class="wtitan-vulner-table-description"><?php echo wp_strip_all_tags( $vulner->description ); ?></td>
-                        <td>1<?php echo $vulner->min_affected_version; ?></td>
+                        <td><?php echo $vulner->min_affected_version; ?></td>
                         <td><?php echo $vulner->safe_version; ?></td>
                         <td>
 						    <?php if ( ! empty( $vulner->safe_version ) ) : ?>
