@@ -34,7 +34,7 @@ class Activation extends \Wbcr_Factory000_Activator {
 			\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('learningModeGracePeriodEnabled', 0);
 			\WBCR\Titan\Plugin::app()->fw_storage()->unsetConfig('learningModeGracePeriod');
 
-			//\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('authKey', '/vXIm$ vi0I0sZlgI1tIY=!N>]DnVGVPv};l.!_,#mgRA..*hK]%(xv+8F~?Tng!');
+			\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('authKey', '/vXIm$ vi0I0sZlgI1tIY=!N>]DnVGVPv};l.!_,#mgRA..*hK]%(xv+8F~?Tng!');
 
 			\WBCR\Titan\Plugin::app()->updatePopulateOption('enckey', substr(\WBCR\Titan\Firewall\Utils::bigRandomHex(), 0, 16));
 			\WBCR\Titan\Plugin::app()->updatePopulateOption('long_enc_key', \WBCR\Titan\Firewall\Utils::random_bytes(32));
