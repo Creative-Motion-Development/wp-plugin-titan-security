@@ -2,16 +2,18 @@
 
 namespace WBCR\Titan\Page;
 
+use WBCR\Titan;
+
 // Exit if accessed directly
 if( !defined('ABSPATH') ) {
 	exit;
 }
 
 /**
- * The file contains a short help info.
+ * Scanner page class
  *
- * @author        Alexander Kovalev <alex.kovalevv@gmail.com>, Github: https://github.com/alexkovalevv
- * @copyright (c) 2019 Webraftic Ltd
+ * @author        Artem Prihodko <webtemyk@ya.ru>
+ * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
 class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
@@ -50,7 +52,31 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	//public $add_link_to_plugin_actions = true;
 
 	/**
-	 * Logs constructor.
+	 * Module URL
+	 *
+	 * @since  1.0
+	 * @var string
+	 */
+	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/scanner";
+
+	/**
+	 * Module path
+	 *
+	 * @since  1.0
+	 * @var string
+	 */
+	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/scanner";
+
+	/**
+	 * Module object
+	 *
+	 * @since  1.0
+	 * @var object
+	 */
+	public $module;
+
+	/**
+	 * Scanner page constructor.
 	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
 	 *
@@ -61,35 +87,50 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	{
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Scanner', 'anti-spam');
-		$this->page_menu_short_description = __('Find malware and viruses', 'anti-spam');
+		$this->menu_title = __('Scanner', 'titan-security');
+		$this->page_menu_short_description = __('Find malware and viruses', 'titan-security');
+
+		require_once $this->MODULE_PATH . "/boot.php";
+
+		$this->module = new Titan\Scanner();
 
 		parent::__construct($plugin);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Add assets
 	 *
 	 * @return void
-	 * @since 1.1.4
+	 * @since 1.0.0
 	 */
 	public function assets($scripts, $styles)
 	{
 		parent::assets($scripts, $styles);
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css');
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/circular-progress.js', ['jquery']);
+		$this->scripts->request([
+			'bootstrap.tab',
+		], 'bootstrap');
+
+		$this->styles->request([
+			'bootstrap.tab',
+		], 'bootstrap');
+
+		$this->styles->add($this->MODULE_URL . '/assets/css/scanner-dashboard.css');
+		$this->scripts->add($this->MODULE_URL . '/assets/js/scanner.js', ['jquery']);
+		$this->scripts->localize('update_nonce', wp_create_nonce("updates"));
+		$this->scripts->localize('wtscanner', [
+			'update_nonce' => wp_create_nonce("updates"),
+		]);
+
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
 	}
 
-
 	/**
-	 * {@inheritdoc}
+	 * Show page content
 	 */
 	public function showPageContent()
 	{
-		?>
-		Html code
-		<?php
+		$this->module->showPageContent();
 	}
 
 }
