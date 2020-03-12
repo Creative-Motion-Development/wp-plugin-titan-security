@@ -3,7 +3,7 @@
 namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
 
@@ -47,7 +47,7 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $add_link_to_plugin_actions = true;
+	//public $add_link_to_plugin_actions = true;
 
 	/**
 	 * Logs constructor.
@@ -57,13 +57,14 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
 	 */
-	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
+	public function __construct(\Wbcr_Factory000_Plugin $plugin)
+	{
 		$this->plugin = $plugin;
 
-		$this->menu_title                  = __( 'Scanner', 'anti-spam' );
-		$this->page_menu_short_description = __( 'Find malware and viruses', 'anti-spam' );
+		$this->menu_title = __('Scanner', 'anti-spam');
+		$this->page_menu_short_description = __('Find malware and viruses', 'anti-spam');
 
-		parent::__construct( $plugin );
+		parent::__construct($plugin);
 	}
 
 	/**
@@ -72,20 +73,22 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @return void
 	 * @since 1.1.4
 	 */
-	public function assets( $scripts, $styles ) {
-		parent::assets( $scripts, $styles );
+	public function assets($scripts, $styles)
+	{
+		parent::assets($scripts, $styles);
 
-		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css' );
-		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/circular-progress.js', [ 'jquery' ] );
+		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-dashboard.css');
+		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/circular-progress.js', ['jquery']);
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function showPageContent() {
+	public function showPageContent()
+	{
 		?>
-        Html code
+		Html code
 		<?php
 	}
 

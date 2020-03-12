@@ -1,0 +1,588 @@
+scores.sqli = 100
+scores.xss = 100
+scores.rce = 100
+
+blacklistParam(url='/\/wp\-admin[\/]+admin\-ajax\.php/i', param=request.queryString['action'])
+blacklistParam(url='/\/wp\-admin[\/]+admin\-ajax\.php/i', param=request.queryString['img'])
+blacklistParam(url='/\/wp\-admin[\/]+admin\-ajax\.php/i', param=request.body['action'])
+blacklistParam(url='/\/wp\-admin[\/]+admin\-ajax\.php/i', param=request.body['img'])
+blacklistParam(url='/.*/', param=request.body['nsextt'])
+blacklistParam(url='/\/uploadify\.php$/i', param=request.fileNames['Filedata'])
+blacklistParam(url='/.*/', param=request.fileNames['yiw_contact'])
+blacklistParam(url='/\/license\.php$/i', param=request.fileNames['filename'])
+blacklistParam(url='/\/wp\-admin[\/]+admin\-ajax\.php$/i', param=request.fileNames['update_file'])
+blacklistParam(url='/tiny_mce[\/]+plugins[\/]+tinybrowser[\/]+upload_file\.php$/i', param=request.fileNames['Filedata'])
+blacklistParam(url='/elfinder[\/]+php[\/]+connector\.minimal\.php$/i', param=request.fileNames['upload'])
+
+whitelistParam(url='/.*/', param=request.body['excerpt'])
+whitelistParam(url='/wp-comments-post\.php$/i', param=request.body['comment'], rules=[3, 12, 146])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['content'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['data'], rules=[9], conditional=(((notMatch('/^(?:nopriv_)?wpgdprc_process_action$/i', request.body.action) and notMatch('/^(?:nopriv_)?wpgdprc_process_action$/i', request.queryString.action) and notEquals('elementor_js_log', request.body.action) and notEquals('elementor_js_log', request.queryString.action)))))
+whitelistParam(url='/\/wp\-load\.php$/i', param=request.body['params']['files'], rules=[9])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?(?:plugin(?:s|-install)|edit)\.php$/i', param=request.queryString['s'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['whitelistedPath'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['whitelistedParam'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['oldWhitelistedPath'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['oldWhitelistedParam'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['newWhitelistedPath'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['newWhitelistedParam'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['bannedURLs'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['scan_include_extra'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?(?:(?:plugin|theme)-editor|admin-ajax)\.php$/i', param=request.body['newcontent'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['widget-text'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['widget-custom_html'])
+whitelistParam(url='/.{0,1}/', param=request.queryString['_wp_http_referer'])
+whitelistParam(url='/.*/', param=request.body['_wp_http_referer'], rules=[13])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.queryString['plugin'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.queryString['action'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.queryString['checked'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.body['action'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.body['checked'])
+whitelistParam(url='/\/wp-admin\/(?:network\/)?plugins\.php$/i', param=request.body['submit'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['blogname'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['blogdescription'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['siteurl'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['home'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['admin_email'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['moderation_keys'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['blacklist_keys'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['permalink_structure'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['category_base'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['tag_base'])
+whitelistParam(url='/\/wp-admin\/edit-comments\.php$/i', param=request.queryString['s'])
+whitelistParam(url='/\/wp-login\.php$/i', param=request.body['log'])
+whitelistParam(url='/\/wp-login\.php$/i', param=request.body['pwd'])
+whitelistParam(url='/\/wp-login\.php$/i', param=request.body['redirect_to'])
+whitelistParam(url='/\/wp-admin\/network\/(?:user|site)s\.php$/i', param=request.queryString['s'])
+whitelistParam(url='/\/wp-admin\/network\/site-new\.php$/i', param=request.body['blog'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['deletedWhitelistedPath'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['deletedWhitelistedParam'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['itsec_global']['log_location'])
+whitelistParam(url='/\/wp-admin\/options\.php$/i', param=request.body['itsec_backup']['location'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['dir'])
+whitelistParam(url='/(?:lint|import)\.php$/i', param=request.body['sql_query'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['divi_integration_body'])
+whitelistParam(url='/\/wp-admin\/admin-ajax\.php$/i', param=request.body['divi_integration_head'])
+whitelistParam(url='/.*/', param=request.body['fl_builder_data']['settings']['html'], rules=[9], conditional=((currentUserIs('administrator', server.empty) or currentUserIs('editor', server.empty))))
+whitelistParam(url='/.*/', param=request.body['partials'], rules=[9], conditional=((currentUserIs('administrator', server.empty))))
+whitelistParam(url='/\/wp\-load\.php$/i', param=request.body['code'], rules=[3], conditional=(((equals('ZXhlYw', request.queryString.action)) and (match('#^define\(\s*\'DONOTCACHEDB\',\s*true\s*\);\s*if\s*\(\s*function_exists\(\s*\'vp_ai_ping_get\'\s*\)\s*\)\s*return\s*vp_ai_ping_get\(\);\s*else\s*return\s*\$this->ai_ping_get\(\);$#', request.body.code)))))
+whitelistParam(url='/\/vp\-restore\-helper\-[a-zA-Z0-9]+\.php$/i', param=request.body['files'], rules=[3, 9])
+whitelistParam(url='#wp\-admin/+options\-general.php$#i', param=request.body['options']['modules']['ga_code'], rules=[9])
+whitelistParam(url='#importbuddy\.php$#i', param=request.fileNames, rules=[76])
+
+sqliRegex = '/(?:[^\w<]|\/\*\![0-9]*|^)(?:
+@@HOSTNAME|
+ALTER|ANALYZE|ASENSITIVE|
+BEFORE|BENCHMARK|BETWEEN|BIGINT|BINARY|BLOB|
+CALL|CASE|CHANGE|CHAR|CHARACTER|CHAR_LENGTH|COLLATE|COLUMN|CONCAT|CONDITION|CONSTRAINT|CONTINUE|CONVERT|CREATE|CROSS|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP|CURRENT_USER|CURSOR|
+DATABASE|DATABASES|DAY_HOUR|DAY_MICROSECOND|DAY_MINUTE|DAY_SECOND|DECIMAL|DECLARE|DEFAULT|DELAYED|DELETE|DESCRIBE|DETERMINISTIC|DISTINCT|DISTINCTROW|DOUBLE|DROP|DUAL|DUMPFILE|
+EACH|ELSE|ELSEIF|ELT|ENCLOSED|ESCAPED|EXISTS|EXIT|EXPLAIN|EXTRACTVALUE|
+FETCH|FLOAT|FLOAT4|FLOAT8|FORCE|FOREIGN|FROM|FULLTEXT|
+GRANT|GROUP|HAVING|HEX|HIGH_PRIORITY|HOUR_MICROSECOND|HOUR_MINUTE|HOUR_SECOND|
+IFNULL|IGNORE|INDEX|INFILE|INNER|INOUT|INSENSITIVE|INSERT|INTERVAL|ISNULL|ITERATE|
+JOIN|KILL|LEADING|LEAVE|LIMIT|LINEAR|LINES|LOAD|LOAD_FILE|LOCALTIME|LOCALTIMESTAMP|LOCK|LONG|LONGBLOB|LONGTEXT|LOOP|LOW_PRIORITY|
+MASTER_SSL_VERIFY_SERVER_CERT|MATCH|MAXVALUE|MEDIUMBLOB|MEDIUMINT|MEDIUMTEXT|MID|MIDDLEINT|MINUTE_MICROSECOND|MINUTE_SECOND|MODIFIES|
+NATURAL|NO_WRITE_TO_BINLOG|NULL|NUMERIC|OPTION|ORD|ORDER|OUTER|OUTFILE|
+PRECISION|PRIMARY|PRIVILEGES|PROCEDURE|PROCESSLIST|PURGE|
+RANGE|READ_WRITE|REGEXP|RELEASE|REPEAT|REQUIRE|RESIGNAL|RESTRICT|RETURN|REVOKE|RLIKE|ROLLBACK|
+SCHEMA|SCHEMAS|SECOND_MICROSECOND|SELECT|SENSITIVE|SEPARATOR|SHOW|SIGNAL|SLEEP|SMALLINT|SPATIAL|SPECIFIC|SQLEXCEPTION|SQLSTATE|SQLWARNING|SQL_BIG_RESULT|SQL_CALC_FOUND_ROWS|SQL_SMALL_RESULT|STARTING|STRAIGHT_JOIN|SUBSTR|
+TABLE|TERMINATED|TINYBLOB|TINYINT|TINYTEXT|TRAILING|TRANSACTION|TRIGGER|
+UNDO|UNHEX|UNION|UNLOCK|UNSIGNED|UPDATE|UPDATEXML|USAGE|USING|UTC_DATE|UTC_TIME|UTC_TIMESTAMP|
+VALUES|VARBINARY|VARCHAR|VARCHARACTER|VARYING|WHEN|WHERE|WHILE|WRITE|YEAR_MONTH|ZEROFILL)(?=[^\w]|$)/ix'
+xssRegex = '/(?:
+#tags
+(?:\<|\+ADw\-|\xC2\xBC)(script|iframe|svg|object|embed|applet|link|style|meta|\/\/|\?xml\-stylesheet)(?:[^\w]|\xC2\xBE)|
+#protocols
+(?:^|[^\w])(?:(?:(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6a|4a)|0*(?:106|74));?|j)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:76|56)|0*(?:118|86));?|v)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:76|56)|0*(?:118|86));?|v)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:62|42)|0*(?:98|66));?|b)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:63|43)|0*(?:99|67));?|c)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6c|4c)|0*(?:108|76));?|l)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:69|49)|0*(?:105|73));?|i)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:76|56)|0*(?:118|86));?|v)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e))(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:73|53)|0*(?:115|83));?|s)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:63|43)|0*(?:99|67));?|c)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:72|52)|0*(?:114|82));?|r)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:69|49)|0*(?:105|73));?|i)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:70|50)|0*(?:112|80));?|p)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:74|54)|0*(?:116|84));?|t)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:68|48)|0*(?:104|72));?|h)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:74|54)|0*(?:116|84));?|t)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6c|4c)|0*(?:108|76));?|l)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:6f|4f)|0*(?:111|79));?|o)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:63|43)|0*(?:99|67));?|c)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:68|48)|0*(?:104|72));?|h)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)|(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:64|44)|0*(?:100|68));?|d)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:74|54)|0*(?:116|84));?|t)(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?!(?:&\#(?:x0*3a|0*58);?|&colon;?|\:)(?:&\#(?:x0*(?:69|49)|0*(?:105|73));?|i)(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?:&\#(?:x0*(?:67|47)|0*(?:103|71));?|g)(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e)(?:&\#(?:x0*2f|0*47);?|\/)(?:(?:&\#(?:x0*(?:70|50)|0*(?:112|80));?|p)(?:&\#(?:x0*(?:6e|4e)|0*(?:110|78));?|n)(?:&\#(?:x0*(?:67|47)|0*(?:103|71));?|g)|(?:&\#(?:x0*(?:62|42)|0*(?:98|66));?|b)(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:&\#(?:x0*(?:70|50)|0*(?:112|80));?|p)|(?:&\#(?:x0*(?:67|47)|0*(?:103|71));?|g)(?:&\#(?:x0*(?:69|49)|0*(?:105|73));?|i)(?:&\#(?:x0*(?:66|46)|0*(?:102|70));?|f)|(?:&\#(?:x0*(?:70|50)|0*(?:112|80));?|p)?(?:&\#(?:x0*(?:6a|4a)|0*(?:106|74));?|j)(?:&\#(?:x0*(?:70|50)|0*(?:112|80));?|p)(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e)(?:&\#(?:x0*(?:67|47)|0*(?:103|71));?|g)|(?:&\#(?:x0*(?:74|54)|0*(?:116|84));?|t)(?:&\#(?:x0*(?:69|49)|0*(?:105|73));?|i)(?:&\#(?:x0*(?:66|46)|0*(?:102|70));?|f)(?:&\#(?:x0*(?:66|46)|0*(?:102|70));?|f)|(?:&\#(?:x0*(?:73|53)|0*(?:115|83));?|s)(?:&\#(?:x0*(?:76|56)|0*(?:118|86));?|v)(?:&\#(?:x0*(?:67|47)|0*(?:103|71));?|g)(?:&\#(?:x0*2b|0*43);?|\+)(?:&\#(?:x0*(?:78|58)|0*(?:120|88));?|x)(?:&\#(?:x0*(?:6d|4d)|0*(?:109|77));?|m)(?:&\#(?:x0*(?:6c|4c)|0*(?:108|76));?|l))(?:(?:&\#(?:x0*3b|0*59);?|;)(?:&\#(?:x0*(?:63|43)|0*(?:99|67));?|c)(?:&\#(?:x0*(?:68|48)|0*(?:104|72));?|h)(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?:&\#(?:x0*(?:72|52)|0*(?:114|82));?|r)(?:&\#(?:x0*(?:73|53)|0*(?:115|83));?|s)(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e)(?:&\#(?:x0*(?:74|54)|0*(?:116|84));?|t)(?:&\#(?:x0*3d|0*61);?|=)[\-a-z0-9]+)?(?:(?:&\#(?:x0*3b|0*59);?|;)(?:&\#(?:x0*(?:62|42)|0*(?:98|66));?|b)(?:&\#(?:x0*(?:61|41)|0*(?:97|65));?|a)(?:&\#(?:x0*(?:73|53)|0*(?:115|83));?|s)(?:&\#(?:x0*(?:65|45)|0*(?:101|69));?|e)(?:&\#(?:x0*36|0*54);?|6)(?:&\#(?:x0*34|0*52);?|4))?(?:&\#(?:x0*2c|0*44);?|,)))(?:\s|(?:&\#(?:x0*(?:9|a|d)|0*(?:9|10|13));?|&Tab;?|&NewLine;?))*(?:&\#(?:x0*3a|0*58);?|&colon|\:)|
+#css expression
+(?:^|[^\w])(?:(?:\\0*65|\\0*45|e)(?:\/\*.*?\*\/)*(?:\\0*78|\\0*58|x)(?:\/\*.*?\*\/)*(?:\\0*70|\\0*50|p)(?:\/\*.*?\*\/)*(?:\\0*72|\\0*52|r)(?:\/\*.*?\*\/)*(?:\\0*65|\\0*45|e)(?:\/\*.*?\*\/)*(?:\\0*73|\\0*53|s)(?:\/\*.*?\*\/)*(?:\\0*73|\\0*53|s)(?:\/\*.*?\*\/)*(?:\\0*69|\\0*49|i)(?:\/\*.*?\*\/)*(?:\\0*6f|\\0*4f|o)(?:\/\*.*?\*\/)*(?:\\0*6e|\\0*4e|n))[^\w]*?(?:\\0*28|\()|
+#css properties
+(?:^|[^\w])(?:(?:(?:\\0*62|\\0*42|b)(?:\/\*.*?\*\/)*(?:\\0*65|\\0*45|e)(?:\/\*.*?\*\/)*(?:\\0*68|\\0*48|h)(?:\/\*.*?\*\/)*(?:\\0*61|\\0*41|a)(?:\/\*.*?\*\/)*(?:\\0*76|\\0*56|v)(?:\/\*.*?\*\/)*(?:\\0*69|\\0*49|i)(?:\/\*.*?\*\/)*(?:\\0*6f|\\0*4f|o)(?:\/\*.*?\*\/)*(?:\\0*72|\\0*52|r)(?:\/\*.*?\*\/)*)|(?:(?:\\0*2d|\\0*2d|-)(?:\/\*.*?\*\/)*(?:\\0*6d|\\0*4d|m)(?:\/\*.*?\*\/)*(?:\\0*6f|\\0*4f|o)(?:\/\*.*?\*\/)*(?:\\0*7a|\\0*5a|z)(?:\/\*.*?\*\/)*(?:\\0*2d|\\0*2d|-)(?:\/\*.*?\*\/)*(?:\\0*62|\\0*42|b)(?:\/\*.*?\*\/)*(?:\\0*69|\\0*49|i)(?:\/\*.*?\*\/)*(?:\\0*6e|\\0*4e|n)(?:\/\*.*?\*\/)*(?:\\0*64|\\0*44|d)(?:\/\*.*?\*\/)*(?:\\0*69|\\0*49|i)(?:\/\*.*?\*\/)*(?:\\0*6e|\\0*4e|n)(?:\/\*.*?\*\/)*(?:\\0*67|\\0*47|g)(?:\/\*.*?\*\/)*))[^\w]*(?:\\0*3a|\\0*3a|:)[^\w]*(?:\\0*75|\\0*55|u)(?:\\0*72|\\0*52|r)(?:\\0*6c|\\0*4c|l)|
+#properties
+(?:^|[^\w])(?:on(?:abort|activate|active|addsourcebuffer|addstream|addtrack|afterprint|afterscriptexecute|afterupdate|alerting|animationcancel|animationend|animationiteration|animationstart|antennaavailablechange|appinstalled|audioend|audioprocess|audiostart|autocomplete|autocompleteerror|auxclick|beforeactivate|beforecopy|beforecut|beforedeactivate|beforeeditfocus|beforeinput|beforeinstallprompt|beforepaste|beforeprint|beforescriptexecute|beforeunload|beforeupdate|begin|beginevent|blocked|blur|bounce|boundary|broadcast|busy|cached|callschanged|cancel|canplay|canplaythrough|cardstatechange|cellchange|cfstatechange|change|chargingchange|chargingtimechange|checkboxstatechange|checking|click|close|command|commandupdate|compassneedscalibration|complete|compositionend|compositionstart|compositionupdate|connect|connected|connecting|connectioninfoupdate|contactchange|contextmenu|controllerchange|controlselect|copy|cuechange|currentchannelchanged|currentsourcechanged|cut|data|dataavailable|datachange|datachannel|dataerror|datasetchanged|datasetcomplete|dblclick|deactivate|delivered|deliveryerror|deliverysuccess|devicechange|devicelight|devicemotion|deviceorientation|deviceproximity|dialing|disabled|dischargingtimechange|disconnected|disconnecting|domattrmodified|domcharacterdatamodified|domcontentloaded|dommenuitemactive|dommenuiteminactive|dommousescroll|domnodeinserted|domnodeinsertedintodocument|domnoderemoved|domnoderemovedfromdocument|domsubtreemodified|downloading|drag|dragdrop|dragend|dragenter|dragexit|dragleave|dragover|dragstart|drain|drop|durationchange|eitbroadcasted|emptied|enabled|encrypted|end|ended|endevent|enter|enterpictureinpicture|error|errorupdate|exit|failed|fetch|filterchange|finish|focus|focusin|focusout|formchange|formdata|forminput|frequencychange|fullscreenchange|fullscreenerror|gamepadconnected|gamepaddisconnected|gesturechange|gestureend|gesturestart|gotpointercapture|hashchange|headphoneschange|held|help|holding|icccardlockerror|iccinfochange|icecandidate|iceconnectionstatechange|icegatheringstatechange|identityresult|idpassertionerror|idpvalidationerror|inactive|incoming|input|install|invalid|isolationchange|keydown|keypress|keystatuschange|keyup|languagechange|layoutcomplete|leavepictureinpicture|levelchange|load|loaded|loadeddata|loadedmetadata|loadend|loading|loadingdone|loadingerror|loadstart|localized|losecapture|lostpointercapture|mark|mediacomplete|mediaerror|message|messageerror|midimessage|mousedown|mouseenter|mouseleave|mousemove|mouseout|mouseover|mouseup|mousewheel|move|moveend|movestart|mozaudioavailable|mozbrowseractivitydone|mozbrowserasyncscroll|mozbrowseraudioplaybackchange|mozbrowsercaretstatechanged|mozbrowserclose|mozbrowsercontextmenu|mozbrowserdocumentfirstpaint|mozbrowsererror|mozbrowserfindchange|mozbrowserfirstpaint|mozbrowsericonchange|mozbrowserloadend|mozbrowserloadstart|mozbrowserlocationchange|mozbrowsermanifestchange|mozbrowsermetachange|mozbrowseropensearch|mozbrowseropentab|mozbrowseropenwindow|mozbrowserresize|mozbrowserscroll|mozbrowserscrollareachanged|mozbrowserscrollviewchange|mozbrowsersecuritychange|mozbrowserselectionstatechanged|mozbrowsershowmodalprompt|mozbrowsertitlechange|mozbrowserusernameandpasswordrequired|mozbrowservisibilitychange|mozfullscreenchange|mozfullscreenerror|mozgamepadbuttondown|mozgamepadbuttonup|mozinterruptbegin|mozinterruptend|mozmousepixelscroll|mozorientation|mozpointerlockchange|mozpointerlockerror|mozscrolledareachanged|moztimechange|mscontentzoom|msgesturechange|msgesturedoubletap|msgestureend|msgesturehold|msgesturerestart|msgesturestart|msgesturetap|msgotpointercapture|msinertiastart|mslostpointercapture|msmanipulationstatechanged|msneedkey|mspointercancel|mspointerdown|mspointerenter|mspointerhover|mspointerleave|mspointermove|mspointerout|mspointerover|mspointerup|mute|negotiationneeded|nodecreate|nomatch|notificationclick|noupdate|obsolete|offline|online|open|orientationchange|outofsync|overconstrained|overflow|page|pagehide|pageshow|paste|pause|peeridentity|peerinfoupdat|play|playing|pointercancel|pointerdown|pointerenter|pointerleave|pointerlockchange|pointerlockerror|pointermove|pointerrawupdate|pointerout|pointerover|pointerup|popstate|popuphidden|popuphiding|popupshowing|popupshown|progress|propertychange|push|pushsubscriptionchange|radiostatechange|ratechange|readystatechange|received|rejectionhandled|removesourcebuffer|removestream|removetrack|repeat|repeatevent|reset|resize|resizeend|resizestart|resourcetimingbufferfull|result|resume|resuming|retrieving|reverse|rowdelete|rowenter|rowexit|rowinserted|rowsdelete|rowsinserted|scanningstatechanged|scroll|search|seek|seeked|seeking|select|selectionchange|selectstart|sending|sent|sessionavailable|sessionconnect|settingchange|shippingaddresschange|shippingoptionchange|show|signalingstatechange|slotchange|smartcard|sort|soundend|soundstart|sourceclose|sourceended|sourceopen|speakerforcedchange|speechend|speechstart|stalled|start|started|statechange|statuschange|stkcommand|stksessionend|stop|storage|submit|success|suspend|svgabort|svgerror|svgload|svgresize|svgscroll|svgunload|svgzoom|synchrestored|timeerror|timeout|timer|timeupdate|toggle|tonechange|touchcancel|touchend|touchenter|touchleave|touchmove|touchstart|trackchange|transitioncancel|transitionend|transitionrun|transitionstart|underflow|unhandledrejection|unload|unmute|update|updateend|updatefound|updateready|updatestart|upgradeneeded|urlflip|userproximity|ussdreceived|valuechange|versionchange|visibilitychange|voicechange|voiceschanged|volumechange|vrdisplayactivate|vrdisplayblur|vrdisplayconnect|vrdisplayconnected|vrdisplaydeactivate|vrdisplaydisconnect|vrdisplaydisconnected|vrdisplayfocus|vrdisplaypresentchange|waiting|waitingforkey|webglcontextcreationerror|webglcontextlost|webglcontextrestored|webkitanimationend|webkitanimationiteration|webkitanimationstart|webkitfullscreenchange|webkitfullscreenerror|webkitmouseforcechanged|webkitmouseforcedown|webkitmouseforceup|webkitmouseforcewillbegin|webkittransitionend|webkitwillrevealbottom|wheel|writeend|zoom)|formaction|data\-bind|ev:event)[^\w]
+)/ix'
+
+if (match('/installer(-backup)?\.php/i', request.path) and equals('3', request.body.action_ajax) and currentUserIsNot('administrator', server.empty)):
+	block(id=119, category='rce', score=100, description='Duplicator Installer wp-config.php Overwrite', whitelist=0)
+
+if (notEquals('', request.body.ure_other_roles) and match('#/wp\-admin/(network/)?(profile|user-new)\.php#i', request.path) and currentUserIsNot('administrator', server.empty)):
+	block(id=18, category='priv-esc', score=100, description='User Roles Manager Privilege Escalation <= 4.24', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and equals('update-plugin', request.body.action, request.queryString.action) and match('/(^|\/|\\|%2f|%5c)\.\.(\\|\/|%2f|%5c)/i', request.body, request.queryString)):
+	block(id=66, category='dos', score=100, description='WordPress Core <= 4.5.3 - DoS', whitelist=0)
+
+if (match('#/wp\-admin/(network/)?post\.php$#i', server.script_filename) and equals('editattachment', request.body.action, request.queryString) and match('/\/|\\/', request.body.thumb, request.queryString.thumb) and currentUserIsNot('administrator', server.empty)):
+	block(id=117, category='privesc', score=100, description='WordPress Core: Arbitrary File Deletion', whitelist=0)
+
+if (match('#/wp-admin/(network/)?post\.php$#i', server.script_filename) and (lengthGreaterThan('0', request.body.file) or lengthGreaterThan('0', request.body.meta_input) or lengthGreaterThan('0', request.body.guid)) and currentUserIsNot('administrator', server.empty)):
+	block(id=126, category='privesc', score=100, description='WordPress <= 5.0 - PHP Object Injection via Meta Data & Authenticated File Delete')
+
+if ((match('#/wp\-admin/(network/)?(post|profile|user-new|settings)\.php$#i', server.script_filename)) or (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (equals('wordfence_loadLiveTraffic', request.body.action) or equals('wordfence_ticker', request.body.action) or (currentUserIs('administrator', server.empty) and (equals('install-plugin', request.body.action) or equals('update-plugin', request.body.action) or equals('delete-plugin', request.body.action) or equals('search-plugins', request.body.action) or equals('search-install-plugins', request.body.action) or equals('activate-plugin', request.body.action) or equals('update-theme', request.body.action) or equals('delete-theme', request.body.action) or equals('install-theme', request.body.action) or equals('customize_save', request.body.action)))))):
+	allow(id=1, category='whitelist', score=100, description='Whitelisted URL')
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (((equals('revslider_show_image', request.queryString.action) or equals('nopriv_revslider_show_image', request.queryString.action)) and match('/\.php$/i', request.queryString.img)) or ((equals('revslider_show_image', request.body.action) or equals('nopriv_revslider_show_image', request.body.action)) and match('/\.php$/i', request.body.img)))):
+	block(id=2, category='lfi', score=100, description='Slider Revolution: Local File Inclusion', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (((equals('revslider_ajax_action', request.queryString.action) or equals('nopriv_revslider_ajax_action', request.queryString.action)) and equals('update_plugin', request.queryString.client_action)) or ((equals('revslider_ajax_action', request.body.action) or equals('nopriv_revslider_ajax_action', request.body.action)) and equals('update_plugin', request.body.client_action))) and currentUserIsNot('administrator', server.empty)):
+	block(id=60, category='file_upload', score=100, description='Slider Revolution: Arbitrary File Upload', whitelist=0)
+
+if (match('/dzs\-videogallery[\/]+admin[\/]+(?:playlist|tag)seditor[\/]+popup\.php/', request.path) and contains('\'', request.queryString.initer)):
+	blockXSS(id=15, category='xss', score=100, description='dzs-videogallery 8.80 XSS HTML injection in inline JavaScript', whitelist=0)
+
+if (match('/simple-ads-manager[\/]+sam-ajax-loader\.php/', request.path) and match(sqliRegex, base64decode(request.body.wc))):
+	block(id=16, category='sqli', score=100, description='Simple Ads Manager <= 2.9.4.116 - SQL Injection', whitelist=0)
+
+if (match('/gwolle\-gb[\/]+frontend[\/]+captcha[\/]+ajaxresponse\.php/', request.path) and match('/.*/', request.queryString.abspath)):
+	block(id=17, category='rfi', score=100, description='Gwolle Guestbook <= 1.5.3 - Remote File Inclusion', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and equals('nf_async_upload', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=21, category='file_upload', score=100, description='Ninja Forms <= 2.9.42 - Arbitrary File Upload', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and 
+currentUserIsNot('administrator', server.empty) and 
+equals('wpfc_cdn_template_ajax_request', request.body.action, request.queryString.action)):
+	block(id=25, category='auth-bypass', score=100, description='WP Fastest Cache <= 0.8.5.6 - Authorization Bypass', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and 
+currentUserIsNot('administrator', server.empty) and 
+equals('wpfc_save_cdn_integration_ajax_request', request.body.action, request.queryString.action)):
+	block(id=26, category='auth-bypass', score=100, description='WP Fastest Cache <= 0.8.5.6 - Authorization Bypass', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\.php/i', request.path) and ((md5Equals('8fe5104833b48c11b4c6a3e611e3f544', request.queryString.page) and lengthGreaterThan('0', request.body.page)) or (md5Equals('d2cb1ebf7e72e3749053af2966d8946c', request.queryString.page) and lengthGreaterThan('0', request.body.page)) or (md5Equals('2767cc3ede7592a47bd6657e3799565c', request.queryString.page) and lengthGreaterThan('0', request.body.page)) or (md5Equals('cce3df80f07d36b56db4376a4802d6c2', request.queryString.page) and lengthGreaterThan('0', request.body.page)))):
+	block(id=27, category='xss', score=100, description='HDW Player Plugin <= 3.4 - Reflected XSS', whitelist=0)
+
+if (equals('mainwp-setup', request.body.page, request.queryString.page) and currentUserIsNot('administrator', server.empty)):
+	block(id=29, category='xss', score=100, description='WPMain Stored XSS <= 3.1.2')
+
+if (lengthGreaterThan(0, request.body.ewww_image_optimizer_delay) and (
+        currentUserIsNot('administrator', server.empty) or
+        notMatch('/^\d+$/', request.body.ewww_image_optimizer_delay) or
+        (lengthGreaterThan(0, request.body.ewww_image_optimizer_optipng_level) and notMatch('/^\d+$/', request.body.ewww_image_optimizer_optipng_level)) or
+        (lengthGreaterThan(0, request.body.ewww_image_optimizer_pngout_level) and notMatch('/^\d+$/', request.body.ewww_image_optimizer_pngout_level))
+)):
+	block(id=31, category='file_upload', score=100, description='EWWW Image Optimizer <= 2.8.0 - Remote Command Execution', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+options\.php/i', request.path) and notMatch('/^#?[0-9a-f]+$/i', request.md5Body['9b5354ddf005f69745b19155d2b64725']) and lengthGreaterThan('0', request.md5Body['9b5354ddf005f69745b19155d2b64725'])):
+	block(id=32, category='xss', score=100, description='Customize Admin Stored XSS <= 1.6.6', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and ((md5Equals('46f5a89acb206a7f58db187e45fa2a4d', request.body.action) and notMatch('/^(?:country|city)$/ix', request.md5Body['5fc75f82e79d75efb9716109034a3209'])))):
+	block(id=33, category='sqli', score=100, description='Kento Post View Counter SQLi <= 2.8', whitelist=0)
+
+if (equals('Y', request.body.kentopvc_hidden) and (notMatch('/^1?$/', request.body.kento_pvc_hide) or notMatch('/^1?$/', request.body.kento_pvc_uniq) or match(xssRegex, request.body.kento_pvc_today_text) or match(xssRegex, request.body.kento_pvc_total_text) or match(xssRegex, request.body.kento_pvc_numbers_lang) or notMatch('/^1?$/', request.body.kento_pvc_posttype))):
+	block(id=35, category='xss', score=100, description='Kento Post View Counter Stored XSS <= 2.8', whitelist=0)
+
+if ((match('#/wp\-mobile\-detector[/]+resize\.php#i', request.path) or match('#/wp\-mobile\-detector[/]+timthumb\.php#i', request.path)) and ((lengthGreaterThan('0', request.body.src) and notMatch('/\.(?:png|gif|jpg|jpeg|jif|jfif|svg)$/i', request.body.src)) or (lengthGreaterThan('0', request.queryString.src) and notMatch('/\.(?:png|gif|jpg|jpeg|jif|jfif|svg)$/i', request.queryString.src)))):
+	block(id=36, category='file_upload', score=100, description='WP Mobile Detector <= 3.5 - Arbitrary File Upload', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and (currentUserIsNot('administrator', server.empty) or (lengthGreaterThan('0', request.body.id) and notMatch('/^[0-9]+$/', request.body.id))) and equals('populate_download_edit_form', request.body.action, request.queryString.action)):
+	block(id=37, category='sqli', score=100, description='Double Opt-In for Download <= 2.0.9 - SQL Injection', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and currentUserIsNot('administrator', server.empty) and md5Equals('9082302c5211de15622f1cfab357f521', request.body.action, request.queryString.action)):
+	block(id=38, category='sde', score=100, description='WP Maintenance Mode <= 2.0.3 - Sensitive Data Exposure', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and 
+currentUserIsNot('administrator', server.empty) and 
+equals('wpmm_reset_settings', request.body.action, request.queryString.action)):
+	block(id=39, category='sde', score=100, description='WP Maintenance Mode <= 2.0.3 - Auth Bypass', whitelist=0)
+
+if (match('#wp\-admin/+options\-general.php$#i', server.script_filename) and
+equals('wp-maintenance-mode', request.body.page, request.queryString.page) and
+match('/["\$]/', request.body.options.modules.ga_code, request.queryString.options.modules.ga_code) and
+equals('1', request.body.options.modules.ga_status, request.queryString.options.modules.ga_status) and
+equals('modules', request.body.tab, request.queryString.tab)):
+	block(id=40, category='rce', score=100, description='WP Maintenance Mode <= 2.0.3 - Remote Code Execution', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and equals('rbs_gallery', request.queryString.action, request.body.action) and currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and currentUserIsNot('contributor', server.empty)):
+	block(id=41, category='auth-bypass', score=100, description='Robo Gallery <= 2.0.14 - Auth Bypass', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['932d0cf39a5aa4fc1c3faddaf42e8325']) and notMatch('/^[0-9]*$/', request.md5QueryString['58f627ddac2040609edf8ccd8c406fef'])):
+	block(id=43, category='lfi', score=100, description='SEO by SQUIRRLY <= 6.1.0 - Local File Inclusion')
+
+if (match('#/wp\-admin/#i', request.path) and currentUserIsNot('administrator', server.empty) and (md5Equals('c12e6c914ed9a7bbeca851684096ac94', request.body.action, request.queryString.action) or md5Equals('eadf52d0c96eb78634b8d939a66fb96f', request.body.action, request.queryString.action) or md5Equals('affcac9194a01c0146937eac49f5bd9f', request.body.action, request.queryString.action))):
+	block(id=44, category='auth-bypass', score=100, description='SEO by SQUIRRLY <= 6.1.0 - Auth Bypass', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and (
+    identical('', request.body.dpc_save_settings) or
+    lengthGreaterThan(0, request.body.dpc_save_settings)
+)):
+	block(id=45, category='auth-bypass', score=100, description='DELUCKS SEO <= 1.3.9 - Unauthorized Options Update', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and currentUserIsNot('administrator', server.empty) and (
+    equals('wiziapp_plugin_admin_settings_update', request.body.action, request.queryString.action) or
+    equals('wiziapp_plugin_upgrade_dismiss', request.body.action, request.queryString.action)
+)):
+	block(id=46, category='auth-bypass', score=100, description='WiziApp - All in One mobile suite <= 4.1.2 - Auth Bypass')
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and 
+currentUserIsNot('administrator', server.empty) and 
+equals('wck_update_metawppb_manage_fields', request.body.action, request.queryString.action)):
+	block(id=47, category='priv-esc', score=100, description='Profile Builder <= 2.4.0 - Privilege Escalation')
+
+if ((match('/Abonti|aggregator|AhrefsBot|asterias|BDCbot|BLEXBot|BuiltBotTough|Bullseye|BunnySlippers|ca\-crawler|CCBot|Cegbfeieh|CheeseBot|CherryPicker|CopyRightCheck|cosmos|Crescent|discobot|DittoSpyder|DotBot|Download Ninja|EasouSpider|EmailCollector|EmailSiphon|EmailWolf|EroCrawler|Exabot|ExtractorPro|Fasterfox|FeedBooster|Foobot|Genieo|grub\-client|Harvest|hloader|httplib|HTTrack|humanlinks|ieautodiscovery|InfoNaviRobot|IstellaBot|Java\/1\.|JennyBot|k2spider|Kenjin Spider|Keyword Density\/0\.9|larbin|LexiBot|libWeb|libwww|LinkextractorPro|linko|LinkScan\/8\.1a Unix|LinkWalker|LNSpiderguy|lwp\-trivial|magpie|Mata Hari|MaxPointCrawler|MegaIndex|Microsoft URL Control|MIIxpc|Mippin|Missigua Locator|Mister PiX|MJ12bot|moget|MSIECrawler|NetAnts|NICErsPRO|Niki\-Bot|NPBot|Nutch|Offline Explorer|Openfind|panscient\.com|PHP\/5\.\{|ProPowerBot\/2\.14|ProWebWalker|Python\-urllib|QueryN Metasearch|RepoMonkey|RMA|SemrushBot|SeznamBot|SISTRIX|sitecheck\.Internetseer\.com|SiteSnagger|SnapPreviewBot|Sogou|SpankBot|spanner|spbot|Spinn3r|suzuran|Szukacz\/1\.4|Teleport|Telesoft|The Intraformant|TheNomad|TightTwatBot|Titan|toCrawl\/UrlDispatcher|True_Robot|turingos|TurnitinBot|UbiCrawler|UnisterBot|URLy Warning|VCI|WBSearchBot|Web Downloader\/6\.9|Web Image Collector|WebAuto|WebBandit|WebCopier|WebEnhancer|WebmasterWorldForumBot|WebReaper|WebSauger|Website Quester|Webster Pro|WebStripper|WebZip|Wotbox|wsr\-agent|WWW\-Collector\-E|Xenu|Zao|Zeus|ZyBORG|coccoc|Incutio|lmspider|memoryBot|SemrushBot|serf|Unknown|uptime files/i', request.headers['User-Agent']) and match(xssRegex, request.headers['User-Agent'])) or (match('/semalt\.com|kambasoft\.com|savetubevideo\.com|buttons\-for\-website\.com|sharebutton\.net|soundfrost\.org|srecorder\.com|softomix\.com|softomix\.net|myprintscreen\.com|joinandplay\.me|fbfreegifts\.com|openmediasoft\.com|zazagames\.org|extener\.org|openfrost\.com|openfrost\.net|googlsucks\.com|best\-seo\-offer\.com|buttons\-for\-your\-website\.com|www\.Get\-Free\-Traffic\-Now\.com|best\-seo\-solution\.com|buy\-cheap\-online\.info|site3\.free\-share\-buttons\.com|webmaster\-traffic\.co/i', request.headers.Referer) and match(xssRegex, request.headers.Referer))):
+	block(id=48, category='xss', score=100, description='All in One SEO Pack 2.3.6.1 - Persistent XSS', whitelist=0)
+
+if (match('/sitemap_.*?<.*?(:?_\d+)?\.xml(:?\.gz)?/i', request.path)):
+	block(id=49, category='xss', score=100, description='All in One SEO Pack <= 2.3.7 - Unauthenticated Stored XSS', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and equals('frs_save', request.body.action) and currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty)):
+	block(id=50, category='auth-bypass', score=100, description='Fluid Responsive Slideshow <= 2.2.26 - Unauthorized Content Modification')
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty) and md5Equals('2b63a6d3fd55f80cc3b453fb11a7b538', request.body.action, request.queryString.action)):
+	block(id=51, category='sde', score=100, description='WP Backup <= 1.2 - Sensitive Data Exposure', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty) and lengthGreaterThan('0', request.md5Body.dfff0a7fa1a55c8c1a4966c19f6da452, request.md5QueryString.dfff0a7fa1a55c8c1a4966c19f6da452) and md5Equals('266e0d3d29830abfe7d4ed98b47966f7', request.body.action, request.queryString.action)):
+	block(id=52, category='file_upload', score=100, description='File Manager <= 3.0.0 - Arbitrary File Upload/Download')
+
+if (currentUserIsNot('administrator', server.empty) and match('/^(?:lvo_admin_head|lvo_add_new_album|lvo_delete_album|reset_albums|save_lvo_settings|lvo_single_image_upload|lvo_resize_image_and_add|lvo_delete_image|lvo_get_albums_table|lvo_get_albums_images_table|activate|deactivate|lvo_get_album|lvo_get_album_images|lvo_delete_cache|lvo_reorder_image|lvo_reorder_album|lvo_bulk_delete_albums|lvo_bulk_disable_albums|lvo_bulk_enable_albums|delete_image|lvo_bulk_delete_images|lvo_bulk_disable_images|lvo_bulk_enable_images|lvo_disable_album|lvo_enable_album|lvo_disable_image|lvo_enable_image)$/i', request.body.task, request.queryString.task)):
+	block(id=53, category='file_upload', score=100, description='Levo Slideshow <= 2.3 - Arbitrary File Upload')
+
+if (match('#/form\-lightbox/ajax\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty)):
+	block(id=55, category='auth-bypass', score=100, description='Form Lightbox <= 2.1 - Unauthenticated Options Update', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and (md5Equals('8c2e1c2817e3de18e2140498bdd4f7fa', request.queryString.Action) or md5Equals('e12a2417ffbd0ae4010210b596a3f230', request.queryString.Action) or md5Equals('df33bf68ad0288e1547139e02c1e096b', request.queryString.Action) or md5Equals('c000b32f92bbd81b6cbbddd101073e54', request.queryString.Action) or md5Equals('cc61a84091dcc8b9bd6ae35cf48d71ab', request.queryString.Action) or md5Equals('c80c9038bbb5910385decc276e42061e', request.queryString.Action) or md5Equals('b81e270701125a0024db04bebdbcfc2a', request.queryString.Action) or md5Equals('2e563359c1b268da0041c5bf822857a1', request.queryString.Action) or md5Equals('4ba84dbaaafd4e7d98f55e9f093fe65a', request.queryString.Action) or md5Equals('1deb089a44f2962f92c678a451e61142', request.queryString.Action) or md5Equals('6ffa8f3e70a6279866e4b2c16fe18729', request.queryString.Action) or md5Equals('aa1c4fd7fb193a2cd1b0cc9150131b31', request.queryString.Action) or md5Equals('91e590bfc230eb3971ef1bb6b97ef974', request.queryString.Action) or md5Equals('d0e980fd7bc681b3c3085b1ac31024d6', request.queryString.Action) or md5Equals('069dde6f8ea27c8618cc8f6c6703a7c7', request.queryString.Action) or md5Equals('819900411c0d5c99c116bbce137ee04b', request.queryString.Action) or md5Equals('097d5401a3ae688b669f29351b9667de', request.queryString.Action) or md5Equals('81f1bbc03176c4525b8801b0058b309a', request.queryString.Action) or md5Equals('a8072b3a87b49ffea18548f35c6abd8c', request.queryString.Action) or md5Equals('364409901cb1fce968104dce4bf7e4fe', request.queryString.Action) or md5Equals('246c8343383408c8644f31b1f42617ce', request.queryString.Action) or md5Equals('66d87c0a0e2c02192c322c61d9d6990a', request.queryString.Action) or md5Equals('67bfe619d00425b51276ae083ae271a5', request.queryString.Action) or md5Equals('4aaddae320d8aaa8241ffd22693dd546', request.queryString.Action) or md5Equals('141f5901534f2b3092be526cac250bb6', request.queryString.Action) or md5Equals('2b7efaffcb87e027a011c33125585db7', request.queryString.Action) or md5Equals('979e32726f541a1e568557e9eb6554aa', request.queryString.Action) or md5Equals('c252a9eb30d304ba6079376ef5231aad', request.queryString.Action) or md5Equals('75b0967858cf244d4e2654e69b33d2f1', request.queryString.Action) or md5Equals('9cfad494bbf947c2ce316fe96eac396d', request.queryString.Action) or md5Equals('a4a148b325f286e07d9f24e3654e2672', request.queryString.Action) or md5Equals('3863850b63dc41d4e6e8cee097644d18', request.queryString.Action) or md5Equals('8fb62eed357b03c7be735352ab247bbe', request.queryString.Action) or md5Equals('a0380a8020e3a09257a6c67a1fe14627', request.queryString.Action) or md5Equals('b0f145120ec76e700969f63c5af3e8f4', request.queryString.Action) or md5Equals('52f6fc037a9e97f93309b1115882c080', request.queryString.Action) or md5Equals('f2a2c32747d2d49ddf682158eb9a510e', request.queryString.Action) or md5Equals('5caa7c3d6bba5a36798619b0ac4747bb', request.queryString.Action) or md5Equals('a0793408acebd97af0414d46b6705a65', request.queryString.Action) or md5Equals('f605a16b247f81f2eb2fdc097e1e1a19', request.queryString.Action) or md5Equals('ea7348459bf68bf881facb0e5d18ccd7', request.queryString.Action) or md5Equals('c747677e1903fdfffd4108f3347cf5ab', request.queryString.Action) or md5Equals('05c0ea3ee2df67b6bc2f3921c3fe2180', request.queryString.Action) or md5Equals('d986eb29534241e46402c30e678af902', request.queryString.Action))):
+	block(id=57, category='priv-esc', score=100, description='Ultimate Product Catalogue <= 3.8.1 - Privilege Escalation', whitelist=0)
+
+if (match('#includes\/+plugin\-media\-upload\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and currentUserIsNot('contributor', server.empty)):
+	block(id=58, category='file_upload', score=100, description='360 Product Rotation <= 1.2.1 - Arbitrary File Upload', whitelist=0)
+
+if (match(xssRegex, request.headers['Client-IP'], request.headers['X-Forwarded-For'], request.headers['X-Forwarded'], request.headers['X-Cluster-Client-IP'], request.headers['Forwarded-For'], request.headers.Forwarded)):
+	block(id=59, category='xss', score=100, description='Generic XSS Injection in IP Forwarding Headers', whitelist=0)
+
+if (match('/\/(?:timthumb\.php|img\.php)/i', request.path) and match('/[^A-Za-z0-9\-\.\_:\/\?\&\+\;\=]/', request.queryString.src) and lengthGreaterThan('0', request.queryString.webshot)):
+	block(id=64, category='rce', score=100, description='TimThumb <= 2.8.13 - Remote Code Execution', whitelist=0)
+
+if (match('/\/(?:timthumb\.php|img\.php)/i', request.path) and notMatch('_^[^\?]+?\.(?:jpg|jpeg|gif|png)(?:\?[a-z0-9\-\_\.\~%\!\$&\'\(\)\*\+,;\=\:@\/\?]*)?$_iu', request.queryString.src) and lengthGreaterThan('0', request.queryString.src) and (lengthLessThan('1', request.queryString.webshot) or equals('0', request.queryString.webshot))):
+	block(id=63, category='rfd', score=100, description='TimThumb <= 1.33 - Remote File Download', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and match('/^(?:wysija_)+campaigns/i', request.body.page, request.queryString.page) and (equals('themes', request.body.action, request.queryString.action) or equals('themeupload', request.body.action, request.queryString.action))):
+	block(id=65, category='file_upload', score=100, description='MailPoet <= 2.6.7 - Arbitrary File Upload', whitelist=0)
+
+if ((match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty) and match('/^(?:nopriv_)?nm_postfront_save_settings$/i', request.body.action, request.queryString.action)) or (currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and ((match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and match('/^(?:nopriv_)?nm_postfront_(?:load_post_form|save_post|upload_file)$/i', request.body.action, request.queryString.action)) or match('#/plupload[^/]*/+examples/+upload\.php#i', request.path)))):
+	block(id=69, category='file_upload', score=100, description='N-Media Post Front-end Form <= 1.0 - Unauthenticated Arbitrary File Upload', whitelist=0)
+
+if (match('#/cysteme\-finder[^/]*/+php/+connector\.php#i', request.path) and currentUserIsNot('administrator', server.empty)):
+	block(id=70, category='file_upload', score=100, description='CYSTEME Finder <= 1.3 - Multiple Unauthenticated Vulnerabilities', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and currentUserIsNot('administrator', server.empty) and match('/^(?:nopriv_)?es_prop_media_images$/i', request.body.action, request.queryString.action)):
+	block(id=71, category='file_upload', score=100, description='Estatik <= 2.2.5 - Unauthenticated Arbitrary File Upload', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and filePatternsMatch('', request.fileNames)):
+	block(id=68, category='file_upload', score=100, description='Malicious File Upload (Patterns)', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and fileHasPHP('', request.fileNames)):
+	block(id=76, category='file_upload', score=100, description='Malicious File Upload (PHP)', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and match('/^aamc?$/i', request.queryString.page, request.body.action) and lengthGreaterThan('0', request.queryString.sub_action, request.body.sub_action)):
+	block(id=77, category='priv-esc', score=100, description='Advanced Access Manager <= 3.2.1 - Privilege Escalation')
+
+if (notMatch('/\.(jpe?g|png|mpeg|mov|flv|pdf|docx?|txt|csv|avi|mp3|wma|wav)($|\.)/i', request.fileNames) and lengthGreaterThan('0', request.body.save_bepro_listing)):
+	block(id=78, category='file_upload', score=100, description='BePro Listings <= 2.2.0020 - Unauthenticated Arbitrary File Upload', whitelist=0)
+
+if (match('#/wp\-admin/admin\.php$#i', server.script_filename) and equals('master-slider', request.queryString.page) and lengthGreaterThan('0', request.body.page) and notEquals('master-slider', request.body.page)):
+	block(id=80, category='xss', score=100, description='Master Slider <= 2.7.1 - Reflected XSS', whitelist=0)
+
+if (equals('fancybox-for-wordpress', request.queryString.page) and match(xssRegex, request.body.mfbfw)):
+	block(id=81, category='xss', score=100, description='FancyBox for WordPress <= 3.0.2 - Persistent XSS', whitelist=0)
+
+if ((match('#/delete\-all\-comments/delete\-all\-comments\.php$#i', server.script_filename) or (lengthGreaterThan('0', request.body.restorefromfileNAME) and lengthGreaterThan('0', request.body.restorefromfileURL))) and currentUserIsNot('administrator', server.empty)):
+	block(id=83, category='file_download', score=100, description='Delete All Comments <= 2.0.0 - Unauthenticated Remote File Download', whitelist=0)
+
+if (match('/iwp_action/i', base64decode(request.rawBody)) and match('/(^|;|{|})O:+?\+*[0-9]+:(?!"stdClass")/i', base64decode(request.rawBody))):
+	block(id=86, category='obji', score=100, description='InfiniteWP Client <= 1.6.11 - Unauthenticated Object Injection', whitelist=0)
+
+if (match('#/nggallery/+tags/+.*?%25#i', request.path) and match('#/nggallery/+tags/+(?:[^\$]*\$|.*?%24)#i', request.path)):
+	block(id=87, category='sqli', score=100, description='NextGEN Gallery <= 2.1.77 - SQL Injection', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and currentUserIsNot('administrator', server.empty) and equals('showbiz_ajax_action', request.body.action) and equals('update_plugin', request.body.client_action)):
+	block(id=88, category='file_upload', score=100, description='Showbiz Pro 1.7.1 - Arbitrary File Upload', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and match('#monetize[\/]+templatic\-custom_fields[\/]+single\-upload\.php#i', request.path)):
+	block(id=89, category='file_upload', score=100, description='Tevolution <= 2.3.6 - Arbitrary File Upload', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and match('/^(?:nopriv_)?td_ajax_update_panel$/i', request.body.action, request.queryString.action)):
+	block(id=91, category='auth-bypass', score=100, description='Newspaper Premium Theme <= 6.7.1 - Privilege Escalation', whitelist=0)
+
+if (match('#%%(?:COMMENTS|INJECTLATER)%%#', request.queryString, request.body)):
+	block(id=93, category='lfi', score=100, description='Autoptimize <= 2.1.0 - Unauthenticated Local File Inclusion')
+
+if (currentUserIsNot('administrator', server.empty) and match('/Save\sSetting/i', request.body.savesetting) and (match('/(p(h(p|tml)[0-9]?|l|y)|(j|a)sp|aspx|sh|shtml|html?|cgi|htaccess|ini|exe)/i', request.body.accepted_file_types) or match('/(p(h(p|tml)[0-9]?|l|y)|(j|a)sp|aspx|sh|shtml|html?|cgi|htaccess|ini|exe)/i', request.body.inline_file_types))):
+	block(id=94, category='file_upload', score=100, description='jQuery HTML5 File Upload <= 3.0 - Unauthenticated Options Update and Arbitrary File Upload', whitelist=0)
+
+if (match('/(^|;|{|})O:+?\+*[0-9]+:(?!"stdClass")/i', base64decode(request.body['wpgform-action'])) or match('/(^|;|{|})O:+?\+*[0-9]+:(?!"stdClass")/i', base64decode(request.body['wpgform-options']))):
+	block(id=95, category='obji', score=100, description='Google Forms <= 0.86 - Unauthenticated Object Injection', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and notEquals('', request.body.email) and equals('loginGuestFacebook', request.body.action)):
+	block(id=99, category='privesc', score=100, description='WP Support Plus Responsive Ticket System <= 7.1.3 - Privilege Escalation', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (md5Equals('da6c71b8bb99069bd8e2fde83d95cf0d', request.body.action, request.queryString.action) or md5Equals('144e471fa0e0005b146b3f10ed5f8192', request.body.action, request.queryString.action)) and match('/=form_id&/i', request.rawBody) and match('/3a2257505f5468656d6522/i', request.rawBody)):
+	block(id=104, category='sqli', score=100, description='Ultimate Form Builder Lite <= 1.3.6 - SQLi -> RCE via Obji', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (md5Equals('da6c71b8bb99069bd8e2fde83d95cf0d', request.body.action, request.queryString.action) or md5Equals('144e471fa0e0005b146b3f10ed5f8192', request.body.action, request.queryString.action)) and (match('/(?:^|&)(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:d|%64)(?:a|%61)(?:t|%74)(?:a|%61)(?:\[|%5b)(.+?)(?:\]|%5d)(?:\[|%5b)(?:n|%6e)(?:a|%61)(?:m|%6d)(?:e|%65)(?:\]|%5d)=(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:i|%69)(?:d|%64)&.*?(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:d|%64)(?:a|%61)(?:t|%74)(?:a|%61)(?:\[|%5b)\1(?:\]|%5d)(?:\[|%5b)(?:v|%76)(?:a|%61)(?:l|%6c)(?:u|%75)(?:e|%65)(?:\]|%5d)=\d*[^\d&]+/i', request.rawBody) or match('/(?:^|&)(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:d|%64)(?:a|%61)(?:t|%74)(?:a|%61)(?:\[|%5b)(.+?)(?:\]|%5d)(?:\[|%5b)(?:v|%76)(?:a|%61)(?:l|%6c)(?:u|%75)(?:e|%65)(?:\]|%5d)=\d*[^\d&]+[^&]*&.*?(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:d|%64)(?:a|%61)(?:t|%74)(?:a|%61)(?:\[|%5b)\1(?:\]|%5d)(?:\[|%5b)(?:n|%6e)(?:a|%61)(?:m|%6d)(?:e|%65)(?:\]|%5d)=(?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f)(?:i|%69)(?:d|%64)(?:$|&)/i', request.rawBody))):
+	block(id=105, category='sqli', score=100, description='Ultimate Form Builder Lite <= 1.3.6 - SQLi -> RCE via Obji', whitelist=0)
+
+if (equals('true', request.queryString.up_auto_log)):
+	block(id=106, category='auth-bypass', score=100, description='UserPro - User Profiles with Social Login <= 4.9.17 - Authentication Bypass', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and lengthGreaterThan('0', request.body.before_html, request.queryString.before_html, request.body.after_html, request.queryString.after_html) and match('/^(?:nopriv_)?frm_forms_preview$/i', request.body.action, request.queryString.action)):
+	block(id=107, category='auth-bypass', score=100, description='Formidable Forms <= 2.05.03 - Multiple Vulnerabilities', whitelist=0)
+
+if (currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and currentUserIsNot('contributor', server.empty) and matchCount('/This\s+message\s+is\s+posted\s+here\s+using\s+XRumer/i', request.body, request.queryString)):
+	block(id=108, category='spam', score=100, description='XRumer/XEvil Spam', whitelist=0)
+
+if (equals('the_champ_user_auth', request.queryString.action, request.body.action) and notEquals('', request.queryString.security, request.body.security) and notEquals('', request.queryString.profileData.email, request.body.profileData.email)):
+	block(id=112, category='auth-bypass', score=100, description=' Super Socializer <= 7.10.6 - Authentication Bypass')
+
+if ((match('/\/wp\-admin\/admin\-ajax\.php$/i', server.script_filename) and (match('/^(ampforwp_(save_installer|get_licence_activate_update|deactivate_license|enable_modules_upgread))$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)) or (match('/^((amppb_(color_picker|textEditor|export_layout_data|save_layout_data))|enable_amp_pagebuilder|ampforwp_(get_image|icons_list_format))$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and currentUserIsNot('contributor', server.empty))) or (notEquals('', request.queryString.use_amp_pagebuilder, request.queryString.ramppb, request.queryString.ampforwp_custom_content_editor, request.queryString.ampforwp_custom_content_editor_checkbox, request.body['ampforwp-amp-on-off'], request.body['ampforwp-ia-on-off'], request.body['ampforwp-redirection-on-off']) and currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty) and currentUserIsNot('contributor', server.empty))):
+	block(id=121, category='auth-bypass', score=100, description='Accelerated Mobile Pages <= 0.9.97.19 - Missing Authentication Checks', whitelist=0)
+
+if (match('/^yuzo_related_post/', request.body.name_options) and (lengthGreaterThan('0', request.body.save_options) or identical('', request.body.save_options) or lengthGreaterThan('0', request.body.reset_options) or identical('', request.body.reset_options)) and currentUserIsNot('administrator', server.empty)):
+	block(id=137, category='auth-bypass', score=100, description='Related Posts <= 5.12.90 - Missing Authentication', whitelist=0)
+
+if ((identical('', request.queryString.yp_remote_get) or lengthGreaterThan('0', request.queryString.yp_remote_get)) and currentUserIsNot('administrator', server.empty)):
+	block(id=138, category='privesc', score=100, description='Yellow Pencil Visual Theme Customizer <= 7.1.9 Arbitrary Options Update', whitelist=0)
+
+if (match('#/(a|%61|%41)(r|%72|%52)(i|%69|%49)(\-|%2d)(a|%61|%41)(d|%64|%44)(m|%6d|%4D)(i|%69|%49)(n|%6e|%4E)(e|%65|%45)(r|%72|%52)/#i', request.path) and currentUserIsNot('administrator', server.empty)):
+	block(id=139, category='auth-bypass', score=100, description='ARI-Adminer <= 1.1.14: Missing Auth Check', whitelist=0)
+
+if ((identical('', request.md5Body['49477a8d7cf7b0a69df4aece24f5453f'], request.md5Body['0c8e91156c85449ebda7234a2e357cc1'], request.md5Body['cd4fdb546b7b0674fce6c4b0bc27b7f4'], request.md5Body['f4bd3746a1b566e14ba0adb68f06f4b9']) or lengthGreaterThan('0', request.md5Body['49477a8d7cf7b0a69df4aece24f5453f'], request.md5Body['0c8e91156c85449ebda7234a2e357cc1'], request.md5Body['cd4fdb546b7b0674fce6c4b0bc27b7f4'], request.md5Body['f4bd3746a1b566e14ba0adb68f06f4b9'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=140, category='rce', score=100, description='WAF-RULE-140', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and md5Equals('919055bea493cd888269b56250cba665', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) and currentUserIsNot('administrator', server.empty)):
+	block(id=141, category='privesc', score=100, description='WAF-RULE-141', whitelist=0)
+
+if (lengthGreaterThan('0', request.body.wuev_form_type) and currentUserIsNot('administrator', server.empty)):
+	block(id=142, category='auth-bypass', score=100, description='WooCommerce User Email Verification <= 3.3.0 - Unauthenticated Arbitrary Options Update', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename)
+and ( equals('update_attachment_wccm', request.body.action, request.queryString.action) or (equals('wooccm_front_enduploadsave', request.body.action, request.queryString.action) and lengthGreaterThan('0',request.body.remove,request.queryString.remove)) ) 
+and currentUserIsNot('administrator', server.empty)):
+	block(id=144, category='auth-bypass', score=100, description='WooCommerce Checkout Manager <= 4.2.6 - Unauthenticated Media Deletion', whitelist=0)
+
+if ((identical('', request.body.custom_css) or lengthGreaterThan('0', request.body.custom_css) or lengthGreaterThan('0', request.body.blog_page_display)) and identical('save', request.queryString.action, request.body.action) and identical('true', request.queryString.updated, request.body.updated) and currentUserIsNot('administrator',server.empty)):
+	block(id=145, category='xss', score=100, description='Blog Designer <= 1.8.10 - Unauthenticated Stored Cross-Site Scripting', whitelist=0)
+
+if (currentUserIsNot('administrator',server.empty) and (
+        identical('', request.body.wplc_save_settings) or lengthGreaterThan(0, request.body.wplc_save_settings) or 
+        identical('', request.body.wplc_custom_css) or lengthGreaterThan(0, request.body.wplc_custom_css) or 
+        identical('', request.body.wplc_custom_js) or lengthGreaterThan(0, request.body.wplc_custom_js)
+    )):
+	block(id=147, category='xss', score=100, description='WP Live Chat Support <= 8.0.28 - Unauthenticated Stored Cross-Site Scripting', whitelist=0)
+
+if (match('/application\/json/', request.headers['Content-Type']) and match('/\/graphql/', request.path) and match('/^\s*\{\s*"query"/', request.rawBody) and (
+        match('/\{\s*(plugins|themes|mediaItems|users|comments|posts|pages)/', request.rawBody)
+        or match('/mutation\s*\{\s*registerUser.*?roles:/s', request.rawBody)
+        ) and currentUserIsNot('administrator', server.empty)):
+	block(id=148, category='auth-bypass', score=100, description='WPGraphQL <= 0.2.3 - Multiple Vulnerable Actions', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and md5Equals('7e978ce09187339eb687db73fa4af779', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) and match('/^(administrator|editor|shop_manager|author)$/i', request.md5Body['b40a9b4758686946978ccfc290f5cd4b']) and currentUserIsNot('administrator', server.empty)):
+	block(id=149, category='privesc', score=100, description='WAF-RULE-149', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) 
+and md5Equals('cb26e9d5bd6311e7d4a759ac8c38d9d0', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) 
+and lengthGreaterThan('0', request.md5Body['5ebeb6065f64f2346dbb00ab789cf001'])
+and lengthGreaterThan('0', request.md5Body['c13367945d5d4c91047b3b50234aa7ab'])
+and currentUserIsNot('administrator', server.empty)):
+	block(id=153, category='rce', score=100, description='WAF-RULE-153', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) 
+and equals('hc_ajax_save_option', request.body.action, request.queryString.action) 
+and currentUserIsNot('administrator', server.empty)):
+	block(id=154, category='privesc', score=100, description='Hybrid Composer <= 1.4.5 - Unauthenticated Options Update', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) 
+and currentUserIsNot('administrator', server.empty) 
+and match('#^mk_file_manager_(backup_remove|single_backup_remove|single_backup_logs|single_backup_restore)$#i', request.body.action, request.queryString.action)):
+	block(id=151, category='privesc', score=100, description='File Manager <= 4.8 - Privilege Escalation, SQL Injection, File Deletion', whitelist=0)
+
+if (match('/^[0-9a-f]{32}$/', request.md5Body['5f4dcc3b5aa765d61d8327deb882cf99'], request.md5QueryString['5f4dcc3b5aa765d61d8327deb882cf99']) and 
+(md5Equals('808ad1ac54d3a5e6ab09ed69c2a6605d', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) or 
+md5Equals('84a1c9137ae2863590475c6c385b92d7', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) or
+md5Equals('0ebbe8a2b6999ec31f44118f5396e3f3', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) or
+md5Equals('770209dbd19d2cd3da20a08cb138036e', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) or
+md5Equals('d480834a6c46e6e0778d0c863a010667', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) or
+md5Equals('9a2f516318cdf6712d01150110b590b8', request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'], request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5']) )):
+	log(id=152, category='backdoor', score=100, description='WAF-RULE-152', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('#^(?:nopriv_)?nd_[^_]+_import_settings_php_function#i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=155, category='auth-bypass', score=100, description='NicDark Plugins (nd-booking, nd-shortcodes) Unauthenticated Arbitrary Options Update', whitelist=0)
+
+if (lengthGreaterThan('0',request.files.wbcr_inp_import_files) and currentUserIsNot('administrator', server.empty)):
+	block(id=156, category='file_upload', score=100, description='Woody Ad Snippets <= 2.2.4 - Unauthenticated File Upload/Stored XSS/RCE', whitelist=0)
+
+if ((lengthGreaterThan('0', request.body.lolmi_settings_submit) or identical('',request.body.lolmi_settings_submit)) and currentUserIsNot('administrator', server.empty)):
+	block(id=157, category='auth-bypass', score=100, description='Login or Logout Menu Item <= 1.1.1 - Unauthenticated Settings Update', whitelist=0)
+
+if ((lengthGreaterThan('0', request.body.wpmm_theme_type) or equals('export_wpmm_theme',request.queryString.action)) and currentUserIsNot('administrator', server.empty)):
+	block(id=158, category='xss', score=100, description='WP Mega Menu <= 1.3.0 Unauthenticated Settings Update/XSS', whitelist=0)
+
+if ((lengthGreaterThan('0',request.body.submit_bulk_301) or identical('',request.body.submit_bulk_301) or equals('bulk301clearlist',request.body.action, request.queryString.action) or equals('bulk301export', request.body.action, request.queryString.action)) and currentUserIsNot('administrator', server.empty)):
+	block(id=159, category='file_upload', score=100, description='Simple 301 Redirects Addon – Bulk Uploader <= 1.2.5 - Multiple vulnerabilities', whitelist=0)
+
+if (equals ('EWD_UFAQ_ImportFaqsFromSpreadsheet', request.body.Action, request.queryString.Action) and currentUserIsNot('administrator', server.empty)):
+	block(id=160, category='file_upload', score=100, description='Ultimate FAQ <= 1.8.24 File Upload Vulnerability', whitelist=0)
+
+if (lengthGreaterThan('0', request.body.wppcp_tab) and currentUserIsNot('administrator', server.empty)):
+	block(id=161, category='auth-bypass', score=100, description='WP Private Content Plus <= 1.31 Unauthenticated Options Update', whitelist=0)
+
+if (((match('/[^0-9a-zA-Z.:,\ \[\]\+\-]/', request.headers['X-Forwarded-For']) and notEquals('(null)', request.headers['X-Forwarded-For']) and notMatch('/^https?:\/\/(?:[a-z0-9][a-z0-9\-]{1,65}\.)+[a-z0-9]{2,16},\ ?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', request.headers['X-Forwarded-For'])) or (match('/[^0-9a-zA-Z.:,\ \[\]\+\-]/', request.headers['X-Real-Ip']) and notEquals('(null)', request.headers['X-Real-Ip']) and notMatch('/^https?:\/\/(?:[a-z0-9][a-z0-9\-]{1,65}\.)+[a-z0-9]{2,16},\ ?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', request.headers['X-Real-Ip']))) and currentUserIsNot('administrator', server.empty)):
+	log(id=150, category='bypass', score=100, description='Generic X-Forwarded-For and X-Real-Ip Injection', whitelist=0)
+
+if (matchCount('/(^|;|{|})O:+?\+*[0-9]+:"WP_Theme"/i', request.headers, request.cookies, request.body, request.queryString)):
+	block(id=103, category='obji', score=100, description='PHP Object Injection', whitelist=0)
+
+if (matchCount(sqliRegex, request.body, request.queryString)):
+	failSQLi(id=3, category='sqli', score=40, description='SQL Injection')
+
+if (matchCount(xssRegex, request.body, request.queryString)):
+	failXSS(id=9, category='xss', score=100, description='XSS: Cross Site Scripting')
+
+if (match('/\.(p(h(p|tml)[0-9]?|l|y)|(j|a)sp|aspx|sh|shtml|html?|cgi|htaccess|user\.ini)($|\.)/i', request.fileNames) and currentUserIsNot('administrator', server.empty)):
+	block(id=11, category='file_upload', score=100, description='Malicious File Upload')
+
+if (match('/(^|\/|\\)(\.\.?(\\|\/)+)+wp\-config\.php/i', request.body, request.queryString) and currentUserIsNot('administrator', server.empty)):
+	block(id=67, category='lfi', score=100, description='Directory Traversal - wp-config.php', whitelist=0)
+
+if (match('/(^|\/|\\)\.\.(\\|\/)/', request.body, request.queryString) and currentUserIsNot('administrator', server.empty)):
+	block(id=12, category='lfi', score=100, description='Directory Traversal')
+
+if (match('/^\/(?:\.\/)*(?:var|home|usr|mnt|media|etc|tmp|dev|proc)\//i', request.body, request.queryString) and currentUserIsNot('administrator', server.empty)):
+	block(id=13, category='lfi', score=100, description='LFI: Local File Inclusion')
+
+if (match('/<\!(?:DOCTYPE|ENTITY)\s+(?:%\s*)?\w+\s+SYSTEM/i', request.body, request.queryString)):
+	block(id=14, category='xxe', score=100, description='XXE: External Entity Expansion', whitelist=0)
+
+if (match('/phar:\/\//i', request.body, request.queryString) and currentUserIsNot('administrator', server.empty)):
+	block(id=146, category='rce', score=100, description='PHAR Deserialization Attack', whitelist=0)
+
+if (match('/^(?:nopriv_)?wpgdprc_process_action$/i', request.body.action, request.queryString.action) and notMatch('/^\{[\'"]type[\'"]:[\'"]access_request[\'"],\s?[\'"]email[\'"]:[\'"][^\'"]+[\'"],\s?[\'"]consent[\'"]:(true|false)\}$/i', request.body.data) and currentUserIsNot('administrator', server.empty)):
+	block(id=120, category='privesc', score=100, description='WP GDPR Compliance <= 1.4.2 - Update Any Option / Call Any Action', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and match('/^(?:nopriv_)?kiwi_social_share_set_option$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=122, category='privesc', score=100, description='Kiwi Social Share <= 2.0.10 - Unauthenticated Update Any Option', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and match('/^(?:nopriv_)?kiwi_social_share_get_option$/i', request.body.action, request.queryString.action) and (currentUserIsNot('administrator', server.empty) and currentUserIsNot('editor', server.empty) and currentUserIsNot('author', server.empty))):
+	block(id=123, category='sde', score=100, description='Kiwi Social Share <= 2.0.10 - Unauthenticated Read Any Option', whitelist=0)
+
+if (match('/^(?:wp_capabilities|wp_user_level|session_tokens|source_domain|primary_blog)$/i', request.body.wp_screen_options.option) and currentUserIsNot('administrator', server.empty)):
+	block(id=124, category='privesc', score=100, description='Toolset Types <= 2.3.3 - Update Arbitrary Usermeta', whitelist=0)
+
+if ((match('/wp-json[\/]+templates-directory[\/]+import_elementor/i', request.path) or match('/templates-directory[\/]+import_elementor/i', request.body.rest_route, request.queryString.rest_route)) and currentUserIsNot('administrator', server.empty)):
+	block(id=125, category='auth-bypass', score=100, description='Orbit Fox by ThemeIsle <= 2.6.3 - Improper REST Capabilities Checks', whitelist=0)
+
+if ((currentUserIs('contributor', server.empty) or currentUserIs('author', server.empty)) and match('#/wp\-comments\-post\.php$#i', server.script_filename) and match('#<form\W#i', request.body.comment)):
+	block(id=128, category='xss', score=100, description='WordPress <= 5.0 - Contributor+ Potential Stored XSS', whitelist=0)
+
+if ((match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) or match('/the-ajax-caller\.php/i', server.script_filename)) and match('/^(nopriv_)?miglaA?_/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty) and match('/^(?:nopriv_)?miglaA?_(?:add_(?:amount|options|offline_backend)|change_donation|constantcontact_test|delete_(?:postmeta|mform)|export_report|form_bgcolor|get(?:OffDonation|me(?:_array)?|_(?:option|postmeta))|mailchimp_(?:getlists|test)|new_(?:mform|mCampaignCreator)|purgeCache|remove_(?:donation|options)|report|reset_(?:c?form|theme)|retrieve_cc_lists|save_(?:option|campaign(?:_creator)?)|stripe_(?:add(?:Basic)?|get|delete)Plan|syncPlan|test_(?:email|hEmail|offline_email|constant_contact)|update(?:Undesignated|_(?:me|barinfo|c?form|me(?:tadata)?|arr|us|recurring_plans|report|postmeta)))$/i', request.body.action, request.queryString.action)):
+	block(id=129, category='privesc', score=100, description='Total Donations (all known versions) - Multiple Unauthenticated AJAX Actions', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and match('/^userpro_process_form$/i', request.body.action, request.queryString.action) and match('/(?:^|&)((?:f|%66)(?:o|%6f)(?:r|%72)(?:m|%6d)(?:_|%5f))?(?:r|%72)(?:o|%6f)(?:l|%6c)(?:e|%65)(?:(?:-|%2d).+)?=(?:(?:a|%61)(?:d|%64)(?:m|%6d)(?:i|%69)(?:n|%6e)(?:i|%69)(?:s|%73)(?:t|%74)(?:r|%72)(?:a|%61)(?:t|%74)(?:o|%6f)(?:r|%72)|(?:e|%65)(?:d|%64)(?:i|%69)(?:t|%74)(?:o|%6f)(?:r|%72)|(?:s|%73)(?:h|%68)(?:o|%6f)(?:p|%70)(?:_|%5f)(?:m|%6d)(?:a|%61)(?:n|%6e)(?:a|%61)(?:g|%67)(?:e|%65)(?:r|%72))/i', request.rawBody) and currentUserIsNot('administrator', server.empty)):
+	block(id=130, category='bypass', score=100, description='UserPro < 4.9.21 - User Registration Privilege Escalation', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('/^ssb_import$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=131, category='privesc', score=100, description='Simple Social Buttons < 2.0.22 - Arbitrary Options Update', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('/^fs_set_db_option$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=132, category='privesc', score=100, description='Freemius SDK < 2.2.2 - Authenticated Arbitrary Options Update', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('/^postratings$/i', request.body.action, request.queryString.action) and match('/(^|\/|\\)\.\.(\\|\/)/', request.headers.Referer) and currentUserIsNot('administrator', server.empty)):
+	block(id=133, category='lfi', score=100, description='WP Fastest Cache <= 0.8.9.0  - Unauthenticated Arbitrary Directory Deletion', whitelist=0)
+
+if ((match('/wp-json[\/]+siteground-optimizer[\/]+v1/i', request.path) or match('/siteground-optimizer[\/]+v1/i', request.body.rest_route, request.queryString.rest_route)) and currentUserIsNot('administrator', server.empty)):
+	block(id=134, category='auth-bypass', score=100, description='Siteground Optimizer <= 5.0.12 - Improper REST capabilities checks')
+
+if ((lengthGreaterThan('0', request.body.swpsmtp_import_settings) or (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('/^swpsmtp_(clear_log|self_destruct)$/i', request.body.action, request.queryString.action))) and currentUserIsNot('administrator', server.empty)):
+	block(id=135, category='privesc', score=100, description='Easy WP SMTP <= 1.3.9 - Unauthenticated AJAX actions', whitelist=0)
+
+if (lengthGreaterThan('0', request.queryString.swp_url) and currentUserIsNot('administrator', server.empty)):
+	block(id=136, category='xss', score=100, description='Social Warfare <= 3.5.2 - Unauthenticated Stored Cross-Site Scripting', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', server.script_filename) and match('/^(?:nopriv_)?bt_bb_save_custom_css$/i', request.body.action, request.queryString.action) and (currentUserIsNot('editor', server.empty) and currentUserIsNot('administrator', server.empty))):
+	block(id=162, category='xss', score=100, description='Bold Page Builder <= 2.3.1 - Unauthenticated Options Update', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['0ae56c7098340a973151232bd90ef954']) and notEquals('forms', request.md5QueryString['0ae56c7098340a973151232bd90ef954']) and notMatch('/^[0-9a-fA-F]{32}$/', request.md5QueryString['3c6e0b8a9c15224a8228b9a98ca1531d']) and currentUserIsNot('administrator', server.empty)):
+	block(id=163, category='auth-bypass', score=100, description='WAF-RULE-163', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['ce7c9ce58308d0e1a422a3aa75e0a4f6']) and match('/wp\-config\.php/i', request.path, request.md5QueryString['ce7c9ce58308d0e1a422a3aa75e0a4f6'])):
+	block(id=164, category='auth-bypass', score=100, description='WAF-RULE-164', whitelist=0)
+
+if (lengthGreaterThan('0', request.files.llms_import) and currentUserIsNot('administrator', server.empty)):
+	block(id=165, category='auth-bypass', score=100, description='LifterLMS <= 3.34.5 - Unauthenticated options update', whitelist=0)
+
+if (match('/\/qode-instagram-widget\/lib\/instagram-redirect\.php/i', server.script_filename)):
+	block(id=166, category='redirect', score=100, description='Qode Instagram Widget <= 2.0.1 - Unauthenticated Open Redirect', whitelist=0)
+
+if ((lengthGreaterThan('0', request.files.import_settings) or lengthGreaterThan('0', request.queryString.export_settings) or identical('', request.queryString.export_settings) or match('/^stm_ajax_(file_)?automanager/i', request.body.action, request.queryString.action) or match('/stm_listings_.+option/i', request.body.action, request.queryString.action) or lengthGreaterThan('0', request.queryString.stm_xml_do_import_automanager) or identical('', request.queryString.stm_xml_do_import_automanager)) and currentUserIsNot('administrator', server.empty)):
+	block(id=167, category='auth-bypass', score=100, description='Motors – Car Dealer & Classified Ads <= 1.4.0 - Multiple Options Update vulnerabilities')
+
+if (equals('br-aapf-setup', request.queryString.page) and currentUserIsNot('administrator', server.empty)):
+	block(id=168, category='auth-bypass', score=100, description='Advanced AJAX Product Filters <= 1.3.5', whitelist=0)
+
+if ((md5Equals('535563d2fe010e377d91a08df7bd24b0', request.md5Body['3ac340832f29c11538fbe2d6f75e8bcc']) or md5Equals('d723bd8fe120d9b9501b59dbdbbd862e', request.md5Body['3ac340832f29c11538fbe2d6f75e8bcc']) or md5Equals('820b1f6a2f4f02db8d34dda2c54c495c', request.md5Body['3ac340832f29c11538fbe2d6f75e8bcc'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=170, category='auth-bypass', score=100, description='WAF-RULE-170', whitelist=0)
+
+if (match('/\/wp\-admin[\/]+admin\-ajax\.php/i', request.path) and match('/^webphoto_upload$/i', request.body.action, request.queryString.action) and currentUserIsNot('administrator', server.empty)):
+	block(id=171, category='file_upload', score=100, description='Theme Editor <= 2.1 - Authenticated Arbitrary File Upload', whitelist=0)
+
+if (md5Equals('0e96cee26df98f4f879c7cb49c39f3c0', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and currentUserIsNot('administrator', server.empty)):
+	block(id=172, category='xss', score=100, description='WAF-RULE-172', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['f5bc9502d581b68aff5f7d9a63575099']) and notEquals('products', request.md5QueryString['f5bc9502d581b68aff5f7d9a63575099']) and notMatch('/^[0-9a-fA-F]{32}$/', request.md5QueryString['3c6e0b8a9c15224a8228b9a98ca1531d']) and currentUserIsNot('administrator', server.empty)):
+	block(id=174, category='auth-bypass', score=100, description='WAF-RULE-174', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['44ab23917fba3cefa2a2371eff2be8ba']) and notEquals('properties', request.md5QueryString['44ab23917fba3cefa2a2371eff2be8ba']) and notMatch('/^[0-9a-fA-F]{32}$/', request.md5QueryString['3c6e0b8a9c15224a8228b9a98ca1531d']) and currentUserIsNot('administrator', server.empty)):
+	block(id=175, category='auth-bypass', score=100, description='WAF-RULE-175', whitelist=0)
+
+if (match('#/wp\-json/wpshopify/v1/settings#i', request.path) and currentUserIsNot('administrator', server.empty)):
+	block(id=176, category='xss', score=100, description='WP Shopify <= 2.0.4 Stored XSS', whitelist=0)
+
+if (lengthGreaterThan('0', request.md5QueryString['9acb44549b41563697bb490144ec6258'], request.md5Body['9acb44549b41563697bb490144ec6258']) and lengthGreaterThan('0', request.md5QueryString['e98d2f001da5678b39482efbdf5770dc'], request.md5Body['e98d2f001da5678b39482efbdf5770dc']) and currentUserIsNot('administrator', server.empty)):
+	block(id=177, category='file-download', score=100, description='WAF-RULE-177')
+
+if (md5Equals('24be2a598b291f85f33806d203026c37', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and currentUserIsNot('administrator', server.empty)):
+	block(id=179, category='bypass', score=100, description='WAF-RULE-179')
+
+if ((md5Equals('7cef8a734855777c2a9d0caf42666e69', request.md5QueryString['12470fe406d44017d96eab37dd65fc14'], request.md5Body['12470fe406d44017d96eab37dd65fc14']) or md5Equals('467bf20fa851db25bb2fefe3328a1947', request.md5QueryString['12470fe406d44017d96eab37dd65fc14'], request.md5Body['12470fe406d44017d96eab37dd65fc14'])) and match(sqliRegex, base64decode(request.md5Body['0800fc577294c34e0b28ad2839435945']), base64decode(request.md5QueryString['0800fc577294c34e0b28ad2839435945']))):
+	block(id=181, category='sqli', score=100, description='WAF-RULE-181')
+
+if (md5Equals('4fd3f28c184ae3daa6f186652fb99e5b', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and currentUserIsNot('administrator', server.empty)):
+	block(id=182, category='auth-bypass', score=100, description='WAF-RULE-182')
+
+if (match('/\/qode-twitter-feed\/lib\/twitter-redirect\.php/i', server.script_filename)):
+	block(id=184, category='redirect', score=100, description='Qode Twitter Feed <= 2.0.1 - Unauthenticated Open Redirect', whitelist=0)
+
+if ((identical('', request.queryString.stripe_publishable_key) or lengthGreaterThan('0', request.queryString.stripe_publishable_key)) and currentUserIsNot('administrator', server.empty)):
+	block(id=185, category='auth-bypass', score=100, description='Give WP <= 2.5.9 - Unauthenticated Options Update')
+
+if (lengthGreaterThan('0', request.body.companion_disable_popup_wpnonce) and currentUserIsNot('administrator', server.empty)):
+	block(id=186, category='priv-esc', score=100, description='Mesmerize <= 1.6.89 and Materialis <=1.0.172 - Authenticated Options Update')
+
+if (equals('heateor_sss_sharing_count', request.queryString.action) and (contains("%3C", request.uri) or contains("<", request.uri) or contains("%3c", request.uri)) and contains('urls', request.uri)):
+	block(id=187, category='xss', score=100, description='Sassy Social Share <= 3.3.3 - Cross-Site Scripting (XSS)')
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and ( md5Equals('c0d5e9be7a9135b027a06ce179aeede4', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or md5Equals('437057731cac3362ec1a53a1500bb359', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or md5Equals('f394ca45e157fd9d6c7a33290849f9c9', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or md5Equals('d239fe945281de1a7c8f3c86f2d0c8aa', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=189, category='bypass', score=100, description='WAF-RULE-189')
+
+if (md5Equals('581c6097632dc2d623c338be20ddbe3b', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and (md5Equals('a10311459433adf322f2590a4987c423', request.md5QueryString['e3df100a642110ce84a2ea9df50348de'], request.md5Body['e3df100a642110ce84a2ea9df50348de']) or md5Equals('075ae3d2fc31640504f814f60e5ef713', request.md5QueryString['e3df100a642110ce84a2ea9df50348de'], request.md5Body['e3df100a642110ce84a2ea9df50348de'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=190, category='auth-bypass', score=100, description='WAF-RULE-190', whitelist=0)
+
+if ((md5Equals('92c7747b426e808c0511abb196b21839', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or  md5Equals('88f5ffe34fd510b6a2860adf55338150', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=191, category='bypass', score=100, description='WAF-RULE-191', whitelist=0)
+
+if ((lengthGreaterThan('0', request.md5QueryString['03f5edc926cf643e92ff071ac918fd40'],  request.md5Body['03f5edc926cf643e92ff071ac918fd40']) or lengthGreaterThan('0', request.md5QueryString['31b122f6bb962bef60add910b99ca403'],  request.md5Body['31b122f6bb962bef60add910b99ca403']) or identical('',request.md5QueryString['03f5edc926cf643e92ff071ac918fd40'], request.md5Body['03f5edc926cf643e92ff071ac918fd40']) or identical('',request.md5QueryString['31b122f6bb962bef60add910b99ca403'], request.md5Body['31b122f6bb962bef60add910b99ca403'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=192, category='priv-esc', score=100, description='WAF-RULE-192', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and (md5Equals('62ddcd9e16a731bd6e8ee06f745e069f', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or md5Equals('f9379e4b99a86ffdb917dad4669d5556', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) or md5Equals('0ef47b1ffa7f9e4c22da26dbbbfb36ac', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5'])) and currentUserIsNot('administrator', server.empty)):
+	block(id=194, category='xss', score=100, description='WAF-RULE-194', whitelist=0)
+
+if (md5Equals('f1590c424bbc3626495d8184f97adb7b', request.md5QueryString['4f436c4bf22f6c86bba01afe8f564464'], request.md5Body['4f436c4bf22f6c86bba01afe8f564464']) and currentUserIsNot('administrator', server.empty)):
+	block(id=195, category='file-download', score=100, description='WAF-RULE-195', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and md5Equals('b3c09c3a82d910f5fa0592c6b0f0f34f', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and currentUserIsNot('administrator', server.empty)):
+	block(id=196, category='auth-bypass', score=100, description='WAF-RULE-196', whitelist=0)
+
+if (match('#/wp\-admin/admin\-ajax\.php$#i', server.script_filename) and md5Equals('b3c09c3a82d910f5fa0592c6b0f0f34f', request.md5QueryString['418c5509e2171d55b0aee5c2ea4442b5'], request.md5Body['418c5509e2171d55b0aee5c2ea4442b5']) and contains("%253C", request.rawBody)):
+	block(id=197, category='xss', score=100, description='WAF-RULE-197', whitelist=0)
+
+if ((md5Equals('6a8a5380b88c4af6cf91cf294a2183d8', request.md5Body['93473a7344419b15c4219cc2b6c64c6f'], request.md5QueryString['93473a7344419b15c4219cc2b6c64c6f']) or md5Equals('64e2dc7a4d1b6bd1555eadc87e90c689', request.md5Body['71860c77c6745379b0d44304d66b6a13'], request.md5QueryString['71860c77c6745379b0d44304d66b6a13'])) and lengthGreaterThan('0', request.files.code_snippets_import_files)):
+	block(id=198, category='rce', score=100, description='WAF-RULE-198', whitelist=0)
+

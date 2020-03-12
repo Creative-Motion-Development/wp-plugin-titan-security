@@ -45,27 +45,27 @@ jQuery.fn.wfCircularProgress = function(options) {
 			svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 			jQuery(this).append(svg);
 		}
-		var inactivePath = jQuery(this).find('.wf-status-circular-inactive-path');
+		var inactivePath = jQuery(this).find('.wtitan-status-circular-inactive-path');
 		if( inactivePath.length == 0 ) {
 			inactivePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-			jQuery(inactivePath).addClass('wf-status-circular-inactive-path');
+			jQuery(inactivePath).addClass('wtitan-status-circular-inactive-path');
 			jQuery(svg).append(inactivePath);
 		}
-		var activePath = jQuery(this).find('.wf-status-circular-active-path');
+		var activePath = jQuery(this).find('.wtitan-status-circular-active-path');
 		if( activePath.length == 0 ) {
 			activePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-			jQuery(activePath).addClass('wf-status-circular-active-path');
+			jQuery(activePath).addClass('wtitan-status-circular-active-path');
 			jQuery(svg).append(activePath);
 		}
-		var terminator = jQuery(this).find('.wf-status-circular-terminator');
+		var terminator = jQuery(this).find('.wtitan-status-circular-terminator');
 		if( terminator.length == 0 ) {
 			terminator = document.createElementNS("http://www.w3.org/2000/svg", "path");
-			jQuery(terminator).addClass('wf-status-circular-terminator');
+			jQuery(terminator).addClass('wtitan-status-circular-terminator');
 			jQuery(svg).append(terminator);
 		}
-		var text = jQuery(this).find('.wf-status-circular-text');
+		var text = jQuery(this).find('.wtitan-status-circular-text');
 		if( text.length == 0 ) {
-			text = jQuery('<div class="wf-status-circular-text"></div>');
+			text = jQuery('<div class="wtitan-status-circular-text"></div>');
 			jQuery(this).append(text);
 		}
 		var pendingOverlay = jQuery(this).find('.wf-status-overlay-text');

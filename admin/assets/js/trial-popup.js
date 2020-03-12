@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 	jQuery('#js-wantispam-activate-trial-button').click(function(e) {
 		e.preventDefault();
-		var infosModal = $('#wantispam-tmpl-confirmation-modal');
+		var infosModal = $('#wtitan-tmpl-install-auto-prepend');
 
 		if( !infosModal.length ) {
 			console.log('[Error]: Html template for modal not found.');
@@ -22,4 +22,5 @@ jQuery(document).ready(function($) {
 			console.log(result);
 		});
 	});
+
 });

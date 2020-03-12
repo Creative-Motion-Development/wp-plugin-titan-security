@@ -3,7 +3,7 @@
 namespace WBCR\Titan;
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
 
@@ -28,27 +28,38 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	private $plugin_data;
 
 	/**
+	 * @var \wfWAFStorageFile
+	 */
+	private $firewall_storage;
+
+	/**
+	 * @var object|\WBCR\Titan\Views
+	 */
+	public $view;
+
+	/**
 	 * Конструктор
 	 *
 	 * Применяет конструктор родительского класса и записывает экземпляр текущего класса в свойство $app.
 	 * Подробнее о свойстве $app см. self::app()
 	 *
 	 * @param string $plugin_path
-	 * @param array  $data
+	 * @param array $data
 	 *
 	 * @throws \Exception
 	 * @since  6.0
 	 *
 	 */
-	public function __construct( $plugin_path, $data ) {
-		parent::__construct( $plugin_path, $data );
+	public function __construct($plugin_path, $data)
+	{
+		parent::__construct($plugin_path, $data);
 
-		self::$app         = $this;
+		self::$app = $this;
 		$this->plugin_data = $data;
 
 		$this->global_scripts();
 
-		if ( is_admin() ) {
+		if( is_admin() ) {
 			$this->admin_scripts();
 		}
 	}
@@ -62,33 +73,65 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 * Используется для получения настроек плагина, информации о плагине, для доступа к вспомогательным
 	 * классам.
 	 *
-	 * @return \Wbcr_Factory000_Plugin|\WBCR\Antispam\Plugin
+	 * @return \Wbcr_Factory000_Plugin|\WBCR\Titan\Plugin
 	 * @since  6.0
 	 */
-	public static function app() {
+	public static function app()
+	{
 		return self::$app;
 	}
 
 	/**
-	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
-	 * @since  6.0
+	 * @return \wfWAFStorageFile
 	 */
-	/*protected function init_activation() {
-		include_once( WTITAN_PLUGIN_DIR . '/admin/class-activation.php' );
-		self::app()->registerActivation( "\WBCR\Antispam\Activation" );
-	}*/
+	public function fw_storage()
+	{
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/wordfence/init.php');
+
+		if( !empty($this->firewall_storage) ) {
+			return $this->firewall_storage;
+		}
+
+		$this->firewall_storage = new \wfWAFStorageFile(WFWAF_LOG_PATH . 'attack-data.php', WFWAF_LOG_PATH . 'ips.php', WFWAF_LOG_PATH . 'config.php', WFWAF_LOG_PATH . 'rules.php', WFWAF_LOG_PATH . 'wafRules.rules');
+
+		return $this->firewall_storage;
+	}
+
+	public function view()
+	{
+		require_once WTITAN_PLUGIN_DIR . '/includes/class-views.php';
+
+		if( !empty($this->view) ) {
+			return $this->view;
+		}
+		$this->view = Views::get_instance(WTITAN_PLUGIN_DIR);
+
+		return $this->view;
+	}
+
 
 	/**
 	 * @throws \Exception
 	 * @since  6.0
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 */
-	private function register_pages() {
-		self::app()->registerPage( 'WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall.php' );
-		self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-settings.php' );
-		self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php' );
-		self::app()->registerPage( 'WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php' );
-		self::app()->registerPage( 'WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php' );
+	private function register_pages()
+	{
+		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-settings.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php');
+		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
+		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
+	}
+
+	/**
+	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
+	 * @since  6.0
+	 */
+	protected function init_activation()
+	{
+		include_once(WTITAN_PLUGIN_DIR . '/admin/class-activation.php');
+		self::app()->registerActivation("\WBCR\Titan\Activation");
 	}
 
 	/**
@@ -96,25 +139,35 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 * @since  6.0
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 */
-	private function admin_scripts() {
-		require_once( WTITAN_PLUGIN_DIR . '/admin/boot.php' );
+	private function admin_scripts()
+	{
+		$this->init_activation();
+
+		require_once(WTITAN_PLUGIN_DIR . '/admin/boot.php');
+
+		if( defined('DOING_AJAX') && DOING_AJAX ) {
+			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/change-firewall-mode.php');
+			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/install-auto-prepend.php');
+		}
 
 		//$this->init_activation();
 
-		add_action( 'plugins_loaded', function () {
+		add_action('plugins_loaded', function () {
 			$this->register_pages();
-		}, 30 );
+		}, 30);
 	}
 
 	/**
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  6.0
 	 */
-	private function global_scripts() {
-		//require_once( WTITAN_PLUGIN_DIR . '/includes/logger/class-logger-writter.php' );
-		//require_once( WTITAN_PLUGIN_DIR . '/includes/class-protector.php' );
-
-		//new \WBCR\Logger\Writter();
+	private function global_scripts()
+	{
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-utils.php');
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-webserver-info.php');
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-auto-prepend-helper.php');
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/firewall/class-model-firewall.php');
+		//\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('wafStatus', 'disabled');
 	}
 }
 

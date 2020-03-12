@@ -1,21 +1,22 @@
-#wantispam-firewall-dashboard-top-section table {
+#wtitan-firewall-dashboard-top-section table {
   width: 100%;
+  table-layout: fixed;
 }
-#wantispam-firewall-dashboard-top-section table td {
+#wtitan-firewall-dashboard-top-section table td {
   border: 1px solid #efefef;
   background: #fff;
   text-align: center;
   padding: 20px;
 }
-#wantispam-firewall-dashboard-top-section table td h4 {
+#wtitan-firewall-dashboard-top-section table td h4 {
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
 }
-.wf-status-circular {
+.wtitan-status-circular {
   position: relative;
   margin: 0 auto;
 }
-.wf-status-circular-text {
+.wtitan-status-circular-text {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -28,7 +29,7 @@
   font-weight: 300;
   line-height: 1.5;
 }
-.wf-status-circular .wf-status-overlay-text {
+.wtitan-status-circular .wf-status-overlay-text {
   position: absolute;
   left: 50%;
   top: 50%;
