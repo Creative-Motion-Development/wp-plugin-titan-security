@@ -144,7 +144,7 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 		<div class="wbcr-content-section">
 			<div class="wbcr-factory-page-group-header" style="margin:0">
 				<strong><?php _e('Web Application Firewall (WAF)', 'titan'); ?></strong>. <p>
-					<?php _e('The Wordfence Web Application Firewall is a PHP based, application level firewall that filters out
+					<?php _e('The Titan Web Application Firewall is a PHP based, application level firewall that filters out
 					malicious requests to your site.', 'titan'); ?></p>
 			</div>
 

@@ -546,7 +546,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 	 */
 	public function loadRules()
 	{
-		//require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/wordfence/init.php');
+		//require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php');
 
 		$storageEngine = \WBCR\Titan\Plugin::app()->fw_storage();
 

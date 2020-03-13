@@ -13,9 +13,9 @@ if( !defined('ABSPATH') ) {
 	$currentAutoPrependFile = ini_get('auto_prepend_file');
 	if( empty($currentAutoPrependFile) ):
 		?>
-		<p><?php _e('To make your site as secure as possible, the Wordfence Web Application Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs.', 'titan'); ?></p>
+		<p><?php _e('To make your site as secure as possible, the T Web Application Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs.', 'titan'); ?></p>
 	<?php else: ?>
-		<p><?php _e('To make your site as secure as possible, the Wordfence Web Application Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs. This PHP setting is currently in use, and is including this file:', 'titan'); ?></p>
+		<p><?php _e('To make your site as secure as possible, the Titan Web Application Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs. This PHP setting is currently in use, and is including this file:', 'titan'); ?></p>
 		<pre class='wtitan-pre'><?php echo esc_html($currentAutoPrependFile); ?></pre>
 		<p><?php _e('If you don\'t recognize this file, please <a href="https://wordpress.org/support/plugin/wordfence" target="_blank" rel="noopener noreferrer">contact us on the
 					WordPress support forums</a> before proceeding.', 'titan'); ?></p>
@@ -26,7 +26,7 @@ if( !defined('ABSPATH') ) {
 		</ul>
 	<?php endif; ?>
 	<div class="wtitan-notice">
-		<strong><?php _e('NOTE:', 'titan'); ?></strong> <?php _e('If you have separate WordPress installations with Wordfence installed within a subdirectory of this site, it is recommended that you perform the Firewall installation procedure on those sites before this one.', 'titan'); ?>
+		<strong><?php _e('NOTE:', 'titan'); ?></strong> <?php _e('If you have separate WordPress installations with Titan installed within a subdirectory of this site, it is recommended that you perform the Firewall installation procedure on those sites before this one.', 'titan'); ?>
 	</div>
 	<?php
 	$serverInfo = \WBCR\Titan\Server\Info::createFromEnvironment();

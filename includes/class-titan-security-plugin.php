@@ -86,7 +86,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 */
 	public function fw_storage()
 	{
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/wordfence/init.php');
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php');
 
 		if( !empty($this->firewall_storage) ) {
 			return $this->firewall_storage;

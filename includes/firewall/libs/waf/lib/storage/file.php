@@ -4,7 +4,7 @@ if (defined('WFWAF_VERSION') && !defined('WFWAF_RUN_COMPLETE')) {
 class wfWAFStorageFile implements wfWAFStorageInterface {
 
 	const LOG_FILE_HEADER = "<?php exit('Access denied'); __halt_compiler(); ?>\n";
-	const LOG_INFO_HEADER = "******************************************************************\nThis file is used by the Wordfence Web Application Firewall. Read \nmore at https://docs.wordfence.com/en/Web_Application_Firewall_FAQ\n******************************************************************\n";
+	const LOG_INFO_HEADER = "******************************************************************\nThis file is used by the Titan Web Application Firewall. Read \nmore at https://docs.wordfence.com/en/Web_Application_Firewall_FAQ\n******************************************************************\n";
 	const IP_BLOCK_RECORD_SIZE = 24;
 	private $rules;
 	private $failScores;
@@ -628,7 +628,7 @@ class wfWAFStorageFile implements wfWAFStorageInterface {
 				$this->fetchConfigData($category, true);
 				return;
 			}
-			throw new wfWAFStorageFileConfigException('Error reading Wordfence Firewall config data, configuration file could be corrupted or inaccessible. Path: ' . $this->pathForConfig($category));
+			throw new wfWAFStorageFileConfigException('Error reading Titan Firewall config data, configuration file could be corrupted or inaccessible. Path: ' . $this->pathForConfig($category));
 		}
 
 		self::lock($this->configFileHandles[$category], LOCK_UN);

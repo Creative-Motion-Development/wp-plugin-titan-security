@@ -322,7 +322,7 @@ class wfWAFBaseParser {
 	 * @param string $message
 	 * @throws wfWAFParserSyntaxError
 	 */
-	protected function expectTokenTypeEquals($token, $type, $message = 'Wordfence WAF Syntax Error: Unexpected %s found on line %d, column %d. Expected %s.') {
+	protected function expectTokenTypeEquals($token, $type, $message = 'Titan WAF Syntax Error: Unexpected %s found on line %d, column %d. Expected %s.') {
 		if ($token->getType() !== $type) {
 			$this->triggerSyntaxError($token, sprintf($message, $token->getType(),
 				$token->getLine(), $token->getColumn(), $type));
@@ -335,7 +335,7 @@ class wfWAFBaseParser {
 	 * @param string $message
 	 * @throws wfWAFParserSyntaxError
 	 */
-	protected function expectTokenTypeInArray($token, $types, $message = 'Wordfence WAF Syntax Error: Unexpected %s found on line %d, column %d') {
+	protected function expectTokenTypeInArray($token, $types, $message = 'Titan WAF Syntax Error: Unexpected %s found on line %d, column %d') {
 		if (!in_array($token->getType(), $types)) {
 			$this->triggerSyntaxError($token, sprintf($message, $token->getType(),
 				$token->getLine(), $token->getColumn()));
@@ -347,7 +347,7 @@ class wfWAFBaseParser {
 	 * @param string $message
 	 * @throws wfWAFParserSyntaxError
 	 */
-	protected function triggerSyntaxError($token, $message = 'Wordfence WAF Syntax Error: Unexpected %s %s found on line %d, column %d') {
+	protected function triggerSyntaxError($token, $message = 'Titan WAF Syntax Error: Unexpected %s %s found on line %d, column %d') {
 		$e = new wfWAFParserSyntaxError(sprintf($message, $token->getType(), $token->getValue(),
 			$token->getLine(), $token->getColumn()));
 		$e->setToken($token);

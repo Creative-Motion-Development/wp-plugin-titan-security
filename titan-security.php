@@ -2,7 +2,7 @@
 /*
 Plugin Name: Titan security
 Plugin URI: http://wordpress.org/plugins/titan-security/
-Description: Wordfence Security - Anti-virus, Firewall and Malware Scan
+Description: Titan Security - Anti-virus, Firewall and Malware Scan
 Version: 1.0.0
 Author: CreativeMotion
 Text Domain: titan-security
@@ -224,13 +224,13 @@ if( !defined('WFWAF_LOG_PATH') ) {
 }
 
 /**
- * Constant to determine if Wordfence is installed on another WordPress site one or more directories up in
+ * Constant to determine if Titan is installed on another WordPress site one or more directories up in
  * auto_prepend_file mode.
  */
-define('WFWAF_SUBDIRECTORY_INSTALL', class_exists('wfWAF') && !in_array(realpath(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/wordfence/init.php'), get_included_files()));
+define('WFWAF_SUBDIRECTORY_INSTALL', class_exists('wfWAF') && !in_array(realpath(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php'), get_included_files()));
 
 if( !WFWAF_SUBDIRECTORY_INSTALL ) {
-	require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/wordfence/init.php');
+	require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php');
 	if( !wfWAF::getInstance() ) {
 		define('WFWAF_AUTO_PREPEND', false);
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/bootstrap.php');

@@ -7,7 +7,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 		const WFWAF_BLOCK_COUNTRY = 'blocked access via country blocking';
 		const WFWAF_BLOCK_COUNTRY_REDIR = 'blocked access via country blocking and redirected to URL';
 		const WFWAF_BLOCK_COUNTRY_BYPASS_REDIR = 'redirected to bypass URL';
-		const WFWAF_BLOCK_WFSN = 'Blocked by Wordfence Security Network';
+		const WFWAF_BLOCK_WFSN = 'Blocked by Titan Security Network';
 		const WFWAF_BLOCK_BADPOST = 'POST received with blank user-agent and referer';
 		const WFWAF_BLOCK_BANNEDURL = 'Accessed a banned URL.';
 		const WFWAF_BLOCK_FAKEGOOGLE = 'Fake Google crawler automatically blocked';
