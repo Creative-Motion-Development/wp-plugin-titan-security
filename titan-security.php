@@ -63,7 +63,7 @@ $wtitan_plugin_info = [
 		//'plugin_id'          => '4865',
 		//'public_key'         => 'pk_05cbde6c0f9c96814c3b3cbff2259',
 		'price' => 15,
-		'has_updates' => true,
+		'has_updates' => false,
 		'updates_settings' => [
 			'maybe_rollback' => true,
 			'rollback_settings' => [
@@ -210,8 +210,8 @@ require_once(WTITAN_PLUGIN_DIR . '/libs/onepress/compiler/boot.php');
 /**
  * Отладочная константа
  */
-if ( ! defined( 'WTITAN_DEBUG' ) ) {
-	define( 'WTITAN_DEBUG', true );
+if( !defined('WTITAN_DEBUG') ) {
+	define('WTITAN_DEBUG', true);
 }
 #endcomp
 

@@ -1,3 +1,5 @@
 # You can keep your repository small and manageable with a .gitignore file.
 # Prevent build artifacts, large binary files, and other large file types
 # such as log files, media files, and executables from slowing down your workflow.
+
+/includes/firewall/titan_logs/config.php
