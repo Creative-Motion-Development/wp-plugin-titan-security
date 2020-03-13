@@ -6,6 +6,9 @@ h2.nav-tab-wrapper
 {
   margin-left: 10px !important;
 }
+#wtitan-scanner-tabs li a{
+  text-decoration: none;
+}
 /*----------------*/
 .wt-scanner-block-scan
 {
@@ -171,5 +174,9 @@ h2.nav-tab-wrapper
 }
 #wtitan-scanner-tabs li:first-child
 {
-  margin-left: 20px;
+  /*margin-left: 20px;*/
+}
+#wtitan-scanner-tabs li:last-child
+{
+  margin-right: 20px;
 }

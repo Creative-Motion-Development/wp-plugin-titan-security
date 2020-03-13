@@ -206,6 +206,13 @@ require_once(WTITAN_PLUGIN_DIR . '/libs/onepress/compiler/boot.php');
 // creating a plugin via the factory
 
 // #fix compiller bug new Factory000_Plugin
+
+/**
+ * Отладочная константа
+ */
+if ( ! defined( 'WTITAN_DEBUG' ) ) {
+	define( 'WTITAN_DEBUG', true );
+}
 #endcomp
 
 if( !defined('WFWAF_LOG_PATH') ) {

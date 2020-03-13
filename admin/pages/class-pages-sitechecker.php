@@ -48,7 +48,7 @@ class SiteChecker extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $add_link_to_plugin_actions = true;
+	public $add_link_to_plugin_actions = false;
 
 	/**
 	 * Module folder URL

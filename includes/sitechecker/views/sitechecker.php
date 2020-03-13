@@ -49,7 +49,7 @@
 				<tr>
 					<td class="wtitan-sitechecker-table-url"><a href="<?php echo $url->url; ?>" target="_blank"><?php echo $url->url; ?></td>
 					<td><?php echo $url->frequency; ?> сек</td>
-					<td><?php echo $url->uptime; ?>%</td>
+					<td><?php echo round($url->uptime, 1); ?>%</td>
 					<td><?php echo round($url->avg_request_time, 1); ?> сек</td>
 					<td><?php echo date('d.m.Y H:i', $url->next_check) ?></td>
 					<td>
