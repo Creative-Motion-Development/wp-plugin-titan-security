@@ -31,10 +31,9 @@ if( is_array($args) && !empty($args)) {
                             <td class="wtitan-vulner-table-description"><?php echo $result->description; ?></td>
                             <td><?php echo wp_date('d.m.Y H:i',$result->timestamp); ?></td>
                             <td>
-						        <?php if(!isset($args['hided']) || !$args['hided']): ?>
                                 <button class="button button-secondary wt-scanner-hide-button"
-                                   data-id="<?php echo $key; ?>">Hide it</button>
-						        <?php endif; ?>
+                                   data-id="<?php echo $key; ?>"
+                                   data-type="audit">Hide it</button>
                                 <?php if(empty($result->fix)): ?>
 	                            <?php elseif($result->fix == "js"): ?>
                                     <button target="_blank"

@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
     });
 
     //HIDE
-    jQuery('.wt-scanner-hide-button').on('click', function(e) {
+    jQuery(document).on('click', '.wt-scanner-hide-button', function(e) {
         e.preventDefault();
         var btn = jQuery(this);
         var wtitan_hide_target = jQuery(".wtitan-tab-table-container#wtitan-hided");
@@ -29,7 +29,8 @@ jQuery(document).ready(function($) {
         jQuery.ajax({
             method: 'POST', url: ajaxurl, data: {
                 action: 'wtitan_scanner_hide',
-                id: btn.data('id'),
+                type:   btn.data('type'),
+                id:     btn.data('id'),
                 _ajax_nonce: wtscanner.hide_nonce
             },
             beforeSend: function () {
