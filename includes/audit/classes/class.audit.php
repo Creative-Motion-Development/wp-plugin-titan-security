@@ -77,9 +77,9 @@ class Audit extends Module_Base {
 	 * @return AuditResult[] Results
 	 */
 	public function get_hided() {
-		$this->results = get_option( $this->plugin->getPrefix()."audit_results_hided", array());
-		if(!is_array($this->results)) $this->results = array();
-		return $this->results;
+		$results = get_option( $this->plugin->getPrefix()."audit_results_hided", array());
+		if(!is_array($results)) $results = array();
+		return $results;
 	}
 
 	/**

@@ -66,9 +66,8 @@ class Scanner extends Module_Base {
 
 		$hided_args = array(
 			'results' => $this->audit->get_hided(),
-			'hided'   => true,
 		);
-		$content_hided = $this->audit->render_template( 'all-audit', $hided_args);
+		$content_hided = $this->render_template( 'hided', $hided_args);
 
 
 		$args = array(
@@ -126,18 +125,18 @@ class Scanner extends Module_Base {
 		} else {
 			check_ajax_referer( 'hide' );
 
-			if(isset($_POST['id']) && $_POST['id'] !== '') {
+			if(isset($_POST['id']) && $_POST['id'] !== '' && isset($_POST['type']) && $_POST['type'] !== '') {
 				$audit = $this->audit->get_audit();
 				$hided = $this->audit->get_hided();
+				$type = $_POST['type'];
 
-				$hided[] = $audit[$_POST['id']];
+				$hided[$type][] = $audit[$_POST['id']];
 				unset($audit[$_POST['id']]);
 
 				update_option( $this->plugin->getPrefix()."audit_results", $audit, 'no');
 				update_option( $this->plugin->getPrefix()."audit_results_hided", $hided, 'no');
-				$html = $this->audit->render_template( 'all-audit', array(
+				$html = $this->render_template( 'hided', array(
 					'results' => $hided,
-					'hided'   => true,
 				));
 				wp_send_json_success(array(
 					'html' => $html
