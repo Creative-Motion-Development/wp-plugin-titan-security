@@ -99,6 +99,8 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 
 		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-settings.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/firewall-settings.js');
+
+		add_action('wbcr/factory/update_option', [$this, 'before_save']);
 	}
 
 	/**
@@ -564,8 +566,8 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 	{
 		$this->loadRules();
 
-		$excluded_rules_str = $this->plugin->getPopulateOption('excluded_rules', "");
-		$excluded_rules_arr = explode(',', $excluded_rules_str);
+		$disabled_rules_str = $this->plugin->getPopulateOption('disabled_rules', "");
+		$disabled_rules_arr = explode(',', $disabled_rules_str);
 
 		?>
 		<div class="form-group">
@@ -586,7 +588,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 							<?php foreach($this->rules as $rule_ID => $rule): ?>
 								<?php
 								$checked = true;
-								if( in_array($rule_ID, $excluded_rules_arr) ) {
+								if( in_array($rule_ID, $disabled_rules_arr) ) {
 									$checked = false;
 								}
 								?>
@@ -601,7 +603,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 						<?php endif; ?>
 						</tbody>
 					</table>
-					<input type="hidden" id="js-wtitan-excluded-rules__field" name="titan_excluded_rules" value="<?php echo esc_attr($excluded_rules_str) ?>">
+					<input type="hidden" id="js-wtitan-excluded-rules__field" name="titan_disabled_rules" value="<?php echo esc_attr($disabled_rules_str) ?>">
 				</div>
 			</div>
 		</div>
@@ -954,11 +956,33 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 	 */
 	protected function beforeFormSave()
 	{
+		// Save whitelist
+		//--------------------------------
+		/*$whiteIPs = explode(',', preg_replace('/[\r\n\s\t]+/', ',', $value));
+		$whiteIPs = array_filter($whiteIPs); //Already validated above
+		if (count($whiteIPs) > 0) {
+			//$this->plugin->updatePopulateOption('whitelisted', implode(',', $whiteIPs));
+		}
+		else {
+			wfConfig::set($key, '');
+		}
+
+		if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+			wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+		}*/
+
 		// Save excluded rules
 		// -------------------------------
-		if( isset($_POST['titan_excluded_rules']) ) {
-			$excluded_rules = $this->plugin->request->post('titan_excluded_rules', "", true);
-			$this->plugin->updatePopulateOption('excluded_rules', $excluded_rules);
+		if( isset($_POST['titan_disabled_rules']) ) {
+			$disabled_rules_str = $this->plugin->request->post('titan_disabled_rules', "", true);
+			$this->plugin->updatePopulateOption('disabled_rules', $disabled_rules_str);
+
+			$splitted_rules = explode(',', $disabled_rules_str);
+			$disabled_rules_array = [];
+			foreach($splitted_rules as $rule_id) {
+				$disabled_rules_array[$rule_id] = true;
+			}
+			\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('disabledRules', $disabled_rules_array);
 		}
 
 		// Save rate limit options
