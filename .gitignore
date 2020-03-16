@@ -3,3 +3,5 @@
 # such as log files, media files, and executables from slowing down your workflow.
 
 /includes/firewall/titan_logs/config.php
+.DS_Store
+.idea
