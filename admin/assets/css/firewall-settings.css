@@ -1,6 +1,6 @@
 .wtitan-excluded-rules {
   height: 150px;
-  width: 688px;
+  width: 100%;
   padding: 10px 10px 0;
   background: #fff;
   border: 1px solid #ccc;
@@ -27,7 +27,7 @@
   width: 168px;
 }
 .wtitan-rate-limit-settings__control-allowed404s-textarea {
-  width: 400px;
+  width: 100%;
   height: 100px;
 }
 .wtitan-whitelist {

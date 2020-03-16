@@ -139,7 +139,8 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 			'title' => __('Whitelisted IP addresses that bypass all rules', 'anti-spam'),
 			//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
 			'hint' => __('Whitelisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100. Titan automatically whitelists private networks because these are not routable on the public Internet.', 'anti-spam'),
-			'default' => ''
+			'default' => '',
+			'filter_value' => [$this, 'filter_whitelisted_option']
 		];
 
 		$options[] = [
@@ -956,20 +957,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 	 */
 	protected function beforeFormSave()
 	{
-		// Save whitelist
-		//--------------------------------
-		/*$whiteIPs = explode(',', preg_replace('/[\r\n\s\t]+/', ',', $value));
-		$whiteIPs = array_filter($whiteIPs); //Already validated above
-		if (count($whiteIPs) > 0) {
-			//$this->plugin->updatePopulateOption('whitelisted', implode(',', $whiteIPs));
-		}
-		else {
-			wfConfig::set($key, '');
-		}
 
-		if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
-			wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
-		}*/
 
 		// Save excluded rules
 		// -------------------------------
@@ -1016,5 +1004,27 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				$this->plugin->updatePopulateOption($option_name, $value);
 			}
 		}
+	}
+
+	public function filter_whitelisted_option($value)
+	{
+		// Save whitelist
+		//--------------------------------
+		$white_ips = explode(',', preg_replace('/[\r\n\s\t]+/', ',', $value));
+		$white_ips = array_filter($white_ips); //Already validated above
+
+		$white_ips_formated = null;
+		if( count($white_ips) > 0 ) {
+			$white_ips_formated = implode(',', $white_ips);
+		}
+
+		if( !empty($white_ips_formated) ) {
+			\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('whitelistedIPs', $white_ips_formated, 'synced');
+			\WBCR\Titan\Plugin::app()->fw_storage()->purgeIPBlocks(\wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+
+			return $value;
+		}
+
+		return '';
 	}
 }
