@@ -25,7 +25,7 @@ if(!empty( $args )) {
 				<td>
 					<?php if ( ! empty( $vulner->safe_version ) ) : ?>
 						<a href="<?php echo admin_url( "update-core.php" ) ?>" target="_blank"
-						   class="button button-primary" id="wtitan-update-theme-button"
+						   class="btn btn-primary" id="wtitan-update-theme-button"
 						   data-slug="<?php echo $vulner->slug; ?>">
 							Update
 						</a>

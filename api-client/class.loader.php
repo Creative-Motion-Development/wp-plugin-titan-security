@@ -19,7 +19,7 @@ abstract class Loader {
 	 *
 	 * @return static
 	 */
-	public static function from_array( array $data ) {
+	public static function from_array( $data ) {
 		$params = [];
 
 		$reflect = new ReflectionClass( static::class );

@@ -3,6 +3,8 @@
 namespace WBCR\Titan\MalwareScanner;
 
 
+use InvalidArgumentException;
+
 /**
  * Class Scanner
  *
@@ -11,6 +13,13 @@ namespace WBCR\Titan\MalwareScanner;
 class Scanner {
 	/** @var File[] */
 	protected $fileList = [];
+
+	public $files_count = 0;
+
+	/**
+	 * @var HashListPool
+	 */
+	protected $hashList = [];
 
 	/**
 	 * @var string[]
@@ -27,13 +36,54 @@ class Scanner {
 	 *
 	 * @param string        $path
 	 * @param SignaturePool $signaturePool
+	 * @param HashListPool  $hashList
 	 * @param array         $ignoreFiles
 	 */
-	public function __construct( $path, $signaturePool, $ignoreFiles = [] ) {
+	public function __construct( $path, $signaturePool, $hashList = null, $ignoreFiles = [] ) {
+		if(is_null($hashList)) {
+			$hashList = HashListPool::fromArray([]);
+		}
+
+		$this->hashList      = $hashList;
 		$this->ignoreFiles   = $ignoreFiles;
 		$this->signaturePool = $signaturePool;
 
 		$this->loadFilesFromPath( $path );
+	}
+
+	/**
+	 * @return File[]
+	 */
+	public function getFileList() {
+		return $this->fileList;
+	}
+
+	/**
+	 * @return HashListPool
+	 */
+	public function getHashList() {
+		return $this->hashList;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getIgnoreFiles() {
+		return $this->ignoreFiles;
+	}
+
+	/**
+	 * @return SignaturePool
+	 */
+	public function getSignaturePool() {
+		return $this->signaturePool;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_files_count() {
+		return count( $this->fileList );
 	}
 
 	/**
@@ -49,37 +99,76 @@ class Scanner {
 				continue;
 			}
 
-			$newPath = $path . DIRECTORY_SEPARATOR . $newPath;
+			if ( $path[ strlen( $path ) - 1 ] != '/' ) {
+				$path .= '/';
+			}
+			$newPath = $path . $newPath;
 
 			if ( is_dir( $newPath ) ) {
 				$this->loadFilesFromPath( $newPath );
 			} else {
 				$this->fileList[ $newPath ] = $this->loadFile( $newPath );
+				$this->files_count ++;
 			}
 		}
+	}
+
+	public function remove_scanned_files( $i = 100 ) {
+		$this->files_count -= $i;
+		$this->fileList    = array_slice( $this->fileList, $i );
 	}
 
 	/**
 	 * @param string $filePath
 	 *
+	 * @param null   $fileHash
+	 *
 	 * @return File
 	 */
-	protected function loadFile( $filePath ) {
+	protected function loadFile( $filePath, $fileHash = null ) {
 		if ( ! file_exists( $filePath ) ) {
-			throw new \InvalidArgumentException( "File `$filePath` not found" );
+			throw new InvalidArgumentException( "File `$filePath` not found" );
 		}
 
-		return new File( $filePath );
+		if ( is_null( $fileHash ) ) {
+			$fileHash = md5_file( $filePath );
+		} else if ( $fileHash === false ) {
+			$fileHash = null;
+		}
+
+		return new File( $filePath, $fileHash );
 	}
 
 	/**
-	 * @return Match[]
+	 * @param int   $count
+	 * @param array $matchCache
+	 *
+	 * @return Match[]|null[]
 	 */
-	public function scan() {
+	public function scan( $count = 100, $matchCache = [] ) {
 		$matches = [];
 
+		$i = 0;
 		foreach ( $this->fileList as $file ) {
-			$matches = array_merge( $matches, $this->signaturePool->scanFile( $file ) );
+			$i ++;
+			$cachedHash = $this->hashList->getFileHash($file->getPath());
+			if($cachedHash && $cachedHash == $file->getFileHash()) {
+				if(isset($matchCache[$file->getPath()])) {
+					$matches[$file->getPath()] = $matchCache[$file->getPath()];
+				} else {
+					$matches[$file->getPath()] = null;
+				}
+			} else {
+				$fileMatch = $this->signaturePool->scanFile( $file );
+				if ( ! empty( $fileMatch ) ) {
+					$matches[ $file->getPath() ] = $fileMatch;
+				}
+			}
+
+
+			if ( $i == $count ) {
+				break;
+			}
 		}
 
 		return $matches;

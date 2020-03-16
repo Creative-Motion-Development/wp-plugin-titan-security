@@ -5,7 +5,7 @@ namespace WBCR\Titan\Page;
 use WBCR\Titan;
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
 
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 
-    /**
+	/**
 	 * {@inheritdoc}
 	 */
 	public $id = 'vulnerabilities';
@@ -57,7 +57,7 @@ class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $MODULE_URL = WTITAN_PLUGIN_URL."/includes/vulnerabilities";
+	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/vulnerabilities";
 
 	/**
 	 * {@inheritDoc}
@@ -65,7 +65,7 @@ class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $MODULE_PATH = WTITAN_PLUGIN_DIR."/includes/vulnerabilities";
+	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/vulnerabilities";
 
 	/**
 	 * Module object
@@ -84,17 +84,18 @@ class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
 	 */
-	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
+	public function __construct(\Wbcr_Factory000_Plugin $plugin)
+	{
 		$this->plugin = $plugin;
 
-		$this->menu_title                  = __( 'Vulnerabilities', 'titan-security' );
-		$this->page_menu_short_description = __( 'Vulnerabilities in your Wordpress, plugins, and themes', 'titan-security' );
+		$this->menu_title = __('Vulnerabilities', 'titan-security');
+		$this->page_menu_short_description = __('Vulnerabilities in your Wordpress, plugins, and themes', 'titan-security');
 
-		require_once $this->MODULE_PATH."/boot.php";
+		require_once $this->MODULE_PATH . "/boot.php";
 
 		$this->module = new Titan\Vulnerabilities();
 
-		parent::__construct( $plugin );
+		parent::__construct($plugin);
 	}
 
 	/**
@@ -103,21 +104,31 @@ class Vulnerabilities extends \Wbcr_FactoryClearfy000_PageBase {
 	 * @return void
 	 * @since 1.1.4
 	 */
-	public function assets( $scripts, $styles ) {
-		parent::assets( $scripts, $styles );
+	public function assets($scripts, $styles)
+	{
+		parent::assets($scripts, $styles);
 
-		$this->styles->add(  $this->MODULE_URL . '/assets/css/vulnerabilities-dashboard.css' );
-		$this->scripts->add( $this->MODULE_URL . '/assets/js/vulnerabilities.js', [ 'jquery' ]);
-		$this->scripts->localize( 'wtvulner', [
-			'nonce' => wp_create_nonce('get_vulners'),
-		] );
+		if( $this->plugin->is_premium() ) {
+			$this->styles->add($this->MODULE_URL . '/assets/css/vulnerabilities-dashboard.css');
+			$this->scripts->add($this->MODULE_URL . '/assets/js/vulnerabilities.js', ['jquery']);
+			$this->scripts->localize('wtvulner', [
+				'nonce' => wp_create_nonce('get_vulners'),
+			]);
+		}
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function showPageContent() {
+	public function showPageContent()
+	{
+		if( !$this->plugin->is_premium() ) {
+			$this->plugin->view->print_template('require-license-activate');
+
+			return;
+		}
+
 		$this->module->showPageContent();
 	}
 

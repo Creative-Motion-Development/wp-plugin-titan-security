@@ -58,6 +58,7 @@ class Module_Base {
 		$path = $this->module_dir."/views/$template_name.php";
 		if( file_exists($path) ) {
 			ob_start();
+			extract($args);
 			include $path;
 			unset($path);
 			return ob_get_clean();

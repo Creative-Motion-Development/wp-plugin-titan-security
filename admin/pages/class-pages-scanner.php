@@ -4,64 +4,60 @@ namespace WBCR\Titan\Page;
 
 use WBCR\Titan;
 
-// Exit if accessed directly
+use Wbcr_Factory000_Plugin;
+use Wbcr_FactoryClearfy000_PageBase;
+
 if( !defined('ABSPATH') ) {
 	exit;
 }
 
-/**
- * Scanner page class
- *
- * @author        Artem Prihodko <webtemyk@ya.ru>
- * @copyright (c) 2020 Creative Motion
- * @version       1.0
- */
-class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
+class Scanner extends Wbcr_FactoryClearfy000_PageBase {
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	public $id = 'scanner';
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	public $page_menu_dashicon = 'dashicons-code-standards';
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	public $type = 'page';
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	public $page_menu_position = 0;
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public $add_link_to_plugin_actions = true;
 
 	/**
-	 * Module URL
-	 *
-	 * @since  1.0
-	 * @var string
+	 * Module folder URL
 	 */
 	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/scanner";
 
 	/**
-	 * Module path
+	 * Path to module files
 	 *
 	 * @since  1.0
-	 * @var string
+	 * @var bool
 	 */
 	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/scanner";
 
 	/**
-	 * Module object
+	 * Path to module files
 	 *
 	 * @since  1.0
 	 * @var object
@@ -69,65 +65,60 @@ class Scanner extends \Wbcr_FactoryClearfy000_PageBase {
 	public $module;
 
 	/**
-	 * Scanner page constructor.
+	 * Scanner constructor.
 	 *
-	 * @param \Wbcr_Factory000_Plugin $plugin
-	 *
-	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
+	 * @param Wbcr_Factory000_Plugin $plugin
 	 *
 	 */
-	public function __construct(\Wbcr_Factory000_Plugin $plugin)
+	public function __construct(Wbcr_Factory000_Plugin $plugin)
 	{
 		$this->plugin = $plugin;
 
 		$this->menu_title = __('Scanner', 'titan-security');
-		$this->page_menu_short_description = __('Find malware and viruses', 'titan-security');
+		$this->page_menu_short_description = __('Checking site for viruses', 'titan-security');
 
-		require_once $this->MODULE_PATH . "/boot.php";
-
-		$this->module = new Titan\Scanner();
+		if( $this->plugin->is_premium() ) {
+			/** @noinspection PhpIncludeInspection */
+			require_once $this->MODULE_PATH . "/boot.php";
+			$this->module = new Titan\Scanner();
+		}
 
 		parent::__construct($plugin);
 	}
 
 	/**
-	 * Add assets
-	 *
-	 * @return void
-	 * @since 1.0.0
+	 * {@inheritDoc}
 	 */
 	public function assets($scripts, $styles)
 	{
 		parent::assets($scripts, $styles);
 
-		$this->scripts->request([
-			'bootstrap.tab',
-		], 'bootstrap');
+		if( $this->plugin->is_premium() ) {
+			$this->styles->add($this->MODULE_URL . '/assets/css/scanner-dashboard.css');
+			$this->styles->add($this->MODULE_URL . '/assets/css/base-statistic.css');
 
-		$this->styles->request([
-			'bootstrap.tab',
-		], 'bootstrap');
-
-		$this->styles->add($this->MODULE_URL . '/assets/css/scanner-dashboard.css');
-		$this->scripts->add($this->MODULE_URL . '/assets/js/scanner.js', ['jquery']);
-		$this->scripts->localize('update_nonce', wp_create_nonce("updates"));
-		$this->scripts->localize('wtscanner', [
-			'update_nonce' => wp_create_nonce("updates"),
-			'hide_nonce' => wp_create_nonce("hide"),
-		]);
-
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
-
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
+			$this->scripts->add($this->MODULE_URL . '/assets/js/Chart.min.js');
+			$this->scripts->add($this->MODULE_URL . '/assets/js/statistic.js');
+			$this->scripts->add($this->MODULE_URL . '/assets/js/scanner.js');
+			$this->scripts->localize('wpnonce', [
+				'start' => wp_create_nonce('titan-start-scan'),
+				'stop' => wp_create_nonce('titan-stop-scan'),
+				'status' => wp_create_nonce('titan-status-scan'),
+			]);
+		}
 	}
 
 	/**
-	 * Show page content
+	 * {@inheritDoc}
 	 */
 	public function showPageContent()
 	{
+		if( !$this->plugin->is_premium() ) {
+			$this->plugin->view->print_template('require-license-activate');
+
+			return;
+		}
+
 		$this->module->showPageContent();
 	}
-
 }

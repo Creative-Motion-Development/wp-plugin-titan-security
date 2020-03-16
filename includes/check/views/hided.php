@@ -52,11 +52,11 @@ if( is_array($args) && isset($args['results'])) {
                                     <?php if ( empty( $result->fix ) ): ?>
                                     <?php elseif ( $result->fix == "js" ): ?>
                                         <button target="_blank"
-                                                class="button button-primary wt-audit-fix-button">Fix it
+                                                class="btn btn-primary wt-audit-fix-button">Fix it
                                         </button>
                                     <?php else: ?>
                                         <a href="<?php echo $result->fix; ?>" target="_blank"
-                                           class="button button-primary">Fix it</a>
+                                           class="btn btn-primary">Fix it</a>
                                     <?php endif; ?>
                                 </td>
                             </tr>

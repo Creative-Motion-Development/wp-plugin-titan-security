@@ -105,14 +105,18 @@ class Signature {
 	 * @return Match|null
 	 */
 	public function scan( $file ) {
+		$content = $file->loadData();
+
+		$match = null;
+
 		switch ( $this->format ) {
 
 			case 're':
 				try {
-					$result = preg_match_all( "/{$this->getSignature()}/mi", $file->getContent(), $matches );
+					$result = preg_match_all( "/{$this->getSignature()}/mi", $content, $matches );
 
 					if ( $result ) {
-						return new Match( $file, $matches[0][0] );
+						$match = new Match( $file, $matches[0][0] );
 					}
 				} catch ( \Exception $e ) {
 					print_r( $e->getMessage() . "\n" );
@@ -122,7 +126,8 @@ class Signature {
 
 		}
 
-		return null;
+		unset($content);
+		return $match;
 	}
 
 	/**

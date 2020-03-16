@@ -1,67 +1,100 @@
 <?php
-// !! Обязательно, чтобы редактор знал что такая переменная тут существует
-/* @var array|string|int|float|bool|object $args data
- * @var string $template_name template username
+/**
+ * @var bool    $scanner_started
+ * @var Match[] $matched
+ * @var float   $progress
+ * @var int     $cleaned
+ * @var int     $suspicious
  */
-$scanner_menu    = "";
-$scanner_content = "";
-$count = "";
-foreach ( $args['modules'] as $key => $module ) {
-	$active = "";
-	if($key !== "hided" && !in_array( $key, $args['active_modules'])) continue;
-    if(isset($module['active']) && !empty($module['active'])) $active = $module['active'];
-    if(isset($module['count'])) $count = " ({$module['count']})";
-	$scanner_menu    .= "<li class='{$active}'><a href='#wtitan-{$key}'><span class='dashicons {$module['icon']}'></span> {$module['name']}{$count}</a></li>\n";
-	$scanner_content .= "<div class='wtitan-tab-table-container tab-pane {$active}' id='wtitan-{$key}'>{$module['content']}</div>\n";
-}
+
+use WBCR\Titan\MalwareScanner\Match;
 ?>
 <div class="wbcr-content-section">
-	<div class="wt-scanner-container wt-scanner-block-scan">
+    <div class="wt-scanner-container wt-scanner-block-scan">
         <table>
             <tr>
                 <td>
-                    <h4><?php echo __('Scaning','titan-security'); ?></h4>
-                    <button class="button button-primary wt-scanner-scanbutton" id="wt-scanner-scan">Scan now</button>
+                    <h4><?php echo __('Malware scan','titan-security'); ?></h4>
+                    <div class="wrio-statistic-buttons-wrap">
+		                <?php if ( $scanner_started ): ?>
+                            <button type="button" id="scan" data-action="stop_scan" class="wio-optimize-button">
+                                <span class="text"><?php echo __( 'Stop scanning', 'titan-security' ) ?></span>
+                            </button>
+		                <?php else: ?>
+                            <button type="button" id="scan" data-action="start_scan" class="wio-optimize-button">
+				                <?php echo __( 'Scan', 'titan-security' ) ?>
+                            </button>
+		                <?php endif; ?>
+                    </div>
                 </td>
                 <td>
                     <h4><?php echo __('Description','titan-security'); ?></h4>
-                    <p><?php echo __('After launching, the scanner will check everything that you have selected in the Scanner settings. After you solve the detected security problems , you need to run the scan again.','titan-security'); ?>
+                    <p><?php echo __('Scanning all files of your site for malware. At each launch, site scanning starts from the beginning','titan-security'); ?>
                     </p>
                 </td>
             </tr>
         </table>
-        <div class="wt-scan-progress">
-	        <?php if(isset($args['modules'])): ?>
-            <ul class="wt-scan-progress-ul">
-	            <?php foreach ( $args['modules'] as $key => $module ) {
-	            if("hided" == $key) continue;
-	            if(in_array( $key, $args['active_modules'])) $icon = 'none';
-	            else $icon = 'off';
-	            if(!empty($module['content'])) $icon = 'warning';
-	            ?>
-                <li class="wt-scan-progress-li" id="wt-scan-progress-<?php echo $key; ?>">
-                    <div class="wt-scan-step-icon wt-scan-step-icon-<?php echo $icon; ?>"></div>
-                    <div class="wt-scan-step-title"><?php echo $module['name']; ?></div>
-                </li>
-	            <?php } ?>
-            </ul>
-	        <?php endif; ?>
 
-        </div>
-	</div>
-	<!-- ############################### -->
-	<div class="wbcr-factory-page-group-header wtitan-page-group-header">
-		<strong>Results</strong>
-		<p>Find malware and viruses</p>
-	</div>
-	<div class="wt-scanner-tabs-container" style="margin-top: 0;">
-        <ul class="nav nav-tabs" id="wtitan-scanner-tabs">
-			<?php echo $scanner_menu;?>
-        </ul>
+        <div class="wio-columns wio-page-statistic">
+            <div>
+                <div class="wio-chart-container wio-overview-chart-container">
+                    <canvas id="wtitan-scan-chart" width="180" height="180"
+                            data-cleaned="<?php echo $cleaned ?>" data-suspicious="<?php echo $suspicious ?>"
+                            style="display: block;">
+                    </canvas>
+                    <div id="wt-total-percent-chart" class="wio-chart-percent">
+                        <?php echo round( $progress, 1 ) ?><span>%</span>
+                    </div>
+                    <p class="wio-global-optim-phrase wio-clear">
+                        Scanned <span class="wio-total-percent" id="wt-total-percent">
+                    <?php echo round( $progress, 1 ) ?>%
+                </span>
+                        of your website's files </p>
+                </div>
+                <div style="margin-left:200px;">
+                    <div id="wio-overview-chart-legend">
+                        <ul class="wio-doughnut-legend">
+                            <li>
+                                <span style="background-color:#8bc34a"></span>
+                                Cleaned -
+                                <span class="wio-num" id="wtitan-cleaned-num"><?php echo $cleaned ?></span>
+                            </li>
+                            <li>
+                                <span style="background-color:#f1b1b6"></span>
+                                Suspicious -
+                                <span class="wio-num" id="wtitan-suspicious-num"><?php echo $suspicious ?></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="wbcr-titan-content">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Path</th>
+                                <th scope="col">Match</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ( $matched as $file_path => $match ): ?>
+                                <?php if(is_null($match)): ?>
+                                    <tr>
+                                        <td><?php echo $file_path ?></td>
+                                        <td>null</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <tr>
+                                        <td><?php echo $match->getFile() ?></td>
+                                        <td><?php echo $match->getMatch() ?></td>
+                                    </tr>
+                                <?php endif; ?>
 
-		<div class="tab-content">
-			<?php echo $scanner_content;?>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-	</div>
-	<!-- ############################### -->
+    </div>
 </div>

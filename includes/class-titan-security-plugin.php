@@ -33,7 +33,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	private $firewall_storage;
 
 	/**
-	 * @var object|\WBCR\Titan\Views
+	 * @var \WBCR\Titan\Views
 	 */
 	public $view;
 
@@ -121,8 +121,8 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-settings.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php');
+		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
-		self::app()->registerPage('WBCR\Titan\Page\Scanner_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner-settings.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
 		//self::app()->registerPage( 'WBCR\Titan\Page\Vulnerabilities', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-vulnerabilities.php' );
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
@@ -171,7 +171,21 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-webserver-info.php');
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-auto-prepend-helper.php');
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/firewall/class-model-firewall.php');
-		//\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('wafStatus', 'disabled');
+
+		// Logger
+		require_once(WTITAN_PLUGIN_DIR . '/includes/logger/class-logger-writter.php');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_premium()
+	{
+		if( $this->premium->is_active() && $this->premium->is_activate() ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 

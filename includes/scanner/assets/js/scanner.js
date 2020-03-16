@@ -1,50 +1,81 @@
-function wtitan_progress_status(selector ,status) {
-    selector.each(function(index, element){
-        jQuery(element).removeAttr('class');
-        jQuery(element).addClass('wt-scan-step-icon');
-        jQuery(element).addClass('wt-scan-step-icon-'+status);
-    });
-}
+/**
+ * @var {Object} wpnonce
+ */
 
-jQuery(document).ready(function($) {
-    //TABS
-    jQuery('#wtitan-scanner-tabs a').on('click', function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
+(function($) {
+    var intervalId;
+    $('#scan').on('click', function(event) {
+        event.preventDefault();
 
-    jQuery('#wt-scanner-scan').on('click', function(e) {
-        e.preventDefault();
-        jQuery(this).attr('disabled', true);
-        vulnerability_ajax();
-        audit_ajax();
-    });
+        var btn = $(this);
 
-    //HIDE
-    jQuery(document).on('click', '.wt-scanner-hide-button', function(e) {
-        e.preventDefault();
-        var btn = jQuery(this);
-        var wtitan_hide_target = jQuery(".wtitan-tab-table-container#wtitan-hided");
+        btn.attr('disabled', 'disabled');
 
-        jQuery.ajax({
-            method: 'POST', url: ajaxurl, data: {
-                action: 'wtitan_scanner_hide',
-                type:   btn.data('type'),
-                id:     btn.data('id'),
-                _ajax_nonce: wtscanner.hide_nonce
-            },
-            beforeSend: function () {
-                btn.parent('td').parent('tr').css('opacity','0.5');
-            },
-            success: function (result) {
-                if(result.success) {
-                    btn.parent('td').parent('tr').animate({opacity: 'hide' , height: 'hide'}, 200);
-                    wtitan_hide_target.html(result.data.html);
-                    console.log('Hided - ' + btn.data('id'));
-                }
-            },
-            complete: function () {
+        var action = btn.attr('data-action');
+        var nonce;
+
+        if(action === 'start_scan') {
+            btn.html('Starting...');
+            nonce = wpnonce.start;
+        } else {
+            btn.html('Stopping...');
+            nonce = wpnonce.stop;
+        }
+
+        $.post(ajaxurl, {
+            action: action,
+            _wpnonce: nonce
+        }, function(response) {
+            btn.removeAttr('disabled');
+            switch (action) {
+                case 'start_scan':
+                    btn.attr('data-action', 'stop_scan');
+                    btn.html('Stop scanning');
+                    intervalId = setInterval(status_scan, 15000);
+                    break;
+
+                case 'stop_scan':
+                    btn.attr('data-action', 'start_scan');
+                    btn.html('Scan');
+                    break;
+
+                default:
+                    console.error('???');
+                    return;
             }
+
+            var type;
+            if(response.success) {
+                type = 'success';
+            } else {
+                type = 'warning';
+            }
+
+            var noticeId = $.wbcr_factory_clearfy_000.app.showNotice(response.data.message, type);
+            setTimeout(function() {
+                $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+            }, 5000);
         });
     });
-});
+
+    function status_scan() {
+        if($('#scan').attr('data-action') === 'start_scan') clearInterval(intervalId);
+        $.post(ajaxurl, {
+            action: 'status_scan',
+            _wpnonce: wpnonce.status
+        }, function(response) {
+            if(typeof response.data === 'undefined' || response.data === false) {
+                return;
+            }
+
+            $("#wt-total-percent").html(response.data.progress.toFixed(1) + '%');
+            $("#wt-total-percent-chart").html(response.data.progress.toFixed(1) + '<span>%</span>');
+            var canvas = $("#wtitan-scan-chart");
+            canvas.attr('data-cleaned', response.data.cleaned);
+            canvas.attr('data-suspicious', response.data.suspicious);
+            $("#wtitan-cleaned-num").html(response.data.cleaned);
+            $("#wtitan-suspicious-num").html(response.data.suspicious);
+        });
+    }
+
+})(jQuery);

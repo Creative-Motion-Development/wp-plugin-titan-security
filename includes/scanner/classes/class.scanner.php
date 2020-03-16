@@ -1,150 +1,132 @@
 <?php
+
 namespace WBCR\Titan;
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 use WBCR\Titan\Client\Client;
-use WBCR\Titan\Client\Request\SetNoticeData;
+use WBCR\Titan\Client\Entity\Signature;
+use WBCR\Titan\MalwareScanner\SignaturePool;
 
 /**
  * The file contains a short help info.
  *
- * @author        Artem Prihodko <webtemyk@ya.ru>
- * @copyright (c) 2020 Creative Motion
+ * @author        Alexander Gorenkov <g.a.androidjc2@ya.ru>
  * @version       1.0
+ * @copyright (c) 2020 Creative Motion
  */
 class Scanner extends Module_Base {
-
 	/**
-	 * Vulnerabilities object
-	 *
-	 * @var Vulnerabilities
-	 */
-	public $vulnerabilities;
-
-	/**
-	 * Audit object
-	 *
-	 * @var Audit
-	 */
-	public $audit;
-
-	/**
-	 * Vulnerabilities_API constructor.
-	 *
+	 * Scanner constructor.
 	 */
 	public function __construct() {
 		parent::__construct();
 
-		$this->module_dir = WTITAN_PLUGIN_DIR."/includes/scanner";
-		$this->module_url = WTITAN_PLUGIN_URL."/includes/scanner";
-		$this->vulnerabilities = new Vulnerabilities();
-		$this->audit = new Audit();
+		$this->module_dir = WTITAN_PLUGIN_DIR . "/includes/scanner";
 
-		add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
+		add_action( 'wp_ajax_start_scan', [ $this, 'ajax_start_scan' ] );
+		add_action( 'wp_ajax_stop_scan', [ $this, 'ajax_stop_scan' ] );
+		add_action( 'wp_ajax_status_scan', [ $this, 'ajax_status_scan' ] );
+	}
+
+	public function ajax_status_scan() {
+		check_ajax_referer( 'titan-status-scan' );
+
+		if ( ! Plugin::app()->current_user_can() ) {
+			wp_send_json_error( [
+				'error_message' => __( "You don't have enough capability to edit this information", "titan-security" ),
+			] );
+		}
+
+		if ( ! Plugin::app()->premium->is_activate() ) {
+			wp_send_json_error( [
+				'error_message' => __( 'Available only to premium users', 'titan-security' ),
+			] );
+		}
+
+		$status = Plugin::app()->getOption( 'scanner_status', 'stopped' );
+		if ( $status === 'stopped' ) {
+			wp_send_json_success( false );
+		}
+
+		$scanner      = get_option( Plugin::app()->getPrefix() . 'scanner' );
+		$matchedCount = count( get_option( Plugin::app()->getPrefix() . 'titan_scanner_malware_matched', [] ) );
+		$files_count  = Plugin::app()->getOption( 'scanner_files_count' );
+		$cleaned      = $suspicious = $progress = 0;
+		if ( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
+			$progress   = 100 - $scanner->files_count / $files_count * 100;
+			$suspicious = $matchedCount;
+			$cleaned    = $files_count - $scanner->files_count - $suspicious;
+		}
+
+		wp_send_json_success( compact( 'cleaned', 'suspicious', 'progress' ) );
+	}
+
+	public function ajax_start_scan() {
+		check_ajax_referer( 'titan-start-scan' );
+
+		if ( ! Plugin::app()->current_user_can() ) {
+			wp_send_json_error( [
+				'message' => __( "You don't have enough capability to edit this information", "titan-security" ),
+			] );
+		}
+
+		if ( ! Plugin::app()->premium->is_activate() ) {
+			wp_send_json_error( [
+				'message' => __( 'Available only to premium users', 'titan-security' ),
+			] );
+		}
+
+		titan_create_scheduler_scanner();
+
+		wp_send_json_success( [
+			'message' => __( 'Scanning started', 'titan-security' ),
+		] );
+	}
+
+	public function ajax_stop_scan() {
+		check_ajax_referer( 'titan-stop-scan' );
+
+		if ( ! Plugin::app()->current_user_can() ) {
+			wp_send_json_error( [
+				'message' => __( "You don't have enough capability to edit this information", "titan-security" ),
+			] );
+		}
+
+		if ( ! Plugin::app()->premium->is_activate() ) {
+			wp_send_json_error( [
+				'message' => __( 'Available only to premium users', 'titan-security' ),
+			] );
+		}
+
+		titan_remove_scheduler_scanner();
+
+		wp_send_json_success( [
+			'message' => __( 'Scanning cancelled', 'titan-security' ),
+		] );
 	}
 
 	/**
 	 * Show page content
 	 */
 	public function showPageContent() {
-		$modules = explode(',', $this->plugin->getOption( 'security_check_list', "vulnerability"));
-		$vuln_args = array(
-			'wordpress' => $this->vulnerabilities->wordpress,
-			'plugins'   => $this->vulnerabilities->plugins,
-			'themes'    => $this->vulnerabilities->themes,
-		);
-		$content_vulner = $this->vulnerabilities->render_template( 'all-table', $vuln_args);
+		require WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
 
-		$audit_args = array(
-			'results' => $this->audit->get_audit(),
-		);
-		$content_audit = $this->audit->render_template( 'all-audit', $audit_args);
-
-		$hided_args = array(
-			'results' => $this->audit->get_hided(),
-		);
-		$content_hided = $this->render_template( 'hided', $hided_args);
-
-
-		$args = array(
-			'modules' => array(
-				'hided' => array(
-					'name' => '',
-					'icon'    => 'dashicons-hidden',
-					'content' => $content_hided,
-				),
-				'audit' => array(
-					'name' => __('Security audit', 'titan-security'),
-					'icon'    => 'dashicons-plugins-checked',
-					'content' => $content_audit,
-					'count'   => $this->audit->get_count(),
-					'active'  => 'active',
-				),
-				'vulnerability' => array(
-					'name'    => __('Vulnerabilities', 'titan-security'),
-					'icon'    => 'dashicons-buddicons-replies',
-					'content' => $content_vulner,
-					'count'   => $this->vulnerabilities->get_count(),
-				),
-				'malware' => array(
-					'name' => __('Malware scan', 'titan-security'),
-					'icon'    => 'dashicons-code-standards',
-					'content' => '',
-					'count' => 0,
-				),
-			),
-			'active_modules' => $modules,
-		);
-		$script_args = array(
-			'wtvulner' => array(
-				'nonce' => wp_create_nonce('get_vulners'),
-			),
-		);
-		echo $this->vulnerabilities->render_script('vulnerability_ajax.js', $script_args);
-
-		$script_args = array(
-			'wtaudit' => array(
-				'nonce' => wp_create_nonce('get_audits'),
-			),
-		);
-		echo $this->audit->render_script('audit_ajax.js', $script_args);
-
-		echo $this->render_template( 'scanner', $args);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function hide_issue() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( - 2 );
-		} else {
-			check_ajax_referer( 'hide' );
-
-			if(isset($_POST['id']) && $_POST['id'] !== '' && isset($_POST['type']) && $_POST['type'] !== '') {
-				$audit = $this->audit->get_audit();
-				$hided = $this->audit->get_hided();
-				$type = $_POST['type'];
-
-				$hided[$type][] = $audit[$_POST['id']];
-				unset($audit[$_POST['id']]);
-
-				update_option( $this->plugin->getPrefix()."audit_results", $audit, 'no');
-				update_option( $this->plugin->getPrefix()."audit_results_hided", $hided, 'no');
-				$html = $this->render_template( 'hided', array(
-					'results' => $hided,
-				));
-				wp_send_json_success(array(
-					'html' => $html
-				));
-			}
-
-			die();
+		/** @var MalwareScanner\Scanner $scanner */
+		$scanner         = get_option( Plugin::app()->getPrefix() . 'scanner' );
+		$matched         = get_option( Plugin::app()->getPrefix() . 'titan_scanner_malware_matched', [] );
+		$scanner_started = Plugin::app()->getOption( 'scanner_status' ) == 'started';
+		$files_count     = Plugin::app()->getOption( 'scanner_files_count', 0 );
+		$cleaned         = 0;
+		$suspicious      = 0;
+		$progress        = 0;
+		if ( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
+			$progress   = 100 - $scanner->files_count / $files_count * 100;
+			$suspicious = count( $matched );
+			$cleaned    = $files_count - $scanner->files_count - $suspicious;
 		}
-	}
 
+		echo $this->render_template( 'scanner', compact(
+			'scanner_started', 'matched', 'progress',
+			'suspicious', 'cleaned'
+		) );
+	}
 }

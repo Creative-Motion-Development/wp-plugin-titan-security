@@ -87,7 +87,9 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 	{
 		parent::assets($scripts, $styles);
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-settings.css');
+		if( $this->plugin->is_premium() ) {
+			$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall-settings.css');
+		}
 	}
 
 	/**
@@ -98,55 +100,61 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public function getPageOptions()
 	{
-		$options[] = [
-			'type' => 'html',
-			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Create a Blocking Rule', 'anti-spam') . '</strong></div>'
-		];
+		if( $this->plugin->is_premium() ) {
+			$options[] = [
+				'type' => 'html',
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Create a Blocking Rule', 'anti-spam') . '</strong></div>'
+			];
 
-		$options[] = [
-			'type' => 'dropdown',
-			'name' => 'brute_force_breach_passwds',
-			'way' => 'buttons',
-			'title' => __('Block Type	
-', 'clearfy'),
-			'data' => [
-				['ip', __('Ip address', 'clearfy')],
-				['country', __('Country', 'clearfy')],
-				[
-					'custom_pattern',
-					__('Custom pattern', 'clearfy')
-				]
-			],
-			'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
-			'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'clearfy') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'clearfy'),
+			$options[] = [
+				'type' => 'dropdown',
+				'name' => 'brute_force_breach_passwds',
+				'way' => 'buttons',
+				'title' => __('Block Type', 'clearfy'),
+				'data' => [
+					['ip', __('Ip address', 'clearfy')],
+					['country', __('Country', 'clearfy')],
+					[
+						'custom_pattern',
+						__('Custom pattern', 'clearfy')
+					]
+				],
+				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
+				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'clearfy') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'clearfy'),
 
-			'default' => 'ip',
-		];
+				'default' => 'ip',
+			];
 
-		$options[] = [
-			'type' => 'html',
-			'html' => [$this, 'get_add_blocking_rule_section']
-		];
+			$options[] = [
+				'type' => 'html',
+				'html' => [$this, 'get_add_blocking_rule_section']
+			];
 
-		$options[] = [
-			'type' => 'html',
-			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Current blocks for antispam.loc', 'anti-spam') . '</strong></div>'
-		];
+			$options[] = [
+				'type' => 'html',
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Current blocks for antispam.loc', 'anti-spam') . '</strong></div>'
+			];
 
-		/*$options[] = [
-			'type'    => 'checkbox',
-			'way'     => 'buttons',
-			'name'    => 'save_spam_comments',
-			'title'   => __( 'Save spam comments', 'anti-spam' ),
-			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-			'hint'    => __( 'Save spam comments into spam section. Useful for testing how the plugin works.', 'anti-spam' ),
-			'default' => true
-		];*/
+			/*$options[] = [
+				'type'    => 'checkbox',
+				'way'     => 'buttons',
+				'name'    => 'save_spam_comments',
+				'title'   => __( 'Save spam comments', 'anti-spam' ),
+				'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
+				'hint'    => __( 'Save spam comments into spam section. Useful for testing how the plugin works.', 'anti-spam' ),
+				'default' => true
+			];*/
 
-		$options[] = [
-			'type' => 'html',
-			'html' => [$this, 'get_current_blocks_section']
-		];
+			$options[] = [
+				'type' => 'html',
+				'html' => [$this, 'get_current_blocks_section']
+			];
+		} else {
+			$options[] = [
+				'type' => 'html',
+				'html' => $this->plugin->view->get_template('require-license-activate')
+			];
+		}
 
 		$form_options = [];
 
@@ -156,11 +164,17 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 			//'cssClass' => 'postbox'
 		];
 
-		return apply_filters('wantispam/settings_form/options', $form_options, $this);
+		return apply_filters('wtitan/settings_form/options', $form_options, $this);
 	}
 
 	public function showPageContent()
 	{
+		if( !$this->plugin->is_premium() ) {
+			$this->plugin->view->print_template('require-license-activate');
+
+			return;
+		}
+
 		?>
 		<!--<div class="wtitan-ip-blocking-form">
 			<table class="wtitan-ip-blocking-form__table">
@@ -226,8 +240,6 @@ class Firewall_Blocking extends \Wbcr_FactoryClearfy000_PageBase {
 			</table>
 			<!--<a href="#" class="button button-default">Block Ip Address</a>-->
 		</div>
-
-
 		<?php
 	}
 

@@ -20,11 +20,19 @@ if( !defined('ABSPATH') ) {
  *
  * Alexander Kovalev
  * ---------------------------------------------------------------------------------
- * Full plugin development.
+ * Plugin development
  *
  * Email:         alex.kovalevv@gmail.com
  * Personal card: https://alexkovalevv.github.io
  * Personal repo: https://github.com/alexkovalevv
+ * ---------------------------------------------------------------------------------
+ *
+ * Artem Prihodko
+ * ---------------------------------------------------------------------------------
+ * Plugin development.
+ *
+ * Email:         webtemyk@yandex.ru
+ * Personal repo: https://github.com/temyk
  * ---------------------------------------------------------------------------------
  */
 
@@ -42,11 +50,11 @@ require_once(dirname(__FILE__) . '/libs/factory/core/includes/class-factory-requ
 $wtitan_plugin_info = [
 	'prefix' => 'titan_',
 	'plugin_name' => 'titan_security',
-	'plugin_title' => __('Titan security', 'anti-spam'),
+	'plugin_title' => __('Titan security', 'titan-security'),
 
 	// PLUGIN SUPPORT
 	'support_details' => [
-		'url' => 'https://anti-spam.space',
+		'url' => 'https://titansitescanner.com',
 		'pages_map' => [
 			'support' => 'support',           // {site}/support
 			'docs' => 'docs'               // {site}/docs
@@ -58,10 +66,10 @@ $wtitan_plugin_info = [
 	'license_settings' => [
 		'provider' => 'freemius',
 		'slug' => 'antispam-premium',
-		'plugin_id' => '5079',
-		'public_key' => 'pk_98a99846a14067246257d4f43c04a',
-		//'plugin_id'          => '4865',
-		//'public_key'         => 'pk_05cbde6c0f9c96814c3b3cbff2259',
+//		'plugin_id' => '5576',
+//		'public_key' => 'pk_35c58895903a6ad909c12461187ca',
+		'plugin_id'        => '5079',
+		'public_key'       => 'pk_98a99846a14067246257d4f43c04a',
 		'price' => 15,
 		'has_updates' => false,
 		'updates_settings' => [
