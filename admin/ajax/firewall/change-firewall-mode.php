@@ -9,13 +9,13 @@ function wtitan_change_firewall_mode()
 	check_ajax_referer('wtitan_change_firewall_mode');
 
 	if( !current_user_can('manage_options') ) {
-		wp_send_json(array('error' => __('You don\'t have enough capability to edit this information.', 'clearfy')));
+		wp_send_json(array('error' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
 	}
 
 	$mode_name = \WBCR\Titan\Plugin::app()->request->post('mode', false, true);
 
 	if( empty($mode_name) ) {
-		wp_send_json(array('error' => __('Undefinded mode.', 'clearfy')));
+		wp_send_json(array('error' => __('Undefinded mode.', 'titan-security')));
 	}
 
 	\WBCR\Titan\Plugin::app()->updatePopulateOption('firewall_mode', $mode_name);

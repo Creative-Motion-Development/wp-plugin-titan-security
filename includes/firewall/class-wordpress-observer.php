@@ -18,7 +18,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 			))))->evaluate();
 		}
 
-		// Whitelisted IPs (Wordfence config)
+		// Whitelisted IPs (Titan config)
 		$whitelistedIPs = wfWAF::getInstance()->getStorageEngine()->getConfig('whitelistedIPs', null, 'synced');
 		if( $whitelistedIPs ) {
 			if( !is_array($whitelistedIPs) ) {
@@ -27,7 +27,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 			foreach($whitelistedIPs as $whitelistedIP) {
 				$ipRange = new wfWAFUserIPRange($whitelistedIP);
 				if( $ipRange->isIPInRange(wfWAF::getInstance()->getRequest()->getIP()) ) {
-					throw new wfWAFAllowException('Wordfence whitelisted IP.');
+					throw new wfWAFAllowException('Titan whitelisted IP.');
 				}
 			}
 		}
@@ -101,7 +101,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 			foreach($watchedIPs as $watchedIP) {
 				$ipRange = new wfWAFUserIPRange($watchedIP);
 				if( $ipRange->isIPInRange(wfWAF::getInstance()->getRequest()->getIP()) ) {
-					throw new wfWAFLogException('Wordfence watched IP.');
+					throw new wfWAFLogException('Titan watched IP.');
 				}
 			}
 		}

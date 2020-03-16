@@ -50,7 +50,7 @@ class Helper {
 		$htaccessPath = get_home_path() . '.htaccess';
 		if( file_exists($htaccessPath) ) {
 			$htaccessContent = file_get_contents($htaccessPath);
-			$regex = '/# Wordfence WAF.*?# END Wordfence WAF/is';
+			$regex = '/# Titan WAF.*?# END Titan WAF/is';
 			if( preg_match($regex, $htaccessContent, $matches) ) {
 				$wafBlock = $matches[0];
 				$hasPHP5 = preg_match('/<IfModule mod_php5\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
@@ -74,7 +74,7 @@ class Helper {
 		$htaccessPath = get_home_path() . '.htaccess';
 		if( file_exists($htaccessPath) ) {
 			$htaccessContent = file_get_contents($htaccessPath);
-			$regex = '/# Wordfence WAF.*?# END Wordfence WAF/is';
+			$regex = '/# Titan WAF.*?# END T WAF/is';
 			if( preg_match($regex, $htaccessContent, $matches, PREG_OFFSET_CAPTURE) ) {
 				$wafBlock = $matches[0][0];
 				$hasPHP5 = preg_match('/<IfModule mod_php5\.c>\s*php_value auto_prepend_file \'(.*?)\'\s*<\/IfModule>/is', $wafBlock, $php5Matches, PREG_OFFSET_CAPTURE);
@@ -207,7 +207,7 @@ file because of file permissions. Please verify the permissions are correct and 
 		// .htaccess configuration
 		switch( $serverConfig ) {
 			case 'apache-mod_php':
-				$autoPrependDirective = sprintf("# Wordfence WAF
+				$autoPrependDirective = sprintf("# Titan WAF
 <IfModule mod_php5.c>
 	php_value auto_prepend_file '%s'
 </IfModule>
@@ -215,13 +215,13 @@ file because of file permissions. Please verify the permissions are correct and 
 	php_value auto_prepend_file '%s'
 </IfModule>
 $userIniHtaccessDirectives
-# END Wordfence WAF
+# END Titan WAF
 ", addcslashes($bootstrapPath, "'"), addcslashes($bootstrapPath, "'"));
 				break;
 
 			case 'litespeed':
 				$escapedBootstrapPath = addcslashes($bootstrapPath, "'");
-				$autoPrependDirective = sprintf("# Wordfence WAF
+				$autoPrependDirective = sprintf("# Titan WAF
 <IfModule LiteSpeed>
 php_value auto_prepend_file '%s'
 </IfModule>
@@ -229,22 +229,22 @@ php_value auto_prepend_file '%s'
 php_value auto_prepend_file '%s'
 </IfModule>
 $userIniHtaccessDirectives
-# END Wordfence WAF
+# END Titan WAF
 ", $escapedBootstrapPath, $escapedBootstrapPath);
 				break;
 
 			case 'apache-suphp':
-				$autoPrependDirective = sprintf("# Wordfence WAF
+				$autoPrependDirective = sprintf("# Titan WAF
 $userIniHtaccessDirectives
-# END Wordfence WAF
+# END Titan WAF
 ", addcslashes($homePath, "'"));
 				break;
 
 			case 'cgi':
 				if( $userIniHtaccessDirectives ) {
-					$autoPrependDirective = sprintf("# Wordfence WAF
+					$autoPrependDirective = sprintf("# Titan WAF
 $userIniHtaccessDirectives
-# END Wordfence WAF
+# END Titan WAF
 ", addcslashes($homePath, "'"));
 				}
 				break;
@@ -255,7 +255,7 @@ $userIniHtaccessDirectives
 			$htaccessContent = $wp_filesystem->get_contents($htaccessPath);
 
 			if( $htaccessContent ) {
-				$regex = '/# Wordfence WAF.*?# END Wordfence WAF/is';
+				$regex = '/# Titan WAF.*?# END Titan WAF/is';
 				if( preg_match($regex, $htaccessContent, $matches) ) {
 					$htaccessContent = preg_replace($regex, $autoPrependDirective, $htaccessContent);
 				} else {
@@ -284,9 +284,9 @@ $userIniHtaccessDirectives
 				case 'apache-suphp':
 				case 'litespeed':
 				case 'iis':
-					$autoPrependIni = sprintf("; Wordfence WAF
+					$autoPrependIni = sprintf("; Titan WAF
 auto_prepend_file = '%s'
-; END Wordfence WAF
+; END Titan WAF
 ", addcslashes($bootstrapPath, "'"));
 
 					break;
@@ -298,7 +298,7 @@ auto_prepend_file = '%s'
 				$userIniContent = $wp_filesystem->get_contents($userIniPath);
 				if( is_string($userIniContent) ) {
 					$userIniContent = str_replace('auto_prepend_file', ';auto_prepend_file', $userIniContent);
-					$regex = '/; Wordfence WAF.*?; END Wordfence WAF/is';
+					$regex = '/; Titan WAF.*?; END Titan WAF/is';
 					if( preg_match($regex, $userIniContent, $matches) ) {
 						$userIniContent = preg_replace($regex, $autoPrependIni, $userIniContent);
 					} else {
@@ -336,7 +336,7 @@ auto_prepend_file = '%s'
 		$htaccessContent = $wp_filesystem->get_contents($htaccessPath);
 
 		if( is_string($htaccessContent) ) {
-			$htaccessContent = preg_replace('/# Wordfence WAF.*?# END Wordfence WAF/is', '', $htaccessContent);
+			$htaccessContent = preg_replace('/# Titan WAF.*?# END Titan WAF/is', '', $htaccessContent);
 		} else {
 			$htaccessContent = '';
 		}
@@ -356,7 +356,7 @@ auto_prepend_file = '%s'
 			// Modify .user.ini
 			$userIniContent = $wp_filesystem->get_contents($userIniPath);
 			if( is_string($userIniContent) ) {
-				$userIniContent = preg_replace('/; Wordfence WAF.*?; END Wordfence WAF/is', '', $userIniContent);
+				$userIniContent = preg_replace('/; Titan WAF.*?; END Titan WAF/is', '', $userIniContent);
 				$userIniContent = str_replace('auto_prepend_file', ';auto_prepend_file', $userIniContent);
 			} else {
 				$userIniContent = '';
@@ -462,7 +462,7 @@ file because of file permissions. Please verify the permissions are correct and 
 
 		if( $wp_filesystem->is_file($htaccessPath) ) {
 			$htaccessContent = $wp_filesystem->get_contents($htaccessPath);
-			$regex = '/# Wordfence WAF.*?# END Wordfence WAF/is';
+			$regex = '/# Titan WAF.*?# END Titan WAF/is';
 			if( preg_match($regex, $htaccessContent, $matches) ) {
 				$htaccessContent = preg_replace($regex, '', $htaccessContent);
 				if( !$wp_filesystem->put_contents($htaccessPath, $htaccessContent) ) {
@@ -473,7 +473,7 @@ file because of file permissions. Please verify the permissions are correct and 
 
 		if( $wp_filesystem->is_file($userIniPath) ) {
 			$userIniContent = $wp_filesystem->get_contents($userIniPath);
-			$regex = '/; Wordfence WAF.*?; END Wordfence WAF/is';
+			$regex = '/; Titan WAF.*?; END Titan WAF/is';
 			if( preg_match($regex, $userIniContent, $matches) ) {
 				$userIniContent = preg_replace($regex, '', $userIniContent);
 				if( !$wp_filesystem->put_contents($userIniPath, $userIniContent) ) {

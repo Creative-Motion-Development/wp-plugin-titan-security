@@ -263,7 +263,7 @@ class wfWAFRuleParser extends wfWAFBaseParser {
 					break 2;
 
 				default:
-					$this->triggerSyntaxError($token, sprintf('Wordfence WAF Rules Syntax Error: Unexpected %s found on line %d, column %d',
+					$this->triggerSyntaxError($token, sprintf('Titan WAF Rules Syntax Error: Unexpected %s found on line %d, column %d',
 						$token->getType(), $token->getLine(), $token->getColumn()));
 			}
 		}
@@ -289,7 +289,7 @@ class wfWAFRuleParser extends wfWAFBaseParser {
 
 				default:
 					$this->triggerSyntaxError($parenToken,
-						sprintf('Wordfence WAF Rules Syntax Error: Unexpected %s found on line %d, column %d.',
+						sprintf('Titan WAF Rules Syntax Error: Unexpected %s found on line %d, column %d.',
 							$parenToken->getType(), $parenToken->getLine(), $parenToken->getColumn()));
 			}
 		} while (true);
@@ -387,7 +387,7 @@ class wfWAFRuleParser extends wfWAFBaseParser {
 					break 2;
 
 				default:
-					$this->triggerSyntaxError($token, sprintf('Wordfence WAF Rules Syntax Error: Unexpected %s found on line %d, column %d',
+					$this->triggerSyntaxError($token, sprintf('Titan WAF Rules Syntax Error: Unexpected %s found on line %d, column %d',
 						$token->getType(), $token->getLine(), $token->getColumn()));
 			}
 		}

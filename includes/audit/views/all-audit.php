@@ -31,16 +31,16 @@ if( is_array($args) && !empty($args)) {
                             <td class="wtitan-vulner-table-description"><?php echo $result->description; ?></td>
                             <td><?php echo wp_date('d.m.Y H:i',$result->timestamp); ?></td>
                             <td>
-                                <button class="button button-secondary wt-scanner-hide-button"
+                                <button class="btn btn-default wt-scanner-hide-button"
                                    data-id="<?php echo $key; ?>"
                                    data-type="audit">Hide it</button>
                                 <?php if(empty($result->fix)): ?>
 	                            <?php elseif($result->fix == "js"): ?>
                                     <button target="_blank"
-                                       class="button button-primary wt-audit-fix-button">Fix it</button>
+                                       class="btn btn-primary wt-audit-fix-button">Fix it</button>
 	                            <?php else: ?>
                                     <a href="<?php echo $result->fix; ?>" target="_blank"
-                                       class="button button-primary">Fix it</a>
+                                       class="btn btn-primary">Fix it</a>
 	                            <?php endif; ?>
                             </td>
                         </tr>

@@ -298,7 +298,7 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 
 		$ping = $this->getRequest()->getBody('ping');
 		$pingResponse = $this->getRequest()->getBody('ping_response');
-		$wfIP = $this->isWordfenceIP($this->getRequest()->getIP());
+		$wfIP = $this->isTitanIP($this->getRequest()->getIP());
 		$pingIsApiKey = wfWAFUtils::hash_equals($ping, sha1($this->getStorageEngine()->getConfig('apiKey', null, 'synced')));
 
 		if ($ping && $pingResponse && $pingIsApiKey &&
@@ -606,7 +606,7 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 	 * @param string $ip
 	 * @return bool
 	 */
-	public function isWordfenceIP($ip) {
+	public function isTitanIP($ip) {
 		if (preg_match('/69.46.36.(\d+)/', $ip, $matches)) {
 			return $matches[1] >= 1 && $matches[1] <= 32;
 		}

@@ -48,8 +48,7 @@ class SiteChecker extends Module_Base {
 
 		$urls = $this->client->get_checker_urls();
 
-		//$response = $this->client->update_checker_url(1, 'https://m.vk.com', 60);
-
+		if(empty($urls) || !is_array( $urls)) $urls = array();
 		$args = array(
 			'urls' => $urls,
 		);

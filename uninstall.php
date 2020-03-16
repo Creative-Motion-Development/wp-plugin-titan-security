@@ -36,3 +36,7 @@ if( is_multisite() ) {
 } else {
 	uninstall();
 }
+
+require_once dirname(__FILE__) . '/includes/firewall/class-database-schema.php';
+$db_schema = new \WBCR\Titan\Database\Schema();
+$db_schema->dropAll();

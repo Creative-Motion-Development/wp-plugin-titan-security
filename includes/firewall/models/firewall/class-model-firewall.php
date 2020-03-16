@@ -36,7 +36,7 @@ class Firewall {
 
 		if( $currentAutoPrependedFile && is_file($currentAutoPrependedFile) && !WFWAF_SUBDIRECTORY_INSTALL ) {
 			$currentAutoPrepend = sprintf('
-// This file was the current value of auto_prepend_file during the Wordfence WAF installation (%2$s)
+// This file was the current value of auto_prepend_file during the Titan WAF installation (%2$s)
 if (file_exists(%1$s)) {
 	include_once %1$s;
 }', var_export($currentAutoPrependedFile, true), date('r'));

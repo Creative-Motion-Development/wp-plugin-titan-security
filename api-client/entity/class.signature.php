@@ -64,4 +64,8 @@ class Signature extends Loader {
 		$this->title = $title;
 		$this->content = $content;
 	}
+
+	public function to_array() {
+		return get_object_vars($this);
+	}
 }

@@ -43,7 +43,7 @@ class SignaturePool {
 			} );
 			$match = $signature->scan( $file );
 			if ( ! is_null( $match ) ) {
-				$matches[ $file->getPath() ] = $match;
+				$matches[] = $match;
 			}
 		}
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	php_value auto_prepend_file ~/wp-content/plugins/wordfence/waf/bootstrap.php
+	php_value auto_prepend_file ~/wp-content/plugins/waf/waf/bootstrap.php
 */
 
 if( !defined('WFWAF_RUN_COMPLETE') ) {
@@ -17,7 +17,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 
 	require_once(dirname(__FILE__) . '/class-user-ip-range.php');
 	require_once(dirname(__FILE__) . '/class-ip-blocks-controller.php');
-	require_once(dirname(__FILE__) . '/libs/wordfence/init.php');
+	require_once(dirname(__FILE__) . '/libs/waf/init.php');
 	require_once(dirname(__FILE__) . '/class-wordpress-request.php');
 	require_once(dirname(__FILE__) . '/class-wordpress-observer.php');
 	require_once(dirname(__FILE__) . '/class-wordpress-firewall.php');

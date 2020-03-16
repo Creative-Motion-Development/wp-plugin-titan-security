@@ -20,7 +20,6 @@ use WBCR\Titan\Client\Request\VulnerabilityPlugin;
 use WBCR\Titan\Client\Request\VulnerabilityTheme;
 use WBCR\Titan\Client\Response\Error;
 use WBCR\Titan\Client\Response\Method\BlackSEO;
-use WBCR\Titan\Client\Response\Method\UrlCheckerCreate;
 use WBCR\Titan\Client\Response\Response;
 
 /**
@@ -304,11 +303,8 @@ class Client {
 		}
 
 		$vuln = [];
-		foreach ( $response->response as $slug => $item ) {
-			$vuln[ $slug ] = [];
-			foreach ( $item as $v ) {
-				$vuln[ $slug ][] = Vulnerability::from_array( $v );
-			}
+		foreach ( $response->response as $item ) {
+			$vuln[] = Vulnerability::from_array( $item );
 		}
 
 		return $vuln;
@@ -318,10 +314,17 @@ class Client {
 	// signatures
 	//
 
+	/**
+	 * @return Signature[]|null
+	 */
 	public function get_signatures() {
 		$response = $this->request( false, 'antivirus/signature' );
 		if ( $response->is_error() ) {
 			return null;
+		}
+
+		if ( is_null( $response->response ) ) {
+			return [];
 		}
 
 		$s = [];
@@ -375,7 +378,7 @@ class Client {
 		if ( $response->is_error() ) {
 			return null;
 		}
-		
+
 		return $response->response['is_successful_create'];
 	}
 

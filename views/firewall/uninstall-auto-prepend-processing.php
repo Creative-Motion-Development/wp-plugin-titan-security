@@ -36,7 +36,7 @@ if( !defined('ABSPATH') ) {
 				</div>
 			<?php else: ?>
 				<?php if( isset($data['activate']) && $data['activate'] ): ?>
-					<p><?php _e('Uninstallation from this site was successful! The Wordfence Firewall is still active because it is installed in another WordPress installation.', 'titan'); ?></p>
+					<p><?php _e('Uninstallation from this site was successful! The Titan Firewall is still active because it is installed in another WordPress installation.', 'titan'); ?></p>
 				<?php else: ?>
 					<p><?php _e('The changes have not yet taken effect. If you are using LiteSpeed or IIS as your web server or CGI/FastCGI interface, you may need to wait a few minutes for the changes to take effect since the configuration files are sometimes cached. You also may need to select a different server configuration in order to complete this step, but wait for a few minutes before trying. You can try refreshing this page.', 'titan'); ?></p>
 				<?php endif; ?>

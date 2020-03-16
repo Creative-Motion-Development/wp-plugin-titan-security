@@ -11,7 +11,7 @@ if( !defined('ABSPATH') ) {
 	<?php
 	$currentAutoPrependFile = ini_get('auto_prepend_file');
 	?>
-	<p><?php _e('Extended Protection Mode of the Wordfence Web Application Firewall uses the PHP ini setting called <code>auto_prepend_file</code> in order to ensure it runs before any potentially vulnerable code runs. This PHP setting currently refers to the Wordfence file at:', 'wordfence'); ?></p>
+	<p><?php _e('Extended Protection Mode of the Titan Web Application Firewall uses the PHP ini setting called <code>auto_prepend_file</code> in order to ensure it runs before any potentially vulnerable code runs. This PHP setting currently refers to the Titan file at:', 'wordfence'); ?></p>
 	<pre class='wtitan-pre'><?php echo esc_html($currentAutoPrependFile); ?></pre>
 	<?php
 	$contents = file_get_contents($currentAutoPrependFile);

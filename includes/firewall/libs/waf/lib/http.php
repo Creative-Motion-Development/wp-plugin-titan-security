@@ -416,7 +416,7 @@ class wfWAFHTTPTransportStreams extends wfWAFHTTPTransport {
 			}
 		}
 		if (!$hasUA) {
-			$headers .= "User-Agent: Wordfence Streams UA\r\n";
+			$headers .= "User-Agent: Titan Streams UA\r\n";
 		}
 
 		$httpOptions = array(

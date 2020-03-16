@@ -86,8 +86,10 @@ class SiteChecker extends \Wbcr_FactoryClearfy000_PageBase {
         $this->menu_title = __('Site Checker', 'titan-security');
         $this->page_menu_short_description = __('Checking sites for availability', 'titan-security');
 
-		require_once $this->MODULE_PATH."/boot.php";
-		$this->module = new Titan\SiteChecker();
+		if( $this->plugin->is_premium() ) {
+			require_once $this->MODULE_PATH . "/boot.php";
+			$this->module = new Titan\SiteChecker();
+		}
 
 		parent::__construct($plugin);
     }
@@ -118,7 +120,10 @@ class SiteChecker extends \Wbcr_FactoryClearfy000_PageBase {
      * Show page content
      */
     public function showPageContent() {
-	    $this->module->showPageContent();
+    	if( $this->plugin->is_premium() )
+		    $this->module->showPageContent();
+	    else
+		    require_once WTITAN_PLUGIN_DIR."/admin/view.nolicense.php";
     }
 
 }

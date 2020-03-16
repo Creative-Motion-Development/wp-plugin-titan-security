@@ -17,6 +17,7 @@ function audit_ajax() {
             wtitan_progress_status(jQuery('#wt-scan-progress-audit .wt-scan-step-icon'), 'ok');
         },
         complete: function () {
+            jQuery('.wt-scan-icon-loader').hide();
         }
     });
 }

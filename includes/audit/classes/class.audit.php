@@ -123,7 +123,7 @@ class Audit extends Module_Base {
 		//PHP
 		$title = sprintf(__('Your PHP version %1s is less than the recommended %2s','titan-security'), PHP_VERSION, '7.2.0');
 		$description = __('Older versions of PHP are slow and vulnerable','titan-security');
-		if (WTITAN_DEBUG || version_compare(PHP_VERSION, '7.2.0') < 0) {
+		if (version_compare(PHP_VERSION, '7.2.0') < 0) {
 			$this->add( $title, $description,  'medium');
 		}
 
@@ -131,7 +131,7 @@ class Audit extends Module_Base {
 		global $wpdb;
 		$title = sprintf(__('Your MySQL version %1s is less than the recommended %2s','titan-security'), $wpdb->db_version(), '4.0.0');
 		$description = __('Older versions of MySQL are very slow and vulnerable','titan-security');
-		if (WTITAN_DEBUG || version_compare($wpdb->db_version(), '4.0.0') < 0) {
+		if (version_compare($wpdb->db_version(), '4.0.0') < 0) {
 			$this->add( $title, $description,  'medium');
 		}
 
@@ -139,7 +139,7 @@ class Audit extends Module_Base {
 		global $wp_version;
 		$title = sprintf(__('Your Wordpress version %1s is less than the recommended %2s','titan-security'), $wp_version, '5.2.0');
 		$description = __('Older versions of Wordpress may be vulnerable','titan-security');
-		if (WTITAN_DEBUG || version_compare($wp_version, '5.2.0') < 0) {
+		if (version_compare($wp_version, '5.2.0') < 0) {
 			$this->add( $title, $description,  'medium', admin_url('update-core.php'));
 		}
 
@@ -155,21 +155,21 @@ class Audit extends Module_Base {
 		//WP_DEBUG
 		$title = __('Wordpress Debug mode is enabled on your site','titan-security');
 		$description = __('Every good developer should enable debugging before starting work on a new plugin or theme. In fact, WordPress Codex "strongly recommends" that developers use WP_DEBUG. Unfortunately, many developers forget to disable debugging mode even when the site is running. Displaying debug logs in the web interface will allow hackers to learn a lot about your WordPress website.','titan-security');
-		if (WTITAN_DEBUG || (defined('WP_DEBUG') && WP_DEBUG)) {
+		if ((defined('WP_DEBUG') && WP_DEBUG)) {
 			$this->add( $title, $description,  'high');
 		}
 
 		//SAVEQUERIES
 		$title = __('Wordpress Database Debug mode is enabled on your site','titan-security');
 		$description = __('When its enabled, all SQL queries will be saved in the $wpdb->queries variable as an array. For security and performance reasons, this constant must be disabled on the production site.','titan-security');
-		if (WTITAN_DEBUG || (defined('SAVEQUERIES') && SAVEQUERIES)) {
+		if ((defined('SAVEQUERIES') && SAVEQUERIES)) {
 			$this->add( $title, $description,  'low');
 		}
 
 		//SCRIPT_DEBUG
 		$title = __('Wordpress Script Debug Mode is enabled on your site','titan-security');
 		$description = __('When enabled, WordPress will use non-compressed versions (dev versions) of JS and CSS files . The default is to use min versions of the files. For security and performance reasons, this constant must be disabled on the production site.','titan-security');
-		if (WTITAN_DEBUG || (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)) {
+		if ((defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)) {
 			$this->add( $title, $description,  'low');
 		}
 
@@ -185,14 +185,14 @@ class Audit extends Module_Base {
 		//display_errors
 		$title = __("The 'display_errors' PHP directive is enabled","titan-security");
 		$description = __("Displaying any debugging information in the interface can be extremely bad for site security. If any PHP errors occur on your site , they must be registered in a secure location and not displayed to visitors or potential attackers.","titan-security");
-		if (WTITAN_DEBUG || ini_get('display_errors')) {
+		if (ini_get('display_errors')) {
 			$this->add( $title, $description,  'high');
 		}
 
 		//allow_url_include
 		$title = __("The 'allow_url_include' PHP directive is enabled","titan-security");
 		$description = __("Enabling 'allow_url_include' PHP Directive will make your site vulnerable to cross-site attacks (XSS).","titan-security");
-		if (WTITAN_DEBUG || ini_get('allow_url_include')) {
+		if (ini_get('allow_url_include')) {
 			$this->add( $title, $description,  'high');
 		}
 
@@ -207,7 +207,7 @@ class Audit extends Module_Base {
 	public function check_https() {
 		$title = __("Your site works over HTTP, without using SSL","titan-security");
 		$description = __("If the site uses HTTPS, its data is protected.","titan-security");
-		if (WTITAN_DEBUG || empty($_SERVER['HTTPS'])) {
+		if (empty($_SERVER['HTTPS'])) {
 			$this->add( $title, $description,  'medium');
 		}
 
@@ -230,7 +230,7 @@ class Audit extends Module_Base {
 
 		$title = __("The standard administrator login 'admin' is used","titan-security");
 		$description = __("Since user names make up half of the login credentials, this made it easier for hackers to launch brute- force attacks. You need to set complex and unique names for your site administrators.","titan-security");
-		if (WTITAN_DEBUG || $admin) {
+		if ($admin) {
 			$this->add( $title, $description,  'medium');
 		}
 
@@ -249,7 +249,7 @@ class Audit extends Module_Base {
 		$no_requirement = array();
 		foreach ( (array) $plugins as $plugin_file => $plugin_data ) {
 			$requirement = validate_plugin_requirements($plugin_file);
-			if(WTITAN_DEBUG || is_wp_error( $requirement))
+			if(is_wp_error( $requirement))
 			{
 				$no_requirement[] = $plugin_data['Name'];
 			}
@@ -257,7 +257,7 @@ class Audit extends Module_Base {
 
 		$title = __("Incompatible plugins found","titan-security");
 		$description = "<b>".__("Some plugins on your site are not compatible with PHP and Wordpress versions: ","titan-security")."</b>";
-		if (WTITAN_DEBUG || !empty($no_requirement)) {
+		if (!empty($no_requirement)) {
 			$description .= "<br>- ".implode("<br>- ",$no_requirement);
 			$this->add( $title, $description,  'medium');
 		}
@@ -265,10 +265,7 @@ class Audit extends Module_Base {
 		//UPDATE Plugins
 		$current = get_site_transient( 'update_plugins' );
 		foreach ( (array) $current->response as $plugin_file => $plugin_data ) {
-			if(WTITAN_DEBUG)
-			{
-				$plugins_update[] = $plugin_data->slug;
-			}
+			$plugins_update[] = $plugin_data->slug;
 		}
 		$i = 0;
 		foreach ( (array) $plugins as $plugin_file => $plugin_data ) {
@@ -279,8 +276,8 @@ class Audit extends Module_Base {
 		}
 		$title = sprintf(__('You have %1s plugins that need to be updated','titan-security'), $i);
 		$description = "<b>".__("Need to update plugins, as previous versions may be vulnerable:","titan-security")."</b>";
-		if (WTITAN_DEBUG || !empty($plugins_update)) $description .= "<br>- ".implode("<br>- ",$plugins_update);
-		if (WTITAN_DEBUG || $i) {
+		if (!empty($plugins_update)) $description .= "<br>- ".implode("<br>- ",$plugins_update);
+		if ($i) {
 			$this->add( $title, $description, 'medium', admin_url('update-core.php'));
 		}
 
@@ -288,10 +285,7 @@ class Audit extends Module_Base {
 		$themes = wp_get_themes();
 		$current = get_site_transient( 'update_themes' );
 		foreach ( (array) $current->response as $theme_file => $theme_data ) {
-			if(WTITAN_DEBUG)
-			{
-				$themes_update[] = $theme_data['theme'];
-			}
+			$themes_update[] = $theme_data['theme'];
 		}
 		$i = 0;
 		foreach ( (array) $themes as $key => $theme ) {
@@ -303,8 +297,8 @@ class Audit extends Module_Base {
 		}
 		$title = sprintf(__('You have %1s themes that need to be updated','titan-security'), $i);
 		$description = "<b>".__("Need to update themes, as previous versions may be vulnerable:","titan-security")."</b>";
-		if (WTITAN_DEBUG || !empty($themes_update)) $description .= "<br>- ".implode("<br>- ",$themes_update);
-		if (WTITAN_DEBUG || $i) {
+		if (!empty($themes_update)) $description .= "<br>- ".implode("<br>- ",$themes_update);
+		if ($i) {
 			$this->add( $title, $description,  'medium', admin_url('update-core.php'));
 		}
 
@@ -320,7 +314,7 @@ class Audit extends Module_Base {
 		//readme.html
 		$title = __("Readme.html file is available in the site root","titan-security");
 		$description = __("It is important to hide or delete the readme.html file, because it contains information about the WP version.","titan-security");
-		if (WTITAN_DEBUG || file_exists( ABSPATH."readme.html")) {
+		if (file_exists( ABSPATH."readme.html")) {
 			$this->add( $title, $description,  'low');
 		}
 

@@ -90,7 +90,7 @@ class Utils {
 		$key = \WBCR\Titan\Plugin::app()->getPopulateOption('enckey');
 
 		if( !$key ) {
-			//wordfence::status(1, 'error', "Wordfence error: No encryption key found!");
+			//wordfence::status(1, 'error', "Titan error: No encryption key found!");
 
 			return false;
 		}
@@ -103,7 +103,7 @@ class Utils {
 	{
 		$key = \WBCR\Titan\Plugin::app()->getPopulateOption('enckey');
 		if( !$key ) {
-			//wordfence::status(1, 'error', "Wordfence error: No encryption key found!");
+			//wordfence::status(1, 'error', "Titan error: No encryption key found!");
 
 			return false;
 		}
