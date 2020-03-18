@@ -118,13 +118,13 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 	private function register_pages()
 	{
+		self::app()->registerPage('WBCR\Titan\Page\QuickStart', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-quickstart.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-settings.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php');
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
-		//self::app()->registerPage( 'WBCR\Titan\Page\Vulnerabilities', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-vulnerabilities.php' );
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 	}
 
@@ -153,8 +153,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/change-firewall-mode.php');
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/install-auto-prepend.php');
 		}
-
-		//$this->init_activation();
 
 		add_action('plugins_loaded', function () {
 			$this->register_pages();

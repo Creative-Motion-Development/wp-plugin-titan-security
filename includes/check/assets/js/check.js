@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     //TABS
     jQuery('#wtitan-scanner-tabs a').on('click', function(e) {
         e.preventDefault();
-        $(this).tab('show');
+        jQuery(this).tab('show');
     });
 
     jQuery('#wt-scanner-scan').on('click', function(e) {

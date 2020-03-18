@@ -93,8 +93,8 @@ function titan_create_scheduler_scanner() {
 		'debug.log',
 	] );
 
-	Plugin::app()->updateOption( 'scanner', $scanner, false );
-	Plugin::app()->updateOption( 'scanner_malware_matched', [], false );
+	Plugin::app()->updateOption( 'scanner', $scanner );
+	Plugin::app()->updateOption( 'scanner_malware_matched', [] );
 	Plugin::app()->updateOption( 'scanner_files_count', $scanner->get_files_count() );
 	Plugin::app()->updateOption( 'scanner_status', 'started' );
 	wp_schedule_event( time(), 'minute', 'titan_scheduled_scanner' );

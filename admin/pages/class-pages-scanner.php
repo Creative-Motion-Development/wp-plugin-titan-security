@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Scanner extends Wbcr_FactoryClearfy000_PageBase {
+class Scanner extends Titan_PageBase {
 
 	/**
 	 * {@inheritDoc}

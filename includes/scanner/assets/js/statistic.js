@@ -12,7 +12,7 @@ jQuery(function($) {
                     $( '#' + chat_html_id ).attr( 'data-suspicious' ),
                 ],
                 backgroundColor: [
-                    '#8bc34a',
+                    '#5d05b7',
                     '#f1b1b6',
                 ],
                 borderWidth: 0,

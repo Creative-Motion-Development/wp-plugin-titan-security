@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @copyright (c) 2018 Webraftic Ltd
  */
-class License extends \Wbcr_FactoryClearfy000_LicensePage {
+class License extends Titan_PageBase {
 
 	/**
 	 * {@inheritdoc}
@@ -35,6 +35,20 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 * @var string
 	 */
 	public $page_parent_page;
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
+	 * @since  2.1.2
+	 * @var int
+	 */
+	public $page_menu_position = 0;
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public $page_menu_dashicon = 'dashicons-admin-network';
 
 	/**
 	 * WCL_LicensePage constructor.

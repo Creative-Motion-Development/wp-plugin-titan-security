@@ -90,11 +90,11 @@ class Audit extends Module_Base {
 	public function do_audit() {
 		$this->results = array();
 		
-//		$this->check_versions();
-//		$this->check_debug();
-//		$this->check_php_variables();
-//		$this->check_https();
-//		$this->check_users();
+		$this->check_versions();
+		$this->check_debug();
+		$this->check_php_variables();
+		$this->check_https();
+		$this->check_users();
 		$this->check_updates();
 
 		update_option( $this->plugin->getPrefix()."audit_results_hided", array(), 'no');

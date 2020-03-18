@@ -303,8 +303,11 @@ class Client {
 		}
 
 		$vuln = [];
-		foreach ( $response->response as $item ) {
-			$vuln[] = Vulnerability::from_array( $item );
+		foreach ( $response->response as $slug => $item ) {
+			$vuln[ $slug ] = [];
+			foreach ( $item as $v ) {
+				$vuln[ $slug ][] = Vulnerability::from_array( $v );
+			}
 		}
 
 		return $vuln;

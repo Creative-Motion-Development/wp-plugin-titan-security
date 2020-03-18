@@ -1,40 +1,5 @@
-/**
- * Styles for the Widget to be displayed in the Clearfy plugin
-
- * @author Alex Kovalev <alex.kovalevv@gmail.com> 
- * @copyright Webcraftic 14.06.2019
- */
-#WBCR {
-  /* Doughnut */
-  /*@media (max-width: 1380px) and (min-width: 1246px), (max-width: 380px) {
-    .wio-overview-chart-container {
-      float: none;
-      margin-right: 0;
-    }
-  }
-
-  @media (max-width: 1380px) and (min-width: 1246px), (max-width: 380px) {
-    .wio-overview-chart-container {
-      float: none;
-      margin-right: 0;
-    }
-
-    .wio-doughnut-legend {
-      margin-top: 18px;
-    }
-
-    .wio-global-optim-phrase {
-      padding-top: 0;
-      width: auto;
-    }
-  }*/
-}
 #WBCR .wio-clear {
   clear: both;
-}
-#WBCR #io_folders_statistic-wbcr_clearfy-tab,
-#WBCR #io_nextgen_gallery_statistic-wbcr_clearfy-tab {
-  display: none !important;
 }
 #WBCR .wrio-statistic-nav {
   margin: 0;
@@ -159,15 +124,6 @@
   padding: 3px 7px;
   background: #f3f3f3;
 }
-#WBCR .wrio-table .wbcr-rio-server-success {
-  color: #8CC152;
-}
-#WBCR .wrio-table .wbcr-rio-server-error {
-  color: #fb5d49;
-}
-#WBCR .wrio-table .wbcr-rio-server-warning {
-  color: #ffb635;
-}
 #WBCR .wrio-table.wbcr-rio-folders-table td:nth-child(3) {
   text-align: left;
 }
@@ -179,59 +135,6 @@
   font-weight: normal;
   font-size: 12px;
   color: #b7b2b2;
-}
-#WBCR .wrio-servers #wrio-change-optimization-server {
-  position: relative;
-  display: inline-block;
-  max-width: 400px;
-  margin-right: 15px;
-  margin-bottom: 0;
-  border: 1px solid #d2d0d0;
-  background: #efefef;
-}
-#WBCR .wrio-servers .wrio-servers-info {
-  margin: 0 0 0;
-  padding: 20px;
-  background: #fff;
-}
-#WBCR .wrio-servers .wrio-server-status-wrap {
-  display: inline-block;
-  margin-top: 8px;
-}
-#WBCR .wrio-servers .wrio-server-status-wrap .wrio-server-status {
-  background: transparent;
-  color: #fff;
-  padding: 3px 5px;
-  border-radius: 4px;
-}
-#WBCR .wrio-servers .wrio-server-status-wrap .wrio-server-status.wrio-down {
-  background: #ff5722;
-}
-#WBCR .wrio-servers .wrio-server-status-wrap .wrio-server-status.wrio-stable {
-  background: #8bc34a;
-}
-#WBCR .wrio-servers .wrio-server-status-wrap .wrio-server-status.wrio-server-check-proccess {
-  display: inline-block;
-  height: 10px;
-  width: 30px;
-  background: url("../img/quick-start-loader.gif") center no-repeat;
-}
-#WBCR .wrio-servers .wrio-premium-user-balance-wrap {
-  display: none;
-  margin-top: 8px;
-  margin-left: 10px;
-}
-#WBCR .wrio-servers .wrio-premium-user-balance-wrap .wrio-premium-user-balance {
-  color: #fff;
-  padding: 3px 5px;
-  border-radius: 4px;
-  background: #ffc107;
-}
-#WBCR .wrio-servers .wrio-premium-user-balance-wrap .wrio-premium-user-balance-check-proccess {
-  display: inline-block;
-  height: 10px;
-  width: 30px;
-  background: url("../img/quick-start-loader.gif") center no-repeat;
 }
 #WBCR .wio-columns {
   overflow: hidden;
@@ -423,11 +326,11 @@
   height: 25px;
   border-radius: 50%;
 }
-#WBCR .wio-optimize-button {
+#WBCR .wt-malware-scan-button {
   min-width: 180px;
   padding: 12px 30px;
-  background: #c9deb2;
-  color: #586549;
+  background: #5d05b7;
+  color: #ffffff;
   border: 0;
   box-shadow: none;
   font-size: 14px;
@@ -436,14 +339,14 @@
   border-radius: 4px;
   outline: none;
 }
-#WBCR .wio-optimize-button:active {
+#WBCR .wt-malware-scan-button:active {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
 }
-#WBCR .wio-optimize-button:disabled {
-  background: #e2edd6;
-  color: #a5b295;
+#WBCR .wt-malware-scan-button:disabled {
+  background: #b083de;
+  color: #ffffff;
 }
-#WBCR .wio-optimize-button.wio-running {
+#WBCR .wt-malware-scan-button.wio-running {
   color: #a57b3c;
   background: #fdd599 url("../img/Spinner-1s-33px.gif") 10px center no-repeat;
   padding-left: 50px;
@@ -455,7 +358,7 @@
   text-align: center;
 }
 #WBCR .wio-total-percent {
-  color: #587f2e;
+  color: #b083de;
 }
 #WBCR #wio-start-msg-top,
 #WBCR #wio-start-msg-right,
@@ -481,37 +384,6 @@
 #WBCR .wrio-optimization-progress {
   background: none;
   padding: 0;
-  /*button {
-      padding: 5px 10px;
-      border: 0;
-      font-size: 11px;
-      text-transform: uppercase !important;
-      font-weight: bold;
-      border-radius: 4px;
-      outline: none;
-      background: @greyButtonBg;
-      color: @greyButtonColor;
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
-      &:active {
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
-      }
-
-      &.wbcr-rio-loading {
-        width: 56px;
-        font-size: 0;
-        background: @greyButtonBg url("../img/quick-start-loader.gif") center no-repeat;
-      }
-
-      &.wbcr-rio-selected {
-        background: #f3efe2;
-        color: #d8d8d8;
-
-        &:active {
-          box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-        }
-      }
-    }*/
 }
 #WBCR .wrio-optimization-progress h4 {
   font-size: 15px;
@@ -558,81 +430,6 @@
 }
 #WBCR .wio-widget .wio-widget-bottom li:first-child {
   text-align: left;
-}
-#WBCR .factory-checkbox.wrio-checkbox-premium-label:after {
-  display: inline-block;
-  position: relative;
-  content: 'PRO';
-  background: #ff5722;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 10px;
-  line-height: 1;
-  font-style: normal;
-  padding: 4px 6px;
-  margin-left: 4px;
-  vertical-align: top;
-  top: -8px;
-  left: -10px;
-  right: auto;
-  z-index: 11;
-}
-#WBCR .factory-checkbox-disabled input,
-#WBCR .factory-checkbox-disabled button {
-  pointer-events: none;
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-#WBCR #wrio-webp-options h3,
-#WBCR #wrio-error-log-options h3 {
-  font-size: 14px;
-  margin: 0 0 10px 0;
-  font-weight: 600;
-  color: #565656;
-}
-#WBCR #wrio-webp-options .wrio-webp-options-info,
-#WBCR #wrio-error-log-options .wrio-webp-options-info {
-  color: #8a8787;
-  font-size: 12px;
-}
-#WBCR #wrio-webp-options ul,
-#WBCR #wrio-error-log-options ul {
-  padding-left: 0;
-}
-#WBCR #wrio-webp-options ul li:after,
-#WBCR #wrio-error-log-options ul li:after {
-  content: '';
-  display: block;
-  clear: both;
-}
-#WBCR #wrio-webp-options ul li label,
-#WBCR #wrio-error-log-options ul li label {
-  font-weight: 600;
-}
-#WBCR #wrio-webp-options ul li .wrio-webp-options-radio,
-#WBCR #wrio-error-log-options ul li .wrio-webp-options-radio,
-#WBCR #wrio-webp-options ul li .wrio-error-log-options-checkbox,
-#WBCR #wrio-error-log-options ul li .wrio-error-log-options-checkbox {
-  display: block;
-  float: left;
-  margin-top: 2px;
-  margin-right: 8px;
-}
-#WBCR #wrio-webp-options ul li .wrio-webp-options-radio:focus,
-#WBCR #wrio-error-log-options ul li .wrio-webp-options-radio:focus,
-#WBCR #wrio-webp-options ul li .wrio-error-log-options-checkbox:focus,
-#WBCR #wrio-error-log-options ul li .wrio-error-log-options-checkbox:focus {
-  outline: none;
-  box-shadow: none;
-}
-#WBCR #wrio-webp-options ul li .wrio-webp-options-info,
-#WBCR #wrio-error-log-options ul li .wrio-webp-options-info,
-#WBCR #wrio-webp-options ul li .wrio-error-log-options-info,
-#WBCR #wrio-error-log-options ul li .wrio-error-log-options-info {
-  padding-left: 25px;
 }
 @media (max-width: 830px) {
   #WBCR .wio [class^="col-"] {

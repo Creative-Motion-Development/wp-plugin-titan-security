@@ -1,29 +1,8 @@
-.wbcr-titan-content {
-    margin: 15px;
-}
-
-#scan {
-    position: relative;
-}
-#scan > span.text {
-    position: relative;
-    z-index: 1;
-}
-
-#scan > span.progress {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 100%;
-    z-index: 0;
-}
-/*----------------*/
 .wt-scanner-container
 {
     margin: 15px 15px 15px 15px;
 }
+/*----------------*/
 .wt-scanner-block-scan
 {
     text-align: center;
@@ -44,4 +23,11 @@
     font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
 }
-/*----------------*/
+.wt-scan-icon-loader
+{
+    height: 55px;
+    background: transparent url("../img/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 60px;
+}

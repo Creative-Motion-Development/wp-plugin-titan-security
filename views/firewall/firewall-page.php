@@ -97,14 +97,14 @@ $firewall_status_color = $data['firewall_status_color'];
                                 <strong><?php _e('Existing WAF Installation Detected:', 'titan'); ?></strong> <?php _e('You are currently running the Titan Web Application Firewall from another WordPress installation. Please configure the firewall to run correctly on this site.', 'titan'); ?>
                             </p>
                             <p>
-                                <a class="button button-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
+                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
                             </p>
 						<?php else: ?>
                             <p class="wf-no-top">
                                 <strong><?php _e('Basic WordPress Protection:', 'titan'); ?></strong> <?php _e('The plugin will load as a regular plugin after WordPress has been loaded, and while it can block many malicious requests, some vulnerable plugins or WordPress itself may run vulnerable code before all plugins are loaded.', 'titan'); ?>
                             </p>
                             <p>
-                                <a class="button button-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
+                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
                             </p>
 						<?php endif; ?>
                     </td>

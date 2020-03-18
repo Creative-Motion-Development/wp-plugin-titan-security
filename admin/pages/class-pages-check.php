@@ -16,7 +16,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class Check extends \Wbcr_FactoryClearfy000_PageBase {
+class Check extends Titan_PageBase {
 
 	/**
 	 * {@inheritdoc}
@@ -117,10 +117,8 @@ class Check extends \Wbcr_FactoryClearfy000_PageBase {
 			'hide_nonce' => wp_create_nonce("hide"),
 		]);
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
-
-		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
+		$this->styles->add( WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
+		$this->styles->add( WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
 	}
 
 	/**

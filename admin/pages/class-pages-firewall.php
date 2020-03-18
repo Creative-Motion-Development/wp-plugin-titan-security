@@ -16,7 +16,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
+class Firewall extends Titan_PageBase {
 
 	/**
 	 * {@inheritdoc}
@@ -42,22 +42,6 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	 * {@inheritdoc}
 	 */
 	public $page_menu_position = 0;
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since  6.0
-	 * @var string
-	 */
-	public $menu_target = 'options-general.php';
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since  6.0
-	 * @var bool
-	 */
-	public $internal = false;
 
 	/**
 	 * {@inheritDoc}
@@ -141,7 +125,7 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 			if( $data['firewall_status_percent'] > 0.70 ) {
 				$data['firewall_status_color'] = "#1fa02fc9";
 			} else {
-				$data['firewall_status_color'] = "#ff5722";
+				$data['firewall_status_color'] = "#5d05b7";
 			}
 
 			$this->view->print_template('firewall/firewall-page', $data);

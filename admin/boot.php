@@ -14,3 +14,5 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+require_once(WTITAN_PLUGIN_DIR . '/admin/class-page-titan-basic.php');
