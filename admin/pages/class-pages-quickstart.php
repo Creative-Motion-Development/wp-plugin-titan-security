@@ -3,7 +3,10 @@
 namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
+use WBCR\Titan\Audit;
 use WBCR\Titan\Views;
+use WBCR\Titan\Vulnerabilities;
+use WBCR\Titan\SiteChecker;
 
 if( !defined('ABSPATH') ) {
 	exit;
@@ -26,7 +29,7 @@ class QuickStart extends Titan_PageBase {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $page_menu_dashicon = 'dashicons-clock';
+	public $page_menu_dashicon = 'dashicons-dashboard';
 
 	/**
 	 * Menu icon (only if a page is placed as a main menu).
@@ -80,6 +83,31 @@ class QuickStart extends Titan_PageBase {
 	public $view;
 
 	/**
+	 * @var object|\WBCR\Titan\Model\Firewall
+	 */
+	public $firewall;
+
+	/**
+	 * @var object|\WBCR\Titan\Vulnerabilities
+	 */
+	public $vulnerabilities;
+
+	/**
+	 * @var object|\WBCR\Titan\Audit
+	 */
+	public $audit;
+
+	/**
+	 * @var \WBCR\Titan\SiteChecker
+	 */
+	public $sites;
+
+	/**
+	 * @var \WBCR\Titan\Scanner
+	 */
+	public $scanner;
+
+	/**
 	 * Logs constructor.
 	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
@@ -92,18 +120,20 @@ class QuickStart extends Titan_PageBase {
 		$this->plugin = $plugin;
 
 		$this->menu_title = __('Titan security', 'titan-security');
-		$this->menu_sub_title = __( 'Quick start', 'titan-security' );;
+		$this->page_title = __( 'Dashboard', 'titan-security' );;
+		$this->menu_sub_title = $this->page_title;
 		$this->page_menu_short_description = __('Start scanning and information about problems', 'titan-security');
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
+		$this->firewall = new \WBCR\Titan\Model\Firewall();
+		$this->vulnerabilities = new Vulnerabilities();
+		$this->audit = new Audit();
+		$this->sites = new SiteChecker();
+		$this->scanner = new \WBCR\Titan\Scanner();
+
 
 		parent::__construct($plugin);
-	}
-
-	public function getPageTitle()
-	{
-		return __('Quick start', 'titan-security');
 	}
 
 	/**
@@ -127,12 +157,16 @@ class QuickStart extends Titan_PageBase {
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/js/audit_ajax.js', ['jquery']);
 		$this->scripts->localize( 'wtaudit', [ 'nonce' => wp_create_nonce('get_audits')]);
 
-		$this->scripts->add( WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/scanner.js' );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/Chart.min.js', ['jquery'] );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/statistic.js', ['jquery'] );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/scanner.js', ['jquery'] );
 		$this->scripts->localize( 'wpnonce', [
 			'start'  => wp_create_nonce( 'titan-start-scan' ),
 			'stop'   => wp_create_nonce( 'titan-stop-scan' ),
 			'status' => wp_create_nonce( 'titan-status-scan' ),
 		] );
+
+		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/libs/circular-progress.js', ['jquery']);
 
 	}
 
@@ -144,8 +178,28 @@ class QuickStart extends Titan_PageBase {
 	{
 		if( $this->plugin->is_premium() )
 		{
+			//FIREWALL
+			$firewall = array();
+			$firewall['this-firewall'] = $this->firewall;
+			$firewall['firewall_mode'] = $this->plugin->getPopulateOption('firewall_mode');
+			$firewall['firewall_status_percent'] = $this->firewall->wafStatus();
+			if( $firewall['firewall_status_percent'] > 0.70 ) {
+				$firewall['firewall_status_color'] = "#1fa02fc9";
+			} else {
+				$firewall['firewall_status_color'] = "#5d05b7";
+			}
+			//end FIREWALL
+
 			$scanner_started = $this->plugin->getOption( 'scanner_status' ) == 'started';
-			$this->view->print_template('quickstart', ['scanner_started' => $scanner_started]);
+			$this->view->print_template('quickstart', [
+				'scanner_started' => $scanner_started,
+				'this_plugin' => $this->plugin,
+				'firewall' => $firewall,
+				'vulnerabilities' => $this->vulnerabilities,
+				'audit' => $this->audit,
+				'sites' => $this->sites,
+				'scanner' => $this->scanner->get_current_results(),
+			]);
 		}
 		else
 			require_once WTITAN_PLUGIN_DIR."/admin/view.nolicense.php";

@@ -2,6 +2,10 @@ h2.nav-tab-wrapper
 {
     margin-left: 10px !important;
 }
+#WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-inner-wrap .nav-tab
+{
+    border-radius: 5px 5px 0 0;
+}
 #WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-header
 {
     background-color: #5d05b7 !important;
@@ -30,6 +34,11 @@ h2.nav-tab-wrapper
 {
     background-color: #dbcde8 !important;
 }
+#WBCR .wbcr-factory-pages-000-impressive-page-template input[type="checkbox"]:checked::before
+{
+    content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%235d05b7%27%2F%3E%3C%2Fsvg%3E) !important;
+}
+
 /*--------------------------*/
 .factory-bootstrap-000 select.form-control
 {
@@ -68,10 +77,6 @@ h2.nav-tab-wrapper
     border-right: 1px solid #8651bd !important;
     color: #ffffff !important;
 
-}
-#WBCR .wbcr-factory-pages-000-impressive-page-template input[type="checkbox"]:checked::before
-{
-    content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%235d05b7%27%2F%3E%3C%2Fsvg%3E) !important;
 }
 .wt-plugin-header-logo
 {

@@ -41,41 +41,41 @@ jQuery.fn.wfCircularProgress = function(options) {
 		jQuery(this).css('height', opts.diameter + 'px');
 
 		var svg = jQuery(this).find('svg');
-		if( svg.length == 0 ) {
+		if( svg.length === 0 ) {
 			svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 			jQuery(this).append(svg);
 		}
 		var inactivePath = jQuery(this).find('.wtitan-status-circular-inactive-path');
-		if( inactivePath.length == 0 ) {
+		if( inactivePath.length === 0 ) {
 			inactivePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
 			jQuery(inactivePath).addClass('wtitan-status-circular-inactive-path');
 			jQuery(svg).append(inactivePath);
 		}
 		var activePath = jQuery(this).find('.wtitan-status-circular-active-path');
-		if( activePath.length == 0 ) {
+		if( activePath.length === 0 ) {
 			activePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
 			jQuery(activePath).addClass('wtitan-status-circular-active-path');
 			jQuery(svg).append(activePath);
 		}
 		var terminator = jQuery(this).find('.wtitan-status-circular-terminator');
-		if( terminator.length == 0 ) {
+		if( terminator.length === 0 ) {
 			terminator = document.createElementNS("http://www.w3.org/2000/svg", "path");
 			jQuery(terminator).addClass('wtitan-status-circular-terminator');
 			jQuery(svg).append(terminator);
 		}
 		var text = jQuery(this).find('.wtitan-status-circular-text');
-		if( text.length == 0 ) {
+		if( text.length === 0 ) {
 			text = jQuery('<div class="wtitan-status-circular-text"></div>');
 			jQuery(this).append(text);
 		}
 		var pendingOverlay = jQuery(this).find('.wf-status-overlay-text');
-		if( pendingOverlay.length == 0 ) {
+		if( pendingOverlay.length === 0 && opts.pendingMessage.length !== 0 ) {
 			pendingOverlay = jQuery('<div class="wf-status-overlay-text"></div>');
 			jQuery(this).append(pendingOverlay);
 		}
 
 		jQuery(svg).attr('viewBox', '0 0 ' + opts.diameter + ' ' + opts.diameter);
-		jQuery(svg).css('display', 'block');
+		jQuery(svg).css('display', opts.css_display);
 		jQuery(svg).css('width', opts.diameter + 'px');
 		jQuery(svg).css('height', opts.diameter + 'px');
 		jQuery(inactivePath).attr('d', 'M ' + center + ',' + center + ' m 0,-' + insetRadius + ' a ' + insetRadius + ',' + insetRadius + ' 0 1 1 0,' + (2 * insetRadius) + ' a ' + insetRadius + ',' + insetRadius + ' 0 1 1 0,-' + (2 * insetRadius));
@@ -136,4 +136,5 @@ jQuery.fn.wfCircularProgress.defaults = {
 	diameter: 100,
 	pendingOverlay: false,
 	pendingMessage: 'Note: Status will update when changes are saved',
+	css_display: 'block',
 };

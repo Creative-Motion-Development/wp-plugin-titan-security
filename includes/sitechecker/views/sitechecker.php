@@ -9,6 +9,14 @@
 		<table>
 			<tbody>
 				<tr>
+                    <td>
+                        <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" style="width: 100%" id="subscribe">
+                            Subscribe
+                        </button>
+                        <button class="btn btn-secondary btn-lg wt-sitechecker-button-subscribe" style="width: 100%; display: none;"
+                                id="unsubscribe">Unsubscribe
+                        </button>
+                    </td>
 					<td>
 						<h4>Push notifications in the browser</h4>
 						<p>
@@ -16,14 +24,6 @@
                             with URLs access in real time.<br>
                             Your browser will receive push notifications if one of the URLS is unavailable.
 						</p>
-					</td>
-					<td>
-						<button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" style="width: 100%" id="subscribe">
-							Subscribe
-						</button>
-						<button class="btn btn-secondary btn-lg wt-sitechecker-button-subscribe" style="width: 100%; display: none;"
-						        id="unsubscribe">Unsubscribe
-						</button>
 					</td>
 				</tr>
 			</tbody>

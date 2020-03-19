@@ -4,14 +4,14 @@
 
 (function ($) {
     firebase.initializeApp({
-        apiKey: "AIzaSyA1cTRtYRpVmACeaqbdnHnruvoWEj_LLdM",
-        authDomain: "titan-checker-dev.firebaseapp.com",
-        databaseURL: "https://titan-checker-dev.firebaseio.com",
-        projectId: "titan-checker-dev",
-        storageBucket: "titan-checker-dev.appspot.com",
-        messagingSenderId: "468240947431",
-        appId: "1:468240947431:web:d77511f15ae3b6f433ea42",
-        measurementId: "G-WR3G7792E4"
+        apiKey: "AIzaSyAAkQhmoqd-emHHsK5CP79eVUcci7umGMs",
+        authDomain: "titan-security.firebaseapp.com",
+        databaseURL: "https://titan-security.firebaseio.com",
+        projectId: "titan-security",
+        storageBucket: "titan-security.appspot.com",
+        messagingSenderId: "313719964045",
+        appId: "1:313719964045:web:7bd9fa554204728914bdc4",
+        measurementId: "G-G5LGKBYFE5"
     });
 
     var storageTokenKey = 'firebase-messaging-token';
@@ -178,6 +178,7 @@
                             sendTokenToServer(currentToken);
                             subscribe_bt.hide();
                             unsubscribe_bt.show();
+                            document.cookie = "wt-push-subscribe=1; expires=Tue, 19 Jan 2040 03:14:07 GMT";
                         } else {
                             showError('No Instance ID token available. Request permission to generate one');
                             setSentTokenToServer(undefined);
@@ -217,5 +218,6 @@
     function resetUI() {
         subscribe_bt.show();
         unsubscribe_bt.hide();
+        document.cookie = "wt-push-subscribe=0; max-age=0";
     }
 })(jQuery);

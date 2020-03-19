@@ -10,9 +10,9 @@ $firewall_status_color = $data['firewall_status_color'];
 ?>
 <div class="wbcr-content-section">
         <div class="wbcr-factory-page-group-header" style="margin:0">
-            <strong><?php _e('Web Application Firewall (WAF)', 'titan'); ?></strong>. <p>
+            <strong><?php _e('Web Application Firewall (WAF)', 'titan-security'); ?></strong>. <p>
 				<?php _e('The Titan Web Application Firewall is a PHP based, application level firewall that filters out
-					malicious requests to your site.', 'titan'); ?></p>
+					malicious requests to your site.', 'titan-security'); ?></p>
         </div>
 
 
@@ -21,15 +21,15 @@ $firewall_status_color = $data['firewall_status_color'];
                 <tr>
                     <td>
                         <div class="wtitan-status-block wtitan-status--enabled" style="display: <?php echo("enabled" === $firewall_mode ? 'block' : 'none') ?>;">
-                            <h4><?php _e('Titan Firewall Activated', 'titan'); ?></h4>
+                            <h4><?php _e('Titan Firewall Activated', 'titan-security'); ?></h4>
                             <span class="dashicons dashicons-yes-alt" style="font-size:80px;width: 80px;height:80px;color:#1fa02fc9;"></span>
                         </div>
                         <div class="wtitan-status-block wtitan-status--learning-mode" style="display: <?php echo("learning-mode" === $firewall_mode ? 'block' : 'none') ?>;">
-                            <h4><?php _e('Titan Firewall in Learning Mode', 'titan'); ?></h4>
+                            <h4><?php _e('Titan Firewall in Learning Mode', 'titan-security'); ?></h4>
                             <span style="font-size:80px;width: 80px;height:80px;color:#fcb214;" class="dashicons dashicons-clock"></span>
                         </div>
                         <div class="wtitan-status-block wtitan-status--disabled" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
-                            <h4 style="color:#9c3926"><?php _e('Titan Firewall Deactivated', 'titan'); ?></h4>
+                            <h4 style="color:#9c3926"><?php _e('Titan Firewall Deactivated', 'titan-security'); ?></h4>
                             <span class="dashicons dashicons-dismiss" style="font-size:80px;width: 80px;height:80px;color:#f59888;"></span>
                         </div>
                     </td>
@@ -46,16 +46,16 @@ $firewall_status_color = $data['firewall_status_color'];
                                 });
                             });
                         </script>
-                        <h4><?php _e('Web Application Firewall', 'titan'); ?></h4>
-                        <p><?php _e('Stops Complex Attacks', 'titan'); ?></p>
+                        <h4><?php _e('Web Application Firewall', 'titan-security'); ?></h4>
+                        <p><?php _e('Stops Complex Attacks', 'titan-security'); ?></p>
                         <div id="wtitan-status-tooltip" style="display: none">
-                            <strong><?php _e('How do I get to 100%?', 'titan'); ?></strong>
+                            <strong><?php _e('How do I get to 100%?', 'titan-security'); ?></strong>
                             <ul>
-                                <li><?php _e('30% Enable the Titan Firewall.', 'titan'); ?></li>
-                                <li><?php _e('70% Optimize the Titan Firewall.', 'titan'); ?></li>
+                                <li><?php _e('30% Enable the Titan Firewall.', 'titan-security'); ?></li>
+                                <li><?php _e('70% Optimize the Titan Firewall.', 'titan-security'); ?></li>
                                 <!--<li>30% Disable learning mode.</li>
 								<li>35% Enable Real-Time IP Blacklist.</li>-->
-                                <li><a href="#"><?php _e('How does Titan determine this?', 'titan'); ?></a></li>
+                                <li><a href="#"><?php _e('How does Titan determine this?', 'titan-security'); ?></a></li>
                             </ul>
                     </td>
                 </tr>
@@ -65,46 +65,46 @@ $firewall_status_color = $data['firewall_status_color'];
             <table>
                 <tr>
                     <td>
-                        <h4><?php _e('Web Application Firewall Status', 'titan'); ?></h4>
+                        <h4><?php _e('Web Application Firewall Status', 'titan-security'); ?></h4>
                         <p><?php _e('Enabled and Protecting: In this mode, the Titan Web Application Firewall is actively
 								blocking requests matching known attack patterns and is actively protecting your site
-								from attackers.', 'titan'); ?></p>
+								from attackers.', 'titan-security'); ?></p>
 
                         <select id="js-wtitan-firewall-mode" data-nonce="<?php echo wp_create_nonce('wtitan_change_firewall_mode') ?>" name="wafStatus" tabindex="-1" aria-hidden="true" style="width: 200px;">
                             <option selected="" class="wafStatus-enabled" value="enabled"<?php selected("enabled", $firewall_mode) ?>>
-								<?php _e('Enabled and Protecting', 'titan'); ?>
+								<?php _e('Enabled and Protecting', 'titan-security'); ?>
                             </option>
                             <option class="wafStatus-learning-mode" value="learning-mode"<?php selected("learning-mode", $firewall_mode) ?>>
-								<?php _e('Learning Mode', 'titan'); ?>
+								<?php _e('Learning Mode', 'titan-security'); ?>
                             </option>
                             <option class="wafStatus-disabled" value="disabled"<?php selected("disabled", $firewall_mode) ?>>
-								<?php _e('Disabled', 'titan'); ?>
+								<?php _e('Disabled', 'titan-security'); ?>
                             </option>
                         </select>
                     </td>
                     <td>
-                        <h4><?php _e('Protection Level', 'titan'); ?></h4>
+                        <h4><?php _e('Protection Level', 'titan-security'); ?></h4>
 						<?php if( $this_firewall->protectionMode() == \WBCR\Titan\Model\Firewall::PROTECTION_MODE_EXTENDED && !$this_firewall->isSubDirectoryInstallation() ): ?>
                             <p class="wf-no-top">
-                                <strong><?php _e('Extended Protection:', 'titan'); ?></strong> <?php _e('All PHP requests will be processed by the firewall prior to running.', 'titan'); ?>
+                                <strong><?php _e('Extended Protection:', 'titan-security'); ?></strong> <?php _e('All PHP requests will be processed by the firewall prior to running.', 'titan-security'); ?>
                             </p>
-                            <p><?php printf(__('If you\'re moving to a new host or a new installation location, you may need to temporarily disable extended protection to avoid any file not found errors. Use this action to remove the configuration changes that enable extended protection mode or you can <a href="%s" target="_blank" rel="noopener noreferrer">remove them manually</a>.', 'titan'), '#'); ?></p>
+                            <p><?php printf(__('If you\'re moving to a new host or a new installation location, you may need to temporarily disable extended protection to avoid any file not found errors. Use this action to remove the configuration changes that enable extended protection mode or you can <a href="%s" target="_blank" rel="noopener noreferrer">remove them manually</a>.', 'titan-security'), '#'); ?></p>
                             <p class="wf-no-top">
-                                <a class="button button-default" href="#" id="js-wtitan-firewall-uninstall"><?php _e('Remove Extended Protection', 'titan'); ?></a>
+                                <a class="button button-default" href="#" id="js-wtitan-firewall-uninstall"><?php _e('Remove Extended Protection', 'titan-security'); ?></a>
                             </p>
 						<?php elseif( $this_firewall->isSubDirectoryInstallation() ): ?>
                             <p class="wf-no-top">
-                                <strong><?php _e('Existing WAF Installation Detected:', 'titan'); ?></strong> <?php _e('You are currently running the Titan Web Application Firewall from another WordPress installation. Please configure the firewall to run correctly on this site.', 'titan'); ?>
+                                <strong><?php _e('Existing WAF Installation Detected:', 'titan-security'); ?></strong> <?php _e('You are currently running the Titan Web Application Firewall from another WordPress installation. Please configure the firewall to run correctly on this site.', 'titan-security'); ?>
                             </p>
                             <p>
-                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
+                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan-security'); ?></a>
                             </p>
 						<?php else: ?>
                             <p class="wf-no-top">
-                                <strong><?php _e('Basic WordPress Protection:', 'titan'); ?></strong> <?php _e('The plugin will load as a regular plugin after WordPress has been loaded, and while it can block many malicious requests, some vulnerable plugins or WordPress itself may run vulnerable code before all plugins are loaded.', 'titan'); ?>
+                                <strong><?php _e('Basic WordPress Protection:', 'titan-security'); ?></strong> <?php _e('The plugin will load as a regular plugin after WordPress has been loaded, and while it can block many malicious requests, some vulnerable plugins or WordPress itself may run vulnerable code before all plugins are loaded.', 'titan-security'); ?>
                             </p>
                             <p>
-                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan'); ?></a>
+                                <a class="btn btn-primary" href="#" id="js-wtitan-optimize-firewall-protection"><?php _e('Optimize the Titan Firewall', 'titan-security'); ?></a>
                             </p>
 						<?php endif; ?>
                     </td>

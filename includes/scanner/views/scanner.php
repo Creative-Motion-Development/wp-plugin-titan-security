@@ -48,9 +48,10 @@ use WBCR\Titan\MalwareScanner\Match;
                     </div>
                     <p class="wio-global-optim-phrase wio-clear">
                         Scanned <span class="wio-total-percent" id="wt-total-percent">
-                    <?php echo round( $progress, 1 ) ?>%
-                </span>
-                        of your website's files </p>
+                                <?php echo round( $progress, 1 ) ?>%
+                                </span>
+                        of your website's files
+                    </p>
                 </div>
                 <div style="margin-left:200px;">
                     <div id="wio-overview-chart-legend">
