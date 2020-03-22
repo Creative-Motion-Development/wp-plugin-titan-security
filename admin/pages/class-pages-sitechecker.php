@@ -37,18 +37,6 @@ class SiteChecker extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public $show_right_sidebar_in_options = false;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public $page_menu_position = 0;
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since  6.0
-	 * @var bool
-	 */
-	public $add_link_to_plugin_actions = false;
 
 	/**
 	 * Module folder URL

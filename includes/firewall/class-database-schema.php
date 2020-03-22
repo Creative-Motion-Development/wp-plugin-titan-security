@@ -106,15 +106,17 @@ class Schema {
 		$this->db = $wpdb;
 	}
 
-	public function get_table_name($table)
+	public static function get_table_name($table)
 	{
-		return $this->db->prefix . \WBCR\Titan\Plugin::app()->getPrefix() . $table;
+		global $wpdb;
+
+		return $wpdb->prefix . \WBCR\Titan\Plugin::app()->getPrefix() . $table;
 	}
 
 	public function dropAll()
 	{
 		foreach(self::$tables as $table => $def) {
-			$table = $this->get_table_name($table);
+			$table = static::get_table_name($table);
 
 			$this->db->query("DROP TABLE IF EXISTS {$table}");
 		}
@@ -123,18 +125,18 @@ class Schema {
 	public function create_all()
 	{
 		foreach(self::$tables as $table => $def) {
-			$this->db->query("CREATE TABLE IF NOT EXISTS " . $this->get_table_name($table) . " " . $def);
+			$this->db->query("CREATE TABLE IF NOT EXISTS " . static::get_table_name($table) . " " . $def);
 		}
 	}
 
 	public function create($table)
 	{
-		$this->db->query("CREATE TABLE IF NOT EXISTS " . $this->get_table_name($table) . " " . self::$tables[$table]);
+		$this->db->query("CREATE TABLE IF NOT EXISTS " . static::get_table_name($table) . " " . self::$tables[$table]);
 	}
 
 	public function drop($table)
 	{
-		$table = $this->get_table_name($table);
+		$table = static::get_table_name($table);
 		$this->db->query("DROP TABLE IF EXISTS {$table}");
 	}
 

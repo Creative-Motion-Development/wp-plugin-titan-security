@@ -25,7 +25,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 				$whitelistedIPs = explode(',', $whitelistedIPs);
 			}
 			foreach($whitelistedIPs as $whitelistedIP) {
-				$ipRange = new wfWAFUserIPRange($whitelistedIP);
+				$ipRange = new \WBCR\Titan\Firewall\User_IP_Range($whitelistedIP);
 				if( $ipRange->isIPInRange(wfWAF::getInstance()->getRequest()->getIP()) ) {
 					throw new wfWAFAllowException('Titan whitelisted IP.');
 				}
@@ -99,7 +99,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 				$watchedIPs = explode(',', $watchedIPs);
 			}
 			foreach($watchedIPs as $watchedIP) {
-				$ipRange = new wfWAFUserIPRange($watchedIP);
+				$ipRange = new \WBCR\Titan\Firewall\User_IP_Range($watchedIP);
 				if( $ipRange->isIPInRange(wfWAF::getInstance()->getRequest()->getIP()) ) {
 					throw new wfWAFLogException('Titan watched IP.');
 				}

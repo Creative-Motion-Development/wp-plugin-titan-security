@@ -62,7 +62,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 			$isSynchronizing = true;
 
 			// Pattern Blocks
-			$blocks = wfBlock::patternBlocks(true);
+			$blocks = \WBCR\Titan\Firewall\Model\Block::patternBlocks(true);
 			$patternBlocks = array();
 			foreach($blocks as $b) {
 				$patternBlocks[] = array(
@@ -77,7 +77,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 
 			// Country Blocks
 			$countryBlocks = array();
-			$countryBlockEntries = wfBlock::countryBlocks(true);
+			$countryBlockEntries = \WBCR\Titan\Firewall\Model\Block::countryBlocks(true);
 			$countryBlocks['blocks'] = array();
 			foreach($countryBlockEntries as $b) {
 				$reason = __('Access from your area has been temporarily limited for security reasons', 'wordfence');
@@ -97,15 +97,15 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 			$countryBlocks['bypassRedirDest'] = wfConfig::get('cbl_bypassRedirDest', '');
 			$countryBlocks['bypassViewURL'] = wfConfig::get('cbl_bypassViewURL', '');
 			$countryBlocks['redirURL'] = wfConfig::get('cbl_redirURL', '');
-			$countryBlocks['cookieVal'] = wfBlock::countryBlockingBypassCookieValue();
+			$countryBlocks['cookieVal'] = \WBCR\Titan\Firewall\Model\Block::countryBlockingBypassCookieValue();
 
 			//Other Blocks
 			$otherBlocks = array('blockedTime' => wfConfig::get('blockedTime', 0));
-			$otherBlockEntries = wfBlock::ipBlocks(true);
+			$otherBlockEntries = \WBCR\Titan\Firewall\Model\Block::ipBlocks(true);
 			$otherBlocks['blocks'] = array();
 			foreach($otherBlockEntries as $b) {
 				$reason = $b->reason;
-				if( $b->type == wfBlock::TYPE_IP_MANUAL || $b->type == wfBlock::TYPE_IP_AUTOMATIC_PERMANENT ) {
+				if( $b->type == \WBCR\Titan\Firewall\Model\Block::TYPE_IP_MANUAL || $b->type == \WBCR\Titan\Firewall\Model\Block::TYPE_IP_AUTOMATIC_PERMANENT ) {
 					$reason = __('Manual block by administrator', 'wordfence');
 				}
 
@@ -118,7 +118,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 			}
 
 			//Lockouts
-			$lockoutEntries = wfBlock::lockouts(true);
+			$lockoutEntries = \WBCR\Titan\Firewall\Model\Block::lockouts(true);
 			$lockoutSecs = wfConfig::get('loginSec_lockoutMins') * 60;
 			$lockouts = array('lockedOutTime' => $lockoutSecs, 'lockouts' => array());
 			foreach($lockoutEntries as $l) {
@@ -165,7 +165,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 			}
 
 			//Let the plugin handle these
-			$wfFunc = $request->getQueryString('_wfsf');
+			$wfFunc = $request->getQueryString('_wtitan_fsf');
 			if( $wfFunc == 'unlockEmail' || $wfFunc == 'unlockAccess' ) { // Can't check validity here, let it pass through to plugin level where it can
 				return false;
 			}
@@ -223,7 +223,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 					if( !empty($b['ipRange']) ) {
 						$expectedBits |= (1 << $ipRangeOffset);
 
-						$range = new wfWAFUserIPRange($b['ipRange']);
+						$range = new \WBCR\Titan\Firewall\User_IP_Range($b['ipRange']);
 						if( $range->isIPInRange($ip) ) {
 							$foundBits |= (1 << $ipRangeOffset);
 						}
@@ -509,7 +509,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 
 			foreach($wfIPWhitelist as $group) {
 				foreach($group as $subnet) {
-					if( $subnet instanceof wfWAFUserIPRange ) { //Not currently reached
+					if( $subnet instanceof \WBCR\Titan\Firewall\User_IP_Range ) { //Not currently reached
 						if( $subnet->isIPInRange($ip) ) {
 							return true;
 						}

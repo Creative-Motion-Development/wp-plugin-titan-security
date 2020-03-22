@@ -1,5 +1,5 @@
 <?php
-if (!defined('WORDFENCE_VERSION')) { exit; }
+if (!defined('WTITAN_VERSION')) { exit; }
 
 require_once(dirname(__FILE__) . '/../../vendor/autoload.php');
 

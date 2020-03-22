@@ -25,6 +25,16 @@ class Activation extends \Wbcr_Factory000_Activator {
 	 */
 	public function activate()
 	{
+		$plugin_version_in_db = $this->get_plugin_version_in_db();
+		$current_plugin_version = $this->plugin->getPluginVersion();
+
+		$tab = "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+		$log_message = "Plugin starts activation [START].\r\n";
+		$log_message .= "{$tab}-Plugin Version in DB: {$plugin_version_in_db}\r\n";
+		$log_message .= "{$tab}-Current Plugin Version: {$current_plugin_version}";
+
+		\WBCR\Titan\Logger\Writter::info($log_message);
+
 		if( !\WBCR\Titan\Plugin::app()->getPopulateOption('firewall_mode') ) {
 			require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-utils.php');
 
@@ -38,6 +48,30 @@ class Activation extends \Wbcr_Factory000_Activator {
 
 			\WBCR\Titan\Plugin::app()->updatePopulateOption('enckey', substr(\WBCR\Titan\Firewall\Utils::bigRandomHex(), 0, 16));
 			\WBCR\Titan\Plugin::app()->updatePopulateOption('long_enc_key', \WBCR\Titan\Firewall\Utils::random_bytes(32));
+			/*$configDefaults = array(
+				'apiKey'         => wfConfig::get('apiKey'),
+				'isPaid'         => !!wfConfig::get('isPaid'),
+				'siteURL'        => $siteurl,
+				'homeURL'        => $homeurl,
+				'whitelistedIPs' => (string) wfConfig::get('whitelisted'),
+				'whitelistedServiceIPs' => @json_encode(wfUtils::whitelistedServiceIPs()),
+				'howGetIPs'      => (string) wfConfig::get('howGetIPs'),
+				'howGetIPs_trusted_proxies' => wfConfig::get('howGetIPs_trusted_proxies', ''),
+				'detectProxyRecommendation' => (string) wfConfig::get('detectProxyRecommendation'),
+				'other_WFNet'    => !!wfConfig::get('other_WFNet', true),
+				'pluginABSPATH'	 => ABSPATH,
+				'serverIPs'		 => json_encode(wfUtils::serverIPs()),
+				'blockCustomText' => wpautop(wp_strip_all_tags(wfConfig::get('blockCustomText', ''))),
+				'betaThreatDefenseFeed' => !!wfConfig::get('betaThreatDefenseFeed'),
+				'disableWAFIPBlocking' => wfConfig::get('disableWAFIPBlocking'),
+			);
+			if (wfUtils::isAdmin()) {
+				$errorNonceKey = 'errorNonce_' . get_current_user_id();
+				$configDefaults[$errorNonceKey] = wp_create_nonce('wf-waf-error-page'); //Used by the AJAX watcher script
+			}
+			foreach ($configDefaults as $key => $value) {
+				$waf->getStorageEngine()->setConfig($key, $value, 'synced');
+			}*/
 		}
 
 		// We create db tables for firewall
@@ -47,6 +81,23 @@ class Activation extends \Wbcr_Factory000_Activator {
 	}
 
 	/**
+	 * Get previous plugin version
+	 *
+	 * @return number
+	 * @since  6.0
+	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
+	 */
+	public function get_plugin_version_in_db()
+	{
+		if( \WBCR\Titan\Plugin::app()->isNetworkActive() ) {
+			return get_site_option(\WBCR\Titan\Plugin::app()->getOptionName('plugin_version'), 0);
+		}
+
+		return get_option(\WBCR\Titan\Plugin::app()->getOptionName('plugin_version'), 0);
+	}
+
+
+	/**
 	 * Run deactivation actions.
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
@@ -54,6 +105,7 @@ class Activation extends \Wbcr_Factory000_Activator {
 	 */
 	public function deactivate()
 	{
-
+		\WBCR\Titan\Logger\Writter::info("Plugin starts deactivate [START].");
+		\WBCR\Titan\Logger\Writter::info("Plugin has been deactivated [END]!");
 	}
 }

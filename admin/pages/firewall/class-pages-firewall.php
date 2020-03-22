@@ -163,22 +163,23 @@ class Firewall extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public function print_confirmation_modal_tpl()
 	{
-		$firewall_mode = $this->plugin->getPopulateOption('firewall_mode');
-		?>
-		<script type="text/html" id="wtitan-tmpl-default-modal">
-			<?php if( $this->firewall->protectionMode() == \WBCR\Titan\Model\Firewall::PROTECTION_MODE_EXTENDED && !$this->firewall->isSubDirectoryInstallation() ): ?>
-				<div class="wtitan-uninstall-auto-prepend-modal-content" style="display: none">
-					<?php echo $this->view->print_template('firewall/uninstall-auto-prepend-file-modal'); ?>
-				</div>
-			<?php else: ?>
-				<div class="wtitan-install-auto-prepend-modal-content" style="display: none">
-					<?php echo $this->view->print_template('firewall/auto-prepend-file-modal'); ?>
-				</div>
-			<?php endif; ?>
-		</script>
-		<?php
+		if( !(isset($_GET['page']) && $_GET['page'] === $this->getResultId()) ) {
+			return;
+		}
+		if( $this->firewall->protectionMode() == \WBCR\Titan\Model\Firewall::PROTECTION_MODE_EXTENDED && !$this->firewall->isSubDirectoryInstallation() ) {
+			echo $this->view->print_template('firewall/modal-template-default', [
+				'id' => 'default-modal',
+				'title' => __('Optimize Titan Firewall'),
+				'content' => $this->view->get_template('firewall/uninstall-auto-prepend-file-modal')
+			]);
+		} else {
+			echo $this->view->print_template('firewall/modal-template-default', [
+				'id' => 'default-modal',
+				'title' => __('Uninstall Titan Firewall'),
+				'content' => $this->view->get_template('firewall/auto-prepend-file-modal')
+			]);
+		}
 	}
-
 
 	public function downloadBackupAction()
 	{

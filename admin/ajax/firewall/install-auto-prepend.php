@@ -3,6 +3,10 @@ function wtitan_install_auto_prepend_file()
 {
 	global $wp_filesystem;
 
+	if( !current_user_can('manage_options') ) {
+		wp_send_json(array('error' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+	}
+
 	$currentAutoPrependFile = ini_get('auto_prepend_file');
 
 	$currentAutoPrepend = null;
@@ -130,6 +134,10 @@ add_action('wp_ajax_wtitan-install-auto-prepend', 'wtitan_install_auto_prepend_f
 function wtitan_uninstall_auto_prepend_file()
 {
 	global $wp_filesystem;
+
+	if( !current_user_can('manage_options') ) {
+		wp_send_json(array('error' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+	}
 
 	$server_configuration = null;
 	if( isset($_POST['server_configuration']) && \WBCR\Titan\Server\Helper::isValidServerConfig($_POST['server_configuration']) ) {

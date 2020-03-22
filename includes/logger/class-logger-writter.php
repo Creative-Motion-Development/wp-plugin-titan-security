@@ -3,7 +3,7 @@
 namespace WBCR\Titan\Logger;
 
 // Exit if accessed directly
-if( !defined('ABSPATH') ) {
+if( !defined('ABSPATH') && !defined('WFWAF_AUTO_PREPEND') ) {
 	exit;
 }
 

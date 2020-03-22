@@ -86,41 +86,4 @@
 .wtitan-whitelist__bg-requests-controls ul > li input[type="checkbox"] {
   margin: 0;
 }
-.wtitan-ip-blocking {
-  padding: 5px 20px;
-}
-.wtitan-ip-blocking__controls {
-  display: flex;
-  flex-direction: row;
-}
-.wtitan-ip-blocking__controls-left {
-  flex-grow: 0 !important;
-}
-.wtitan-ip-blocking__controls-right {
-  flex-grow: 1 !important;
-  text-align: right;
-}
-.wtitan-ip-blocking__controls li {
-  display: block;
-}
-.wtitan-ip-blocking__table th,
-.wtitan-ip-blocking__table td {
-  padding: 20px;
-}
-.wtitan-ip-blocking__table th {
-  background-color: #ebebeb;
-  color: #777;
-  font-weight: bold;
-  text-align: left;
-  border-left: 1px solid #bdbdbd;
-}
-.wtitan-ip-blocking__table th:first-child {
-  border: 0;
-}
-.wtitan-ip-blocking-form__table input[type="text"] {
-  width: 300px;
-}
-.wtitan-ip-blocking-form__table textarea {
-  width: 300px;
-}
 /*# sourceMappingURL=firewall-settings.css.map */

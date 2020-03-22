@@ -34,16 +34,6 @@ class Scanner extends Wbcr_FactoryClearfy000_PageBase {
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public $page_menu_position = 0;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public $add_link_to_plugin_actions = true;
-
-	/**
 	 * Module folder URL
 	 */
 	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/scanner";

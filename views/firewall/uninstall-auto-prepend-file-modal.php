@@ -3,11 +3,7 @@
 if( !defined('ABSPATH') ) {
 	exit;
 } ?>
-<h2 class="wtitan-modal__title">
-	<?php _e('Uninstall Titan Firewall', 'anti-spam') ?>
-</h2>
-
-<div class="wtitan-modal__content">
+<div class="wtitan-uninstall-auto-prepend-modal-content" style="display: none">
 	<?php
 	$currentAutoPrependFile = ini_get('auto_prepend_file');
 	?>

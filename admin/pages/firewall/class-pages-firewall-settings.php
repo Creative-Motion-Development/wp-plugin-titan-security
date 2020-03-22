@@ -59,8 +59,8 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public function __construct(\Wbcr_Factory000_Plugin $plugin)
 	{
-		$this->menu_title = __('Settings', 'anti-spam');
-		$this->page_menu_short_description = __('Firewall settings', 'anti-spam');
+		$this->menu_title = __('Settings', 'titan-security');
+		$this->page_menu_short_description = __('Firewall settings', 'titan-security');
 
 		parent::__construct($plugin);
 
@@ -115,18 +115,107 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 	{
 
 		if( $this->plugin->is_premium() ) {
+
 			$options[] = [
 				'type' => 'html',
-				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Advanced Firewall Options.', 'anti-spam') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'anti-spam') . '</p>' . '</div>'
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Base Options.', 'titan-security') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'titan-security') . '</p>' . '</div>'
+			];
+			$options[] = [
+				'type' => 'dropdown',
+				'name' => 'howget_ip',
+				'way' => 'buttons',
+				'title' => __('How does Titan get IPs ', 'titan-security'),
+				'data' => [
+					[
+						'default',
+						__('Default', 'titan-security'),
+						__('Let Titan use the most secure method to get visitor IP addresses. Prevents spoofing and works with most sites. (Recommended)', 'titan-security')
+					],
+					[
+						'REMOTE_ADDR',
+						__('REMOTE_ADDR', 'titan-security'),
+						__('Use PHP\'s built in REMOTE_ADDR and don\'t use anything else. Very secure if this is compatible with your site.', 'titan-security')
+					],
+					[
+						'HTTP_X_FORWARDED_FOR',
+						__('HTTP_X_FORWARDED_FOR', 'titan-security'),
+						__('Use the X-Forwarded-For HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'titan-security')
+					],
+					[
+						'HTTP_X_REAL_IP',
+						__('HTTP_X_REAL_IP', 'titan-security'),
+						__('Use the X-Real-IP HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'titan-security')
+					],
+					[
+						'HTTP_CF_CONNECTING_IP',
+						__('HTTP_CF_CONNECTING_IP', 'titan-security'),
+						__('Use the Cloudflare "CF-Connecting-IP" HTTP header to get a visitor IP. Only use if you\'re using Cloudflare.', 'titan-security')
+					]
+				],
+				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
+				'hint' => __('Titan needs to determine each visitor’s IP address to provide security functions on your website. The Titan default configuration works just fine for most websites, but it’s important that this configuration is correct. For example, if Titan is not receiving IP addresses correctly and thinks an external visitor originates from a private address, it will whitelist that visitor and bypass security protocols. You can read more about which addresses Titan considers private here.
+
+The Titan scanner has an option to “Scan for misconfigured How does Titan get IPs”. This scan feature can help you detect if the wrong option has been selected for “How does Titan get IPs.”
+
+Another way of determining if Titan is getting IPs correctly is to check the “IPs” section in the Titan Tools > Diagnostics.
+
+Let Titan use the most secure method to get visitor IP addresses. Prevents spoofing and works with most sites.
+This is the default mode of operation for Titan. Titan will try to get a valid IP address from PHP and if that doesn’t work, it will look at data that a firewall or reverse proxy sends in case your website uses this configuration.
+
+This option provides a good balance between security and compatibility.
+
+Use PHP’s built in REMOTE_ADDR and don’t use anything else. Very secure if this is compatible with your site.
+If you know that you definitely don’t use a reverse proxy, cache, Cloudflare, CDN or anything else in front of your web server that “proxies” traffic to your website, and if you are sure that your website is just a standalone PHP web server, then using this option will work and is the most secure in a non-proxy or load balancer configuration.
+
+You may also want to select this option for other reasons – for example to force Titan to use the $_SERVER[‘REMOTE_ADDR’] variable in PHP.
+
+Use the X-Forwarded-For HTTP header. Only use if you have a front-end proxy or spoofing may result.
+If you are using Nginx or another load balancer as a front-end-proxy or load balancer in front of your web server, and the front-end server sends IP addresses to the web server that runs WordPress using the HTTP X-Forwarded-For header, then you should enable this option.
+
+Be careful about enabling this option if you do not have a front-end-proxy, load balancer, or CDN configuration, because it will then allow visitors to spoof their IP address and you will also miss many hits that should have been logged.
+
+Use the X-Real-IP HTTP header. Only use if you have a front-end proxy or spoofing may result.
+As with the X-Forwarded-For option above, only use this option if you are sure that you want Titan to retrieve the visitor IP address from the X-Real-IP HTTP header, and do not enable this if you don’t have a front-end proxy or load balancer that is sending visits to your real web server and adding the X-Real-IP header.
+
+Use the Cloudflare “CF-Connecting-IP” HTTP header to get a visitor IP. Only use if you’re using Cloudflare.
+Titan is fully compatible with CloudFlare, and in some configurations Cloudflare will send the real visitor IP address to your web server using the CF-Connecting-IP HTTP header. If the CloudFlare support personnel have advised you that this is the case, then enable this option on Titan to ensure that Titan is able to get your visitor IP address.
+
+Note that Cloudflare has several configurations including their own web server module that takes care of detecting the visitor IP address, so be sure to work with their technical support staff and read their documentation to determine which configuration you’re using.
+
+Multiple IPs detected
+If your host requires using the X-Forwarded-For header, there may be multiple IP addresses detected. If your own IP address does not appear where it shows “Your IP with this setting,” you may need to add trusted proxies.
+
+If you do not know whether your host uses more than one proxy address, contact your host or the reverse-proxy service that you use. If you know there is only one proxy address, it should be the last address in the “Detected IPs” field.
+
+Once you know which proxies to trust, click the + Edit trusted proxies link below the detected IPs.
+In the Trusted proxies field that appears, enter the IP addresses of the proxies. You can enter a single IP like 10.0.0.15. You can also enter a “CIDR” range like 10.0.0.0/24. Note that your host’s trusted IPs should not be the same addresses in these examples.
+Click Save Options to save the changes, and check that your IP appears correctly in the “Your IP with this setting” field.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
+				'default' => 'default',
+				'filter_value' => [$this, 'filter_howget_ip_option']
+			];
+
+			$options[] = [
+				'type' => 'textarea',
+				'name' => 'howget_ips_trusted_proxies',
+				'title' => __('Trusted Proxies', 'titan-security'),
+				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
+				'hint' => __('These IPs (or CIDR ranges) will be ignored when determining the requesting IP via the X-Forwarded-For HTTP header. Enter one IP or CIDR range per line.', 'titan-security'),
+				'default' => '',
+				'filter_value' => [$this, 'filter_howget_ips_trusted_proxies_option']
+			];
+
+			$options[] = [
+				'type' => 'html',
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Advanced Firewall Options.', 'titan-security') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'titan-security') . '</p>' . '</div>'
 			];
 
 			$options[] = [
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'disable_wafip_blocking',
-				'title' => __('Delay IP and Country blocking until after WordPress and plugins have loaded (only process firewall rules early)', 'anti-spam'),
+				'title' => __('Delay IP and Country blocking until after WordPress and plugins have loaded (only process firewall rules early)', 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('When the Titan Firewall is optimized, the Firewall loads before the WordPress environment loads. This is desired behavior, as it increases security and gives the Firewall a performance boost. But if your server has a conflict with blocking by IP, country, or other advanced blocking settings before WordPress has loaded, you can turn on this option to allow WordPress to load first. We do not recommend enabling this option except for testing purposes.', 'anti-spam'),
+				'hint' => __('When the Titan Firewall is optimized, the Firewall loads before the WordPress environment loads. This is desired behavior, as it increases security and gives the Firewall a performance boost. But if your server has a conflict with blocking by IP, country, or other advanced blocking settings before WordPress has loaded, you can turn on this option to allow WordPress to load first. We do not recommend enabling this option except for testing purposes.', 'titan-security'),
 				'default' => true,
 				'eventsOn' => [
 					'show' => '.factory-control-whitelisted, .wtitan-disable-wafip-blocking-separator'
@@ -139,9 +228,9 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 			$options[] = [
 				'type' => 'textarea',
 				'name' => 'whitelisted',
-				'title' => __('Whitelisted IP addresses that bypass all rules', 'anti-spam'),
+				'title' => __('Whitelisted IP addresses that bypass all rules', 'titan-security'),
 				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-				'hint' => __('Whitelisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100. Titan automatically whitelists private networks because these are not routable on the public Internet.', 'anti-spam'),
+				'hint' => __('Whitelisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100. Titan automatically whitelists private networks because these are not routable on the public Internet.', 'titan-security'),
 				'default' => '',
 				'filter_value' => [$this, 'filter_whitelisted_option']
 			];
@@ -172,18 +261,18 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 			$options[] = [
 				'type' => 'textarea',
 				'name' => 'banned_urls',
-				'title' => __('Immediately block IPs that access these URLs', 'anti-spam'),
+				'title' => __('Immediately block IPs that access these URLs', 'titan-security'),
 				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-				'hint' => __('Separate multiple URLs with commas or place them on separate lines. Asterisks are wildcards, but use with care. If you see an attacker repeatedly probing your site for a known vulnerability you can use this to immediately block them. All URLs must start with a "/" without quotes and must be relative. e.g. /badURLone/, /bannedPage.html, /dont-access/this/URL/, /starts/with-*', 'anti-spam'),
+				'hint' => __('Separate multiple URLs with commas or place them on separate lines. Asterisks are wildcards, but use with care. If you see an attacker repeatedly probing your site for a known vulnerability you can use this to immediately block them. All URLs must start with a "/" without quotes and must be relative. e.g. /badURLone/, /bannedPage.html, /dont-access/this/URL/, /starts/with-*', 'titan-security'),
 				'default' => ''
 			];
 
 			$options[] = [
 				'type' => 'textarea',
 				'name' => 'waf_alert_whitelist',
-				'title' => __('Ignored IP addresses for Titan Web Application Firewall alerting', 'anti-spam'),
+				'title' => __('Ignored IP addresses for Titan Web Application Firewall alerting', 'titan-security'),
 				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-				'hint' => __('Ignored IPs must be separated by commas or placed on separate lines. These addresses will be ignored from any alerts about increased attacks and can be used to ignore things like standalone website security scanners.', 'anti-spam'),
+				'hint' => __('Ignored IPs must be separated by commas or placed on separate lines. These addresses will be ignored from any alerts about increased attacks and can be used to ignore things like standalone website security scanners.', 'titan-security'),
 				'default' => ''
 			];
 
@@ -194,23 +283,23 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 
 			$options[] = [
 				'type' => 'html',
-				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Brute Force Protection.', 'anti-spam') . '</strong>' . '<p>' . __('A Brute Force Attack consists of a large amount of repeated attempts at guessing your username and password to gain access to your WordPress admin. These attacks are automated, and the usernames and passwords used for guessing typically originate from big data leaks. Limiting the amount of login attempts that your site allows and blocking users who try an invalid username are two ways of protecting yourself against this type of attack. See full options below.', 'anti-spam') . '</p>' . '</div>'
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Brute Force Protection.', 'titan-security') . '</strong>' . '<p>' . __('A Brute Force Attack consists of a large amount of repeated attempts at guessing your username and password to gain access to your WordPress admin. These attacks are automated, and the usernames and passwords used for guessing typically originate from big data leaks. Limiting the amount of login attempts that your site allows and blocking users who try an invalid username are two ways of protecting yourself against this type of attack. See full options below.', 'titan-security') . '</p>' . '</div>'
 			];
 
 			$options[] = [
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'enable_brute_force_protection',
-				'title' => __('Enable brute force protection', 'anti-spam'),
+				'title' => __('Enable brute force protection', 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('This option enables all "Brute Force Protection" options, including strong password enforcement and invalid login throttling. You can modify individual options below.', 'anti-spam'),
+				'hint' => __('This option enables all "Brute Force Protection" options, including strong password enforcement and invalid login throttling. You can modify individual options below.', 'titan-security'),
 				'default' => true
 			];
 
 			$options[] = [
 				'type' => 'dropdown',
 				'name' => 'brute_force_max_failures',
-				'title' => __('Lock out after how many login failures ', 'anti-spam'),
+				'title' => __('Lock out after how many login failures ', 'titan-security'),
 				'data' => [
 					['2', '2'],
 					['3', '3'],
@@ -236,14 +325,14 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 					['500', '500']
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('This will lock out an IP address for a specified amount of time if that visitor generates the specified number of login failures. Note that it is common for real users to forget their passwords and generate up to 5 or more login attempts while trying to remember their username and/or password. So we recommend you set this to 20 which gives real users plenty of opportunity to sign in, but will block a brute force attack after 20 attempts.', 'anti-spam'),
+				'hint' => __('This will lock out an IP address for a specified amount of time if that visitor generates the specified number of login failures. Note that it is common for real users to forget their passwords and generate up to 5 or more login attempts while trying to remember their username and/or password. So we recommend you set this to 20 which gives real users plenty of opportunity to sign in, but will block a brute force attack after 20 attempts.', 'titan-security'),
 				'default' => '500'
 			];
 
 			$options[] = [
 				'type' => 'dropdown',
 				'name' => 'brute_force_max_forgot_passwd',
-				'title' => __('Lock out after how many forgot password attempts', 'anti-spam'),
+				'title' => __('Lock out after how many forgot password attempts', 'titan-security'),
 				'data' => [
 					['1', '1'],
 					['2', '2'],
@@ -270,14 +359,14 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 					['500', '500']
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('This limits the number of times the “Forgot password?” form can be used. This protects you against having your “Forgot password?” form used to flood a real user with password reset emails, and prevents attackers trying to guess user accounts on your system. Setting this to 5 should be sufficient for most sites.', 'anti-spam'),
+				'hint' => __('This limits the number of times the “Forgot password?” form can be used. This protects you against having your “Forgot password?” form used to flood a real user with password reset emails, and prevents attackers trying to guess user accounts on your system. Setting this to 5 should be sufficient for most sites.', 'titan-security'),
 				'default' => '20'
 			];
 
 			$options[] = [
 				'type' => 'dropdown',
 				'name' => 'brute_force_count_fail_mins',
-				'title' => __('Count failures over what time period', 'anti-spam'),
+				'title' => __('Count failures over what time period', 'titan-security'),
 				'data' => [
 					[5 * MINUTE_IN_SECONDS, '5 minutes'],
 					[10 * MINUTE_IN_SECONDS, '10 minutes'],
@@ -290,14 +379,14 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 					[24 * HOUR_IN_SECONDS, '1 day'],
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('This specifies the time frame over which we count failures . So if you specify 5 minutes and 20 failures, then if someone fails to sign in 20 times during a 5-minute period, they will be locked out from login. Brute force attacks usually send one login attempt every few seconds. So if you have set the number of login failures to 20, then 5 minutes is plenty of time to catch a brute force hack attempt. You do have the option to set it higher.', 'anti-spam'),
+				'hint' => __('This specifies the time frame over which we count failures . So if you specify 5 minutes and 20 failures, then if someone fails to sign in 20 times during a 5-minute period, they will be locked out from login. Brute force attacks usually send one login attempt every few seconds. So if you have set the number of login failures to 20, then 5 minutes is plenty of time to catch a brute force hack attempt. You do have the option to set it higher.', 'titan-security'),
 				'default' => 4 * HOUR_IN_SECONDS
 			];
 
 			$options[] = [
 				'type' => 'dropdown',
 				'name' => 'brute_force_lockout_mins',
-				'title' => __('Amount of time a user is locked out ', 'anti-spam'),
+				'title' => __('Amount of time a user is locked out ', 'titan-security'),
 				'data' => [
 					[5 * MINUTE_IN_SECONDS, '5 minutes'],
 					[10 * MINUTE_IN_SECONDS, '10 minutes'],
@@ -318,7 +407,7 @@ class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
 				'hint' => __('This specifies how long an IP address is locked out for when Titan brute force protection locks them out. Remember, the goal is to prevent a remote attack from having many opportunities to guess your website’s usernames and passwords. If you have reasonably strong passwords, then it will take thousands of guesses to guess your password correctly.
 
-So if you have your failure count set to 20, your time period set to 5 minutes and you set this option to 5 minutes, then an attacker will only get 20 guesses every 5 minutes and then they have to wait 5 minutes while they’re locked out. So the effect is that they only get 20 guesses every 10 minutes or 2880 guesses per day, assuming they realize that they can restart their attack exactly 5 minutes after being locked out. If you feel this is not long enough, then you can increase the lock-out time to 60 minutes, which drastically reduces the number of daily attempts at guesses an attacker has.', 'anti-spam'),
+So if you have your failure count set to 20, your time period set to 5 minutes and you set this option to 5 minutes, then an attacker will only get 20 guesses every 5 minutes and then they have to wait 5 minutes while they’re locked out. So the effect is that they only get 20 guesses every 10 minutes or 2880 guesses per day, assuming they realize that they can restart their attack exactly 5 minutes after being locked out. If you feel this is not long enough, then you can increase the lock-out time to 60 minutes, which drastically reduces the number of daily attempts at guesses an attacker has.', 'titan-security'),
 				'default' => 4 * HOUR_IN_SECONDS
 			];
 
@@ -326,18 +415,18 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_lock_invalid_users',
-				'title' => __('Immediately lock out invalid usernames', 'anti-spam'),
+				'title' => __('Immediately lock out invalid usernames', 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('This option will immediately lock out someone who attempts to log in with an invalid username. Please note that your real users may mistype their usernames. This will cause them to get locked out, which is an inconvenience. We recommend enabling this feature for sites that have a low number of users such as 1-2 admins and/or a possibly a few editors. If a legitimate user is locked out you can find and delete any currently active block on the Firewall > Blocking page..', 'anti-spam'),
+				'hint' => __('This option will immediately lock out someone who attempts to log in with an invalid username. Please note that your real users may mistype their usernames. This will cause them to get locked out, which is an inconvenience. We recommend enabling this feature for sites that have a low number of users such as 1-2 admins and/or a possibly a few editors. If a legitimate user is locked out you can find and delete any currently active block on the Firewall > Blocking page..', 'titan-security'),
 				'default' => true
 			];
 
 			$options[] = [
 				'type' => 'textarea',
 				'name' => 'brute_force_user_black_list',
-				'title' => __('Immediately block the IP of users who try to sign in as these usernames', 'anti-spam'),
+				'title' => __('Immediately block the IP of users who try to sign in as these usernames', 'titan-security'),
 				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-				'hint' => __('Hit enter to add a username', 'anti-spam'),
+				'hint' => __('Hit enter to add a username', 'titan-security'),
 				'default' => ''
 			];
 
@@ -345,17 +434,17 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'dropdown',
 				'name' => 'brute_force_breach_passwds',
 				'way' => 'buttons',
-				'title' => __('Prevent the use of passwords leaked in data breaches', 'clearfy'),
+				'title' => __('Prevent the use of passwords leaked in data breaches', 'titan-security'),
 				'data' => [
-					['no', __('No', 'clearfy')],
-					['for_admins_only', __('For admins only', 'clearfy')],
+					['no', __('No', 'titan-security')],
+					['for_admins_only', __('For admins only', 'titan-security')],
 					[
 						'for_all_users',
-						__('For all users with "publish posts" capability', 'clearfy')
+						__('For all users with "publish posts" capability', 'titan-security')
 					]
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
-				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'clearfy') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'clearfy'),
+				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
 				'default' => 'no',
 			];
 
@@ -368,9 +457,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_strong_passwds',
-				'title' => __('Enforce strong passwords', 'anti-spam'),
+				'title' => __('Enforce strong passwords', 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('You can use this to either “Force admins and publishers” or “force all members” to use strong passwords. We recommend you force admins and publishers to use strong passwords. When a user on your WordPress site changes their password, Titan will check the password against an algorithm to make sure it is strong enough to give you a good level of protection. If the password fails this check then it’s rejected and the user must enter a stronger password. Titan checks that the password is a minimum length, that it doesn’t match any known obvious passwords and it then uses a point system to allocate points based on things like whether it contains a number, if it has upper and lower case letters and so on. If the point score does not exceed a required level, then it will reject the password the user entered.', 'anti-spam'),
+				'hint' => __('You can use this to either “Force admins and publishers” or “force all members” to use strong passwords. We recommend you force admins and publishers to use strong passwords. When a user on your WordPress site changes their password, Titan will check the password against an algorithm to make sure it is strong enough to give you a good level of protection. If the password fails this check then it’s rejected and the user must enter a stronger password. Titan checks that the password is a minimum length, that it doesn’t match any known obvious passwords and it then uses a point system to allocate points based on things like whether it contains a number, if it has upper and lower case letters and so on. If the point score does not exceed a required level, then it will reject the password the user entered.', 'titan-security'),
 				'default' => true,
 				'eventsOn' => [
 					'show' => '.factory-control-brute_force_breach_passwds_mode, .wtitan-brute-force-breach-passwds-mode'
@@ -384,20 +473,20 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 
 				'type' => 'dropdown',
 				'name' => 'brute_force_breach_passwds_mode',
-				'title' => __('Prevent the use of passwords leaked in data breaches', 'clearfy'),
+				'title' => __('Prevent the use of passwords leaked in data breaches', 'titan-security'),
 				'data' => [
 					[
 						'for_admins_and_publishers',
-						__('Force admins and publishers to use strong passwords (recommended)', 'clearfy')
+						__('Force admins and publishers to use strong passwords (recommended)', 'titan-security')
 					],
 					[
 						'for_all_users',
-						__('Force all members to use strong passwords', 'clearfy')
+						__('Force all members to use strong passwords', 'titan-security')
 					]
 				],
 
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
-				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'clearfy') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'clearfy'),
+				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
 				'default' => 'for_admins_and_publishers',
 
 			];
@@ -411,9 +500,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_mask_login_errors',
-				'title' => __("Don't let WordPress reveal valid users in login errors", 'anti-spam'),
+				'title' => __("Don't let WordPress reveal valid users in login errors", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('If you disable and remove the ‘admin’ account in WordPress and you have the option “Anyone can register” enabled in WordPress “General” settings next to “membership,” then it is possible for users to register an account with the username “admin,” which can cause confusion on your system and may allow those users to persuade other users of your system to disclose sensitive data. Enabling this feature prevents the above from happening. We recommend you enable this option. Prevent discovery of usernames through ‘/?author=N’ scans, the oEmbed API, and the WordPress REST API. On a WordPress system, it’s possible to discover valid usernames by visiting a specially crafted URL that looks like one of these: example.com/?author=2, example.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fexample.com%2Fhello-world%2F, example.com/wp-json/wp/v2/users. Enabling this option prevents hackers from being able to discover usernames using these methods. This includes finding the author in the post data provided publicly by the oEmbed API and the WordPress REST API “users” URL that was introduced in WordPress 4.7. Note that some themes can leak usernames and we can’t prevent username discovery when a theme does this. We recommend that you keep this option enabled.', 'anti-spam'),
+				'hint' => __('If you disable and remove the ‘admin’ account in WordPress and you have the option “Anyone can register” enabled in WordPress “General” settings next to “membership,” then it is possible for users to register an account with the username “admin,” which can cause confusion on your system and may allow those users to persuade other users of your system to disclose sensitive data. Enabling this feature prevents the above from happening. We recommend you enable this option. Prevent discovery of usernames through ‘/?author=N’ scans, the oEmbed API, and the WordPress REST API. On a WordPress system, it’s possible to discover valid usernames by visiting a specially crafted URL that looks like one of these: example.com/?author=2, example.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fexample.com%2Fhello-world%2F, example.com/wp-json/wp/v2/users. Enabling this option prevents hackers from being able to discover usernames using these methods. This includes finding the author in the post data provided publicly by the oEmbed API and the WordPress REST API “users” URL that was introduced in WordPress 4.7. Note that some themes can leak usernames and we can’t prevent username discovery when a theme does this. We recommend that you keep this option enabled.', 'titan-security'),
 				'default' => true
 			];
 
@@ -421,9 +510,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_block_admin_reg',
-				'title' => __("Prevent users registering 'admin' username if it doesn't exist", 'anti-spam'),
+				'title' => __("Prevent users registering 'admin' username if it doesn't exist", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('By default, when you enter a valid username with an incorrect password, WordPress will tell you that you entered a good username but the password is wrong. If you enter a bad username and bad password, WordPress will tell you that the username does not exist. This is a serious security problem because it lets users easily find out which users exist on your WordPress site and target those for attacks. This option gives a generic message of: “The username or password you entered is incorrect.” thereby protecting your usernames and not revealing if the hacker guessed a valid user. It’s strongly recommended that you enable this feature.', 'anti-spam'),
+				'hint' => __('By default, when you enter a valid username with an incorrect password, WordPress will tell you that you entered a good username but the password is wrong. If you enter a bad username and bad password, WordPress will tell you that the username does not exist. This is a serious security problem because it lets users easily find out which users exist on your WordPress site and target those for attacks. This option gives a generic message of: “The username or password you entered is incorrect.” thereby protecting your usernames and not revealing if the hacker guessed a valid user. It’s strongly recommended that you enable this feature.', 'titan-security'),
 				'default' => true
 			];
 
@@ -431,9 +520,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_block_admin_reg',
-				'title' => __("Prevent discovery of usernames through '/?author=N' scans, the oEmbed API, and the WordPress REST API", 'anti-spam'),
+				'title' => __("Prevent discovery of usernames through '/?author=N' scans, the oEmbed API, and the WordPress REST API", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('On a WordPress system, it’s possible to discover valid usernames by visiting a specially crafted URL that looks like one of these: example.com/?author=2, example.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fexample.com%2Fhello-world%2F, example.com/wp-json/wp/v2/users. Enabling this option prevents hackers from being able to discover usernames using these methods. This includes finding the author in the post data provided publicly by the oEmbed API and the WordPress REST API “users” URL that was introduced in WordPress 4.7. Note that some themes can leak usernames and we can’t prevent username discovery when a theme does this. We recommend that you keep this option enabled.', 'anti-spam'),
+				'hint' => __('On a WordPress system, it’s possible to discover valid usernames by visiting a specially crafted URL that looks like one of these: example.com/?author=2, example.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fexample.com%2Fhello-world%2F, example.com/wp-json/wp/v2/users. Enabling this option prevents hackers from being able to discover usernames using these methods. This includes finding the author in the post data provided publicly by the oEmbed API and the WordPress REST API “users” URL that was introduced in WordPress 4.7. Note that some themes can leak usernames and we can’t prevent username discovery when a theme does this. We recommend that you keep this option enabled.', 'titan-security'),
 				'default' => true
 			];
 
@@ -446,9 +535,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_block_bad_post',
-				'title' => __("Block IPs who send POST requests with blank User-Agent and Referer", 'anti-spam'),
+				'title' => __("Block IPs who send POST requests with blank User-Agent and Referer", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('Many badly written brute force hacking scripts send login attempts and comment spam attempts using a blank user agent (in other words, they don’t specify which browser they are) and blank referer headers (in other words, they don’t specify which URL they arrived from). Enabling this option will not only prevent requests like this from reaching your site, but it will also immediately block the IP address the request originated from. Note that both User-Agent and Referer must be missing from the request for this blocking rule to take effect. ', 'anti-spam'),
+				'hint' => __('Many badly written brute force hacking scripts send login attempts and comment spam attempts using a blank user agent (in other words, they don’t specify which browser they are) and blank referer headers (in other words, they don’t specify which URL they arrived from). Enabling this option will not only prevent requests like this from reaching your site, but it will also immediately block the IP address the request originated from. Note that both User-Agent and Referer must be missing from the request for this blocking rule to take effect. ', 'titan-security'),
 				'default' => true,
 				'eventsOn' => [
 					'show' => '.factory-control-brute_force_block_custom_text, .wtitan-brute-force-block-bad-post-separator'
@@ -461,9 +550,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 			$advanced_options[] = [
 				'type' => 'textarea',
 				'name' => 'brute_force_block_custom_text',
-				'title' => __('Custom text shown on block pages ', 'anti-spam'),
+				'title' => __('Custom text shown on block pages ', 'titan-security'),
 				//'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-				'hint' => __('HTML tags will be stripped prior to output and line breaks will be converted into the appropriate tags.', 'anti-spam'),
+				'hint' => __('HTML tags will be stripped prior to output and line breaks will be converted into the appropriate tags.', 'titan-security'),
 				'default' => ''
 			];
 
@@ -476,23 +565,23 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'brute_force_check_password_strength_on_update',
-				'title' => __("Check password strength on profile update", 'anti-spam'),
+				'title' => __("Check password strength on profile update", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('If you enable this option, it will not alert a user that they have a weak password, unlike the “force strong passwords” feature above. However, it will send the site admin an email alert telling that admin that a user has specified a weak password during a profile update. It simply lets you know who is using a weak password so that you can contact them and let them know that they may want to improve the password strength. If you do contact one of your users or customers, make sure that you are clear that you do not actually know what their password is. You are only alerted that the password does not meet your site’s password strength requirements. That way they know you have not violated any reasonable expectation of privacy that they may have.', 'anti-spam'),
+				'hint' => __('If you enable this option, it will not alert a user that they have a weak password, unlike the “force strong passwords” feature above. However, it will send the site admin an email alert telling that admin that a user has specified a weak password during a profile update. It simply lets you know who is using a weak password so that you can contact them and let them know that they may want to improve the password strength. If you do contact one of your users or customers, make sure that you are clear that you do not actually know what their password is. You are only alerted that the password does not meet your site’s password strength requirements. That way they know you have not violated any reasonable expectation of privacy that they may have.', 'titan-security'),
 				'default' => true
 			];
 
 			$options[] = [
 				'type' => 'more-link',
 				'id' => 'wtitan-brute-force-advanced-options',
-				'title' => __('Additional Options', 'anti-spam'),
+				'title' => __('Additional Options', 'titan-security'),
 				'count' => 6,
 				'items' => $advanced_options
 			];
 
 			$options[] = [
 				'type' => 'html',
-				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Whitelisted URLs.', 'anti-spam') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'anti-spam') . '</p>' . '</div>'
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Whitelisted URLs.', 'titan-security') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'titan-security') . '</p>' . '</div>'
 			];
 
 			$options[] = [
@@ -502,16 +591,16 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 
 			$options[] = [
 				'type' => 'html',
-				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Rate Limiting.', 'anti-spam') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'anti-spam') . '</p>' . '</div>'
+				'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __('Rate Limiting.', 'titan-security') . '</strong>' . '<p>' . __('Additional modules to spam protect.', 'titan-security') . '</p>' . '</div>'
 			];
 
 			$options[] = [
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'enable_advanced_blocking',
-				'title' => __("Enable Rate Limiting and Advanced Blocking", 'anti-spam'),
+				'title' => __("Enable Rate Limiting and Advanced Blocking", 'titan-security'),
 				//'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
-				'hint' => __('NOTE: This checkbox enables ALL blocking/throttling functions including IP, country and advanced blocking, and the "Rate Limiting Rules" below.', 'anti-spam'),
+				'hint' => __('NOTE: This checkbox enables ALL blocking/throttling functions including IP, country and advanced blocking, and the "Rate Limiting Rules" below.', 'titan-security'),
 				'default' => true
 			];
 
@@ -523,9 +612,9 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				'type' => 'checkbox',
 				'way' => 'buttons',
 				'name' => 'immediately_block_fake_google',
-				'title' => __("Enable Rate Limiting and Advanced Blocking", 'anti-spam'),
+				'title' => __("Enable Rate Limiting and Advanced Blocking", 'titan-security'),
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'red'],
-				'hint' => __('If you are having a problem with people stealing your content and pretending to be Google as they crawl your site, then you can enable this option which will immediately block anyone pretending to be Google. The way this option works is that we look at the visitor User-Agent HTTP header which indicates which browser the visitor is running. If it appears to be Googlebot, then we do a reverse lookup on the visitor’s IP address to verify that the IP does belong to Google. If the IP is not a Google IP, then we block it if you have this option enabled. Be careful about using this option, because we have had reports of it blocking real site visitors, especially (for some reason) legitimate visitors from Brazil. It’s possible, although we haven’t confirmed this, that some Internet service providers in Brazil use transparent proxies that  modify their customers’ user-agent headers to pretend to be Googlebot rather than the real header. Or it may be possible that these providers are engaging in some sort of crawling activity pretending to be Googlebot using the same IP address that is the public IP for their customers. Whatever the cause is, the result is that if you enable this you may block some real visitors.', 'anti-spam'),
+				'hint' => __('If you are having a problem with people stealing your content and pretending to be Google as they crawl your site, then you can enable this option which will immediately block anyone pretending to be Google. The way this option works is that we look at the visitor User-Agent HTTP header which indicates which browser the visitor is running. If it appears to be Googlebot, then we do a reverse lookup on the visitor’s IP address to verify that the IP does belong to Google. If the IP is not a Google IP, then we block it if you have this option enabled. Be careful about using this option, because we have had reports of it blocking real site visitors, especially (for some reason) legitimate visitors from Brazil. It’s possible, although we haven’t confirmed this, that some Internet service providers in Brazil use transparent proxies that  modify their customers’ user-agent headers to pretend to be Googlebot rather than the real header. Or it may be possible that these providers are engaging in some sort of crawling activity pretending to be Googlebot using the same IP address that is the public IP for their customers. Whatever the cause is, the result is that if you enable this you may block some real visitors.', 'titan-security'),
 				'default' => false
 			];
 
@@ -1013,6 +1102,38 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				$this->plugin->updatePopulateOption($option_name, $value);
 			}
 		}
+	}
+
+	public function filter_howget_ip_option($value)
+	{
+		if( "default" !== $value && empty($_SERVER[$value]) ) {
+			\WBCR\Titan\Logger\Writter::error(sprintf(__('We cannot read $_SERVER[%s]', 'titan-security'), $value));
+
+			return 'default';
+		}
+
+		return $value;
+	}
+
+	public function filter_howget_ips_trusted_proxies_option($value)
+	{
+		$dirtyIPs = preg_split('/[\r\n,]+/', $value);
+		$dirtyIPs = array_filter($dirtyIPs);
+		$invalidIPs = array();
+
+		foreach($dirtyIPs as $val) {
+			if( !(\WBCR\Titan\Firewall\Utils::isValidIP($val) || \WBCR\Titan\Firewall\Utils::isValidCIDRRange($val)) ) {
+				$invalidIPs[] = $val;
+			}
+		}
+
+		if( count($invalidIPs) > 0 ) {
+			\WBCR\Titan\Logger\Writter::error(sprintf(__('The following IPs/ranges you selected to trust as proxies are not valid: %s', 'titan-security'), esc_html(implode(', ', $invalidIPs))));
+
+			return '';
+		}
+
+		return $value;
 	}
 
 	public function filter_whitelisted_option($value)

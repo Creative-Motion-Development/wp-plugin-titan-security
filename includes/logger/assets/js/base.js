@@ -6,7 +6,6 @@
  * @version 1.0
  */
 
-
 (function($) {
 	'use strict';
 
@@ -20,18 +19,18 @@
 			url: ajaxurl,
 			method: 'post',
 			data: {
-				action: 'wlogger-logs-cleanup',
+				action: 'wtitan-logger-logs-cleanup',
 				nonce: btn.data('nonce')
 			},
 			success: function(data) {
 				btn.html(currentBtnText);
 
-				jQuery('#js-wlogger-viewer').html('');
-				jQuery('#js-wlogger-size').text('0B');
-				jQuery.wbcr_factory_clearfy_217.app.showNotice(data.message, data.type);
+				$('#js-wlogger-viewer').html('');
+				$('#js-wlogger-size').text('0B');
+				$.wbcr_factory_clearfy_000.app.showNotice(data.message, data.type);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
-				jQuery.wbcr_factory_clearfy_217.app.showNotice('Error: ' + errorThrown + ', status: ' + textStatus, 'danger');
+				$.wbcr_factory_clearfy_000.app.showNotice('Error: ' + errorThrown + ', status: ' + textStatus, 'danger');
 				btn.html(currentBtnText);
 			}
 		});

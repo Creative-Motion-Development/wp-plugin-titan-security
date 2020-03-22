@@ -21,6 +21,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 	require_once(dirname(__FILE__) . '/class-wordpress-request.php');
 	require_once(dirname(__FILE__) . '/class-wordpress-observer.php');
 	require_once(dirname(__FILE__) . '/class-wordpress-firewall.php');
+	require_once(dirname(__FILE__) . '/../logger/class-logger-writter.php');
 
 	if( !defined('WFWAF_LOG_PATH') ) {
 		if( !defined('WP_CONTENT_DIR') ) { //Loading before WordPress
@@ -114,9 +115,11 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 				} catch( wfWAFBuildRulesException $e ) {
 					// Log this somewhere
 					error_log($e->getMessage());
+					\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 				} catch( Exception $e ) {
 					// Suppress this
 					error_log($e->getMessage());
+					\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 				}
 			}
 		}
@@ -136,16 +139,20 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 		} catch( wfWAFBuildRulesException $e ) {
 			// Log this
 			error_log($e->getMessage());
+			\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 		} catch( Exception $e ) {
 			// Suppress this
 			error_log($e->getMessage());
+			\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 		}
 	} catch( wfWAFStorageFileConfigException $e ) {
 		// Let this request through for now
 		error_log($e->getMessage());
+		\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 	} catch( wfWAFStorageEngineMySQLiException $e ) {
 		// Let this request through for now
 		error_log($e->getMessage());
+		\WBCR\Titan\Logger\Writter::error('WAF:' . $e->getMessage());
 	} catch( wfWAFStorageFileException $e ) {
 		// We need to choose another storage engine here.
 	}

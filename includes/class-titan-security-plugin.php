@@ -118,14 +118,16 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 	private function register_pages()
 	{
-		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-settings.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-firewall-blocking.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
 		//self::app()->registerPage( 'WBCR\Titan\Page\Vulnerabilities', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-vulnerabilities.php' );
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
+		self::app()->registerPage('WBCR\Titan\Page\Logs', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-logs.php');
 	}
 
 	/**
@@ -152,9 +154,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/change-firewall-mode.php');
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/install-auto-prepend.php');
+			require(WTITAN_PLUGIN_DIR . '/admin/ajax/firewall/block-ip.php');
+			require(WTITAN_PLUGIN_DIR . '/admin/ajax/logs.php');
 		}
-
-		//$this->init_activation();
 
 		add_action('plugins_loaded', function () {
 			$this->register_pages();
@@ -163,17 +165,16 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 	/**
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
-	 * @since  6.0
+	 * @since  1.0
 	 */
 	private function global_scripts()
 	{
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-utils.php');
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-webserver-info.php');
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-auto-prepend-helper.php');
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/firewall/class-model-firewall.php');
+		// Firewall
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/boot.php');
 
 		// Logger
 		require_once(WTITAN_PLUGIN_DIR . '/includes/logger/class-logger-writter.php');
+		new \WBCR\Titan\Logger\Writter();
 	}
 
 	/**

@@ -246,7 +246,7 @@ class wfWAFStorageMySQL implements wfWAFStorageInterface {
 	}
 
 	/**
-	 * Insert IP into wfBlocks.
+	 * Insert IP into \WBCR\Titan\Firewall\Model\Blocks.
 	 *
 	 * @param float $timestamp
 	 * @param string $ip
@@ -264,7 +264,7 @@ class wfWAFStorageMySQL implements wfWAFStorageInterface {
 	}
 
 	/**
-	 * Check if the IP is in wfBlocks.
+	 * Check if the IP is in \WBCR\Titan\Firewall\Model\Blocks.
 	 *
 	 * @param string $ip
 	 * @return bool
