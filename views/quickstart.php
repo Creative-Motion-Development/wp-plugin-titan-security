@@ -42,13 +42,12 @@ if(isset($scanner)) extract($scanner);
 					<div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
 				</td>
 				<td>
-					<p><?php echo __('Full scan your site.','titan-security'); ?>
-					</p>
+					<p><?php echo __('Full scan your site.','titan-security'); ?></p>
 				</td>
 			</tr>
 		</table>
 	</div>
-    <div id="wt-dashboard-section" class="wt-scanner-container">
+    <div id="wt-dashboard-section" class="wt-dashboard-container">
         <table class="wt-dashboard-table">
 	        <thead>
 	        <tr>
@@ -61,16 +60,16 @@ if(isset($scanner)) extract($scanner);
 		        <td>
 			        <div class="wt-left-block">
 				        <div class="wtitan-status-block wtitan-status--enabled" style="display: <?php echo("enabled" === $firewall_mode ? 'block' : 'none') ?>;">
+					        <span class="dashicons dashicons-yes-alt" style="font-size:100px;width: 100px;height:100px;color:#1fa02fc9;"></span>
 					        <h4><?php _e('Titan Firewall Activated', 'titan'); ?></h4>
-					        <span class="dashicons dashicons-yes-alt" style="font-size:80px;width: 80px;height:80px;color:#1fa02fc9;"></span>
 				        </div>
 				        <div class="wtitan-status-block wtitan-status--learning-mode" style="display: <?php echo("learning-mode" === $firewall_mode ? 'block' : 'none') ?>;">
+					        <span class="dashicons dashicons-clock" style="font-size:100px;width: 100px;height:100px;color:#fcb214;"></span>
 					        <h4><?php _e('Titan Firewall in Learning Mode', 'titan'); ?></h4>
-					        <span style="font-size:80px;width: 80px;height:80px;color:#fcb214;" class="dashicons dashicons-clock"></span>
 				        </div>
 				        <div class="wtitan-status-block wtitan-status--disabled" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
+					        <span class="dashicons dashicons-dismiss" style="font-size:100px;width: 100px;height:100px;color:#f59888;"></span>
 					        <h4 style="color:#9c3926"><?php _e('Titan Firewall Deactivated', 'titan'); ?></h4>
-					        <span class="dashicons dashicons-dismiss" style="font-size:80px;width: 80px;height:80px;color:#f59888;"></span>
 				        </div>
 			        </div>
 			        <div class="wt-right-block">
@@ -92,16 +91,7 @@ if(isset($scanner)) extract($scanner);
                                 });
                             });
 				        </script>
-				        <div id="wtitan-status-tooltip" style="display: none">
-					        <strong><?php _e('How do I get to 100%?', 'titan'); ?></strong>
-					        <ul>
-						        <li><?php _e('30% Enable the Titan Firewall.', 'titan'); ?></li>
-						        <li><?php _e('70% Optimize the Titan Firewall.', 'titan'); ?></li>
-						        <!--<li>30% Disable learning mode.</li>
-								<li>35% Enable Real-Time IP Blacklist.</li>-->
-						        <li><a href="#"><?php _e('How does Titan determine this?', 'titan'); ?></a></li>
-					        </ul>
-				        </div>
+				        <h4>Web Application Firewall</h4>
 			        </div>
 			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'firewall' ); ?>"><?php echo __('Manage Firewall','titan-security'); ?></a></div>
 		        </td>
@@ -114,9 +104,9 @@ if(isset($scanner)) extract($scanner);
 				        <div class="wt-right-block">
 					        <h4><span class="dashicons dashicons-buddicons-replies"></span><?php echo __('Vulnerabilities','titan-security'); ?> (<?php echo $vulnerabilities->get_count(); ?>)</h4>
 					        <div class="wt-block-span-count">
-						        <?php if(count($vulnerabilities->wordpress)) echo __('Wordpress','titan-security') . ": <div>" . count($vulnerabilities->wordpress)."</div><br>"; ?>
-						        <?php if(count($vulnerabilities->plugins)) echo __('Plugins','titan-security') . ": <div>" . count($vulnerabilities->plugins)."</div><br>"; ?>
-						        <?php if(count($vulnerabilities->themes)) echo __('Themes','titan-security') . ": <div>" . count($vulnerabilities->themes)."</div>"; ?>
+						        <?php if(count($vulnerabilities->wordpress)) echo "<div>".count($vulnerabilities->wordpress)."</div> ".__('Wordpress','titan-security') . "<br>"; ?>
+						        <?php if(count($vulnerabilities->plugins)) echo "<div>".count($vulnerabilities->plugins)."</div> ".__('Plugins','titan-security') . "<br>"; ?>
+						        <?php if(count($vulnerabilities->themes)) echo "<div>".count($vulnerabilities->themes)."</div> ".__('Themes','titan-security') . ""; ?>
 					        </div>
 				        </div>
 			        </div>
@@ -176,6 +166,9 @@ if(isset($scanner)) extract($scanner);
 				        <table class="wt-sitechecker-block-table">
 					        <thead>
 					        <tr>
+						        <td colspan="4">&nbsp;</td>
+					        </tr>
+					        <tr>
 						        <td><h4><?php echo __("URL's", 'titan-security'); ?></h4></td>
 						        <td><h4><?php echo __("Frequency", 'titan-security'); ?></h4></td>
 						        <td><h4><?php echo __("Uptime", 'titan-security'); ?></h4></td>
@@ -185,8 +178,8 @@ if(isset($scanner)) extract($scanner);
 					        <tbody>
 					        <tr>
 						        <td><?php echo $sites->get_count(); ?></td>
-						        <td>60<span>sec</span></td>
-						        <td><?php echo $sites->get_average_uptime(); ?><span>%</span></td>
+						        <td>5<span>min</span></td>
+						        <td class="wt-pink"><?php echo $sites->get_average_uptime(); ?><span>%</span></td>
 						        <td><span class="wt-push-status"></span></td>
 					        </tr>
 					        </tbody>

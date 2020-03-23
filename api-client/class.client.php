@@ -32,7 +32,7 @@ use WBCR\Titan\Client\Response\Response;
  * @copyright (c) 2020 Creative Motion
  */
 class Client {
-	const ENDPOINT = 'https://dev.anti-spam.space/api/v1.0/';
+	const ENDPOINT = 'https://api.titansitescanner.com/api/v1.0/';
 
 	/**
 	 * @var string

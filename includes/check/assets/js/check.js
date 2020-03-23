@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
         jQuery(this).tab('show');
     });
 
-    jQuery('#wt-scanner-scan').on('click', function(e) {
+    jQuery('#wt-checker-check').on('click', function(e) {
         e.preventDefault();
         jQuery(this).hide();
         jQuery('.wt-scan-icon-loader').show();

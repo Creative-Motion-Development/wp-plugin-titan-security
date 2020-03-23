@@ -204,7 +204,7 @@ class SiteChecker extends Module_Base {
 			$url = $_POST['url'];
 
 			$request = new \WBCR\Titan\Client\Request\CreateCheckerUrl();
-			$request->add_url($url, 60);
+			$request->add_url($url, 300);
 			$response = $this->client->create_checker_url($request);
 			if( $response ) {
 				wp_send_json_success( [

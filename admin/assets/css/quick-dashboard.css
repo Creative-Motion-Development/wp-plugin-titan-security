@@ -2,7 +2,15 @@
 {
     margin: 15px 15px 15px 15px;
 }
+.wt-dashboard-container
+{
+    margin: 15px 10px 15px 10px;
+}
 /*----------------*/
+#wt-quickstart-scan
+{
+    width: 100%;
+}
 .wt-scanner-block-scan
 {
     text-align: center;
@@ -43,8 +51,8 @@
 #wt-dashboard-section table.wt-dashboard-table > thead > tr > td {
     border: 1px solid #d6d6d6;
     border-bottom: 0;
-    background: #fff;
-    text-align: center;
+    background: #efefef;
+    text-align: left;
     padding: 10px;
     border-radius: 10px 10px 0 0;
 }
@@ -72,7 +80,7 @@
 {
     width: 100%;
     display: block;
-    min-height: 125px;
+    min-height: 150px;
 }
 .wt-left-block, .wt-right-block
 {
@@ -89,10 +97,8 @@ div.wt-block-span-count
 }
 .wt-block-span-count div
 {
-    padding: 3px;
+    padding: 1px 4px;
     border: 1px solid #b1b1b1;
-    background: #d6d6d6;
-    width: 26px;
     display: inline-block;
     margin: 1px;
     border-radius: 5px;
@@ -108,7 +114,7 @@ div.wt-block-span-count
 
 .wtitan-status-circular
 {
-    height: 125px !important;
+    /*height: 100px !important;*/
     width: auto !important;
 }
 .wt-manage-link-block
@@ -162,6 +168,20 @@ table.wt-sitechecker-block-table thead td h4
 {
     font-size: inherit !important;
 }
+.wtitan-status-circular-text {
+    left: 110px;
+    position: relative;
+    bottom: 53px;
+    padding: 0;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    color: #aaa;
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.3125rem;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
 /*--- Scanner -------*/
 #WBCR .wio-chart-container canvas {
     display: inline-block !important;
@@ -175,7 +195,7 @@ table.wt-sitechecker-block-table thead td h4
     position: absolute;
     left: 3px;
     right: 0;
-    top: 40%;
+    top: 35%;
     margin-top: -0.5em;
     line-height: 0.8;
     text-align: center;
@@ -214,4 +234,7 @@ table.wt-sitechecker-block-table thead td h4
     padding-top: 6px;
 }
 /*-------------------*/
-
+.wt-pink
+{
+    color: #f1b1b6 !important;
+}

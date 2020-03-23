@@ -91,11 +91,14 @@ class Audit extends Module_Base {
 		$this->results = array();
 		
 		$this->check_versions();
-		$this->check_debug();
+		$this->check_wpconfig();
 		$this->check_php_variables();
 		$this->check_https();
 		$this->check_users();
 		$this->check_updates();
+		$this->check_files();
+		$this->check_fileEditor();
+		$this->check_folders_access();
 
 		update_option( $this->plugin->getPrefix()."audit_results_hided", array(), 'no');
 		update_option( $this->plugin->getPrefix()."audit_results", $this->results, 'no');
@@ -151,7 +154,7 @@ class Audit extends Module_Base {
 	 *
 	 * @return AuditResult[] Results
 	 */
-	public function check_debug() {
+	public function check_wpconfig() {
 		//WP_DEBUG
 		$title = __('Wordpress Debug mode is enabled on your site','titan-security');
 		$description = __('Every good developer should enable debugging before starting work on a new plugin or theme. In fact, WordPress Codex "strongly recommends" that developers use WP_DEBUG. Unfortunately, many developers forget to disable debugging mode even when the site is running. Displaying debug logs in the web interface will allow hackers to learn a lot about your WordPress website.','titan-security');
@@ -170,6 +173,30 @@ class Audit extends Module_Base {
 		$title = __('Wordpress Script Debug Mode is enabled on your site','titan-security');
 		$description = __('When enabled, WordPress will use non-compressed versions (dev versions) of JS and CSS files . The default is to use min versions of the files. For security and performance reasons, this constant must be disabled on the production site.','titan-security');
 		if ((defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)) {
+			$this->add( $title, $description,  'low');
+		}
+
+		//$table_prefix
+		$title = __("Database table prefix is empty or has a default value: 'wp_'",'titan-security');
+		$description = __("This allows hackers to plan a massive attack based on the default prefix 'wp_'",'titan-security');
+		global $wpdb;
+		if (empty($wpdb->prefix) || 'wp_' == $wpdb->prefix || WTITAN_DEBUG) {
+			$this->add( $title, $description,  'medium');
+		}
+
+		//SALT/KEYS
+		$title = __('Authentication Unique Keys and Salts are not set in wp-config.php file','titan-security');
+		$description = __("You can generate these using the <a href='https://api.wordpress.org/secret-key/1.1/salt/'>WordPress.org secret-key service</a>",'titan-security');
+		if (
+			(!defined('AUTH_KEY') || empty(AUTH_KEY)) ||
+			(!defined('SECURE_AUTH_KEY') || empty(SECURE_AUTH_KEY)) ||
+			(!defined('LOGGED_IN_KEY') || empty(LOGGED_IN_KEY)) ||
+			(!defined('NONCE_KEY') || empty(NONCE_KEY)) ||
+			(!defined('AUTH_SALT') || empty(AUTH_SALT)) ||
+			(!defined('SECURE_AUTH_SALT') || empty(SECURE_AUTH_SALT)) ||
+			(!defined('LOGGED_IN_SALT') || empty(LOGGED_IN_SALT)) ||
+			(!defined('NONCE_SALT') || empty(NONCE_SALT)) 
+		) {
 			$this->add( $title, $description,  'low');
 		}
 
@@ -196,6 +223,13 @@ class Audit extends Module_Base {
 			$this->add( $title, $description,  'high');
 		}
 
+		//expose_php
+		$title = __("The 'expose_php' PHP directive outputs the PHP version","titan-security");
+		$description = __("Enabling 'expose_php' PHP Directive exposes to the world that PHP is installed on the server, which includes the PHP version within the HTTP header.","titan-security");
+		if (ini_get('expose_php')) {
+			$this->add( $title, $description,  'low');
+		}
+
 		return $this->results;
 	}
 
@@ -207,7 +241,7 @@ class Audit extends Module_Base {
 	public function check_https() {
 		$title = __("Your site works over HTTP, without using SSL","titan-security");
 		$description = __("If the site uses HTTPS, its data is protected.","titan-security");
-		if (empty($_SERVER['HTTPS'])) {
+		if (!is_ssl()) {
 			$this->add( $title, $description,  'medium');
 		}
 
@@ -216,6 +250,7 @@ class Audit extends Module_Base {
 
 	/**
 	 * Users audit
+	 * Check if an user can be found by its ID
 	 *
 	 * @return AuditResult[] Results
 	 */
@@ -232,6 +267,21 @@ class Audit extends Module_Base {
 		$description = __("Since user names make up half of the login credentials, this made it easier for hackers to launch brute- force attacks. You need to set complex and unique names for your site administrators.","titan-security");
 		if ($admin) {
 			$this->add( $title, $description,  'medium');
+		}
+
+		//User ID
+		$title = __("Author URL by ID access","titan-security");
+		$description = __("By knowing the username, you are one step closer to logging in using the username to brute-force the password, or to gain access in a similar way.","titan-security");
+
+		$users = get_users('number=5');
+		$url = home_url() . '/?author=';
+		foreach ($users as $user) {
+			$response = wp_remote_get($url . $user->ID, array('redirection' => 0, 'sslverify' => 0));
+			$response_code = wp_remote_retrieve_response_code($response);
+			if ($response_code == 301) {
+				$this->add( $title, $description,  'medium');
+				break;
+			}
 		}
 
 		return $this->results;
@@ -306,16 +356,54 @@ class Audit extends Module_Base {
 	}
 
 	/**
-	 * HTTPS audit
+	 * Check files audit
 	 *
 	 * @return AuditResult[] Results
 	 */
 	public function check_files() {
 		//readme.html
-		$title = __("Readme.html file is available in the site root","titan-security");
-		$description = __("It is important to hide or delete the readme.html file, because it contains information about the WP version.","titan-security");
-		if (file_exists( ABSPATH."readme.html")) {
+		$title = __("Readme.html or readme.txt file is available in the site root","titan-security");
+		$description = __("It is important to hide or delete the readme.html or readme.txt file, because it contains information about the WP version.","titan-security");
+		if (file_exists( ABSPATH."readme.html") || file_exists( ABSPATH."readme.txt")) {
 			$this->add( $title, $description,  'low');
+		}
+
+		return $this->results;
+	}
+
+	/**
+	 * Check database password
+	 *
+	 * @return AuditResult[] Results
+	 */
+	public function check_fileEditor() {
+		$title = __("The plugins and themes file editor is enabled on your site","titan-security");
+		$description = __("The plugins and themes file editor is a security issue because it not only shows the PHP source code, it also enables attackers to inject malicious code into your site if they manage to gain access to admin.","titan-security");
+		$description .= sprintf(__("Disable it for live websites in <b>wp_config.php:</b><br>%1\$s","titan-security"), "<code>define('DISALLOW_FILE_EDIT', true);</code>");
+		if (!defined('DISALLOW_FILE_EDIT') || !DISALLOW_FILE_EDIT) {
+			$this->add( $title, $description,  'low');
+		}
+
+		return $this->results;
+	}
+
+	/**
+	 * Check folders access
+	 *
+	 * @return AuditResult[] Results
+	 */
+	public function check_folders_access() {
+		$title = __("The Uploads folder is browsable.","titan-security");
+		$description = __("Allowing anyone to view all files in the Uploads folder with a browser will allow them to easily download all your uploaded files.","titan-security");
+
+		$url = wp_upload_dir();
+		$url = $url['baseurl'];
+		$response = wp_remote_get($url, array('redirection' => 0, 'sslverify' => 0));
+		if (!is_wp_error($response)) {
+			$response_code = wp_remote_retrieve_response_code($response);
+			if ($response_code == 200) {
+				$this->add( $title, $description,  'medium');
+			}
 		}
 
 		return $this->results;

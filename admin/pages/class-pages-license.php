@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @copyright (c) 2018 Webraftic Ltd
  */
-class License extends Titan_PageBase {
+class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 	/**
 	 * {@inheritdoc}
@@ -26,6 +26,11 @@ class License extends Titan_PageBase {
 	 * @var string
 	 */
 	public $id = 'license';
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public $type = "page";
 
 	/**
 	 * {@inheritdoc}
@@ -63,10 +68,16 @@ class License extends Titan_PageBase {
 		$this->page_menu_short_description = __( 'Product activation', 'titan-security' );
 		$this->plan_name                   = __( 'Titan security Pro', 'titan-security' );
 
+		$this->menuIcon = WTITAN_PLUGIN_URL . '/admin/assets/img/titan-icon.png';
+
 		parent::__construct( $plugin );
 
 		add_action( 'admin_footer', [ $this, 'print_confirmation_modal_tpl' ] );
 		add_action( 'wp_ajax_wtitan_activate_trial', array( $this, 'activate_trial' ) );
+	}
+
+	public function getPluginTitle() {
+		return "<span class='wt-plugin-header-logo'>&nbsp;</span>".__( 'Titan security', 'titan-security' );
 	}
 
 	/**
@@ -119,6 +130,7 @@ class License extends Titan_PageBase {
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
+		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/titan-security.css');
 		if ( ! $this->plugin->premium->is_activate() ) {
 			$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/libs/sweetalert2.css' );
 			$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/sweetalert-custom.css' );
