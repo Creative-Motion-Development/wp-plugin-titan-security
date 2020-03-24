@@ -76,11 +76,16 @@
     font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
+#wt-dashboard-section table.wt-dashboard-table > tbody > tr > td h4 {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
 .wt-full-block
 {
     width: 100%;
     display: block;
-    min-height: 150px;
+    height: 50%;
 }
 .wt-left-block, .wt-right-block
 {
@@ -117,12 +122,18 @@ div.wt-block-span-count
     /*height: 100px !important;*/
     width: auto !important;
 }
+.wt-caption-block
+{
+    width: auto;
+    float: left;
+    display: inline-block;
+}
 .wt-manage-link-block
 {
-    width: 100%;
-    text-align: right;
-    display: table;
-    padding: 20px 0 0 0;
+    width: auto;
+    float: right;
+    display: inline-block;
+    padding: 4px;
 }
 
 .wt-manage-link-block a
@@ -237,4 +248,19 @@ table.wt-sitechecker-block-table thead td h4
 .wt-pink
 {
     color: #f1b1b6 !important;
+}
+.wt-firewall-icon-ok, .wt-firewall-icon-clock, .wt-firewall-icon-dissmiss
+{
+    width: 97px;
+    height: 97px;
+    display: inline-block;
+}
+.wt-firewall-icon-ok{
+    background: url('../img/check.png');
+}
+.wt-firewall-icon-clock{
+    background: url('../img/check.png');
+}
+.wt-firewall-icon-dissmiss{
+    background: url('../img/check.png');
 }

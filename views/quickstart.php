@@ -51,8 +51,14 @@ if(isset($scanner)) extract($scanner);
         <table class="wt-dashboard-table">
 	        <thead>
 	        <tr>
-		        <td><h4><?php echo __('Firewall','titan-security'); ?></h4></td>
-		        <td><h4><?php echo __('Security audit','titan-security'); ?></h4></td>
+		        <td>
+                    <div class="wt-caption-block"><h4><?php echo __('Firewall','titan-security'); ?></h4></div>
+			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'firewall' ); ?>" class="btn btn-secondary"><?php echo __('Manage Firewall','titan-security'); ?></a></div>
+		        </td>
+		        <td>
+                    <div class="wt-caption-block"><h4><?php echo __('Security audit','titan-security'); ?></h4></div>
+                    <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'check' ); ?>" class="btn btn-secondary"><?php echo __('View more details','titan-security'); ?></a></div>
+                </td>
 	        </tr>
 	        </thead>
 	        <tbody>
@@ -60,15 +66,15 @@ if(isset($scanner)) extract($scanner);
 		        <td>
 			        <div class="wt-left-block">
 				        <div class="wtitan-status-block wtitan-status--enabled" style="display: <?php echo("enabled" === $firewall_mode ? 'block' : 'none') ?>;">
-					        <span class="dashicons dashicons-yes-alt" style="font-size:100px;width: 100px;height:100px;color:#1fa02fc9;"></span>
+					        <span class="wt-firewall-icon-ok"></span>
 					        <h4><?php _e('Titan Firewall Activated', 'titan'); ?></h4>
 				        </div>
 				        <div class="wtitan-status-block wtitan-status--learning-mode" style="display: <?php echo("learning-mode" === $firewall_mode ? 'block' : 'none') ?>;">
-					        <span class="dashicons dashicons-clock" style="font-size:100px;width: 100px;height:100px;color:#fcb214;"></span>
+					        <span class="wt-firewall-icon-clock"></span>
 					        <h4><?php _e('Titan Firewall in Learning Mode', 'titan'); ?></h4>
 				        </div>
 				        <div class="wtitan-status-block wtitan-status--disabled" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
-					        <span class="dashicons dashicons-dismiss" style="font-size:100px;width: 100px;height:100px;color:#f59888;"></span>
+					        <span class="wt-firewall-icon-dissmiss"></span>
 					        <h4 style="color:#9c3926"><?php _e('Titan Firewall Deactivated', 'titan'); ?></h4>
 				        </div>
 			        </div>
@@ -93,7 +99,7 @@ if(isset($scanner)) extract($scanner);
 				        </script>
 				        <h4>Web Application Firewall</h4>
 			        </div>
-			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'firewall' ); ?>"><?php echo __('Manage Firewall','titan-security'); ?></a></div>
+
 		        </td>
 		        <td>
 			        <div class="wt-full-block">
@@ -110,7 +116,6 @@ if(isset($scanner)) extract($scanner);
 					        </div>
 				        </div>
 			        </div>
-			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'check' ); ?>"><?php echo __('View more details','titan-security'); ?></a></div>
 		        </td>
 	        </tr>
 	        </tbody>
@@ -118,8 +123,14 @@ if(isset($scanner)) extract($scanner);
         <table class="wt-dashboard-table">
 	        <thead>
 	        <tr>
-		        <td><h4><?php echo __('Scanner','titan-security'); ?></h4></td>
-		        <td><h4><?php echo __('Site checker','titan-security'); ?></h4></td>
+		        <td>
+                    <div class="wt-caption-block"><h4><?php echo __('Scanner','titan-security'); ?></h4></div>
+                    <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'scanner' ); ?>" class="btn btn-secondary"><?php echo __('Manage scanner','titan-security'); ?></a></div>
+                </td>
+		        <td>
+                    <div class="wt-caption-block"><h4><?php echo __('Site checker','titan-security'); ?></h4></div>
+                    <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'sitechecker' ); ?>" class="btn btn-secondary"><?php echo __('Manage site checker','titan-security'); ?></a></div>
+                </td>
 	        </tr>
 	        </thead>
 	        <tbody>
@@ -143,7 +154,7 @@ if(isset($scanner)) extract($scanner);
 						        </p>
 					        </div>
 				        </div>
-				        <div class="wt-right-block">
+				        <div class="wt-right-block" style="transform: translate(0%, 50%);">
 					        <div id="wio-overview-chart-legend">
 						        <ul class="wio-doughnut-legend">
 							        <li>
@@ -159,15 +170,11 @@ if(isset($scanner)) extract($scanner);
 						        </ul>
 					        </div>
 				        </div>
-			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'scanner' ); ?>"><?php echo __('Manage scanner','titan-security'); ?></a></div>
 		        </td>
 		        <td>
 			        <div class="wt-full-block">
 				        <table class="wt-sitechecker-block-table">
 					        <thead>
-					        <tr>
-						        <td colspan="4">&nbsp;</td>
-					        </tr>
 					        <tr>
 						        <td><h4><?php echo __("URL's", 'titan-security'); ?></h4></td>
 						        <td><h4><?php echo __("Frequency", 'titan-security'); ?></h4></td>
@@ -185,7 +192,6 @@ if(isset($scanner)) extract($scanner);
 					        </tbody>
 				        </table>
 			        </div>
-			        <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'sitechecker' ); ?>"><?php echo __('Manage site checker','titan-security'); ?></a></div>
 		        </td>
 	        </tr>
 	        </tbody>
