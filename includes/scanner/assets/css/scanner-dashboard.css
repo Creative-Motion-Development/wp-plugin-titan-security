@@ -31,6 +31,9 @@
 .wt-scanner-block-scan table {
     width: 100%;
 }
+.wt-scanner-block-scan table td:first-child {
+    width: 20%;
+}
 .wt-scanner-block-scan table td {
     border: 1px solid #efefef;
     background: #fff;

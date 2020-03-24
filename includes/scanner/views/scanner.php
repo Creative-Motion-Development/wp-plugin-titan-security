@@ -17,14 +17,15 @@ use WBCR\Titan\MalwareScanner\Match;
                     <h4><?php echo __('Malware scan','titan-security'); ?></h4>
                     <div class="wrio-statistic-buttons-wrap">
 		                <?php if ( $scanner_started ): ?>
-                            <button type="button" id="scan" data-action="stop_scan" class="wio-optimize-button">
+                            <button type="button" id="scan" data-action="stop_scan" class="wt-malware-scan-button">
                                 <span class="text"><?php echo __( 'Stop scanning', 'titan-security' ) ?></span>
                             </button>
 		                <?php else: ?>
-                            <button type="button" id="scan" data-action="start_scan" class="wio-optimize-button">
+                            <button type="button" id="scan" data-action="start_scan" class="wt-malware-scan-button">
 				                <?php echo __( 'Scan', 'titan-security' ) ?>
                             </button>
 		                <?php endif; ?>
+                        <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                     </div>
                 </td>
                 <td>
@@ -47,15 +48,16 @@ use WBCR\Titan\MalwareScanner\Match;
                     </div>
                     <p class="wio-global-optim-phrase wio-clear">
                         Scanned <span class="wio-total-percent" id="wt-total-percent">
-                    <?php echo round( $progress, 1 ) ?>%
-                </span>
-                        of your website's files </p>
+                                <?php echo round( $progress, 1 ) ?>%
+                                </span>
+                        of your website's files
+                    </p>
                 </div>
                 <div style="margin-left:200px;">
                     <div id="wio-overview-chart-legend">
                         <ul class="wio-doughnut-legend">
                             <li>
-                                <span style="background-color:#8bc34a"></span>
+                                <span style="background-color:#5d05b7"></span>
                                 Cleaned -
                                 <span class="wio-num" id="wtitan-cleaned-num"><?php echo $cleaned ?></span>
                             </li>

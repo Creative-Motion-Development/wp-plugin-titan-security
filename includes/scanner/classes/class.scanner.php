@@ -116,11 +116,10 @@ class Scanner extends Module_Base {
 	}
 
 	/**
-	 * Show page content
+	 * Current state of scanner
 	 */
-	public function showPageContent()
-	{
-		require WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
+
+	public function get_current_results() {
 
 		/** @var MalwareScanner\Scanner $scanner */
 		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
@@ -136,6 +135,23 @@ class Scanner extends Module_Base {
 			$cleaned = $files_count - $scanner->files_count - $suspicious;
 		}
 
-		echo $this->render_template('scanner', compact('scanner_started', 'matched', 'progress', 'suspicious', 'cleaned'));
+
+		return [
+			'scanner_started' => $scanner_started,
+			'matched' => $matched,
+			'progress' => $progress,
+			'suspicious' => $suspicious,
+			'cleaned' => $cleaned,
+		];
+	}
+	/**
+	 * Show page content
+	 */
+	public function showPageContent() {
+		require WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
+
+
+		echo $this->render_template( 'scanner', $this->get_current_results() );
+
 	}
 }

@@ -20,8 +20,8 @@ foreach ( $args['modules'] as $key => $module ) {
             <tr>
                 <td>
                     <h4><?php echo __('Security audit','titan-security'); ?></h4>
-                    <button class="btn btn-primary wt-scanner-scanbutton" id="wt-scanner-scan"><?php echo __('Check now','titan-security'); ?></button>
-	                <div class="wt-scan-icon-loader" style="display: none"></div>
+                    <button class="btn btn-primary wt-scanner-scanbutton" id="wt-checker-check"><?php echo __('Check now','titan-security'); ?></button>
+	                <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                 </td>
                 <td>
                     <h4><?php echo __('Description','titan-security'); ?></h4>

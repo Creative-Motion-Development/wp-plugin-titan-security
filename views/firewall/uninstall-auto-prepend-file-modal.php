@@ -23,41 +23,41 @@ if( !defined('ABSPATH') ) {
 		$dropdown = array(
 			array(
 				"apache-mod_php",
-				__('Apache + mod_php', 'titan'),
+				__('Apache + mod_php', 'titan-security'),
 				$serverInfo->isApacheModPHP(),
 				\WBCR\Titan\Server\Helper::instance('apache-mod_php')->getFilesNeededForBackup()
 			),
 			array(
 				"apache-suphp",
-				__('Apache + suPHP', 'titan'),
+				__('Apache + suPHP', 'titan-security'),
 				$serverInfo->isApacheSuPHP(),
 				\WBCR\Titan\Server\Helper::instance('apache-suphp')->getFilesNeededForBackup()
 			),
 			array(
 				"cgi",
-				__('Apache + CGI/FastCGI', 'titan'),
+				__('Apache + CGI/FastCGI', 'titan-security'),
 				$serverInfo->isApache() && !$serverInfo->isApacheSuPHP() && ($serverInfo->isCGI() || $serverInfo->isFastCGI()),
 				\WBCR\Titan\Server\Helper::instance('cgi')->getFilesNeededForBackup()
 			),
 			array(
 				"litespeed",
-				__('LiteSpeed/lsapi', 'titan'),
+				__('LiteSpeed/lsapi', 'titan-security'),
 				$serverInfo->isLiteSpeed(),
 				\WBCR\Titan\Server\Helper::instance('litespeed')->getFilesNeededForBackup()
 			),
 			array(
 				"nginx",
-				__('NGINX', 'titan'),
+				__('NGINX', 'titan-security'),
 				$serverInfo->isNGINX(),
 				\WBCR\Titan\Server\Helper::instance('nginx')->getFilesNeededForBackup()
 			),
 			array(
 				"iis",
-				__('Windows (IIS)', 'titan'),
+				__('Windows (IIS)', 'titan-security'),
 				$serverInfo->isIIS(),
 				\WBCR\Titan\Server\Helper::instance('iis')->getFilesNeededForBackup()
 			),
-			array("manual", __('Manual Configuration', 'titan'), false, array()),
+			array("manual", __('Manual Configuration', 'titan-security'), false, array()),
 		);
 
 		$hasRecommendedOption = false;
@@ -71,9 +71,9 @@ if( !defined('ABSPATH') ) {
 		}
 
 		if( !$hasRecommendedOption ): ?>
-			<p><?php _e('If you know your web server\'s configuration, please select it from the list below.', 'titan'); ?></p>
+			<p><?php _e('If you know your web server\'s configuration, please select it from the list below.', 'titan-security'); ?></p>
 		<?php else: ?>
-			<p><?php _e('We\'ve preselected your server configuration based on our tests, but if you know your web server\'s configuration, please select it now. You can also choose "Manual Configuration" for alternate installation details.', 'titan'); ?></p>
+			<p><?php _e('We\'ve preselected your server configuration based on our tests, but if you know your web server\'s configuration, please select it now. You can also choose "Manual Configuration" for alternate installation details.', 'titan-security'); ?></p>
 		<?php endif; ?>
 		<select name='serverConfiguration' id='wtitan-server-config'>
 			<?php echo $wafPrependOptions; ?>
@@ -98,7 +98,7 @@ if( !defined('ABSPATH') ) {
 			?>
 			<div class="wtitan-backups wtitan-backups-<?php echo $class; ?>" style="display: none;" data-backups="<?php echo esc_attr($jsonBackups); ?>">
 				<?php if( count($filteredBackups) ): ?>
-					<p><?php _e('Please download a backup of the following files before we make the necessary changes:', 'titan'); ?></p><?php endif; ?>
+					<p><?php _e('Please download a backup of the following files before we make the necessary changes:', 'titan-security'); ?></p><?php endif; ?>
 				<ul class="wtitan-backup-file-list">
 					<?php
 					foreach($filteredBackups as $index => $backup) {
@@ -109,7 +109,7 @@ if( !defined('ABSPATH') ) {
 							'server_configuration' => $helper->getServerConfig(),
 							'_wpnonce' => $wfnonce,
 						), $adminURL);
-						echo '<li><a class="button button-default wtitan-backup-download" data-backup-index="' . $index . '" href="' . esc_url($download_backup_url) . '">' . sprintf(__('Download %s', 'titan'), esc_html(basename($backup))) . '</a></li>';
+						echo '<li><a class="button button-default wtitan-backup-download" data-backup-index="' . $index . '" href="' . esc_url($download_backup_url) . '">' . sprintf(__('Download %s', 'titan-security'), esc_html(basename($backup))) . '</a></li>';
 					}
 					?>
 				</ul>

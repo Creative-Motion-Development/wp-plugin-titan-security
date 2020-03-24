@@ -16,7 +16,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Logs extends \Wbcr_FactoryClearfy000_PageBase {
+class Logs extends Base {
 
 	/**
 	 * {@inheritdoc}
@@ -36,7 +36,7 @@ class Logs extends \Wbcr_FactoryClearfy000_PageBase {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $page_menu_position = 5;
+	public $page_menu_position = 1;
 
 
 	/**

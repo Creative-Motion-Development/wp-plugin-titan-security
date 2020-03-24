@@ -14,7 +14,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Firewall_Attacks_Log extends \Wbcr_FactoryClearfy000_PageBase {
+class Firewall_Attacks_Log extends Base {
 
 	/**
 	 * {@inheritdoc}

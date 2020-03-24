@@ -53,3 +53,13 @@ add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
 
 	return $notices;
 }, 10, 2);
+
+// Vulner class
+require_once WTITAN_PLUGIN_DIR . "/includes/vulnerabilities/boot.php";
+// Audit class
+require_once WTITAN_PLUGIN_DIR . "/includes/audit/boot.php";
+// SiteChecker class
+require_once WTITAN_PLUGIN_DIR . "/includes/sitechecker/boot.php";
+// Scanner class
+require_once WTITAN_PLUGIN_DIR . "/includes/scanner/boot.php";
+

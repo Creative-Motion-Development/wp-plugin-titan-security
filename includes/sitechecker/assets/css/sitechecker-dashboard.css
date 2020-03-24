@@ -10,6 +10,9 @@
 .wt-sitechecker-block table {
   width: 100%;
 }
+.wt-sitechecker-block table td:first-child {
+  width: 20%;
+}
 .wt-sitechecker-block table td {
   border: 1px solid #efefef;
   background: #fff;

@@ -1,0 +1,266 @@
+.wt-scanner-container
+{
+    margin: 15px 15px 15px 15px;
+}
+.wt-dashboard-container
+{
+    margin: 15px 10px 15px 10px;
+}
+/*----------------*/
+#wt-quickstart-scan
+{
+    width: 100%;
+}
+.wt-scanner-block-scan
+{
+    text-align: center;
+}
+.wt-scanner-block-scan table {
+    width: 100%;
+}
+.wt-scanner-block-scan table td:first-child {
+    width: 20%;
+}
+.wt-scanner-block-scan table td {
+    border: 1px solid #d6d6d6;
+    background: #fff;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+.wt-scanner-block-scan table td h4 {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+.wt-scan-icon-loader
+{
+    height: 55px;
+    background: transparent url("../img/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 60px;
+}
+
+#wt-dashboard-section table.wt-dashboard-table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 5px 0;
+    border-collapse: separate;
+    margin-bottom: 5px;
+}
+#wt-dashboard-section table.wt-dashboard-table > thead > tr > td {
+    border: 1px solid #d6d6d6;
+    border-bottom: 0;
+    background: #efefef;
+    text-align: left;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+#wt-dashboard-section table.wt-dashboard-table > thead > tr > td > h4 {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 5px;
+    color: #868686;
+    text-transform: uppercase;
+}
+#wt-dashboard-section table.wt-dashboard-table > tbody > tr > td {
+    border: 1px solid #d6d6d6;
+    border-top: 0;
+    background: #fff;
+    text-align: center;
+    padding: 15px;
+    border-radius: 0 0 10px 10px;
+}
+#wt-dashboard-section table.wt-dashboard-table > tbody > tr > td > h4 {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+#wt-dashboard-section table.wt-dashboard-table > tbody > tr > td h4 {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+.wt-full-block
+{
+    width: 100%;
+    display: block;
+    height: 50%;
+}
+.wt-left-block, .wt-right-block
+{
+    width: 50%;
+    display: inline-block;
+
+}
+div.wt-block-span-count
+{
+    width: 100%;
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+.wt-block-span-count div
+{
+    padding: 1px 4px;
+    border: 1px solid #b1b1b1;
+    display: inline-block;
+    margin: 1px;
+    border-radius: 5px;
+}
+.wt-left-block
+{
+    float: left;
+}
+.wt-right-block
+{
+    float: right;
+}
+
+.wtitan-status-circular
+{
+    /*height: 100px !important;*/
+    width: auto !important;
+}
+.wt-caption-block
+{
+    width: auto;
+    float: left;
+    display: inline-block;
+}
+.wt-manage-link-block
+{
+    width: auto;
+    float: right;
+    display: inline-block;
+    padding: 4px;
+}
+
+.wt-manage-link-block a
+{
+    color: #5d05b7;
+    font-weight: bold;
+    text-decoration: underline;
+}
+table.wt-sitechecker-block-table
+{
+    width: 100%;
+    border: 0;
+    table-layout: fixed;
+}
+table.wt-sitechecker-block-table tbody td
+{
+    border: 0 !important;
+    font-size: 40px;
+    color: #5d05b7;
+    font-weight: bold;
+    padding: 15px 0;
+    text-align: center;
+}
+table.wt-sitechecker-block-table tbody td span
+{
+    font-size: 20px;
+}
+
+table.wt-sitechecker-block-table thead td
+{
+    border: 0 !important;
+}
+table.wt-sitechecker-block-table thead td h4
+{
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 5px;
+    color: #868686;
+    text-transform: uppercase;
+}
+.wt-push-status
+{
+    font-size: inherit !important;
+}
+.wtitan-status-circular-text {
+    left: 110px;
+    position: relative;
+    bottom: 53px;
+    padding: 0;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    color: #aaa;
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.3125rem;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+/*--- Scanner -------*/
+#WBCR .wio-chart-container canvas {
+    display: inline-block !important;
+}
+#WBCR .wio-chart-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+}
+#WBCR .wio-chart-percent {
+    position: absolute;
+    left: 3px;
+    right: 0;
+    top: 35%;
+    margin-top: -0.5em;
+    line-height: 0.8;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #afafaf;
+}
+#WBCR .wio-chart-percent span {
+    font-size: 15px;
+    vertical-align: super;
+}
+#WBCR .wio-page-statistic .wio-chart-percent {
+    margin-top: -1.1em;
+}
+#WBCR .wio-widget .wio-chart-percent {
+    font-size: 44px;
+    line-height: 1;
+}
+#WBCR .wio-doughnut-legend li {
+    display: table;
+    position: relative;
+    border-radius: 5px;
+    padding: 3px 8px 2px 31px;
+    font-size: 12px;
+    cursor: default;
+    -webkit-transition: background-color 200ms ease-in-out;
+    -moz-transition: background-color 200ms ease-in-out;
+    -o-transition: background-color 200ms ease-in-out;
+    transition: background-color 200ms ease-in-out;
+}
+#WBCR .wio-doughnut-legend li span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding-top: 6px;
+}
+/*-------------------*/
+.wt-pink
+{
+    color: #f1b1b6 !important;
+}
+.wt-firewall-icon-ok, .wt-firewall-icon-clock, .wt-firewall-icon-dissmiss
+{
+    width: 97px;
+    height: 97px;
+    display: inline-block;
+}
+.wt-firewall-icon-ok{
+    background: url('../img/check.png');
+}
+.wt-firewall-icon-clock{
+    background: url('../img/check.png');
+}
+.wt-firewall-icon-dissmiss{
+    background: url('../img/check.png');
+}

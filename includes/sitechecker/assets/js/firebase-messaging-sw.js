@@ -2,14 +2,14 @@ importScripts('https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/7.9.1/firebase-messaging.js');
 
 firebase.initializeApp({
-  apiKey: "AIzaSyA1cTRtYRpVmACeaqbdnHnruvoWEj_LLdM",
-  authDomain: "titan-checker-dev.firebaseapp.com",
-  databaseURL: "https://titan-checker-dev.firebaseio.com",
-  projectId: "titan-checker-dev",
-  storageBucket: "titan-checker-dev.appspot.com",
-  messagingSenderId: "468240947431",
-  appId: "1:468240947431:web:d77511f15ae3b6f433ea42",
-  measurementId: "G-WR3G7792E4"
+  apiKey: "AIzaSyAAkQhmoqd-emHHsK5CP79eVUcci7umGMs",
+  authDomain: "titan-security.firebaseapp.com",
+  databaseURL: "https://titan-security.firebaseio.com",
+  projectId: "titan-security",
+  storageBucket: "titan-security.appspot.com",
+  messagingSenderId: "313719964045",
+  appId: "1:313719964045:web:7bd9fa554204728914bdc4",
+  measurementId: "G-G5LGKBYFE5"
 });
 
 const messaging = firebase.messaging();

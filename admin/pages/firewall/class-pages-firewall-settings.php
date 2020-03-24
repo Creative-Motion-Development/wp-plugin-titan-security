@@ -16,7 +16,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Firewall_Settings extends \Wbcr_FactoryClearfy000_PageBase {
+class Firewall_Settings extends Base {
 
 	/**
 	 * {@inheritDoc}

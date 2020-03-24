@@ -16,7 +16,7 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class Check extends \Wbcr_FactoryClearfy000_PageBase {
+class Check extends Base {
 
 	/**
 	 * {@inheritdoc}
@@ -96,28 +96,24 @@ class Check extends \Wbcr_FactoryClearfy000_PageBase {
 	{
 		parent::assets($scripts, $styles);
 
-		if( $this->plugin->is_premium() ) {
-			$this->scripts->request([
-				'bootstrap.tab',
-			], 'bootstrap');
+		$this->scripts->request([
+			'bootstrap.tab',
+		], 'bootstrap');
 
-			$this->styles->request([
-				'bootstrap.tab',
-			], 'bootstrap');
+		$this->styles->request([
+			'bootstrap.tab',
+		], 'bootstrap');
 
-			$this->styles->add($this->MODULE_URL . '/assets/css/check-dashboard.css');
-			$this->scripts->add($this->MODULE_URL . '/assets/js/check.js', ['jquery']);
-			$this->scripts->localize('update_nonce', wp_create_nonce("updates"));
-			$this->scripts->localize('wtscanner', [
-				'update_nonce' => wp_create_nonce("updates"),
-				'hide_nonce' => wp_create_nonce("hide"),
-			]);
+		$this->styles->add($this->MODULE_URL . '/assets/css/check-dashboard.css');
+		$this->scripts->add($this->MODULE_URL . '/assets/js/check.js', ['jquery']);
+		$this->scripts->localize('update_nonce', wp_create_nonce("updates"));
+		$this->scripts->localize('wtscanner', [
+			'update_nonce' => wp_create_nonce("updates"),
+			'hide_nonce' => wp_create_nonce("hide"),
+		]);
 
-			$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
-			$this->styles->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
-
-			$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
-		}
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
 	}
 
 	/**

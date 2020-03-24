@@ -2,10 +2,6 @@
 {
   margin: 15px 15px 15px 15px;
 }
-h2.nav-tab-wrapper
-{
-  margin-left: 10px !important;
-}
 #wtitan-scanner-tabs li a{
   text-decoration: none;
 }
@@ -16,6 +12,9 @@ h2.nav-tab-wrapper
 }
 .wt-scanner-block-scan table {
   width: 100%;
+}
+.wt-scanner-block-scan table td:first-child {
+  width: 20%;
 }
 .wt-scanner-block-scan table td {
   border: 1px solid #efefef;
@@ -106,7 +105,6 @@ h2.nav-tab-wrapper
 .wt-scan-icon-loader
 {
   height: 55px;
-  width: 122px;
   background: transparent url("../img/loader.gif");
   background-repeat: no-repeat;
   background-position: center center;

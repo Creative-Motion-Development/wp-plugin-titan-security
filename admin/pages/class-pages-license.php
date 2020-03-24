@@ -29,12 +29,31 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 	/**
 	 * {@inheritdoc}
+	 */
+	public $type = "page";
+
+	/**
+	 * {@inheritdoc}
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  6.0
 	 * @var string
 	 */
 	public $page_parent_page;
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
+	 * @since  2.1.2
+	 * @var int
+	 */
+	public $page_menu_position = 0;
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public $page_menu_dashicon = 'dashicons-admin-network';
 
 	/**
 	 * WCL_LicensePage constructor.
@@ -44,17 +63,22 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
 	 */
-
 	public function __construct(\Wbcr_Factory000_Plugin $plugin)
 	{
 		$this->menu_title = __('License', 'titan-security');
 		$this->page_menu_short_description = __('Product activation', 'titan-security');
 		$this->plan_name = __('Titan security Pro', 'titan-security');
+		$this->menuIcon = WTITAN_PLUGIN_URL . '/admin/assets/img/titan-icon.png';
 
 		parent::__construct($plugin);
 
 		add_action('admin_footer', [$this, 'print_confirmation_modal_tpl']);
 		add_action('wp_ajax_wtitan_activate_trial', array($this, 'activate_trial'));
+	}
+
+	public function getPluginTitle()
+	{
+		return "<span class='wt-plugin-header-logo'>&nbsp;</span>" . __('Titan security', 'titan-security');
 	}
 
 	/**
@@ -111,6 +135,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	{
 		parent::assets($scripts, $styles);
 
+		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/titan-security.css');
 		if( !$this->plugin->premium->is_activate() ) {
 			$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/libs/sweetalert2.css');
 			$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/sweetalert-custom.css');

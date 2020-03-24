@@ -15,7 +15,7 @@ if( !defined('ABSPATH') ) {
  * @author        Artem Prihodko     <webtemyk@yandex.ru>
  * @version       1.0
  */
-class SiteChecker extends \Wbcr_FactoryClearfy000_PageBase {
+class SiteChecker extends Base {
 
 	/**
 	 * {@inheritdoc}

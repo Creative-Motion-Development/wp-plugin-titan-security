@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WBCR\Titan\Client\Client;
+use WBCR\Titan\Client\Entity\UrlChecker;
 use WBCR\Titan\Client\Request\SetNoticeData;
 
 /**
@@ -20,10 +21,15 @@ use WBCR\Titan\Client\Request\SetNoticeData;
 class SiteChecker extends Module_Base {
 
 	/**
-	 * SiteChecker constructor.
 	 * @var Client
 	 */
 	private $client;
+
+	/**
+	 * @var UrlChecker[]
+	 */
+	private $sites;
+
 	/**
 	 * SiteChecker constructor.
 	 *
@@ -36,9 +42,44 @@ class SiteChecker extends Module_Base {
 
 		$this->client = new Client($this->license_key);
 
+		$this->getSites();
+
 		add_action( 'wp_ajax_push_token', [ $this, 'handle_push_token' ] );
 		add_action( 'wp_ajax_wtitan_sitechecker_delete_url', [ $this, 'send_delete_url' ] );
 		add_action( 'wp_ajax_wtitan_sitechecker_add_url', [ $this, 'send_add_url' ] );
+	}
+
+	/**
+	 * Get sites
+	 *
+	 * @return array
+	 */
+	public function getSites() {
+		$this->sites = $this->client->get_checker_urls();
+		return $this->sites;
+	}
+
+	/**
+	 * Number of sites
+	 *
+	 * @return int
+	 */
+	public function get_count() {
+		return count($this->sites);
+	}
+
+	/**
+	 * Number of sites
+	 *
+	 * @return int
+	 */
+	public function get_average_uptime() {
+		$up = 0;
+		$count = count($this->sites);
+		foreach ( $this->sites as $site ) {
+			$up = $up + $site->uptime;
+		}
+		return $count ? round( $up / count($this->sites)) : 0;
 	}
 
 	/**
@@ -46,7 +87,7 @@ class SiteChecker extends Module_Base {
 	 */
 	public function showPageContent() {
 
-		$urls = $this->client->get_checker_urls();
+		$urls = $this->sites;
 
 		if(empty($urls) || !is_array( $urls)) $urls = array();
 		$args = array(
@@ -163,7 +204,7 @@ class SiteChecker extends Module_Base {
 			$url = $_POST['url'];
 
 			$request = new \WBCR\Titan\Client\Request\CreateCheckerUrl();
-			$request->add_url($url, 60);
+			$request->add_url($url, 300);
 			$response = $this->client->create_checker_url($request);
 			if( $response ) {
 				wp_send_json_success( [
