@@ -143,3 +143,52 @@ function collect_wp_hash_sum( $path = ABSPATH ) {
 
 	return $hash;
 }
+
+
+add_action('admin_notices', 'titan_ssl_cert_notice');
+/**
+ *
+ */
+function titan_ssl_cert_notice() {
+	require_once WTITAN_PLUGIN_DIR . '/includes/cert-info/boot.php';
+
+	$cert = \WBCR\Titan\Cert\Cert::get_instance();
+	$output = false;
+	$message = '';
+	$type = 'notice-warning';
+
+	if($cert->is_available()) {
+		if(!$cert->is_lets_encrypt()) {
+			$remaining = $cert->get_expiration_timestamp() - time();
+			if($remaining <= 86400 * 90) { // 3 month (90 days)
+				$message = 'The SSL certificate expires in less than three months';
+				$output = true;
+			} else if($remaining <= 86400 * 3) { // 3 days
+				$type = 'notice-error';
+				$message = 'The SSL certificate expires in less than three days';
+				$output = true;
+			}
+		}
+	} else {
+		$output = true;
+		$type = 'notice-error';
+		$message = $cert->get_error_message();
+	}
+
+	if($output) {
+		echo <<<HTML
+<div id="message" class="notice {$type} is-dismissible">
+	<p>{$message}</p>
+</div>
+HTML;
+	}
+}
+
+add_action('init', 'titan_init_https_redirect');
+function titan_init_https_redirect() {
+	$strict_https = Plugin::app()->getPopulateOption('strict_https', false);
+	if(!is_ssl() && $strict_https) {
+		wp_redirect(home_url(add_query_arg($_GET, $_SERVER['REQUEST_URI']), 'https'));
+		die;
+	}
+}
