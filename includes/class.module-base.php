@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author        Artem Prihodko <webtemyk@yandex.ru>
  * @version       1.0
  */
-class Module_Base {
+abstract class Module_Base {
 
 	/**
 	 * Plugin object
@@ -96,4 +96,5 @@ class Module_Base {
 		}
 	}
 
+	abstract public function showPageContent();
 }
