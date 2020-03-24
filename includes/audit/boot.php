@@ -12,3 +12,4 @@ require_once WTITAN_PLUGIN_DIR."/includes/class.module-base.php";
 
 require_once "classes/class.auditresult.php";
 require_once "classes/class.audit.php";
+require_once 'classes/class.cert.php';

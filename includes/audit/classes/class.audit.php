@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use WBCR\Titan\Cert\Cert;
 use WBCR\Titan\Client\Client;
 use WBCR\Titan\Client\Request\SetNoticeData;
 
@@ -239,11 +240,36 @@ class Audit extends Module_Base {
 	 * @return AuditResult[] Results
 	 */
 	public function check_https() {
-		$title = __("Your site works over HTTP, without using SSL","titan-security");
-		$description = __("If the site uses HTTPS, its data is protected.","titan-security");
-		if (!is_ssl()) {
-			$this->add( $title, $description,  'medium');
+		$title = __("Problems with the SSL certificate were detected on your site","titan-security");
+		$description = "";
+		$securedUrl = get_site_url( null, '', 'https' );
+		$cert = Cert::get_instance();
+		if ( $cert->is_available() ){
+			if ( !$cert->is_lets_encrypt() ){
+				$description = __("The SSL certificate ends ","titan-security").date( 'd-m-Y H:i:s', $cert->get_expiration_timestamp() );
+			}
 		}
+		else {
+			switch ( $cert->get_error() ){
+				case Cert::ERROR_UNAVAILABLE:
+					$description = __("No openssl extension for php","titan-security");
+					break;
+				case Cert::ERROR_ONLY_HTTPS:
+					$description = sprintf( __("Available only on <a href='%1s'>%2s</a>","titan-security"), $securedUrl, $securedUrl);
+					break;
+				case Cert::ERROR_HTTPS_UNAVAILABLE:
+					$description = __("HTTPS is not available on this site","titan-security");
+					break;
+				case Cert::ERROR_UNKNOWN_ERROR:
+					$description = __("Unknown error","titan-security");
+					break;
+				default:
+					$description = __("Error","titan-security");
+					break;
+			}
+		}
+
+		$this->add( $title, $description,  'medium');
 
 		return $this->results;
 	}

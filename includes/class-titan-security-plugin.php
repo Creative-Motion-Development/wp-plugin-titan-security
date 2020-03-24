@@ -125,7 +125,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
-		self::app()->registerPage('WBCR\Titan\Page\CertInfo', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-cert-info.php');
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 	}
 

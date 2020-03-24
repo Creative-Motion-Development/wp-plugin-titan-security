@@ -150,7 +150,7 @@ add_action('admin_notices', 'titan_ssl_cert_notice');
  *
  */
 function titan_ssl_cert_notice() {
-	require_once WTITAN_PLUGIN_DIR . '/includes/cert-info/boot.php';
+	require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
 
 	$cert = \WBCR\Titan\Cert\Cert::get_instance();
 	$output = false;
