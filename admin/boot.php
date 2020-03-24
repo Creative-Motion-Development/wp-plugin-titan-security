@@ -11,6 +11,45 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
+
+/**
+ * Print admin notice: "Would you like to send them for spam checking?"
+ *
+ * If user clicked button "Yes, do it", plugin will exec action,
+ * that put all unapproved comments to spam check queue.
+ */
+add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
+	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WANTISPAM_PLUGIN_ACTIVE') ) {
+		return $notices;
+	}
+
+	if( !\WBCR\Titan\Plugin::app()->is_premium() ) {
+		return $notices;
+	}
+
+	$about_plugin_url = "https://anti-spam.space";
+	$install_plugin_url = admin_url('update.php?action=install-plugin&plugin=anti-spam&_wpnonce=' . wp_create_nonce('activate-plugin_titan-security'));
+
+	$notice_text = sprintf(__('Thanks for activating the premium Titan security plugin. You got a bonus, premium <a href="%s" target="_blank" rel="noopener">Anti-spam</a> plugin. Want to <a href="%s" target="_blank" rel="noopener">install it now</a>?', "titan-security"), $about_plugin_url, $install_plugin_url);
+
+	$notices[] = [
+		'id' => 'wtitan_bonus_suggestion',
+		'type' => 'success',
+		/*'where' => [
+			'edit-comments',
+			'plugins',
+			'themes',
+			'dashboard',
+			'edit',
+			'settings'
+		],*/
+		'dismissible' => true,
+		'dismiss_expires' => 0,
+		'text' => '<p><strong>Titan:</strong><br>' . $notice_text . '</p>'
+	];
+
+	return $notices;
+}, 10, 2);
