@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 //API Client
-require_once WTITAN_PLUGIN_DIR."/api-client/boot.php";
+require_once WTITAN_PLUGIN_DIR . "/libs/api-client/boot.php";
 
 // Base module class
 require_once WTITAN_PLUGIN_DIR."/includes/class.module-base.php";

@@ -5,11 +5,11 @@ define('WTITAN_PLUGIN_DIR', dirname(dirname(dirname(__FILE__))));
 function loader($class) {
 	$classMap = [
 		'Page' => WTITAN_PLUGIN_DIR . '/admin/pages',
-		'Client' => WTITAN_PLUGIN_DIR . '/api-client',
-		'Entity' => WTITAN_PLUGIN_DIR . '/api-client/entity',
-		'Request' => WTITAN_PLUGIN_DIR . '/api-client/request',
-		'Response' => WTITAN_PLUGIN_DIR . '/api-client/response',
-		'Method' => WTITAN_PLUGIN_DIR . '/api-client/response/method',
+		'Client' => WTITAN_PLUGIN_DIR . '/libs/api-client',
+		'Entity' => WTITAN_PLUGIN_DIR . '/libs/api-client/entity',
+		'Request' => WTITAN_PLUGIN_DIR . '/libs/api-client/request',
+		'Response' => WTITAN_PLUGIN_DIR . '/libs/api-client/response',
+		'Method' => WTITAN_PLUGIN_DIR . '/libs/api-client/response/method',
 		'MalwareScanner' => WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner',
 	];
 
