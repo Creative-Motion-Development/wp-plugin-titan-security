@@ -18,6 +18,11 @@ class Cert {
 	const ERROR_UNKNOWN_ERROR = -1;
 
 	/**
+	 * @var Cert
+	 */
+	private static $cert;
+
+	/**
 	 * @var string
 	 */
 	private $url;
@@ -133,5 +138,50 @@ class Cert {
 		}
 
 		return $this->cert_info['issuer']['organizationName'];
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_lets_encrypt() {
+		return $this->get_issuer() == 'Let\'s Encrypt';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_error_message() {
+		switch($this->error) {
+			case self::ERROR_UNKNOWN_ERROR:
+				return __('Unknown error', 'titan-security');
+				break;
+
+			case self::ERROR_UNAVAILABLE:
+				return __('PHP openssl extension is missing', 'titan-security');
+				break;
+
+			case self::ERROR_ONLY_HTTPS:
+				return __('Verification is only available on https', 'titan-security');
+				break;
+
+			case self::ERROR_HTTPS_UNAVAILABLE:
+				return __('https is not available on this site. We recommend using CloudFlare', 'titan-security');
+				break;
+
+			case self::ERROR_NO_ERROR:
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * @return Cert
+	 */
+	public static function get_instance() {
+		if(is_null(self::$cert)) {
+			self::$cert = new Cert();
+		}
+
+		return self::$cert;
 	}
 }

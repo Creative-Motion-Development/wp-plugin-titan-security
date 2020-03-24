@@ -21,7 +21,7 @@ class CertInfo extends Module_Base {
 
 	public function showPageContent() {
 		echo $this->render_template( 'result', [
-			'cert' => new Cert(),
+			'cert' => Cert::get_instance(),
 		] );
 	}
 }

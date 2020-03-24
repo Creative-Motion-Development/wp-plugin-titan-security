@@ -11,7 +11,7 @@ $securedUrl = get_site_url( null, '', 'https' );
 <div class="row">
     <div class="col-md-12">
 		<?php if ( $cert->is_available() ): ?>
-			<?php if ( $cert->get_issuer() == 'Let\'s Encrypt' ): ?>
+			<?php if ( $cert->is_lets_encrypt() ): ?>
 				Все в порядке. Сертификат будет обновляться автоматически шаред хостингом
 			<?php else: ?>
                 Сертификат заканчивается <?php echo date( 'd-m-Y H:i:s', $cert->get_expiration_timestamp() ) ?>
@@ -31,6 +31,10 @@ $securedUrl = get_site_url( null, '', 'https' );
                     Неизвестная ошибка
 					<?php break; endswitch ?>
 		<?php endif ?>
+    </div>
+
+    <div class="col-md-12">
+        Ошибка (возвращает объект Cert): <?php echo $cert->get_error_message() ?>
     </div>
 
 </div>
