@@ -11,9 +11,6 @@
         "commit-multiple.sh",
         "/admin/assets/css/general.less",
         "/admin/assets/css/tinymce.less",
-        "/components/assets-manager/libs",
-        "/components/comments-plus/libs",
-        "/components/update-manager/libs",
         "libs/factory/bootstrap/assets/cache",
         "libs/factory/bootstrap/assets/css/",
         "libs/factory/bootstrap/assets/js/",
@@ -91,8 +88,7 @@
     }
   },
   "constants": {
-    "version": "1.0.0",
-    "api": "http://api.byonepress.com/1.1/",
+    "version": "7.0.0",
     "name": [
       {
         "value": "titan-security"
@@ -100,7 +96,7 @@
     ],
     "pluginUrl": [
       {
-        "value": "https://wordpress.org/plugins/titan-security/"
+        "value": "https://wordpress.org/plugins/anti-spam/"
       }
     ]
   }

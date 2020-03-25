@@ -5,9 +5,9 @@ h2.nav-tab-wrapper
 #WBCR .wbcr-factory-pages-000-impressive-page-template .alert
 {
     padding: 10px !important;
-    position: absolute !important;
+    /*position: absolute !important;*/
     width: 100%;
-    opacity: 0.8;
+    /*opacity: 0.8;*/
 }
 #WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-inner-wrap .nav-tab
 {

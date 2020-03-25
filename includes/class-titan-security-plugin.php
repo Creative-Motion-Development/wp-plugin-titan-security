@@ -16,6 +16,13 @@ if( !defined('ABSPATH') ) {
 class Plugin extends \Wbcr_Factory000_Plugin {
 
 	/**
+	 * Number of comments that will be sent for verification
+	 *
+	 * @since 6.2
+	 */
+	const COUNT_TO_CHECK = 30;
+
+	/**
 	 * @see self::app()
 	 * @var \Wbcr_Factory000_Plugin
 	 */
@@ -120,18 +127,22 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	{
 		require_once(WTITAN_PLUGIN_DIR . '/admin/class-page-titan-basic.php');
 
-		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
-		self::app()->registerPage('WBCR\Titan\Page\Firewall_Login_Attempts', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-login-attempts.php');
+		self::app()->registerPage('WBCR\Titan\Page\Antispam', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-antispam.php');
+
 		self::app()->registerPage('WBCR\Titan\Page\QuickStart', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-quickstart.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
-		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
+
+		self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Login_Attempts', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-login-attempts.php');
+
 		self::app()->registerPage('WBCR\Titan\Page\Logs', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-logs.php');
+		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 	}
 
 	/**
@@ -169,16 +180,20 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 	/**
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
-	 * @since  1.0
+	 * @since  7.0
 	 */
 	private function global_scripts()
 	{
-		// Firewall
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/boot.php');
-
 		// Logger
 		require_once(WTITAN_PLUGIN_DIR . '/includes/logger/class-logger-writter.php');
 		new \WBCR\Titan\Logger\Writter();
+
+		// Firewall
+		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/boot.php');
+
+		// Antispam
+		require_once(WTITAN_PLUGIN_DIR . '/includes/antispam/boot.php');
+
 	}
 
 	/**

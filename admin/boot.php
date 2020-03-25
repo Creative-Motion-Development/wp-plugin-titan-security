@@ -22,7 +22,7 @@ if( !defined('ABSPATH') ) {
  * that put all unapproved comments to spam check queue.
  */
 add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
-	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WANTISPAM_PLUGIN_ACTIVE') ) {
+	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WTITAN_PLUGIN_ACTIVE') ) {
 		return $notices;
 	}
 

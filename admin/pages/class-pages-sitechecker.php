@@ -41,7 +41,7 @@ class SiteChecker extends Base {
 	/**
 	 * Module folder URL
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var bool
 	 */
 	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/sitechecker";
@@ -49,7 +49,7 @@ class SiteChecker extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var bool
 	 */
 	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/sitechecker";
@@ -57,7 +57,7 @@ class SiteChecker extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var object
 	 */
 	public $module;
