@@ -156,7 +156,7 @@ class Firewall_Blocking extends Base {
 						<?php _e('Make Permanent', 'titan-security') ?>
 					</a>&nbsp;
 					&nbsp;
-					<a href="" id="blocks-export-ips" class="btn btn-default disabled">Export All IPs</a>
+					<!--<a href="" id="blocks-export-ips" class="btn btn-default disabled">Export All IPs</a>-->
 				</li>
 			</ul>
 

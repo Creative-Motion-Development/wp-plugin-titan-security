@@ -14,12 +14,12 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Firewall_Attacks_Log extends Base {
+class Firewall_Login_Attempts extends Base {
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public $id = 'firewall-attack-log';
+	public $id = 'firewall-activity-log';
 
 	/**
 	 * {@inheritDoc}
@@ -73,8 +73,8 @@ class Firewall_Attacks_Log extends Base {
 	{
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Attacks log', 'titan-security');
-		$this->page_menu_short_description = __('Attacks log', 'titan-security');
+		$this->menu_title = __('Login Attempts', 'titan-security');
+		$this->page_menu_short_description = __('Login Attempts', 'titan-security');
 
 		$this->view = $this->plugin->view();
 
@@ -113,13 +113,13 @@ class Firewall_Attacks_Log extends Base {
 		$current_page = $this->plugin->request->get('pagenum', 1, 'intval');
 		$limit = 20;
 		$offset = ($current_page - 1) * $limit;
-		$total = $wpdb->get_var("SELECT COUNT(`id`) FROM {$wpdb->prefix}wfhits");
+		$total = $wpdb->get_var("SELECT COUNT(`id`) FROM {$wpdb->prefix}wflogins");
 		$num_of_pages = (int)ceil($total / $limit);
-		$hits = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}wfhits ORDER BY attackLogTime DESC LIMIT %d, %d", $offset, $limit));
+		$hits = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}wflogins ORDER BY ctime DESC LIMIT %d, %d", $offset, $limit));
 
 		?>
 		<div class="wbcr-factory-page-group-header">
-			<strong><?php _e('Attack list', 'titan-security') ?></strong>
+			<strong><?php _e('Login Attempts', 'titan-security') ?></strong>
 			<p>
 				<?php _e('In this table, you can see the attacks on your site that the Titan firewall repelled.', 'titan-security') ?>
 			</p>
@@ -146,14 +146,13 @@ class Firewall_Attacks_Log extends Base {
 					<th class='wtitan-attacks-log__table-column'>
 						<strong><?php _e('IP', 'titan-security'); ?></strong></th>
 					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('Event', 'titan-security'); ?></strong>
+						<strong><?php _e('Username', 'titan-security'); ?></strong>
 					</th>
 					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('...', 'titan-security'); ?></strong>
+						<strong><?php _e('Success', 'titan-security'); ?></strong>
 					</th>
-
 					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('Attack time', 'titan-security'); ?></strong>
+						<strong><?php _e('Date', 'titan-security'); ?></strong>
 					</th>
 				</tr>
 				</thead>
@@ -164,24 +163,14 @@ class Firewall_Attacks_Log extends Base {
 							<td class="wtitan-attacks-log__table-column">
 								<?php echo esc_html(\WBCR\Titan\Firewall\Utils::inet_ntop($hit->IP)) ?>
 							</td>
-							<td class="wtitan-attacks-log__table-column wtitan-attacks-log__table-column-event">
-								<ul>
-									<li>
-										<span class="wtitan-attacks-log__table-label--red"><?php echo esc_html($hit->actionDescription) ?></span>
-									</li>
-									<li><?php echo esc_html($hit->URL) ?></li>
-									<li><strong>
-											<?php _e('Status Code', 'titan-security') ?>
-											: <?php echo esc_html($hit->statusCode) ?>
-										</strong>
-									</li>
-								</ul>
+							<td class="wtitan-attacks-log__table-column">
+								<?php echo esc_html($hit->username) ?>
 							</td>
 							<td class="wtitan-attacks-log__table-column">
-								<?php //echo esc_html($hit->IP) ?>
+								<?php echo(!$hit->fail ? '<span style="color:green;">' . __('OK', 'titan-security') . '</span>' : '<span style="color:red;">' . __('Fail', 'titan-security') . '</span>') ?>
 							</td>
 							<td class="wtitan-attacks-log__table-column">
-								<?php echo esc_html(date("d.m.Y H:i:s", $hit->attackLogTime)) ?>
+								<?php echo esc_html(date("d.m.Y H:i:s", $hit->ctime)) ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
