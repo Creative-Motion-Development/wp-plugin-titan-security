@@ -156,6 +156,7 @@ function titan_ssl_cert_notice() {
 	$output = false;
 	$message = '';
 	$type = 'notice-warning';
+	$plugin_name = WBCR\Titan\Plugin::app()->getPluginTitle();
 
 	if($cert->is_available()) {
 		if(!$cert->is_lets_encrypt()) {
@@ -178,7 +179,10 @@ function titan_ssl_cert_notice() {
 	if($output) {
 		echo <<<HTML
 <div id="message" class="notice {$type} is-dismissible">
-	<p>{$message}</p>
+	<p>
+		<b>{$plugin_name}</b>:<br>
+		{$message}
+	</p>
 </div>
 HTML;
 	}

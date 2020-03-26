@@ -180,7 +180,7 @@ function wantispam_doing_cron()
 }
 
 /**
- * Checks whether the license is activated for Clearfy plugin.
+ * Checks whether the license is activated for plugin.
  *
  * @return bool
  * @since  6.5.4
@@ -196,7 +196,7 @@ function wantispam_is_titan_license_activate()
 }
 
 /**
- * Checks whether the license is activated for the plugin or not. If the Clearfy plugin is installed
+ * Checks whether the license is activated for the plugin or not. If the plugin is installed
  * in priorities checks its license.
  *
  * @return bool
@@ -209,7 +209,7 @@ function wantispam_is_license_activate()
 }
 
 /**
- * Checks active (not expired!) License for plugin or not. If the Clearfy plugin is installed
+ * Checks active (not expired!) License for plugin or not. If the plugin is installed
  * checks its license in priorities.
  *
  * @return bool
