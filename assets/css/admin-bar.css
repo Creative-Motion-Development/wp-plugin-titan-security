@@ -37,4 +37,19 @@
 #wp-admin-bar-titan-menu .ab-item .dashicons.dashicons-dashboard {
   color: #fff;
 }
-/*# sourceMappingURL=admin-bar.css.map */
+#wp-admin-bar-titan-menu .wtitan-count-bubble {
+  display: inline-block;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  margin: 0px 0 0px 5px;
+  padding: 0 5px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background-color: #ca4a1f;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+  z-index: 26;
+}

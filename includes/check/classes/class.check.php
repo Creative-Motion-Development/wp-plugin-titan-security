@@ -45,6 +45,11 @@ class Check extends Module_Base {
 		$this->audit = new Audit();
 
 		add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
+
+		add_filter('wbcr/titan/adminbar_menu_title', function($title){
+			$count = (int)$this->vulnerabilities->get_count() + (int)$this->audit->get_count();
+			return $title."<span class='wtitan-count-bubble'>{$count}</span>";
+		});
 	}
 
 	/**
