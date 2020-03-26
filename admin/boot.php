@@ -14,6 +14,20 @@
 if( !defined('ABSPATH') ) {
 	exit;
 }
+/**
+ * Выводит кнопку настроек в шапке интерфейса плагина
+ */
+add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
+	if ( $plugin_name != WBCR\Titan\Plugin::app()->getPluginName() ) {
+		return;
+	}
+	?>
+	<a href="<?php echo WBCR\Titan\Plugin::app()->getPluginPageUrl( 'plugin_settings' ) ?>" class="wbcr-factory-button wbcr-factory-type-settings">
+		<?php echo apply_filters( 'wbcr/clearfy/settings_button_title', __( 'Titan settings', 'titan-security' ) ); ?>
+	</a>
+	<?php
+} );
+
 
 /**
  * Print admin notice: "Would you like to send them for spam checking?"
