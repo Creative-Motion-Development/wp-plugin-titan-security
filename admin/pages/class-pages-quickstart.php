@@ -144,6 +144,14 @@ class QuickStart extends Base {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getMenuTitle()
+	{
+		return apply_filters( 'wbcr/titan/admin_menu_title', $this->menu_title );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 *
 	 * @return void
