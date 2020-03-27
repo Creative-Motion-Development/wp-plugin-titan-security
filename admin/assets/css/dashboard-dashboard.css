@@ -1,0 +1,180 @@
+.wt-dashboard-container
+{
+    margin: 10px 5px 10px 5px;
+    /*display: inline-block;*/
+}
+.wt-dashboard-block
+{
+    /*width: 100%;*/
+    border: 1px solid #d6d6d6;
+    background: #fff;
+    text-align: center;
+    border-radius: 5px;
+    min-height: 16em !important;
+}
+.wt-row
+{
+    width: 100%;
+}
+.wt-dashboard-block div.row
+{
+    padding: 0 25px 0 15px;
+}
+.wt-block-gutter
+{
+    padding: 0 5px 10px 5px !important;
+}
+.wt-dashboard-block-header
+{
+    text-align: left;
+    padding: 10px;
+}
+.wt-dashboard-block-header h4
+{
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 10px;
+    color: #868686;
+    text-transform: uppercase;
+}
+.wt-dashboard-block-content
+{
+    margin: 20px -10px 10px 10px;
+    text-align: left;
+}
+.wt-block-description
+{
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #868686;
+}
+.wt-firewall-icon-ok, .wt-firewall-icon-clock, .wt-firewall-icon-dissmiss, .wt-dashboard-icon-loader
+{
+    width: 50px;
+    height: 60px;
+    display: inline-block;
+}
+.wt-firewall-icon-ok{
+    background: url('../img/check.png') no-repeat center center;
+    background-size: contain;
+}
+.wt-firewall-icon-clock{
+    background: url('../img/clock.png') no-repeat center center;
+    background-size: contain;
+}
+.wt-firewall-icon-dissmiss{
+    background: url('../img/x.png') no-repeat center center;
+    background-size: contain;
+}
+.wt-dashboard-icon-loader
+{
+    background: transparent url("../img/loader.gif");
+}
+
+.wt-checkbox
+{
+    background-color: #5d05b7 !important;
+    border: 2px solid #5d05b7 !important;
+    border-radius: 5px !important;
+}
+.factory-bootstrap-000 .factory-buttons-way .factory-on
+{
+    background-color: #5d05b7 !important;
+    box-shadow: none !important;
+    width: 40px;
+    height: 25px;
+}
+.factory-bootstrap-000 .factory-buttons-way .factory-on.active
+{
+    background-color: #fff !important;
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    width: 25px;
+    height: 25px;
+    color: #5d05b7;
+}
+.factory-bootstrap-000 .factory-buttons-way .factory-off
+{
+    background-color: #5d05b7 !important;
+    box-shadow: none !important;
+    width: 40px;
+    height: 25px;
+}
+.factory-bootstrap-000 .factory-buttons-way .factory-off.active
+{
+    background-color: #fff !important;
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    width: 25px;
+    height: 25px;
+}
+
+/*----------------*/
+.wt-scan-icon-loader
+{
+    height: 55px;
+    background: transparent url("../img/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 60px;
+}
+
+/*--- Scanner -------*/
+/*
+#WBCR .wio-chart-container canvas {
+    display: inline-block !important;
+}
+#WBCR .wio-chart-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+}
+#WBCR .wio-chart-percent {
+    position: absolute;
+    left: 3px;
+    right: 0;
+    top: 35%;
+    margin-top: -0.5em;
+    line-height: 0.8;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #afafaf;
+}
+#WBCR .wio-chart-percent span {
+    font-size: 15px;
+    vertical-align: super;
+}
+#WBCR .wio-page-statistic .wio-chart-percent {
+    margin-top: -1.1em;
+}
+#WBCR .wio-widget .wio-chart-percent {
+    font-size: 44px;
+    line-height: 1;
+}
+#WBCR .wio-doughnut-legend li {
+    display: table;
+    position: relative;
+    border-radius: 5px;
+    padding: 3px 8px 2px 31px;
+    font-size: 12px;
+    cursor: default;
+    -webkit-transition: background-color 200ms ease-in-out;
+    -moz-transition: background-color 200ms ease-in-out;
+    -o-transition: background-color 200ms ease-in-out;
+    transition: background-color 200ms ease-in-out;
+}
+#WBCR .wio-doughnut-legend li span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding-top: 6px;
+}
+.wt-pink
+{
+    color: #f1b1b6 !important;
+}
+*/

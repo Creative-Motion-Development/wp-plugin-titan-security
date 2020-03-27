@@ -1,0 +1,65 @@
+#WBCR {
+  .factory-checkbox {
+    &.wantispam-checkbox-premium-label:after {
+      display: inline-block;
+      position: relative;
+      content: 'PRO';
+      background: #ff5722;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 10px;
+      line-height: 1;
+      font-style: normal;
+      padding: 4px 6px;
+      margin-left: 4px;
+      vertical-align: top;
+      top: -8px;
+      left: -10px;
+      right: auto;
+      z-index: 11;
+      cursor: pointer;
+    }
+
+    &--disabled input,
+    &--disabled button {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .wantispam-checkbox-warning-message {
+    position: relative;
+    padding: 15px;
+    background: #fff5de;
+    color: #9c6e6e;
+    border-radius: 3px;
+
+    &:after, &:before {
+      bottom: 100%;
+      left: 20px;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:after {
+      border-color: rgba(136, 183, 213, 0);
+      border-bottom-color: #fff5de;
+      border-width: 10px;
+    }
+
+    &:before {
+      border-color: rgba(194, 225, 245, 0);
+      border-bottom-color: #fff5de;
+      border-width: 10px;
+    }
+  }
+}
+

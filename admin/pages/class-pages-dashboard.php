@@ -19,12 +19,12 @@ if( !defined('ABSPATH') ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class QuickStart extends Base {
+class Dashboard extends Base {
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public $id = 'quickstart';
+	public $id = 'dashboard';
 
 	/**
 	 * {@inheritdoc}
@@ -128,7 +128,7 @@ class QuickStart extends Base {
 		$this->plugin = $plugin;
 
 		$this->menu_title = __('Titan security', 'titan-security');
-		$this->page_title = __('Quick start', 'titan-security');;
+		$this->page_title = __('Dashboard', 'titan-security');;
 		$this->menu_sub_title = $this->page_title;
 		$this->page_menu_short_description = __('Start scanning and information about problems', 'titan-security');
 		$this->menu_icon = '~/admin/assets/img/icon.png';
@@ -161,8 +161,8 @@ class QuickStart extends Base {
 	{
 		parent::assets($scripts, $styles);
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/quick-dashboard.css');
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/quickstart.js');
+		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
+		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
 
 		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/js/vulnerability_ajax.js', ['jquery']);
@@ -172,16 +172,14 @@ class QuickStart extends Base {
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/js/audit_ajax.js', ['jquery']);
 		$this->scripts->localize('wtaudit', ['nonce' => wp_create_nonce('get_audits')]);
 
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/Chart.min.js', ['jquery']);
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/statistic.js', ['jquery']);
+		//$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/Chart.min.js', ['jquery']);
+		//$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/statistic.js', ['jquery']);
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/scanner/assets/js/scanner.js', ['jquery']);
 		$this->scripts->localize('wpnonce', [
 			'start' => wp_create_nonce('titan-start-scan'),
 			'stop' => wp_create_nonce('titan-stop-scan'),
 			'status' => wp_create_nonce('titan-status-scan'),
 		]);
-
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/libs/circular-progress.js', ['jquery']);
 	}
 
 
@@ -208,7 +206,7 @@ class QuickStart extends Base {
 		//end FIREWALL
 
 		$scanner_started = $this->plugin->getOption('scanner_status') == 'started';
-		$this->view->print_template('quickstart', [
+		$this->view->print_template('dashboard', [
 			'scanner_started' => $scanner_started,
 			'this_plugin' => $this->plugin,
 			'firewall' => $firewall,
