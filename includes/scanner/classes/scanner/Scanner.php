@@ -11,6 +11,25 @@ use InvalidArgumentException;
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
 class Scanner {
+	const SPEED_SLOW = 'slow';
+	const SPEED_MEDIUM = 'medium';
+	const SPEED_FAST = 'fast';
+	const SPEED_FASTEST = 'fastest';
+
+	const SPEED_LIST = [
+		self::SPEED_SLOW,
+		self::SPEED_MEDIUM,
+		self::SPEED_FAST,
+		self::SPEED_FASTEST,
+	];
+
+	const SPEED_FILES = [
+		self::SPEED_SLOW    => 60,
+		self::SPEED_MEDIUM  => 120,
+		self::SPEED_FAST    => 250,
+		self::SPEED_FASTEST => 500,
+	];
+
 	/** @var File[] */
 	protected $fileList = [];
 
@@ -34,14 +53,14 @@ class Scanner {
 	/**
 	 * Scanner constructor.
 	 *
-	 * @param string        $path
+	 * @param string $path
 	 * @param SignaturePool $signaturePool
-	 * @param HashListPool  $hashList
-	 * @param array         $ignoreFiles
+	 * @param HashListPool $hashList
+	 * @param array $ignoreFiles
 	 */
 	public function __construct( $path, $signaturePool, $hashList = null, $ignoreFiles = [] ) {
-		if(is_null($hashList)) {
-			$hashList = HashListPool::fromArray([]);
+		if ( is_null( $hashList ) ) {
+			$hashList = HashListPool::fromArray( [] );
 		}
 
 		$this->hashList      = $hashList;
@@ -121,7 +140,7 @@ class Scanner {
 	/**
 	 * @param string $filePath
 	 *
-	 * @param null   $fileHash
+	 * @param null $fileHash
 	 *
 	 * @return File
 	 */
@@ -140,7 +159,7 @@ class Scanner {
 	}
 
 	/**
-	 * @param int   $count
+	 * @param int $count
 	 * @param array $matchCache
 	 *
 	 * @return Match[]|null[]
@@ -151,12 +170,12 @@ class Scanner {
 		$i = 0;
 		foreach ( $this->fileList as $file ) {
 			$i ++;
-			$cachedHash = $this->hashList->getFileHash($file->getPath());
-			if($cachedHash && $cachedHash == $file->getFileHash()) {
-				if(isset($matchCache[$file->getPath()])) {
-					$matches[$file->getPath()] = $matchCache[$file->getPath()];
+			$cachedHash = $this->hashList->getFileHash( $file->getPath() );
+			if ( $cachedHash && $cachedHash == $file->getFileHash() ) {
+				if ( isset( $matchCache[ $file->getPath() ] ) ) {
+					$matches[ $file->getPath() ] = $matchCache[ $file->getPath() ];
 				} else {
-					$matches[$file->getPath()] = null;
+					$matches[ $file->getPath() ] = null;
 				}
 			} else {
 				$fileMatch = $this->signaturePool->scanFile( $file );

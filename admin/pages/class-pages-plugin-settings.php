@@ -100,6 +100,39 @@ class PluginSettings extends Base {
 			'default' => false
 		];
 
+		$options[] = [
+			'type' => 'html',
+			'html' => '<div class="wbcr-clearfy-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' .
+			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
+		];
+
+		$options[] = [
+			'type'   => 'dropdown',
+			'way'    => 'default',
+			'name'   => 'scanner_speed',
+			'title'  => __( 'Scanning speed', 'titan-security' ),
+			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
+			'data'   => [
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
+					'title' => __( 'Slow', 'titan-security' )
+				],
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
+					'title' => __( 'Medium', 'titan-security' )
+				],
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
+					'title' => __( 'Fast', 'titan-security' )
+				],
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FASTEST,
+					'title' => __( 'Fastest', 'titan-security' )
+				],
+			],
+		];
+
 		$formOptions = [];
 
 		$formOptions[] = [

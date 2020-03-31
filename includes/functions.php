@@ -43,9 +43,15 @@ function titan_scheduled_scanner() {
 
 	set_time_limit( 0 );
 
+	$speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
+	$files_count = @Scanner::SPEED_FILES[ $speed ];
+	if ( is_null( $files_count ) ) {
+		$files_count = Scanner::SPEED_FILES[ Scanner::SPEED_MEDIUM ];
+	}
+
 	$matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-	$matched = $scanner->scan( 100, $matched );
-	$scanner->remove_scanned_files( 100 );
+	$matched = $scanner->scan( $files_count, $matched );
+	$scanner->remove_scanned_files( $files_count );
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 
@@ -155,38 +161,38 @@ function collect_wp_hash_sum( $path = ABSPATH ) {
 }
 
 
-add_action('admin_notices', 'titan_ssl_cert_notice');
+add_action( 'admin_notices', 'titan_ssl_cert_notice' );
 /**
  *
  */
 function titan_ssl_cert_notice() {
 	require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
 
-	$cert = \WBCR\Titan\Cert\Cert::get_instance();
-	$output = false;
-	$message = '';
-	$type = 'notice-warning';
+	$cert        = \WBCR\Titan\Cert\Cert::get_instance();
+	$output      = false;
+	$message     = '';
+	$type        = 'notice-warning';
 	$plugin_name = WBCR\Titan\Plugin::app()->getPluginTitle();
 
-	if($cert->is_available()) {
-		if(!$cert->is_lets_encrypt()) {
+	if ( $cert->is_available() ) {
+		if ( ! $cert->is_lets_encrypt() ) {
 			$remaining = $cert->get_expiration_timestamp() - time();
-			if($remaining <= 86400 * 90) { // 3 month (90 days)
+			if ( $remaining <= 86400 * 90 ) { // 3 month (90 days)
 				$message = 'The SSL certificate expires in less than three months';
-				$output = true;
-			} else if($remaining <= 86400 * 3) { // 3 days
-				$type = 'notice-error';
+				$output  = true;
+			} else if ( $remaining <= 86400 * 3 ) { // 3 days
+				$type    = 'notice-error';
 				$message = 'The SSL certificate expires in less than three days';
-				$output = true;
+				$output  = true;
 			}
 		}
 	} else {
-		$output = true;
-		$type = 'notice-error';
+		$output  = true;
+		$type    = 'notice-error';
 		$message = $cert->get_error_message();
 	}
 
-	if($output) {
+	if ( $output ) {
 		echo <<<HTML
 <div id="message" class="notice {$type} is-dismissible">
 	<p>
@@ -198,11 +204,11 @@ HTML;
 	}
 }
 
-add_action('init', 'titan_init_https_redirect');
+add_action( 'init', 'titan_init_https_redirect' );
 function titan_init_https_redirect() {
-	$strict_https = Plugin::app()->getPopulateOption('strict_https', false);
-	if(!is_ssl() && $strict_https) {
-		wp_redirect(home_url(add_query_arg($_GET, $_SERVER['REQUEST_URI']), 'https'));
+	$strict_https = Plugin::app()->getPopulateOption( 'strict_https', false );
+	if ( ! is_ssl() && $strict_https ) {
+		wp_redirect( home_url( add_query_arg( $_GET, $_SERVER['REQUEST_URI'] ), 'https' ) );
 		die;
 	}
 }
