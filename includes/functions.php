@@ -70,10 +70,21 @@ function titan_scheduled_scanner() {
 function titan_create_scheduler_scanner() {
 	// todo: реализовать уровень проверки сайта
 
-	$license_key = Plugin::app()->premium->get_license()->get_key();
+	if ( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
+
 	$client = new Client( $license_key );
+
+	if ( Plugin::app()->is_premium() ) {
+		$signatures = $client->get_signatures();
+	} else {
+		$signatures = $client->get_free_signatures();
+	}
+
 	/** @var array[]|WBCR\Titan\Client\Entity\Signature[] $signatures */
-	$signatures = $client->get_signatures();
 
 	foreach ( $signatures as $key => $signature ) {
 		$signatures[ $key ] = $signature->to_array();
@@ -90,7 +101,6 @@ function titan_create_scheduler_scanner() {
 	$scanner = new WBCR\Titan\MalwareScanner\Scanner( ABSPATH, $signature_pool, $file_hash_pool, [
 		'wp-admin',
 		'wp-includes',
-		'debug.log',
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
