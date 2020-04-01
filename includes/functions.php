@@ -44,7 +44,6 @@ function titan_scheduled_scanner() {
 
 	set_time_limit( 0 );
 
-	tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_NO_BUILTINS | TIDEWAYS_XHPROF_FLAGS_CPU | TIDEWAYS_XHPROF_FLAGS_MEMORY);
 	$speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
 	$files_count = @Scanner::SPEED_FILES[ $speed ];
 	if ( is_null( $files_count ) ) {
@@ -54,10 +53,6 @@ function titan_scheduled_scanner() {
 	$matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
 	$matched = $scanner->scan( $files_count, $matched );
 	$scanner->remove_scanned_files( $files_count );
-	$data = tideways_xhprof_disable();
-
-	$filename = '/var/www/wploc/_profiler/' . intval(microtime(true)) . mt_rand(1,10000) . '.xhprof';
-	file_put_contents($filename, serialize($data));
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 
