@@ -80,7 +80,8 @@
 }
 .wt-dashboard-icon-loader
 {
-    background: transparent url("../img/loader.gif");
+    background: transparent url("../img/loader.gif") no-repeat center bottom;
+    background-size: contain;
 }
 
 .wt-block-loading

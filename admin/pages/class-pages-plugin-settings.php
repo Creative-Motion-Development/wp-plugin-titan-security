@@ -41,11 +41,6 @@ class PluginSettings extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * @var bool
-	 */
-	public $internal = false;
-
-	/**
 	 * @param \Wbcr_Factory000_Plugin $plugin
 	 */
 	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {

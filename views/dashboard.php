@@ -204,6 +204,7 @@ $statistic_data = $antispam->get_statistic_data();
                         <div class="col-md-6 wt-dashboard-block-header"><h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
                         <div class="col-md-6 wt-dashboard-block-header-right">
                             <button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now','titan-security'); ?></button>
+                            <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                         </div>
                     </div>
                     <div class="row">

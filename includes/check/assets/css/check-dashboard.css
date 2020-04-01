@@ -123,6 +123,11 @@
   border-bottom: 1px solid #ddd;
   background-color: white;
 }
+.wtitan-scanner-vulner-table-container
+{
+  overflow: auto;
+  height: 500px;
+}
 .wt-scanner-tabs-container
 {
   margin: 0 0 15px 0;
