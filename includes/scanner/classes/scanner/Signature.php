@@ -2,6 +2,9 @@
 
 namespace WBCR\Titan\MalwareScanner;
 
+use Exception;
+use WBCR\Titan\Logger\Writter;
+
 /**
  * Class Signature
  *
@@ -41,12 +44,12 @@ class Signature {
 	/**
 	 * Signature constructor.
 	 *
-	 * @param int      $id
-	 * @param string   $format
+	 * @param int $id
+	 * @param string $format
 	 * @param int|null $childId
-	 * @param string   $sever
-	 * @param string   $title
-	 * @param string   $signature
+	 * @param string $sever
+	 * @param string $title
+	 * @param string $signature
 	 */
 	public function __construct( $id, $format, $childId, $sever, $title, $signature ) {
 		$this->id        = (int) $id;
@@ -109,24 +112,54 @@ class Signature {
 
 		$match = null;
 
+		$signature = &$this;
 		switch ( $this->format ) {
 
 			case 're':
 				try {
+
+//
+//
+//                             Safety Pig Fenya
+//                             Saves from memory leaks
+//                                                       _
+//                               _._ _..._ .-',     _.._(`))
+//                              '-. `     '  /-._.-'    ',/
+//                                 )         \            '.
+//                                / _    _    |             \
+//                               |  a    a    /              |
+//                               \   .-.                     ;
+//                                '-('' ).-'       ,'       ;
+//                                   '-;           |      .'
+//                                      \           \    /
+//                                      | 7  .__  _.-\   \
+//                                      | |  |  ``/  /`  /
+//                                     /,_|  |   /,_/   /
+//                                        /,_/      '`-'
+//
+//
+
+					set_error_handler( function ( $_, $msg ) use ( $signature ) {
+						$msg = sprintf( "Error execution regex #%d: \"/%s/mi\" (%s)\n", $signature->getId(), $signature->getSignature(), $msg );
+						Writter::error( $msg );
+						error_log( $msg );
+					} );
+
+					// After much observation and googling, it turned out that this function causes a memory leak
 					$result = preg_match_all( "/{$this->getSignature()}/mi", $content, $matches );
 
 					if ( $result ) {
 						$match = new Match( $file, $matches[0][0] );
 					}
-				} catch ( \Exception $e ) {
-					print_r( $e->getMessage() . "\n" );
-					print_r( $e->getTraceAsString() . "\n" );
+				} catch ( Exception $e ) {
+					Writter::error( sprintf( "%s:\n%s", $e->getMessage(), $e->getTraceAsString() ) );
 				}
 				break;
 
 		}
 
-		unset($content);
+		set_error_handler( null );
+
 		return $match;
 	}
 
@@ -156,6 +189,10 @@ class Signature {
 			return null;
 		}
 
-		return new Signature( $params['id'], $params['format'], $params['child_id'] ?? null, $params['severity'], $params['title'], $params['content'] );
+		if ( ! isset( $params['child_id'] ) ) {
+			$params['child_id'] = null;
+		}
+
+		return new Signature( $params['id'], $params['format'], $params['child_id'], $params['severity'], $params['title'], $params['content'] );
 	}
 }
