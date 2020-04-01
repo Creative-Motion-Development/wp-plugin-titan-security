@@ -1,5 +1,9 @@
 <?php
+
 namespace WBCR\Titan\Page;
+
+use WBCR\Titan\Plugin;
+use Wbcr_Factory000_Plugin;
 
 /**
  * The plugin Settings.
@@ -41,9 +45,9 @@ class PluginSettings extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * @param \Wbcr_Factory000_Plugin $plugin
+	 * @param Wbcr_Factory000_Plugin $plugin
 	 */
-	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
+	public function __construct( Wbcr_Factory000_Plugin $plugin ) {
 		$this->menu_title                  = __( 'Titan Settings', 'titan-security' );
 		$this->page_menu_short_description = __( 'Useful tweaks', 'titan-security' );
 
@@ -56,9 +60,9 @@ class PluginSettings extends Base {
 	/**
 	 * Requests assets (js and css) for the page.
 	 *
-	 * @since 7.0.0
 	 * @return void
 	 *
+	 * @since 7.0.0
 	 */
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
@@ -67,8 +71,8 @@ class PluginSettings extends Base {
 	/**
 	 * Permalinks options.
 	 *
-	 * @since 7.0.0
 	 * @return mixed[]
+	 * @since 7.0.0
 	 */
 	public function getPageOptions() {
 
@@ -98,6 +102,46 @@ class PluginSettings extends Base {
 			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
 			'hint'    => __( "When the plugin is deleted from the Plugins menu, also delete all plugin settings.", 'titan-security' ),
 			'default' => false
+		];
+
+		$options[] = [
+			'type' => 'html',
+			'html' => '<div class="wbcr-clearfy-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' .
+			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
+		];
+
+		if ( Plugin::app()->is_premium() ) {
+			$data = [
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
+					'title' => __( 'Slow', 'titan-security' )
+				],
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
+					'title' => __( 'Medium', 'titan-security' )
+				],
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
+					'title' => __( 'Fast', 'titan-security' )
+				],
+			];
+		} else {
+			$data = [
+				[
+					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
+					'title' => __( 'Free', 'titan-security' ),
+				]
+			];
+		}
+
+		$options[] = [
+			'type'   => 'dropdown',
+			'way'    => 'default',
+			'name'   => 'scanner_speed',
+			'title'  => __( 'Scanning speed', 'titan-security' ),
+			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
+			'data'   => $data,
 		];
 
 		$formOptions = [];

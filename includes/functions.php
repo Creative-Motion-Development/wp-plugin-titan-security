@@ -7,6 +7,7 @@
  */
 
 use WBCR\Titan\Client\Client;
+use WBCR\Titan\Client\Entity\CmsCheckItem;
 use WBCR\Titan\MalwareScanner\HashListPool;
 use WBCR\Titan\MalwareScanner\Scanner;
 use WBCR\Titan\Plugin;
@@ -43,19 +44,21 @@ function titan_scheduled_scanner() {
 
 	set_time_limit( 0 );
 
+	$speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
+	$files_count = @Scanner::SPEED_FILES[ $speed ];
+	if ( is_null( $files_count ) ) {
+		$files_count = Scanner::SPEED_FILES[ Scanner::SPEED_MEDIUM ];
+	}
+
 	$matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-	$matched = $scanner->scan( 100, $matched );
-	$scanner->remove_scanned_files( 100 );
+	$matched = $scanner->scan( $files_count, $matched );
+	$scanner->remove_scanned_files( $files_count );
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
-		$client = new Client( Plugin::app()->premium->get_license()->get_key() );
-		$result = $client->check_cms_premium( $wp_version, collect_wp_hash_sum() );
-		if ( ! is_null( $result ) ) {
-			$matched = array_merge( $matched, $result->items );
-		}
+		$matched = array_merge($matched, titan_check_cms());
 	} else {
 		Plugin::app()->updateOption( 'scanner', $scanner, false );
 	}
@@ -65,15 +68,74 @@ function titan_scheduled_scanner() {
 }
 
 /**
+ * @return CmsCheckItem[]
+ */
+function titan_check_cms() {
+	global $wp_version;
+
+	if ( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
+
+	$client = new Client( $license_key );
+
+	if ( Plugin::app()->is_premium() ) {
+		$result = $client->check_cms_premium( $wp_version, collect_wp_hash_sum() );
+	} else {
+		$result = $client->check_cms_free( $wp_version, collect_wp_hash_sum() );
+	}
+
+	if ( is_null( $result ) ) {
+		return [];
+	}
+
+	WBCR\Titan\Logger\Writter::info(sprintf("Founded %d corrupted files", count($result->items)));
+
+	foreach ( $result->items as $check_item ) {
+		WBCR\Titan\Logger\Writter::debug(sprintf("File `%s` (action %s)", $check_item->path, $check_item->action));
+		$path = dirname( WP_CONTENT_DIR ) . '/' . $check_item->path;
+		switch ( $check_item->action ) {
+			case CmsCheckItem::ACTION_REMOVE:
+				if ( file_exists( $path ) && is_writable( $path ) ) {
+					unlink( $path );
+				}
+				break;
+
+			case CmsCheckItem::ACTION_REPAIR:
+				if ( file_exists( $path ) && is_writeable( $path ) ) {
+					$data = file_get_contents( $check_item->url );
+					file_put_contents( $path, $data );
+				}
+				break;
+		}
+	}
+
+	return $result->items;
+}
+
+/**
  * Creating cron task
  */
 function titan_create_scheduler_scanner() {
 	// todo: реализовать уровень проверки сайта
 
-	$license_key = Plugin::app()->premium->get_license()->get_key();
+	if ( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
+
 	$client = new Client( $license_key );
+
+	if ( Plugin::app()->is_premium() ) {
+		$signatures = $client->get_signatures();
+	} else {
+		$signatures = $client->get_free_signatures();
+	}
+
 	/** @var array[]|WBCR\Titan\Client\Entity\Signature[] $signatures */
-	$signatures = $client->get_signatures();
 
 	foreach ( $signatures as $key => $signature ) {
 		$signatures[ $key ] = $signature->to_array();
@@ -90,7 +152,6 @@ function titan_create_scheduler_scanner() {
 	$scanner = new WBCR\Titan\MalwareScanner\Scanner( ABSPATH, $signature_pool, $file_hash_pool, [
 		'wp-admin',
 		'wp-includes',
-		'debug.log',
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
@@ -145,38 +206,38 @@ function collect_wp_hash_sum( $path = ABSPATH ) {
 }
 
 
-add_action('admin_notices', 'titan_ssl_cert_notice');
+add_action( 'admin_notices', 'titan_ssl_cert_notice' );
 /**
  *
  */
 function titan_ssl_cert_notice() {
 	require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
 
-	$cert = \WBCR\Titan\Cert\Cert::get_instance();
-	$output = false;
-	$message = '';
-	$type = 'notice-warning';
+	$cert        = \WBCR\Titan\Cert\Cert::get_instance();
+	$output      = false;
+	$message     = '';
+	$type        = 'notice-warning';
 	$plugin_name = WBCR\Titan\Plugin::app()->getPluginTitle();
 
-	if($cert->is_available()) {
-		if(!$cert->is_lets_encrypt()) {
+	if ( $cert->is_available() ) {
+		if ( ! $cert->is_lets_encrypt() ) {
 			$remaining = $cert->get_expiration_timestamp() - time();
-			if($remaining <= 86400 * 90) { // 3 month (90 days)
+			if ( $remaining <= 86400 * 90 ) { // 3 month (90 days)
 				$message = 'The SSL certificate expires in less than three months';
-				$output = true;
-			} else if($remaining <= 86400 * 3) { // 3 days
-				$type = 'notice-error';
+				$output  = true;
+			} else if ( $remaining <= 86400 * 3 ) { // 3 days
+				$type    = 'notice-error';
 				$message = 'The SSL certificate expires in less than three days';
-				$output = true;
+				$output  = true;
 			}
 		}
 	} else {
-		$output = true;
-		$type = 'notice-error';
+		$output  = true;
+		$type    = 'notice-error';
 		$message = $cert->get_error_message();
 	}
 
-	if($output) {
+	if ( $output ) {
 		echo <<<HTML
 <div id="message" class="notice {$type} is-dismissible">
 	<p>
@@ -188,11 +249,11 @@ HTML;
 	}
 }
 
-add_action('init', 'titan_init_https_redirect');
+add_action( 'init', 'titan_init_https_redirect' );
 function titan_init_https_redirect() {
-	$strict_https = Plugin::app()->getPopulateOption('strict_https', false);
-	if(!is_ssl() && $strict_https) {
-		wp_redirect(home_url(add_query_arg($_GET, $_SERVER['REQUEST_URI']), 'https'));
+	$strict_https = Plugin::app()->getPopulateOption( 'strict_https', false );
+	if ( ! is_ssl() && $strict_https ) {
+		wp_redirect( home_url( add_query_arg( $_GET, $_SERVER['REQUEST_URI'] ), 'https' ) );
 		die;
 	}
 }
