@@ -7,6 +7,7 @@
  */
 
 use WBCR\Titan\Client\Client;
+use WBCR\Titan\Client\Entity\CmsCheckItem;
 use WBCR\Titan\MalwareScanner\HashListPool;
 use WBCR\Titan\MalwareScanner\Scanner;
 use WBCR\Titan\Plugin;
@@ -57,17 +58,61 @@ function titan_scheduled_scanner() {
 
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
-		$client = new Client( Plugin::app()->premium->get_license()->get_key() );
-		$result = $client->check_cms_premium( $wp_version, collect_wp_hash_sum() );
-		if ( ! is_null( $result ) ) {
-			$matched = array_merge( $matched, $result->items );
-		}
+		$matched = array_merge($matched, titan_check_cms());
 	} else {
 		Plugin::app()->updateOption( 'scanner', $scanner, false );
 	}
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
+}
+
+/**
+ * @return CmsCheckItem[]
+ */
+function titan_check_cms() {
+	global $wp_version;
+
+	if ( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
+
+	$client = new Client( $license_key );
+
+	if ( Plugin::app()->is_premium() ) {
+		$result = $client->check_cms_premium( $wp_version, collect_wp_hash_sum() );
+	} else {
+		$result = $client->check_cms_free( $wp_version, collect_wp_hash_sum() );
+	}
+
+	if ( is_null( $result ) ) {
+		return [];
+	}
+
+	WBCR\Titan\Logger\Writter::info(sprintf("Founded %d corrupted files", count($result->items)));
+
+	foreach ( $result->items as $check_item ) {
+		WBCR\Titan\Logger\Writter::debug(sprintf("File `%s` (action %s)", $check_item->path, $check_item->action));
+		$path = dirname( WP_CONTENT_DIR ) . '/' . $check_item->path;
+		switch ( $check_item->action ) {
+			case CmsCheckItem::ACTION_REMOVE:
+				if ( file_exists( $path ) && is_writable( $path ) ) {
+					unlink( $path );
+				}
+				break;
+
+			case CmsCheckItem::ACTION_REPAIR:
+				if ( file_exists( $path ) && is_writeable( $path ) ) {
+					$data = file_get_contents( $check_item->url );
+					file_put_contents( $path, $data );
+				}
+				break;
+		}
+	}
+
+	return $result->items;
 }
 
 /**

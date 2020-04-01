@@ -12,6 +12,9 @@ use WBCR\Titan\Client\Loader;
  * @author  Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
 class CmsCheck extends Loader {
+	/**
+	 * @var CmsCheckItem[]
+	 */
 	public $items = [];
 
 	public function __construct( $data ) {

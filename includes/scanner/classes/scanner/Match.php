@@ -26,6 +26,7 @@ class Match implements \JsonSerializable {
 	 * @param string $match
 	 */
 	public function __construct( $file, $match ) {
+		$file->clearLoadedData();
 		$this->file  = $file;
 		$this->match = $match;
 	}

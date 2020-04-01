@@ -39,6 +39,9 @@ class File {
 		}
 	}
 
+	/**
+	 * @return \Generator
+	 */
 	protected function read() {
 		$resource = fopen( $this->path, 'r' );
 
@@ -50,13 +53,25 @@ class File {
 	}
 
 
+	/**
+	 * @return string
+	 */
 	public function loadData() {
-		$data = [];
-		foreach($this->read() as $line) {
-			$data[] = $line;
+		if(is_null($this->content)) {
+			$data = [];
+			foreach($this->read() as $line) {
+				$data[] = $line;
+			}
+
+			$this->content = implode('', $data);
 		}
 
-		return implode('', $data);
+		return $this->content;
+	}
+
+	public function clearLoadedData() {
+		unset($this->content);
+		$this->content = null;
 	}
 
 	/**
