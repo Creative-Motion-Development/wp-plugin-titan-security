@@ -11,23 +11,23 @@ use InvalidArgumentException;
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
 class Scanner {
+	const SPEED_FREE = 'free';
 	const SPEED_SLOW = 'slow';
 	const SPEED_MEDIUM = 'medium';
 	const SPEED_FAST = 'fast';
-	const SPEED_FASTEST = 'fastest';
 
 	const SPEED_LIST = [
+		self::SPEED_FREE,
 		self::SPEED_SLOW,
 		self::SPEED_MEDIUM,
 		self::SPEED_FAST,
-		self::SPEED_FASTEST,
 	];
 
 	const SPEED_FILES = [
-		self::SPEED_SLOW    => 60,
-		self::SPEED_MEDIUM  => 120,
-		self::SPEED_FAST    => 250,
-		self::SPEED_FASTEST => 500,
+		self::SPEED_FREE   => 25,
+		self::SPEED_SLOW   => 60,
+		self::SPEED_MEDIUM => 120,
+		self::SPEED_FAST   => 250,
 	];
 
 	/** @var File[] */
