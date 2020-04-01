@@ -115,10 +115,20 @@ class Scanner extends Module_Base {
 		]);
 	}
 
+
+	/**
+	 * Get count matched
+	 *
+	 * @return int
+	 */
+	public function get_matched_count() {
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+
+		return count($matched);
+	}
 	/**
 	 * Current state of scanner
 	 */
-
 	public function get_current_results() {
 
 		/** @var MalwareScanner\Scanner $scanner */
@@ -130,11 +140,13 @@ class Scanner extends Module_Base {
 		$suspicious = 0;
 		$progress = 0;
 		$notverified = 0;
+		$scanned = 0;
 		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
 			$progress = 100 - $scanner->files_count / $files_count * 100;
 			$suspicious = count($matched);
 			$cleaned = $files_count - $scanner->files_count - $suspicious;
 			$notverified = $scanner->files_count;
+			$scanned = (int)$cleaned + (int)$suspicious;
 		}
 
 
@@ -144,6 +156,7 @@ class Scanner extends Module_Base {
 			'progress' => $progress,
 			'cleaned' => $cleaned,
 			'suspicious' => $suspicious,
+			'scanned' => $scanned,
 			'notverified' => $notverified,
 			'files_count' => $files_count,
 		];

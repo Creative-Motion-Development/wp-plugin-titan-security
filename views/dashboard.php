@@ -29,6 +29,7 @@ if(isset($scanner)) extract($scanner);
  * @var string $cleaned
  * @var string $notverified
  * @var string $files_count
+ * @var string $scanned
  */
 
 $statistic_data = $antispam->get_statistic_data();
@@ -154,7 +155,7 @@ $statistic_data = $antispam->get_statistic_data();
                         <div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
 	                        <?php
 	                        echo __('Scanned: ', 'titan-security');
-	                        echo "<span class='wt-magenta-text'>{$files_count} ".__('files', 'titan-security')."</span>";
+	                        echo "<span class='wt-magenta-text'>{$scanned}/{$files_count} ".__('files', 'titan-security')."</span>";
 	                        ?>
                         </div>
                         <div class="col-md-6 wt-dashboard-block-content-right">
@@ -168,9 +169,9 @@ $statistic_data = $antispam->get_statistic_data();
                     </div>
                     <div class="row">
                         <div class="wt-scanner-chart">
-                            <div class="wt-scanner-chart-clean"       style="width: 50%;"></div>
-                            <div class="wt-scanner-chart-suspicious"  style="width: 35%;"></div>
-                            <div class="wt-scanner-chart-notverified" style="width: 15%;"></div>
+                            <div class="wt-scanner-chart-clean"       style="width: <?php echo round($cleaned/$files_count*100, 1);?>%;"></div>
+                            <div class="wt-scanner-chart-suspicious"  style="width: <?php echo round($suspicious/$files_count*100, 1);?>%;"></div>
+                            <div class="wt-scanner-chart-notverified" style="width: <?php echo round($notverified/$files_count*100, 1);?>%;"></div>
                         </div>
                     </div>
                     <div class="row">

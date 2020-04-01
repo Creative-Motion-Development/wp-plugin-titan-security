@@ -106,7 +106,7 @@ class PluginSettings extends Base {
 
 		$options[] = [
 			'type' => 'html',
-			'html' => '<div class="wbcr-clearfy-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' .
+			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' .
 			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];
 

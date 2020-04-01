@@ -33,6 +33,13 @@ class Check extends Module_Base {
 	public $audit;
 
 	/**
+	 * Audit object
+	 *
+	 * @var Scanner
+	 */
+	public $scanner;
+
+	/**
 	 * Vulnerabilities_API constructor.
 	 *
 	 */
@@ -43,6 +50,7 @@ class Check extends Module_Base {
 		$this->module_url = WTITAN_PLUGIN_URL."/includes/check";
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
+		$this->scanner = new Scanner();
 
 		if(!has_action('wp_ajax_wtitan_scanner_hide'))
 			add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
@@ -113,6 +121,8 @@ class Check extends Module_Base {
 		);
 		$content_hided = $this->render_template( 'hided', $hided_args);
 
+		$content_malware = $this->scanner->render_template( 'results', $this->scanner->get_current_results());
+
 		$args = array(
 			'modules' => array(
 				'hided' => array(
@@ -132,6 +142,12 @@ class Check extends Module_Base {
 					'icon'    => 'dashicons-buddicons-replies',
 					'content' => $content_vulner,
 					'count'   => $this->vulnerabilities->get_count(),
+				),
+				'malware' => array(
+					'name'    => __('Malware', 'titan-security'),
+					'icon'    => 'dashicons-code-standards',
+					'content' => $content_malware,
+					'count'   => $this->scanner->get_matched_count(),
 				),
 			),
 			'active_modules' => "audit,vulnerability",
