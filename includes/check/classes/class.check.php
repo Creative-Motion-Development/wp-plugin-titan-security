@@ -44,17 +44,25 @@ class Check extends Module_Base {
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
 
-		add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
+		if(!has_action('wp_ajax_wtitan_scanner_hide'))
+			add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
 
-		add_filter('wbcr/titan/adminbar_menu_title', function($title){
-			$count = $this->get_count();
-			return $title."<span class='wtitan-count-bubble'>{$count}</span>";
-		});
-
-		add_filter('wbcr/titan/admin_menu_title', function($title){
-			$count = $this->get_count();
-			return $title."<span class='update-plugins'><span class='plugin-count'>{$count}</span></span>";
-		});
+		if(!has_filter('wbcr/titan/adminbar_menu_title'))
+			add_filter('wbcr/titan/adminbar_menu_title', function($title){
+				$count = $this->get_count();
+				if($count)
+					return $title."<span class='wtitan-count-bubble'>{$count}</span>";
+				else
+					return $title;
+			});
+		if(!has_filter('wbcr/titan/admin_menu_title'))
+			add_filter('wbcr/titan/admin_menu_title', function($title){
+				$count = $this->get_count();
+				if($count)
+					return $title."<span class='update-plugins'><span class='plugin-count'>{$count}</span></span>";
+				else
+					return $title;
+			});
 	}
 
 	/**
@@ -68,9 +76,26 @@ class Check extends Module_Base {
 	}
 
 	/**
-	 * Show page content
+	 * Get page content
+	 *
+	 * @param string $template
+	 *
+	 * @return string
 	 */
-	public function showPageContent() {
+	public function getPageContent( $template = 'main' ) {
+		ob_start();
+		$this->showPageContent($template );
+		$result = ob_get_contents();
+		ob_end_clean();
+
+		return $result;
+	}
+	/**
+	 * Show page content
+	 *
+	 * @param string $template
+	 */
+	public function showPageContent( $template = 'main' ) {
 		$vuln_args = array(
 			'wordpress' => $this->vulnerabilities->wordpress,
 			'plugins'   => $this->vulnerabilities->plugins,
@@ -125,7 +150,7 @@ class Check extends Module_Base {
 		);
 		echo $this->audit->render_script('audit_ajax.js', $script_args);
 
-		echo $this->render_template( 'check', $args);
+		echo $this->render_template( $template, $args);
 	}
 
 	/**

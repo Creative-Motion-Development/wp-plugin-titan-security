@@ -10,10 +10,10 @@
 			<tbody>
 				<tr>
                     <td>
-                        <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" style="width: 100%" id="subscribe">
+                        <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" id="subscribe">
                             Subscribe
                         </button>
-                        <button class="btn btn-secondary btn-lg wt-sitechecker-button-subscribe" style="width: 100%; display: none;"
+                        <button class="btn btn-secondary btn-lg wt-sitechecker-button-subscribe" style="display: none;"
                                 id="unsubscribe">Unsubscribe
                         </button>
                     </td>

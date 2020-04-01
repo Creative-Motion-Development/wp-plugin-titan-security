@@ -39,11 +39,6 @@ class Firewall extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public $page_menu_position = 2;
-
-	/**
 	 * @var object|\WBCR\Titan\Views
 	 */
 	public $view;

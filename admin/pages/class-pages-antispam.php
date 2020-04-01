@@ -140,6 +140,16 @@ class Antispam extends Base {
 		$options[] = [
 			'type'    => 'checkbox',
 			'way'     => 'buttons',
+			'name'    => 'antispam_mode',
+			'title'   => __( 'Anti-spam mode', 'titan-security' ),
+			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
+			'hint'    => __( 'Enable or disable anti-spam for all site.', 'titan-security' ),
+			'default' => true,
+		];
+
+		$options[] = [
+			'type'    => 'checkbox',
+			'way'     => 'buttons',
 			'name'    => 'save_spam_comments',
 			'title'   => __( 'Save spam comments', 'titan-security' ),
 			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],

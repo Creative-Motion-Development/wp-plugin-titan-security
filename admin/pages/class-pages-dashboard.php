@@ -4,6 +4,7 @@ namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
 use WBCR\Titan\Audit;
+use WBCR\Titan\Plugin;
 use WBCR\Titan\Views;
 use WBCR\Titan\Vulnerabilities;
 use WBCR\Titan\SiteChecker;
@@ -116,6 +117,16 @@ class Dashboard extends Base {
 	public $scanner;
 
 	/**
+	 * @var \WBCR\Titan\Antispam
+	 */
+	public $antispam;
+
+	/**
+	 * @var \WBCR\Titan\Check
+	 */
+	public $check;
+
+	/**
 	 * Logs constructor.
 	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
@@ -139,6 +150,8 @@ class Dashboard extends Base {
 		$this->audit = new Audit();
 		$this->sites = new SiteChecker();
 		$this->scanner = new \WBCR\Titan\Scanner();
+		$this->antispam = new \WBCR\Titan\Antispam();
+		$this->check = new \WBCR\Titan\Check();
 
 		parent::__construct($plugin);
 	}
@@ -161,8 +174,15 @@ class Dashboard extends Base {
 	{
 		parent::assets($scripts, $styles);
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
-		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
+		$this->scripts->request([
+			'bootstrap.core',
+			'bootstrap.tab',
+		], 'bootstrap');
+
+		$this->styles->request([
+			'bootstrap.core',
+			'bootstrap.tab',
+		], 'bootstrap');
 
 		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/js/vulnerability_ajax.js', ['jquery']);
@@ -180,6 +200,22 @@ class Dashboard extends Base {
 			'stop' => wp_create_nonce('titan-stop-scan'),
 			'status' => wp_create_nonce('titan-status-scan'),
 		]);
+
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/check/assets/css/check-dashboard.css');
+		$this->scripts->add(WTITAN_PLUGIN_URL . '/includes/check/assets/js/check.js', ['jquery']);
+		$this->scripts->localize('update_nonce', wp_create_nonce("updates"));
+		$this->scripts->localize('wtscanner', [
+			'update_nonce' => wp_create_nonce("updates"),
+			'hide_nonce' => wp_create_nonce("hide"),
+		]);
+
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/vulnerabilities/assets/css/vulnerabilities-dashboard.css');
+		$this->styles->add(WTITAN_PLUGIN_URL . '/includes/audit/assets/css/audit-dashboard.css');
+
+		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
+		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
+
+		//$this->scripts->add('https://www.gstatic.com/charts/loader.js', [],'', WANTISPAMP_PLUGIN_VERSION);
 	}
 
 
@@ -205,7 +241,11 @@ class Dashboard extends Base {
 		}
 		//end FIREWALL
 
+		//AUDIT
+		$check_content = $this->check->getPageContent('check');
+		//---
 		$scanner_started = $this->plugin->getOption('scanner_status') == 'started';
+
 		$this->view->print_template('dashboard', [
 			'scanner_started' => $scanner_started,
 			'this_plugin' => $this->plugin,
@@ -214,6 +254,8 @@ class Dashboard extends Base {
 			'audit' => $this->audit,
 			'sites' => $this->sites,
 			'scanner' => $this->scanner->get_current_results(),
+			'antispam' => $this->antispam,
+			'check_content' => $check_content,
 		]);
 	}
 

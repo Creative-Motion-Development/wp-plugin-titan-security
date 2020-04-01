@@ -6,8 +6,10 @@ if(is_array($data)) extract($data);
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit           $audit
  * @var \WBCR\Titan\SiteChecker     $sites
+ * @var \WBCR\Titan\Antispam        $antispam
  * @var array                       $scanner
  * @var Wbcr_Factory000_Plugin      $this_plugin
+ * @var string                      $check_content
  */
 
 
@@ -25,7 +27,11 @@ if(isset($scanner)) extract($scanner);
  * @var string $progress
  * @var string $suspicious
  * @var string $cleaned
+ * @var string $notverified
+ * @var string $files_count
  */
+
+$statistic_data = $antispam->get_statistic_data();
 ?>
 <div class="wbcr-content-section">
 
@@ -62,8 +68,8 @@ if(isset($scanner)) extract($scanner);
                             <div class="wtitan-status-block wtitan-status--learning-mode" style="display: <?php echo("learning-mode" === $firewall_mode ? 'block' : 'none') ?>;">
                                 <span class="wt-firewall-icon-clock"></span>
                             </div>
-                            <div class="wtitan-status-block wtitan-status--disabled" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
-                                <span class="wt-firewall-icon-dissmiss"></span>
+                            <div class="wtitan-status-block wtitan-status--disabled wt-firewall-icon-dissmiss" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
+
                             </div>
                         </div>
                     </div>
@@ -83,14 +89,52 @@ if(isset($scanner)) extract($scanner);
                         <div class="col-md-12 wt-dashboard-block-header"><h4>Anti-spam</h4></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 wt-dashboard-block-content">
-                            <label for="wt-antispam-status"><?php _e('Anti-spam Status', 'titan-security'); ?></label>
-                            <div class="factory-checkbox factory-buttons-way btn-group wt-checkbox">
-                                <button type="button" class="btn factory-off " data-value="0">&nbsp;</button>
-                                <button type="button" class="btn factory-on active">&nbsp;</button>
-
-                                <input type="checkbox" style="display: none" id="wt-antispam-status" class="factory-result" name="wt-antispam-status" value="1" checked="checked">
+                        <div class="col-md-6 wt-dashboard-block-content">
+	                        <?php
+                            $count = $antispam->get_statistic_data()->total;
+                            echo __('Spam blocked: ', 'titan-security');
+                            echo "<span class='wt-magenta-text'>{$count}</span>";
+                            ?>
+                        </div>
+                        <div class="col-md-6 wt-dashboard-block-content-right">
+                            <label for="wt-antispam-status"><?php _e('Anti-spam status', 'titan-security'); ?></label>
+                            <div class="factory-checkbox factory-buttons-way btn-group wt-checkbox" id="wt-antispam-status-block">
+                                <button type="button" class="btn factory-off <?php echo $antispam->mode ? '' : 'active';?>" data-value="0">Off</button>
+                                <button type="button" class="btn factory-on  <?php echo $antispam->mode ? 'active' : '';?>" data-value="1">On</button>
+                                <input type="checkbox" style="display: none" id="wt-antispam-status" class="factory-result" name="wt-antispam-status" value="<?php echo $antispam->mode;?>" checked="checked"  data-nonce="<?php echo wp_create_nonce('wtitan_change_antispam_mode') ?>">
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 wt-dashboard-block-content">
+                            <div id="wt-antispam-chart-div"></div>
+                            <!-- Google chart API
+                            <script type="text/javascript">
+                                jQuery(document).ready(function($) {
+                                    google.charts.load('current', {'packages': ['bar']});
+                                    google.charts.setOnLoadCallback(function() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['<?php _e( 'Date', 'titan-security' ) ?>', '<?php _e( 'Spam attack', 'titan-security' ) ?>'],
+					                        <?php foreach((array) $statistic_data->stat as $day => $number): ?>
+                                            ['<?php echo date( "d.m", strtotime( $day ) ) ?>', <?php echo (int) $number ?>],
+					                        <?php endforeach; ?>
+                                        ]);
+
+                                        var options = {
+                                            chart: {
+                                                title: '<?php _e( 'Plugin stopped spam attacks', 'titan-security' ) ?>',
+                                                subtitle: '<?php _e( 'Show statistics for 7 days', 'titan-security' ) ?>',
+                                            },
+                                            legend: {position: "none"}
+                                        };
+
+                                        var chart = new google.charts.Bar(document.getElementById('wt-antispam-chart-div'));
+
+                                        chart.draw(data, google.charts.Bar.convertOptions(options));
+                                    });
+                                });
+                            </script>
+                             Google chart API-->
                         </div>
                     </div>
                 </div>
@@ -102,7 +146,70 @@ if(isset($scanner)) extract($scanner);
         <div class="wt-row">
             <!-- SCANNER -->
             <div class="col-md-12 wt-block-gutter">
-                <div class="wt-dashboard-block">3</div>
+                <div class="wt-dashboard-block">
+                    <div class="row">
+                        <div class="col-md-12 wt-dashboard-block-header"><h4><?php _e('Scanner', 'titan-security'); ?></h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
+	                        <?php
+	                        echo __('Scanned: ', 'titan-security');
+	                        echo "<span class='wt-magenta-text'>{$files_count} ".__('files', 'titan-security')."</span>";
+	                        ?>
+                        </div>
+                        <div class="col-md-6 wt-dashboard-block-content-right">
+	                        <?php if ( $scanner_started ): ?>
+                                <button class="btn btn-primary wt-dashboard-scan-button" id="scan" data-action="stop_scan"><?php echo __('Stop scanning','titan-security'); ?></button>
+	                        <?php else: ?>
+                                <button class="btn btn-primary wt-dashboard-scan-button" id="scan" data-action="start_scan"><?php echo __('Start scan','titan-security'); ?></button>
+	                        <?php endif; ?>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="wt-scanner-chart">
+                            <div class="wt-scanner-chart-clean"       style="width: 50%;"></div>
+                            <div class="wt-scanner-chart-suspicious"  style="width: 35%;"></div>
+                            <div class="wt-scanner-chart-notverified" style="width: 15%;"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="wt-scanner-legend">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="wt-scanner-chart-clean wt-legend-item"></span></td>
+                                        <td>Cleaned - <?php echo $cleaned ?></td>
+
+                                        <td><span class="wt-scanner-chart-suspicious wt-legend-item"></span></td>
+                                        <td>Suspicious - <?php echo $suspicious ?></td>
+
+                                        <td><span class="wt-scanner-chart-notverified wt-legend-item"></span></td>
+                                        <td>Not verified - <?php echo $notverified ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wt-dashboard-container">
+        <div class="wt-row">
+            <!-- AUDIT -->
+            <div class="col-md-12 wt-block-gutter">
+                <div class="wt-dashboard-block">
+                    <div class="row">
+                        <div class="col-md-6 wt-dashboard-block-header"><h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
+                        <div class="col-md-6 wt-dashboard-block-header-right">
+                            <button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now','titan-security'); ?></button>
+                        </div>
+                    </div>
+                    <div class="row">
+	                    <?php echo $check_content;?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

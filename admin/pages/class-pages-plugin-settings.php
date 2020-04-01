@@ -41,6 +41,11 @@ class PluginSettings extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
+	 * @var bool
+	 */
+	public $internal = false;
+
+	/**
 	 * @param \Wbcr_Factory000_Plugin $plugin
 	 */
 	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
@@ -76,7 +81,7 @@ class PluginSettings extends Base {
 
 		$options[] = [
 			'type' => 'html',
-			'html' => '<div class="wbcr-clearfy-group-header">' . '<strong>' . __( 'Advanced settings', 'titan-security' ) . '</strong>' .
+			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Advanced settings', 'titan-security' ) . '</strong>' .
 			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];
 
@@ -87,7 +92,7 @@ class PluginSettings extends Base {
 			'title'   => __( 'Plugin menu in adminbar', 'titan-security' ),
 			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'red' ],
 			'hint'    => __( 'This setting allows you to enable/disable the additional menu of the plugin, in the admin bar.', 'titan-security' ),
-			'default' => true
+			'default' => false
 		];
 
 		$options[] = [

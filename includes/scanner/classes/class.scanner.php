@@ -123,16 +123,18 @@ class Scanner extends Module_Base {
 
 		/** @var MalwareScanner\Scanner $scanner */
 		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
-		$matched = get_option(Plugin::app()->getPrefix() . 'titan_scanner_malware_matched', []);
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
 		$scanner_started = Plugin::app()->getOption('scanner_status') == 'started';
 		$files_count = Plugin::app()->getOption('scanner_files_count', 0);
 		$cleaned = 0;
 		$suspicious = 0;
 		$progress = 0;
+		$notverified = 0;
 		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
 			$progress = 100 - $scanner->files_count / $files_count * 100;
 			$suspicious = count($matched);
 			$cleaned = $files_count - $scanner->files_count - $suspicious;
+			$notverified = $scanner->files_count;
 		}
 
 
@@ -140,8 +142,10 @@ class Scanner extends Module_Base {
 			'scanner_started' => $scanner_started,
 			'matched' => $matched,
 			'progress' => $progress,
-			'suspicious' => $suspicious,
 			'cleaned' => $cleaned,
+			'suspicious' => $suspicious,
+			'notverified' => $notverified,
+			'files_count' => $files_count,
 		];
 	}
 	/**

@@ -1,1 +1,1 @@
-<?php exit('Access denied'); __halt_compiler(); ?>
+<?php exit('Access denied'); __halt_compiler(); ?>

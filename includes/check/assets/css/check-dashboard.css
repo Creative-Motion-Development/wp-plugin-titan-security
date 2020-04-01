@@ -4,6 +4,7 @@
 }
 #wtitan-scanner-tabs li a{
   text-decoration: none;
+  color: #0073aa !important;
 }
 /*----------------*/
 .wt-scanner-block-scan

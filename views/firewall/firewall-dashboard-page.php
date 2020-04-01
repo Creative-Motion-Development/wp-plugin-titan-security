@@ -21,16 +21,16 @@ $firewall_status_color = $data['firewall_status_color'];
                 <tr>
                     <td>
                         <div class="wtitan-status-block wtitan-status--enabled" style="display: <?php echo("enabled" === $firewall_mode ? 'block' : 'none') ?>;">
+                            <span class="dashicons dashicons-yes-alt" style="font-size:100px;width: 100px;height:100px;color:#1fa02fc9;"></span>
                             <h4><?php _e('Titan Firewall Activated', 'titan-security'); ?></h4>
-                            <span class="dashicons dashicons-yes-alt" style="font-size:80px;width: 80px;height:80px;color:#1fa02fc9;"></span>
                         </div>
                         <div class="wtitan-status-block wtitan-status--learning-mode" style="display: <?php echo("learning-mode" === $firewall_mode ? 'block' : 'none') ?>;">
+                            <span class="dashicons dashicons-clock" style="font-size:100px;width: 100px;height:100px;color:#fcb214;"></span>
                             <h4><?php _e('Titan Firewall in Learning Mode', 'titan-security'); ?></h4>
-                            <span style="font-size:80px;width: 80px;height:80px;color:#fcb214;" class="dashicons dashicons-clock"></span>
                         </div>
                         <div class="wtitan-status-block wtitan-status--disabled" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
+                            <span class="dashicons dashicons-dismiss" style="font-size:100px;width: 100px;height:100px;color:#f59888;"></span>
                             <h4 style="color:#9c3926"><?php _e('Titan Firewall Deactivated', 'titan-security'); ?></h4>
-                            <span class="dashicons dashicons-dismiss" style="font-size:80px;width: 80px;height:80px;color:#f59888;"></span>
                         </div>
                     </td>
                     <td>

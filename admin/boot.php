@@ -76,4 +76,8 @@ require_once WTITAN_PLUGIN_DIR . "/includes/audit/boot.php";
 require_once WTITAN_PLUGIN_DIR . "/includes/sitechecker/boot.php";
 // Scanner class
 require_once WTITAN_PLUGIN_DIR . "/includes/scanner/boot.php";
+// Anti-spam class
+require_once WTITAN_PLUGIN_DIR . "/includes/antispam/boot.php";
+// Audit class
+require_once WTITAN_PLUGIN_DIR . "/includes/check/boot.php";
 
