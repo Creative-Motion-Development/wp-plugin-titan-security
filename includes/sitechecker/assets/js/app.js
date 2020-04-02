@@ -89,9 +89,9 @@
 
     } else {
         if (!('Notification' in window)) {
-            showError('Notification not supported');
+            showError(wt_app.notice);
         } else if (!('serviceWorker' in navigator)) {
-            showError('ServiceWorker not supported');
+            showError(wt_app.worker);
         } else if (!('localStorage' in window)) {
             showError('LocalStorage not supported');
         } else if (!('fetch' in window)) {
@@ -101,7 +101,7 @@
         }
 
         if(!window.location.protocol.startsWith('https')) {
-            showError('Need HTTPS');
+            showError(wt_app.https);
         }
 
         console.warn('This browser does not support desktop notification.');

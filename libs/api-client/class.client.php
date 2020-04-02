@@ -428,7 +428,7 @@ class Client {
 	 * @return UrlChecker[]|null
 	 */
 	public function get_checker_urls() {
-		$response = $this->request( false, 'url-checker/' );
+		$response = $this->request( false, 'url-checker' );
 		if ( $response->is_error() ) {
 			return null;
 		}
@@ -509,40 +509,36 @@ class Client {
 	 * @return Response
 	 */
 	public function request( $post, $apiMethod, $body = [] ) {
-//		if(function_exists('wp_remote_post')) {
-//			wp_remote_post();
-//			wp_remote_get();
-//		}
+		$headers = [
+			"Content-Type" => "application/json",
+			"Accept"       => "application/json",
+		];
+		if ( ! empty ( $this->license_key ) ) {
+			$headers["Authorization"] = "Bearer " . base64_encode( $this->license_key );
+		}
 
 		$url = sprintf( "%s%s", self::ENDPOINT, $apiMethod );
 
-		$ch = curl_init();
-
 		if ( $post ) {
-			curl_setopt_array( $ch, [
-				CURLOPT_POST       => true,
-				CURLOPT_POSTFIELDS => json_encode( $body ),
+			$response = wp_remote_post( $url, [
+				'headers' => $headers,
+				'body'    => json_encode( $body ),
 			] );
 		} else {
-			$url = sprintf( "%s?%s", $url, http_build_query( $body ) );
+			if ( ! empty ( $body ) ) {
+				$url .= "?" . http_build_query( $body );
+			}
+
+			$response = wp_remote_get( $url, [
+				"headers" => $headers
+			] );
 		}
 
-		$headers = [
-			'Content-Type: application/json',
-			'Accept: application/json',
-		];
-		if ( ! is_null( $this->license_key ) ) {
-			$headers[] = sprintf( "Authorization: Bearer %s", base64_encode( $this->license_key ) );
+		if ( is_wp_error( $response ) ) {
+			return null;
 		}
 
-		curl_setopt_array( $ch, [
-			CURLOPT_URL            => $url,
-			CURLOPT_HTTPHEADER     => $headers,
-			CURLOPT_RETURNTRANSFER => true,
-		] );
-
-		$response = json_decode( curl_exec( $ch ), true );
-		curl_close( $ch );
+		$response = json_decode( $response['body'], true );
 
 		$response = Response::from_array( $response );
 		if ( $response->is_error() ) {
@@ -550,5 +546,4 @@ class Client {
 		}
 
 		return $response;
-	}
-}
+	}}
