@@ -68,17 +68,13 @@ class File {
 	 */
 	public function loadData() {
 		if ( is_null( $this->content ) ) {
-			$data = [];
+			$this->content = '';
 			foreach ( $this->read() as $line ) {
-				$data[] = $line;
+				$this->content .= $line;
 			}
-
-			$this->content = implode( '', $data );
 		}
 
-		$content = &$this->content;
-
-		return $content;
+		return $this->content;
 	}
 
 	public function clearLoadedData() {

@@ -112,7 +112,6 @@ class Signature {
 
 		$match = null;
 
-		$signature = &$this;
 		switch ( $this->format ) {
 
 			case 're':
@@ -139,17 +138,17 @@ class Signature {
 //
 //
 
-					set_error_handler( function ( $_, $msg ) use ( $signature ) {
-						$msg = sprintf( "Error execution regex #%d: \"/%s/mi\" (%s)\n", $signature->getId(), $signature->getSignature(), $msg );
-						Writter::error( $msg );
-						error_log( $msg );
-					} );
+					// Without it consumption is 15-20 megabytes
+//					set_error_handler( function ( $_, $msg ) use ( $signature ) {
+//						$msg = sprintf( "Error execution regex #%d: \"/%s/mi\" (%s)\n", $signature->getId(), $signature->getSignature(), $msg );
+//						Writter::error( $msg );
+//						error_log( $msg );
+//					} );
 
-					// After much observation and googling, it turned out that this function causes a memory leak
-					$result = preg_match_all( "/{$this->getSignature()}/mi", $content, $matches );
+					$result = preg_match( "/{$this->getSignature()}/mi", $content, $matches );
 
 					if ( $result ) {
-						$match = new Match( $file, $matches[0][0] );
+						$match = new Match( $file, $matches[0] );
 					}
 				} catch ( Exception $e ) {
 					Writter::error( sprintf( "%s:\n%s", $e->getMessage(), $e->getTraceAsString() ) );
@@ -157,8 +156,6 @@ class Signature {
 				break;
 
 		}
-
-		set_error_handler( null );
 
 		return $match;
 	}
