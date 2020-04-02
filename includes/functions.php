@@ -30,7 +30,6 @@ add_action( 'titan_scheduled_scanner', 'titan_scheduled_scanner' );
  * @throws Exception
  */
 function titan_scheduled_scanner() {
-	global $wp_version;
 	require_once WTITAN_PLUGIN_DIR . '/libs/api-client/boot.php';
 	require_once WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
 
@@ -59,9 +58,8 @@ function titan_scheduled_scanner() {
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
 		$matched = array_merge($matched, titan_check_cms());
-	} else {
-		Plugin::app()->updateOption( 'scanner', $scanner, false );
 	}
+	Plugin::app()->updateOption( 'scanner', $scanner, false );
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
