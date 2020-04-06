@@ -87,9 +87,9 @@ class wfLiveTrafficQuery {
 			foreach($results as $index => $res) {
 				if( $res['UA'] ) {
 					$b = $browscap->getBrowser($res['UA']);
-					$jsRun = wfUtils::truthyToBoolean($res['jsRun']);
+					$jsRun = \WBCR\Titan\Firewall\Utils::truthyToBoolean($res['jsRun']);
 					if( $b && $b['Parent'] != 'DefaultProperties' ) {
-						$jsRun = wfUtils::truthyToBoolean($res['jsRun']);
+						$jsRun = \WBCR\Titan\Firewall\Utils::truthyToBoolean($res['jsRun']);
 						if( !wfConfig::liveTrafficEnabled() && !$jsRun ) {
 							$jsRun = !(isset($b['Crawler']) && $b['Crawler']);
 						}
@@ -159,7 +159,7 @@ class wfLiveTrafficQuery {
 				$individualFilters = $filters->getFilters();
 				foreach($individualFilters as $index => $f) {
 					if( $f->getParam() == 'jsRun' && $delayedHumanBotFiltering !== null && $humanOnly !== null ) {
-						$humanOnly = wfUtils::truthyToBoolean($f->getValue());
+						$humanOnly = \WBCR\Titan\Firewall\Utils::truthyToBoolean($f->getValue());
 						if( $f->getOperator() == '!=' ) {
 							$humanOnly = !$humanOnly;
 						}

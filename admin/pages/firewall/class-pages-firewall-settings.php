@@ -127,7 +127,7 @@ class Firewall_Settings extends Base {
 				'title' => __('How does Titan get IPs ', 'titan-security'),
 				'data' => [
 					[
-						'default',
+						'',
 						__('Default', 'titan-security'),
 						__('Let Titan use the most secure method to get visitor IP addresses. Prevents spoofing and works with most sites. (Recommended)', 'titan-security')
 					],
@@ -190,7 +190,7 @@ If you do not know whether your host uses more than one proxy address, contact y
 Once you know which proxies to trust, click the + Edit trusted proxies link below the detected IPs.
 In the Trusted proxies field that appears, enter the IP addresses of the proxies. You can enter a single IP like 10.0.0.15. You can also enter a “CIDR” range like 10.0.0.0/24. Note that your host’s trusted IPs should not be the same addresses in these examples.
 Click Save Options to save the changes, and check that your IP appears correctly in the “Your IP with this setting” field.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
-				'default' => 'default',
+				'default' => '',
 				'filter_value' => [$this, 'filter_howget_ip_option']
 			];
 
@@ -243,7 +243,7 @@ Click Save Options to save the changes, and check that your IP appears correctly
 			$options[] = [
 				'type' => 'list',
 				'way' => 'checklist',
-				'name' => 'disable_comments_for_post_types',
+				'name' => 'whitelisted_services',
 				'title' => __('Whitelisted services', 'comments-plus'),
 				'data' => [
 					['sucuri', 'Sucuri'],
@@ -255,6 +255,7 @@ Click Save Options to save the changes, and check that your IP appears correctly
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
 				'hint' => __('Select the post types for which comments will be disabled', 'comments-plus'),
+				'filter_value' => [$this, 'filter_whitelisted_services_option'],
 				'default' => 'sucuri,facebook,uptime_robots'
 			];
 
@@ -1133,6 +1134,8 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 			return '';
 		}
 
+		\WBCR\Titan\Plugin::app()->fw_storage()->setConfig('howGetIPs_trusted_proxies', $dirtyIPs, 'synced');
+
 		return $value;
 	}
 
@@ -1157,4 +1160,23 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 
 		return '';
 	}
+
+	public function filter_whitelisted_services_option($value)
+	{
+		/*if (is_string($value)) { //Already JSON (import/export settings)
+			wfConfig::set($key, $value);
+		}
+		else {
+			wfConfig::setJSON($key, (array) $value);
+		}
+
+		$wafConfig->setConfig('whitelistedServiceIPs', @json_encode(\WBCR\Titan\Firewall\Utils::whitelistedServiceIPs()));
+
+		if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+			wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+		}*/
+
+		return $value;
+	}
+
 }

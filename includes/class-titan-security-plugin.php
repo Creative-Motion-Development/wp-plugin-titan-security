@@ -132,6 +132,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 		self::app()->registerPage('WBCR\Titan\Page\Logs', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-logs.php');
+		self::app()->registerPage('WBCR\Titan\Page\Tweaks', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-tweaks.php');
 	}
 
 	/**
@@ -173,6 +174,10 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 */
 	private function global_scripts()
 	{
+		// Tweaks
+		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/class-security-tweaks.php');
+		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/password-requirements/boot.php');
+
 		// Firewall
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/boot.php');
 

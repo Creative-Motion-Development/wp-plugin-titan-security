@@ -6,6 +6,29 @@ use WBCR\Titan\Plugin as Plugin;
 
 class Utils {
 
+	public static function doNotCache()
+	{
+		header("Pragma: no-cache");
+		header("Cache-Control: no-cache, must-revalidate, private");
+		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); //In the past
+		if( !defined('DONOTCACHEPAGE') ) {
+			define('DONOTCACHEPAGE', true);
+		}
+		if( !defined('DONOTCACHEDB') ) {
+			define('DONOTCACHEDB', true);
+		}
+		if( !defined('DONOTCDN') ) {
+			define('DONOTCDN', true);
+		}
+		if( !defined('DONOTCACHEOBJECT') ) {
+			define('DONOTCACHEOBJECT', true);
+		}
+
+		if( !defined('WFDONOTCACHE') ) {
+			define('WFDONOTCACHE', true);
+		}
+	}
+
 	public static function makeDuration($secs, $createExact = false)
 	{
 		$components = array();
@@ -1023,7 +1046,7 @@ class Utils {
 		) : array('127.0.0.1', 'REMOTE_ADDR');
 
 		if( $howGet === null ) {
-			$howGet = wfConfig::get('howGetIPs', false);
+			$howGet = \WBCR\Titan\Plugin::app()->getPopulateOption('howget_ip');
 		}
 
 		if( $howGet ) {
@@ -1284,7 +1307,10 @@ class Utils {
 	{
 		$result = array();
 		$whitelistPresets = self::whitelistPresets();
-		$whitelistedServices = wfConfig::getJSON('whitelistedServices', array());
+
+		$whitelisted_services_str = Plugin::app()->getPopulateOption('whitelisted_services');
+		$whitelistedServices = explode(',', $whitelisted_services_str);
+
 		foreach($whitelistPresets as $tag => $preset) {
 			if( !isset($preset['n']) ) { //Just an array of IPs/ranges
 				$result[$tag] = $preset;
@@ -1296,7 +1322,7 @@ class Utils {
 				continue;
 			}
 
-			if( (!isset($whitelistedServices[$tag]) && isset($preset['d']) && $preset['d']) || (isset($whitelistedServices[$tag]) && $whitelistedServices[$tag]) ) {
+			if( (in_array($tag, $whitelistedServices) && isset($preset['d']) && $preset['d']) ) {
 				$result[$tag] = $preset['r'];
 			}
 		}
@@ -1313,9 +1339,9 @@ class Utils {
 	{
 		static $_cachedPresets = null;
 		if( $_cachedPresets === null ) {
-			include(dirname(__FILE__) . '/wfIPWhitelist.php');
+			include(dirname(__FILE__) . '/ip-white-list.php');
 			/** @var array $wfIPWhitelist */
-			$currentPresets = wfConfig::getJSON('whitelistPresets', array());
+			$currentPresets = Plugin::app()->getPopulateOption('whitelist_presets', []);
 			if( is_array($currentPresets) ) {
 				$_cachedPresets = array_merge($wfIPWhitelist, $currentPresets);
 			} else {
@@ -1487,7 +1513,7 @@ class Utils {
 			if( !is_wp_error($response) ) {
 				$jsonResponse = wp_remote_retrieve_body($response);
 				$decoded = @json_decode($jsonResponse, true);
-				if( is_array($decoded) && isset($decoded['data']) && is_array($decoded['data']) && isset($decoded['data']['ip']) && wfUtils::isValidIP($decoded['data']['ip']) ) {
+				if( is_array($decoded) && isset($decoded['data']) && is_array($decoded['data']) && isset($decoded['data']['ip']) && \WBCR\Titan\Firewall\Utils::isValidIP($decoded['data']['ip']) ) {
 					Plugin::app()->updatePopulateOption('server_ip', time() . ';' . $decoded['data']['ip']);
 				}
 			}

@@ -215,7 +215,7 @@ class Block {
 				return __('No countries selected.', 'titan-security');
 			}
 
-			require(WTITAN_PLUGIN_DIR . '/includes/firewall/wfBulkCountries.php');
+			require(WTITAN_PLUGIN_DIR . '/includes/firewall/class-bulk-countries.php');
 			/** @var array $wfBulkCountries */
 			foreach($payload['countries'] as $code) {
 				if( !isset($wfBulkCountries[$code]) ) {
@@ -316,11 +316,11 @@ class Block {
 		if( !$hasExisting ) {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, NULL)", $type, \WBCR\Titan\Firewall\Utils::inet_pton($ip), $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration)));
 
-			wfConfig::inc('totalIPsBlocked');
+			self::update_count_total_ip_blocking();
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -351,11 +351,11 @@ class Block {
 		if( !$hasExisting ) {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, NULL)", self::TYPE_WFSN_TEMPORARY, \WBCR\Titan\Firewall\Utils::inet_pton($ip), $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration)));
 
-			wfConfig::inc('totalIPsBlocked');
+			self::update_count_total_ip_blocking();
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -386,11 +386,11 @@ class Block {
 		if( !$hasExisting ) {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, NULL)", self::TYPE_RATE_BLOCK, \WBCR\Titan\Firewall\Utils::inet_pton($ip), $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration)));
 
-			wfConfig::inc('totalIPsBlocked');
+			self::update_count_total_ip_blocking();
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -421,11 +421,11 @@ class Block {
 		if( !$hasExisting ) {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, NULL)", self::TYPE_RATE_THROTTLE, \WBCR\Titan\Firewall\Utils::inet_pton($ip), $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration)));
 
-			wfConfig::inc('totalIPsBlocked');
+			self::update_count_total_ip_blocking();
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -456,11 +456,13 @@ class Block {
 		if( !$hasExisting ) {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, NULL)", self::TYPE_LOCKOUT, \WBCR\Titan\Firewall\Utils::inet_pton($ip), $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration)));
 
-			wfConfig::inc('totalIPsLocked');
+			//wfConfig::inc('totalIPsLocked');
+			//\WBCR\Titan\Plugin::app()->updatePopulateOption('total_ip_blocked', );
+
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -498,8 +500,8 @@ class Block {
 			$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, %s)", self::TYPE_COUNTRY, self::MARKER_COUNTRY, $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration), json_encode($parameters)));
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -534,8 +536,8 @@ class Block {
 		$blocksTable = \WBCR\Titan\Firewall\Model\Block::blocksTable();
 		$wpdb->query($wpdb->prepare("INSERT INTO `{$blocksTable}` (`type`, `IP`, `blockedTime`, `reason`, `lastAttempt`, `blockedHits`, `expiration`, `parameters`) VALUES (%d, %s, %d, %s, %d, %d, %d, %s)", self::TYPE_PATTERN, self::MARKER_PATTERN, $blockedTime, $reason, (int)$lastAttempt, (int)$blockedHits, ($duration ? $blockedTime + $duration : $duration), json_encode($parameters)));
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -568,8 +570,8 @@ class Block {
 			self::_importBlock($b);
 		}
 
-		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('wfWAFIPBlocksController') ) {
-			wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
+		if( !WFWAF_SUBDIRECTORY_INSTALL && class_exists('\wfWAFIPBlocksController') ) {
+			\wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings();
 		}
 	}
 
@@ -623,7 +625,7 @@ class Block {
 				$parameters['blockLogin'] = \WBCR\Titan\Firewall\Utils::truthyToInt($parameters['blockLogin']);
 				$parameters['blockSite'] = \WBCR\Titan\Firewall\Utils::truthyToInt($parameters['blockSite']);
 
-				require(WTITAN_PATH . 'lib/wfBulkCountries.php');
+				require(WTITAN_PATH . 'lib/class-bulk-countries.php');
 				/** @var array $wfBulkCountries */
 				foreach($parameters['countries'] as $code) {
 					if( !isset($wfBulkCountries[$code]) ) {
@@ -1668,5 +1670,14 @@ END AS `detailSort`
 		}
 
 		return array();
+	}
+
+	public static function update_count_total_ip_blocking()
+	{
+		$total_ip_blocked = \WBCR\Titan\Plugin::app()->getPopulateOption('total_ip_blocked', 0);
+		$total_ip_blocked = (int)$total_ip_blocked + 1;
+		\WBCR\Titan\Plugin::app()->updatePopulateOption('total_ip_blocked', $total_ip_blocked);
+
+		return $total_ip_blocked;
 	}
 }

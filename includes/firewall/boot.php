@@ -75,16 +75,16 @@ require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/block/class-model-bl
 require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/block/class-model.php');
 require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/block/class-model-request.php');
 //require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/models/block/class-model-rate-limit.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfBrowscap.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfCrawl.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfBrowscap.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfBrowscapCache.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfAdminUserMonitor.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfLiveTrafficQuery.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfLiveTrafficQueryFilter.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfLiveTrafficQueryGroupBy.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfLiveTrafficQueryException.php');
-require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/wfErrorLogHandler.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-browscap.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-crawl.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-browscap.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-browscap-cache.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-admin-user-monitor.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-live-traffic-query.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-live-traffic-query-filter.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-live-traffic-query-group-by.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-live-traffic-query-exception.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/class-error-log-handler.php');
 
 //Check the How does Wordfence get IPs setting
 \WBCR\Titan\Firewall\Utils::requestDetectProxyCallback();
@@ -95,8 +95,8 @@ add_action('plugins_loaded', function () {
 	$wfFunc = isset($_GET['_wtitan_fsf']) ? @$_GET['_wtitan_fsf'] : false;
 
 	if( $wfFunc == 'detectProxy' ) {
-		wfUtils::doNotCache();
-		if( wfUtils::processDetectProxyCallback() ) {
+		\WBCR\Titan\Firewall\Utils::doNotCache();
+		if( \WBCR\Titan\Firewall\Utils::processDetectProxyCallback() ) {
 			//self::getLog()->getCurrentRequest()->action = 'scan:detectproxy'; //Exempt a valid callback from live traffic
 			echo Plugin::app()->getPopulateOption('detect_proxy_recommendation', '-');
 		} else {

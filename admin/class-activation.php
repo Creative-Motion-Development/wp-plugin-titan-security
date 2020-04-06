@@ -54,18 +54,18 @@ class Activation extends \Wbcr_Factory000_Activator {
 				'siteURL'        => $siteurl,
 				'homeURL'        => $homeurl,
 				'whitelistedIPs' => (string) wfConfig::get('whitelisted'),
-				'whitelistedServiceIPs' => @json_encode(wfUtils::whitelistedServiceIPs()),
+				'whitelistedServiceIPs' => @json_encode(\WBCR\Titan\Firewall\Utils::whitelistedServiceIPs()),
 				'howGetIPs'      => (string) wfConfig::get('howGetIPs'),
 				'howGetIPs_trusted_proxies' => wfConfig::get('howGetIPs_trusted_proxies', ''),
 				'detectProxyRecommendation' => (string) wfConfig::get('detectProxyRecommendation'),
 				'other_WFNet'    => !!wfConfig::get('other_WFNet', true),
 				'pluginABSPATH'	 => ABSPATH,
-				'serverIPs'		 => json_encode(wfUtils::serverIPs()),
+				'serverIPs'		 => json_encode(\WBCR\Titan\Firewall\Utils::serverIPs()),
 				'blockCustomText' => wpautop(wp_strip_all_tags(wfConfig::get('blockCustomText', ''))),
 				'betaThreatDefenseFeed' => !!wfConfig::get('betaThreatDefenseFeed'),
 				'disableWAFIPBlocking' => wfConfig::get('disableWAFIPBlocking'),
 			);
-			if (wfUtils::isAdmin()) {
+			if (\WBCR\Titan\Firewall\Utils::isAdmin()) {
 				$errorNonceKey = 'errorNonce_' . get_current_user_id();
 				$configDefaults[$errorNonceKey] = wp_create_nonce('wf-waf-error-page'); //Used by the AJAX watcher script
 			}

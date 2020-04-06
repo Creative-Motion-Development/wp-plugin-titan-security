@@ -6,4 +6,4 @@
 .DS_Store
 .idea
 *.css.map
-
+/includes/tweaks/password-requirements
