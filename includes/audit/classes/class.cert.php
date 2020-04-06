@@ -161,11 +161,11 @@ class Cert {
 				break;
 
 			case self::ERROR_ONLY_HTTPS:
-				return __('Verification is only available on https', 'titan-security');
+				return __('Verification is only available on HTTPS', 'titan-security');
 				break;
 
 			case self::ERROR_HTTPS_UNAVAILABLE:
-				return __('https is not available on this site. We recommend using CloudFlare', 'titan-security');
+				return __('HTTPS is not activated on this site.', 'titan-security');
 				break;
 
 			case self::ERROR_NO_ERROR:

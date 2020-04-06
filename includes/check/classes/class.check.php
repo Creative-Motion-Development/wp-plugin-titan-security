@@ -33,6 +33,13 @@ class Check extends Module_Base {
 	public $audit;
 
 	/**
+	 * Audit object
+	 *
+	 * @var Scanner
+	 */
+	public $scanner;
+
+	/**
 	 * Vulnerabilities_API constructor.
 	 *
 	 */
@@ -43,14 +50,60 @@ class Check extends Module_Base {
 		$this->module_url = WTITAN_PLUGIN_URL."/includes/check";
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
+		$this->scanner = new Scanner();
 
-		add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
+		if(!has_action('wp_ajax_wtitan_scanner_hide'))
+			add_action( 'wp_ajax_wtitan_scanner_hide', array( $this, 'hide_issue' ) );
+
+		if(!has_filter('wbcr/titan/adminbar_menu_title'))
+			add_filter('wbcr/titan/adminbar_menu_title', function($title){
+				$count = $this->get_count();
+				if($count)
+					return $title."<span class='wtitan-count-bubble'>{$count}</span>";
+				else
+					return $title;
+			});
+		if(!has_filter('wbcr/titan/admin_menu_title'))
+			add_filter('wbcr/titan/admin_menu_title', function($title){
+				$count = $this->get_count();
+				if($count)
+					return $title."<span class='update-plugins'><span class='plugin-count'>{$count}</span></span>";
+				else
+					return $title;
+			});
 	}
 
 	/**
-	 * Show page content
+	 * Get count of issues
+	 *
+	 * @return int
 	 */
-	public function showPageContent() {
+	public function get_count()
+	{
+		return (int)$this->vulnerabilities->get_count() + (int)$this->audit->get_count();
+	}
+
+	/**
+	 * Get page content
+	 *
+	 * @param string $template
+	 *
+	 * @return string
+	 */
+	public function getPageContent( $template = 'main' ) {
+		ob_start();
+		$this->showPageContent($template );
+		$result = ob_get_contents();
+		ob_end_clean();
+
+		return $result;
+	}
+	/**
+	 * Show page content
+	 *
+	 * @param string $template
+	 */
+	public function showPageContent( $template = 'main' ) {
 		$vuln_args = array(
 			'wordpress' => $this->vulnerabilities->wordpress,
 			'plugins'   => $this->vulnerabilities->plugins,
@@ -67,6 +120,8 @@ class Check extends Module_Base {
 			'results' => $this->audit->get_hided(),
 		);
 		$content_hided = $this->render_template( 'hided', $hided_args);
+
+		$content_malware = $this->scanner->render_template( 'results', $this->scanner->get_current_results());
 
 		$args = array(
 			'modules' => array(
@@ -88,6 +143,12 @@ class Check extends Module_Base {
 					'content' => $content_vulner,
 					'count'   => $this->vulnerabilities->get_count(),
 				),
+				'malware' => array(
+					'name'    => __('Malware', 'titan-security'),
+					'icon'    => 'dashicons-code-standards',
+					'content' => $content_malware,
+					'count'   => $this->scanner->get_matched_count(),
+				),
 			),
 			'active_modules' => "audit,vulnerability",
 		);
@@ -105,7 +166,7 @@ class Check extends Module_Base {
 		);
 		echo $this->audit->render_script('audit_ajax.js', $script_args);
 
-		echo $this->render_template( 'check', $args);
+		echo $this->render_template( $template, $args);
 	}
 
 	/**

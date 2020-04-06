@@ -68,7 +68,7 @@ class Vulnerabilities extends Module_Base {
 
 	/**
 	 * @return Vulnerabilities
-	 * @since  1.0
+	 * @since  7.0
 	 */
 	public static function app() {
 		return self::$app;

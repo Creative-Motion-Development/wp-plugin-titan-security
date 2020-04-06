@@ -72,8 +72,8 @@ class Firewall_Blocking extends Base {
 	 */
 	public function __construct(\Wbcr_Factory000_Plugin $plugin)
 	{
-		$this->menu_title = __('Blocking', 'anti-spam');
-		$this->page_menu_short_description = __('Firewall blocking', 'anti-spam');
+		$this->menu_title = __('Blocking', 'titan-security');
+		$this->page_menu_short_description = __('Firewall blocking', 'titan-security');
 
 		parent::__construct($plugin);
 

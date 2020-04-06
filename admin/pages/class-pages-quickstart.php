@@ -128,7 +128,7 @@ class QuickStart extends Base {
 		$this->plugin = $plugin;
 
 		$this->menu_title = __('Titan security', 'titan-security');
-		$this->page_title = __('Dashboard', 'titan-security');;
+		$this->page_title = __('Quick start', 'titan-security');;
 		$this->menu_sub_title = $this->page_title;
 		$this->page_menu_short_description = __('Start scanning and information about problems', 'titan-security');
 		$this->menu_icon = '~/admin/assets/img/icon.png';
@@ -141,6 +141,14 @@ class QuickStart extends Base {
 		$this->scanner = new \WBCR\Titan\Scanner();
 
 		parent::__construct($plugin);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMenuTitle()
+	{
+		return apply_filters( 'wbcr/titan/admin_menu_title', $this->menu_title );
 	}
 
 	/**

@@ -53,7 +53,7 @@ class CertInfo extends Base {
 	/**
 	 * Module folder URL
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var bool
 	 */
 	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/cert-info";
@@ -61,7 +61,7 @@ class CertInfo extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var bool
 	 */
 	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/cert-info";
@@ -69,7 +69,7 @@ class CertInfo extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var Titan\Cert\CertInfo
 	 */
 	public $module;

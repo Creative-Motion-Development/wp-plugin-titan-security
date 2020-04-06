@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Titan security
-Plugin URI: http://wordpress.org/plugins/titan-security/
-Description: Titan Security - Anti-virus, Firewall and Malware Scan
-Version: 1.0.0
+Plugin Name: Anti-spam & Titan Security
+Plugin URI: http://wordpress.org/plugins/anti-spam/
+Description: Titan Security - Anti-spam, Anti-virus, Firewall and Malware Scan
+Version: 7.0.5
 Author: CreativeMotion
 Text Domain: titan-security
 Author URI: https://cm-wp.com/
@@ -66,9 +66,9 @@ $wtitan_plugin_info = [
 	'license_settings' => [
 		'provider' => 'freemius',
 		'slug' => 'antispam-premium',
-		'plugin_id' => '5576',
-		'public_key' => 'pk_35c58895903a6ad909c12461187ca',
-		'price' => 15,
+		'plugin_id' => '5079',
+		'public_key' => 'pk_98a99846a14067246257d4f43c04a',
+		'price' => 79,
 		'has_updates' => false,
 		'updates_settings' => [
 			'maybe_rollback' => true,
@@ -93,14 +93,14 @@ $wtitan_plugin_info = [
 		['libs/factory/pages', 'factory_pages_000', 'admin'],
 		['libs/factory/clearfy', 'factory_clearfy_000', 'all'],
 		['libs/factory/freemius', 'factory_freemius_000', 'all'],
-		//['libs/factory/feedback', 'factory_feedback_000', 'admin']
+		['libs/factory/feedback', 'factory_feedback_000', 'admin']
 	]
 ];
 
 $wtitan_compatibility = new Wbcr_Factory000_Requirements(__FILE__, array_merge($wtitan_plugin_info, [
 	'plugin_already_activate' => defined('WTITAN_PLUGIN_ACTIVE'),
-	'required_php_version' => '5.4',
-	'required_wp_version' => '4.2.0',
+	'required_php_version' => '5.6',
+	'required_wp_version' => '4.9.0',
 	'required_clearfy_check_component' => false
 ]));
 
@@ -250,13 +250,18 @@ if( !WFWAF_SUBDIRECTORY_INSTALL ) {
  */
 require_once(WTITAN_PLUGIN_DIR . '/libs/factory/core/boot.php');
 require_once(WTITAN_PLUGIN_DIR . '/includes/functions.php');
+require_once(WTITAN_PLUGIN_DIR . '/includes/antispam/functions.php');
 require_once(WTITAN_PLUGIN_DIR . '/includes/class-titan-security-plugin.php');
 
 try {
-	new \WBCR\Titan\Plugin(__FILE__, array_merge($wtitan_plugin_info, [
+	$plugin = new \WBCR\Titan\Plugin(__FILE__, array_merge($wtitan_plugin_info, [
 		'plugin_version' => WTITAN_PLUGIN_VERSION,
 		'plugin_text_domain' => $wtitan_compatibility->get_text_domain(),
 	]));
+
+	if($plugin->is_premium()) {
+		require_once( WTITAN_PLUGIN_DIR . '/libs/antispam-premium/anti-spam-premium.php' );
+	}
 } catch( Exception $e ) {
 	// Plugin wasn't initialized due to an error
 	define('WTITAN_PLUGIN_THROW_ERROR', true);

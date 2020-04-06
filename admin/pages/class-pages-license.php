@@ -217,7 +217,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 	/**
 	 * @author Artem Prihodko <webtemyk@yandex.ru>
-	 * @since  1.0
+	 * @since  7.0
 	 */
 
 	public function activate_trial()

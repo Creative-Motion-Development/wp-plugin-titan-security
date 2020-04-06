@@ -35,7 +35,7 @@ class Client {
 	const ENDPOINT = 'https://api.titansitescanner.com/api/v1.0/';
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	private $license_key;
 
@@ -47,7 +47,7 @@ class Client {
 	/**
 	 * Client constructor.
 	 *
-	 * @param $license_key
+	 * @param string|null $license_key
 	 */
 	public function __construct( $license_key ) {
 		$this->license_key = $license_key;
@@ -338,6 +338,27 @@ class Client {
 		return $s;
 	}
 
+	/**
+	 * @return Signature[]|null
+	 */
+	public function get_free_signatures() {
+		$response = $this->request( false, 'antivirus/signature/free' );
+		if ( $response->is_error() ) {
+			return null;
+		}
+
+		if ( is_null( $response->response ) ) {
+			return [];
+		}
+
+		$s = [];
+		foreach ( $response->response as $item ) {
+			$s[] = Signature::from_array( $item );
+		}
+
+		return $s;
+	}
+
 	//
 	// notices
 	//
@@ -407,7 +428,7 @@ class Client {
 	 * @return UrlChecker[]|null
 	 */
 	public function get_checker_urls() {
-		$response = $this->request( false, 'url-checker/' );
+		$response = $this->request( false, 'url-checker' );
 		if ( $response->is_error() ) {
 			return null;
 		}
@@ -435,9 +456,9 @@ class Client {
 	}
 
 	/**
-	 * @param int    $id
+	 * @param int $id
 	 * @param string $url
-	 * @param int    $frequency
+	 * @param int $frequency
 	 *
 	 * @return bool
 	 */
@@ -481,43 +502,43 @@ class Client {
 	}
 
 	/**
-	 * @param bool   $post
+	 * @param bool $post
 	 * @param string $apiMethod
-	 * @param array  $body
+	 * @param array $body
 	 *
 	 * @return Response
 	 */
 	public function request( $post, $apiMethod, $body = [] ) {
-//		if(function_exists('wp_remote_post')) {
-//			wp_remote_post();
-//			wp_remote_get();
-//		}
+		$headers = [
+			"Content-Type" => "application/json",
+			"Accept"       => "application/json",
+		];
+		if ( ! empty ( $this->license_key ) ) {
+			$headers["Authorization"] = "Bearer " . base64_encode( $this->license_key );
+		}
 
 		$url = sprintf( "%s%s", self::ENDPOINT, $apiMethod );
 
-		$ch = curl_init();
-
 		if ( $post ) {
-			curl_setopt_array( $ch, [
-				CURLOPT_POST       => true,
-				CURLOPT_POSTFIELDS => json_encode( $body ),
+			$response = wp_remote_post( $url, [
+				'headers' => $headers,
+				'body'    => json_encode( $body ),
 			] );
 		} else {
-			$url = sprintf( "%s?%s", $url, http_build_query( $body ) );
+			if ( ! empty ( $body ) ) {
+				$url .= "?" . http_build_query( $body );
+			}
+
+			$response = wp_remote_get( $url, [
+				"headers" => $headers
+			] );
 		}
 
-		curl_setopt_array( $ch, [
-			CURLOPT_URL            => $url,
-			CURLOPT_HTTPHEADER     => [
-				'Content-Type: application/json',
-				'Accept: application/json',
-				sprintf( "Authorization: Bearer %s", base64_encode( $this->license_key ) ),
-			],
-			CURLOPT_RETURNTRANSFER => true,
-		] );
+		if ( is_wp_error( $response ) ) {
+			return null;
+		}
 
-		$response = json_decode( curl_exec( $ch ), true );
-		curl_close( $ch );
+		$response = json_decode( $response['body'], true );
 
 		$response = Response::from_array( $response );
 		if ( $response->is_error() ) {
@@ -525,5 +546,4 @@ class Client {
 		}
 
 		return $response;
-	}
-}
+	}}

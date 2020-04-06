@@ -2,6 +2,8 @@
 
 namespace WBCR\Titan\MalwareScanner;
 
+use WBCR\Titan\Logger\Writter;
+
 /**
  * Class SignaturePool
  *
@@ -38,16 +40,14 @@ class SignaturePool {
 		$matches = [];
 
 		foreach ( $this->signatures as $signature ) {
-			set_error_handler( function ( $_, $msg ) use ( $signature ) {
-				print_r( sprintf( "%d: \"/%s/mi\" (%s)\n", $signature->getId(), $signature->getSignature(), $msg ) );
-			} );
 			$match = $signature->scan( $file );
 			if ( ! is_null( $match ) ) {
 				$matches[] = $match;
 			}
 		}
 
-		set_error_handler( null );
+		$file->clearLoadedData();
+		gc_collect_cycles();
 
 		return $matches;
 	}

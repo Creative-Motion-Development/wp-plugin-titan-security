@@ -58,7 +58,7 @@ class Vulnerabilities extends Base {
 	/**
 	 * Module object
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var object
 	 */
 	public $module;

@@ -57,7 +57,7 @@ class Audit extends Module_Base {
 
 	/**
 	 * @return Audit
-	 * @since  1.0
+	 * @since  7.0
 	 */
 	public static function app()
 	{
@@ -110,6 +110,7 @@ class Audit extends Module_Base {
 		$this->check_files();
 		$this->check_fileEditor();
 		$this->check_folders_access();
+		$this->check_self();
 
 		update_option($this->plugin->getPrefix() . "audit_results_hided", array(), 'no');
 		update_option($this->plugin->getPrefix() . "audit_results", $this->results, 'no');
@@ -442,6 +443,24 @@ class Audit extends Module_Base {
 			if( $response_code == 200 ) {
 				$this->add($title, $description, 'medium');
 			}
+		}
+
+		return $this->results;
+	}
+
+	/**
+	 * Check self functions
+	 *
+	 * @return AuditResult[] Results
+	 */
+	public function check_self() {
+		//FIREWALL
+		$title = __("The firewall is disabled.","titan-security");
+		$description = __("Firewall protects against password brute force and blocks suspicious activity.","titan-security");
+
+		$firewall = $this->plugin->getPopulateOption('firewall_mode', '');
+		if("disabled" === $firewall || empty($firewall)) {
+			$this->add( $title, $description, 'high', admin_url('admin.php?page=firewall-'.$this->plugin->getPluginName()) );
 		}
 
 		return $this->results;

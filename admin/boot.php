@@ -14,6 +14,20 @@
 if( !defined('ABSPATH') ) {
 	exit;
 }
+/**
+ * Выводит кнопку настроек в шапке интерфейса плагина
+ */
+add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
+	if ( $plugin_name != WBCR\Titan\Plugin::app()->getPluginName() ) {
+		return;
+	}
+	?>
+	<a href="<?php echo WBCR\Titan\Plugin::app()->getPluginPageUrl( 'plugin_settings' ) ?>" class="wbcr-factory-button wbcr-factory-type-settings">
+		<?php echo apply_filters( 'wbcr/clearfy/settings_button_title', __( 'Titan settings', 'titan-security' ) ); ?>
+	</a>
+	<?php
+} );
+
 
 /**
  * Print admin notice: "Would you like to send them for spam checking?"
@@ -22,7 +36,7 @@ if( !defined('ABSPATH') ) {
  * that put all unapproved comments to spam check queue.
  */
 add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
-	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WANTISPAM_PLUGIN_ACTIVE') ) {
+	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WTITAN_PLUGIN_ACTIVE') ) {
 		return $notices;
 	}
 
@@ -62,4 +76,8 @@ require_once WTITAN_PLUGIN_DIR . "/includes/audit/boot.php";
 require_once WTITAN_PLUGIN_DIR . "/includes/sitechecker/boot.php";
 // Scanner class
 require_once WTITAN_PLUGIN_DIR . "/includes/scanner/boot.php";
+// Anti-spam class
+require_once WTITAN_PLUGIN_DIR . "/includes/antispam/boot.php";
+// Audit class
+require_once WTITAN_PLUGIN_DIR . "/includes/check/boot.php";
 

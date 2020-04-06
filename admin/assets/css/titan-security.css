@@ -5,10 +5,16 @@ h2.nav-tab-wrapper {
 /*#WBCR .wbcr-factory-pages-000-impressive-page-template .alert
 {
     padding: 10px !important;
-    position: absolute !important;
+    /*position: absolute !important;
     width: 100%;
+
     opacity: 0.8;
 }*/
+#WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-inner-wrap .nav-tab {
+
+    /*opacity: 0.8;*/
+}
+
 #WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-inner-wrap .nav-tab {
     border-radius: 5px 5px 0 0;
 }
@@ -97,4 +103,8 @@ h2.nav-tab-wrapper {
     font-weight: 700 !important;
     text-shadow: 0px 0px 3px #000000;
     color: #ffffff !important;
+}
+
+.wtitan-import-options-button {
+    margin: 15px;
 }

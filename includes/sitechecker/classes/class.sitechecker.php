@@ -161,11 +161,19 @@ class SiteChecker extends Module_Base {
 			$url_data = $this->client->get_checker_url( $id);
 
 			$response = $this->client->delete_checker_url(array($id));
-
-			wp_send_json_success([
-				'notice' => __("URL successfully deleted", "titan-security").": <u>{$url_data->url}</u>",
-				'type' => 'success'
-			]);
+			if($response) {
+				wp_send_json_success( [
+					'notice' => __( "URL successfully deleted", "titan-security" ) . ": <u>{$url_data->url}</u>",
+					'type'   => 'success'
+				] );
+			}
+			else
+			{
+				wp_send_json_error( [
+					'notice' => __( "URL not deleted", "titan-security" ) . ": <u>{$url_data->url}</u>",
+					'type'   => 'danger'
+				] );
+			}
 		}
 		else
 		{

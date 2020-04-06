@@ -11,71 +11,11 @@
         "commit-multiple.sh",
         "/admin/assets/css/general.less",
         "/admin/assets/css/tinymce.less",
-        "/components/assets-manager/libs",
-        "/components/comments-plus/libs",
-        "/components/update-manager/libs",
         "libs/factory/bootstrap/assets/cache",
-        "libs/factory/bootstrap/assets/css/",
-        "libs/factory/bootstrap/assets/js/",
         "libs/factory/bootstrap/package.json",
         "libs/factory/bootstrap/Gruntfile.js",
         "libs/factory/bootstrap/.gitignore",
-        "libs/factory/bootstrap/node_modules/",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.datetimepicker.min.css",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.accordion.min.min.css",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.datepicker.min.min.css",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.form-metabox.min.css",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.tab.min.css",
-        "libs/factory/bootstrap/assets/css-min/bootstrap.wp-editor.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.color.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.color-and-opacity.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.dropdown-and-colors.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.fonts.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.integer.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.list.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.pattern.min.css",
-        "libs/factory/bootstrap/assets/css-min/control.radio-colors.min.css",
-        "libs/factory/bootstrap/assets/css-min/holder.conrol-group.min.css",
-        "libs/factory/bootstrap/assets/css-min/plugin.chosen.min.css",
-        "libs/factory/bootstrap/assets/css-min/plugin.gradient-picker.min.css",
-        "libs/factory/bootstrap/assets/css-min/plugin.nouislider.min.css",
-        "libs/factory/bootstrap/assets/css-min/plugin.paddings-editor.min.css",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.datetimepicker.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.accordion.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.affix.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.alert.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.button.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.carousel.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.collapse.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.datepicker.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.modal.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.popover.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.scrollspy.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.tab.min.js",
-        "libs/factory/bootstrap/assets/js-min/bootstrap.transition.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.color.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.color-and-opacity.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.dropdown-and-colors.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.fonts.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.gradient.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.integer.min.js",
-        "libs/factory/bootstrap/assets/js-min/control.pattern.min.js",
-        "libs/factory/bootstrap/assets/js-min/global.color-functions.min.js",
-        "libs/factory/bootstrap/assets/js-min/holder.conrol-group.min.js",
-        "libs/factory/bootstrap/assets/js-min/holder.more-link.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.chosen.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.color.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.ddslick.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.gradient-picker.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.iris.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.nouislider.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.paddings-editor.min.js",
-        "libs/factory/bootstrap/assets/js-min/plugin.moment-with-locales.min.js",
-        "libs/factory/bootstrap/assets/images/chosen-sprite.png",
-        "libs/factory/bootstrap/assets/images/chosen-sprite@2x.png",
-        "libs/factory/bootstrap/assets/images/color_picker_pattern.jpg",
-        "libs/factory/bootstrap/assets/images/drop-menu_arrow.png",
-        "libs/factory/bootstrap/assets/images/no-pattern-background-control.png"
+        "libs/factory/bootstrap/node_modules/"
       ]
     },
     "build": {
@@ -91,16 +31,15 @@
     }
   },
   "constants": {
-    "version": "1.0.0",
-    "api": "http://api.byonepress.com/1.1/",
+    "version": "7.0.5",
     "name": [
       {
-        "value": "titan-security"
+        "value": "anti-spam"
       }
     ],
     "pluginUrl": [
       {
-        "value": "https://wordpress.org/plugins/titan-security/"
+        "value": "https://wordpress.org/plugins/anti-spam/"
       }
     ]
   }

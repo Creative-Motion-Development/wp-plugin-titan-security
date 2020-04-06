@@ -41,7 +41,7 @@ class Scanner extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var bool
 	 */
 	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/scanner";
@@ -49,7 +49,7 @@ class Scanner extends Base {
 	/**
 	 * Path to module files
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var object
 	 */
 	public $module;

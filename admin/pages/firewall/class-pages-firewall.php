@@ -39,11 +39,6 @@ class Firewall extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public $page_menu_position = 2;
-
-	/**
 	 * @var object|\WBCR\Titan\Views
 	 */
 	public $view;
@@ -65,8 +60,8 @@ class Firewall extends Base {
 	{
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Titan security', 'anti-spam');
-		$this->page_menu_short_description = __('Stops Complex Attacks', 'anti-spam');
+		$this->menu_title = __('Titan security', 'titan-security');
+		$this->page_menu_short_description = __('Stops Complex Attacks', 'titan-security');
 
 		$this->view = $this->plugin->view();
 		$this->firewall = new \WBCR\Titan\Model\Firewall();
@@ -80,7 +75,7 @@ class Firewall extends Base {
 
 	public function getPageTitle()
 	{
-		return __('Firewall', 'anti-spam');
+		return __('Firewall', 'titan-security');
 	}
 
 	/**

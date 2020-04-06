@@ -20,7 +20,7 @@ abstract class Module_Base {
 	/**
 	 * Plugin object
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var \Wbcr_Factory000_Plugin
 	 */
 	public $plugin;
@@ -28,7 +28,7 @@ abstract class Module_Base {
 	/**
 	 * Current license key
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var string
 	 */
 	protected $license_key = "";

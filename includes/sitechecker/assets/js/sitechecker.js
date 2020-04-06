@@ -40,6 +40,12 @@ jQuery(document).ready(function($) {
                     console.log(response.data.notice+": "+$btn.data('id'));
                     $btn.closest('tr').fadeOut();
                 }
+                else
+                {
+                    $spinner.hide();
+                    $btn.show();
+                    console.log(response.data.notice+": "+$btn.data('id'));
+                }
                 showNotice(response.data.notice, response.data.type, 5000);
             },
         });

@@ -1,0 +1,70 @@
+#WBCR .wantispam-about-premium h1 {
+  font-size: 35px;
+}
+#WBCR .wantispam-about-premium__title {
+  text-align: left;
+  margin-bottom: 20px;
+}
+#WBCR .wantispam-about-premium__title--h2 {
+  margin-top: 60px;
+}
+#WBCR .wantispam-about-premium__headline-title {
+  font-size: 15px;
+  background: #fff;
+  padding: 20px;
+  text-align: left;
+}
+#WBCR .wantispam-about-premium__columns {
+  margin: 40px 0;
+}
+#WBCR .wantispam-about-premium__column {
+  text-align: center;
+  background: #fff;
+  margin-left: 5px;
+  padding: 20px 0;
+}
+#WBCR .wantispam-about-premium__column .dashicons {
+  color: #ffc107;
+  font-size: 106px;
+  width: 106px;
+  height: 106px;
+}
+#WBCR .wantispam-about-premium__column p {
+  font-size: 13px;
+  color: #909090;
+  padding: 6px;
+}
+#WBCR .wantispam-about-premium__activate-trial {
+  text-align: center;
+  padding: 30px;
+  background: #fff;
+  border: 1px dashed #d0a295;
+  margin-top: 60px;
+}
+#WBCR .wantispam-about-premium__activate-trial p {
+  font-size: 13px;
+  color: #909090;
+  margin-top: 20px;
+}
+#WBCR .wantispam-about-premium__activate-trial-button {
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+  border: 1px solid #fe5421;
+  background: #fe5421;
+  text-transform: uppercase;
+}
+#WBCR .wantispam-about-premium ul {
+  padding-left: 60px;
+  list-style: square;
+}
+#WBCR .wantispam-about-premium ul li {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+#WBCR .wantispam-about-premium ul li p {
+  font-size: 13px;
+  color: #909090;
+  background: #fff;
+  padding: 6px;
+}
+/*# sourceMappingURL=about-premium.css.map */

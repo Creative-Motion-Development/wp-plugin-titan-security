@@ -1,6 +1,6 @@
-=== Titan security ===
+=== Anti-spam & Titan security ===
 Contributors: creativemotion
-Tags: security, malware, protection
+Tags: security, malware, protection, antispam, spam, protection, comments, comment, antispam, anti-spam, block-spam, spam-free, spambot, spam-bot, bot
 Requires at least: 4.9
 Tested up to: 5.3
 Requires PHP: 5.6

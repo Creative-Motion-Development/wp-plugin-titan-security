@@ -90,6 +90,7 @@
 .wtitan-vulner-table-description
 {
   width: 100%;
+  text-align: left !important;
 }
 .wtitan-scanner-vulner-table-container table thead td {
   border-top: 0;

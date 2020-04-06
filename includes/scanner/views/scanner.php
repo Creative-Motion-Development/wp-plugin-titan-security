@@ -68,33 +68,7 @@ use WBCR\Titan\MalwareScanner\Match;
                             </li>
                         </ul>
                     </div>
-                    <div class="wbcr-titan-content">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Path</th>
-                                <th scope="col">Match</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ( $matched as $file_path => $match ): ?>
-                                <?php if(is_null($match)): ?>
-                                    <tr>
-                                        <td><?php echo $file_path ?></td>
-                                        <td>null</td>
-                                    </tr>
-                                <?php else: ?>
-                                    <tr>
-                                        <td><?php echo $match->getFile() ?></td>
-                                        <td><?php echo $match->getMatch() ?></td>
-                                    </tr>
-                                <?php endif; ?>
-
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+	                <?php echo $this->render_template( 'results', $args);?>
                 </div>
             </div>
         </div>

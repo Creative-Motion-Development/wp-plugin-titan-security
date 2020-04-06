@@ -42,7 +42,7 @@ class Check extends Base {
 	/**
 	 * Module URL
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var string
 	 */
 	public $MODULE_URL = WTITAN_PLUGIN_URL . "/includes/check";
@@ -50,7 +50,7 @@ class Check extends Base {
 	/**
 	 * Module path
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var string
 	 */
 	public $MODULE_PATH = WTITAN_PLUGIN_DIR . "/includes/check";
@@ -58,7 +58,7 @@ class Check extends Base {
 	/**
 	 * Module object
 	 *
-	 * @since  1.0
+	 * @since  7.0
 	 * @var object
 	 */
 	public $module;
