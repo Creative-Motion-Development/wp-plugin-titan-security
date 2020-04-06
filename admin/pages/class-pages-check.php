@@ -26,6 +26,11 @@ class Check extends Base {
 	/**
 	 * {@inheritdoc}
 	 */
+	public $page_parent_page = 'none';
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public $page_menu_dashicon = 'dashicons-plugins-checked';
 
 	/**
@@ -264,9 +269,15 @@ class Check extends Base {
 			}
 		}
 
-		$this->redirectToAction('index', [
+		$url = $this->getBaseUrl('dashboard', [
 			'wtitan_prefix_changed' => 1
 		]);
+
+		$url = add_query_arg('action', 'index', $url);
+
+		wp_safe_redirect($url);
+
+		die();
 	}
 
 	public function fixDatabasePrefixCancelAction()

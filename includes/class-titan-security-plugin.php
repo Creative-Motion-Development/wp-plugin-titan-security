@@ -138,7 +138,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
 		self::app()->registerPage('WBCR\Titan\Page\Firewall_Login_Attempts', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-login-attempts.php');
 
-		//self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
+		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 		//self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
 
@@ -195,7 +195,10 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		// Tweaks
 		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/class-security-tweaks.php');
-		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/password-requirements/boot.php');
+
+		if( $this->getPopulateOption('strong_password') ) {
+			require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/password-requirements/boot.php');
+		}
 
 		// Firewall
 		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/boot.php');
