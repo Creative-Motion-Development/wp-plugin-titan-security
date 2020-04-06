@@ -111,7 +111,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 
 				$otherBlocks['blocks'][] = array(
 					'id' => $b->id,
-					'IP' => base64_encode(wfUtils::inet_pton($b->ip)),
+					'IP' => base64_encode(\WBCR\Titan\Firewall\Utils::inet_pton($b->ip)),
 					'reason' => $reason,
 					'expiration' => $b->expiration,
 				);
@@ -124,7 +124,7 @@ if( !defined('WFWAF_RUN_COMPLETE') ) {
 			foreach($lockoutEntries as $l) {
 				$lockouts['lockouts'][] = array(
 					'id' => $l->id,
-					'IP' => base64_encode(wfUtils::inet_pton($l->ip)),
+					'IP' => base64_encode(\WBCR\Titan\Firewall\Utils::inet_pton($l->ip)),
 					'reason' => $l->reason,
 					'expiration' => $l->expiration,
 				);

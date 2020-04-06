@@ -11,7 +11,7 @@ class wfCrawl {
 		$browscap = new wfBrowscap();
 		$b = $browscap->getBrowser($UA);
 		if( !$b || $b['Parent'] == 'DefaultProperties' ) {
-			$IP = wfUtils::getIP();
+			$IP = \WBCR\Titan\Firewall\Utils::getIP();
 
 			return !wfLog::isHumanRequest($IP, $UA);
 		} else if( isset($b['Crawler']) && $b['Crawler'] ) {
@@ -25,7 +25,7 @@ class wfCrawl {
 	{
 		$table = wfDB::networkTable('wfCrawlers');
 		$db = new wfDB();
-		$IPn = wfUtils::inet_pton($IP);
+		$IPn = \WBCR\Titan\Firewall\Utils::inet_pton($IP);
 		$status = $db->querySingle("select status from $table where IP=%s and patternSig=UNHEX(MD5('%s')) and lastUpdate > unix_timestamp() - %d", $IPn, $hostPattern, WTITAN_CRAWLER_VERIFY_CACHE_TIME);
 		if( $status ) {
 			if( $status == 'verified' ) {
@@ -34,14 +34,14 @@ class wfCrawl {
 				return false;
 			}
 		}
-		$host = wfUtils::reverseLookup($IP);
+		$host = \WBCR\Titan\Firewall\Utils::reverseLookup($IP);
 		if( !$host ) {
 			$db->queryWrite("insert into $table (IP, patternSig, status, lastUpdate, PTR) values (%s, UNHEX(MD5('%s')), '%s', unix_timestamp(), '%s') ON DUPLICATE KEY UPDATE status='%s', lastUpdate=unix_timestamp(), PTR='%s'", $IPn, $hostPattern, 'noPTR', '', 'noPTR', '');
 
 			return false;
 		}
 		if( preg_match($hostPattern, $host) ) {
-			$resultIPs = wfUtils::resolveDomainName($host);
+			$resultIPs = \WBCR\Titan\Firewall\Utils::resolveDomainName($host);
 			$addrsMatch = false;
 			foreach($resultIPs as $resultIP) {
 				if( $resultIP == $IP ) {
@@ -129,7 +129,7 @@ class wfCrawl {
 			$verified = array();
 		}
 		if( $ip === null ) {
-			$ip = wfUtils::getIP();
+			$ip = \WBCR\Titan\Firewall\Utils::getIP();
 		}
 
 		if( $ip === null || $ip === false ) { //Likely a CLI execution
@@ -173,10 +173,10 @@ class wfCrawl {
 	{
 		$table = wfDB::networkTable('wfCrawlers');
 		if( $ip === null ) {
-			$ip = wfUtils::getIP();
+			$ip = \WBCR\Titan\Firewall\Utils::getIP();
 		}
 		$db = new wfDB();
-		$IPn = wfUtils::inet_pton($ip);
+		$IPn = \WBCR\Titan\Firewall\Utils::inet_pton($ip);
 		$patternSig = 'googlenoc1';
 		$status = $db->querySingle("select status from $table
 				where IP=%s
@@ -188,7 +188,7 @@ class wfCrawl {
 			return self::GOOGLE_BOT_FAKE;
 		}
 
-		$api = new wfAPI(wfConfig::get('apiKey'), wfUtils::getWPVersion());
+		$api = new wfAPI(wfConfig::get('apiKey'), \WBCR\Titan\Firewall\Utils::getWPVersion());
 		try {
 			$data = $api->call('verify_googlebot', array(
 				'ip' => $ip,

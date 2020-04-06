@@ -61,10 +61,10 @@ function wtitan_block_ips()
 	wp_send_json(array('error' => __('No block parameters were provided.', 'titan-security')));
 	/*$IP = trim($_POST['IP']);
 	$perm = (isset($_POST['perm']) && $_POST['perm'] == '1') ? \WBCR\Titan\Firewall\Model\Block::DURATION_FOREVER : wfConfig::getInt('blockedTime');
-	if (!wfUtils::isValidIP($IP)) {
+	if (!\WBCR\Titan\Firewall\Utils::isValidIP($IP)) {
 		return array('err' => 1, 'errorMsg' => "Please enter a valid IP address to block.");
 	}
-	if ($IP == wfUtils::getIP()) {
+	if ($IP == \WBCR\Titan\Firewall\Utils::getIP()) {
 		return array('err' => 1, 'errorMsg' => "You can't block your own IP address.");
 	}
 	$forcedWhitelistEntry = false;

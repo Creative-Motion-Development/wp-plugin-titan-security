@@ -20,7 +20,7 @@ class wfLog {
 	{
 		static $_shared = null;
 		if( $_shared === null ) {
-			$_shared = new wfLog(wfConfig::get('apiKey'), wfUtils::getWPVersion());
+			$_shared = new wfLog(wfConfig::get('apiKey'), \WBCR\Titan\Firewall\Utils::getWPVersion());
 		}
 
 		return $_shared;
@@ -39,7 +39,7 @@ class wfLog {
 		global $wpdb;
 
 		if( $IP === false ) {
-			$IP = wfUtils::getIP();
+			$IP = \WBCR\Titan\Firewall\Utils::getIP();
 		}
 
 		if( $UA === false ) {
@@ -66,7 +66,7 @@ class wfLog {
 		global $wpdb;
 
 		if( $IP === false ) {
-			$IP = wfUtils::getIP();
+			$IP = \WBCR\Titan\Firewall\Utils::getIP();
 		}
 
 		if( $UA === false ) {
@@ -74,7 +74,7 @@ class wfLog {
 		}
 
 		$table = WBCR\Titan\Database\Schema::get_table_name('live_traffic_human');
-		if( $wpdb->get_var($wpdb->prepare("INSERT IGNORE INTO {$table} (IP, identifier, expiration) VALUES (%s, %s, UNIX_TIMESTAMP() + 86400)", wfUtils::inet_pton($IP), hash('sha256', $UA, true))) ) {
+		if( $wpdb->get_var($wpdb->prepare("INSERT IGNORE INTO {$table} (IP, identifier, expiration) VALUES (%s, %s, UNIX_TIMESTAMP() + 86400)", \WBCR\Titan\Firewall\Utils::inet_pton($IP), hash('sha256', $UA, true))) ) {
 			return true;
 		}
 	}
@@ -117,9 +117,9 @@ class wfLog {
 			$this->currentRequest->ctime = sprintf('%.6f', microtime(true));
 			$this->currentRequest->statusCode = 200;
 			$this->currentRequest->isGoogle = (wfCrawl::isGoogleCrawler() ? 1 : 0);
-			$this->currentRequest->IP = wfUtils::inet_pton(wfUtils::getIP());
+			$this->currentRequest->IP = \WBCR\Titan\Firewall\Utils::inet_pton(\WBCR\Titan\Firewall\Utils::getIP());
 			$this->currentRequest->userID = $this->getCurrentUserID();
-			$this->currentRequest->URL = wfUtils::getRequestedURL();
+			$this->currentRequest->URL = \WBCR\Titan\Firewall\Utils::getRequestedURL();
 			$this->currentRequest->referer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 			$this->currentRequest->UA = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 			$this->currentRequest->jsRun = 0;
@@ -141,7 +141,7 @@ class wfLog {
 			return;
 		}
 
-		$IP = wfUtils::getIP();
+		$IP = \WBCR\Titan\Firewall\Utils::getIP();
 		$UA = $this->currentRequest->UA;
 		$this->currentRequest->jsRun = wfLog::isHumanRequest($IP, $UA);
 	}
@@ -151,7 +151,7 @@ class wfLog {
 	 */
 	public function actionSetRequestOnInit()
 	{
-		$this->currentRequest->IP = wfUtils::inet_pton(wfUtils::getIP());
+		$this->currentRequest->IP = \WBCR\Titan\Firewall\Utils::inet_pton(\WBCR\Titan\Firewall\Utils::getIP());
 		$this->currentRequest->userID = $this->getCurrentUserID();
 	}
 
@@ -198,7 +198,7 @@ class wfLog {
 		}
 
 		//Else userID stays 0 but we do log this even though the user doesn't exist.
-		$this->getDB()->queryWrite("insert into " . $this->loginsTable . " (hitID, ctime, fail, action, username, userID, IP, UA) values (%d, %f, %d, '%s', '%s', %s, %s, '%s')", $hitID, sprintf('%.6f', microtime(true)), $fail, $action, $username, $userID, wfUtils::inet_pton(wfUtils::getIP()), (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ''));
+		$this->getDB()->queryWrite("insert into " . $this->loginsTable . " (hitID, ctime, fail, action, username, userID, IP, UA) values (%d, %f, %d, '%s', '%s', %s, %s, '%s')", $hitID, sprintf('%.6f', microtime(true)), $fail, $action, $username, $userID, \WBCR\Titan\Firewall\Utils::inet_pton(\WBCR\Titan\Firewall\Utils::getIP()), (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ''));
 	}
 
 	private function getCurrentUserID()
@@ -217,7 +217,7 @@ class wfLog {
 			return;
 		}
 
-		\WBCR\Titan\Firewall\Model\Rate_Limit::countHit($type, wfUtils::getIP());
+		\WBCR\Titan\Firewall\Model\Rate_Limit::countHit($type, \WBCR\Titan\Firewall\Utils::getIP());
 
 		if( \WBCR\Titan\Firewall\Model\Rate_Limit::globalRateLimit()->shouldEnforce($type) ) {
 			$this->takeBlockingAction('maxGlobalRequests', "Exceeded the maximum global requests per minute for crawlers or humans.");
@@ -279,7 +279,7 @@ class wfLog {
 		$IPSQL = "";
 		if( $IP ) {
 			$IPSQL = " and IP=%s ";
-			$sqlArgs = array($afterTime, wfUtils::inet_pton($IP), $limit);
+			$sqlArgs = array($afterTime, \WBCR\Titan\Firewall\Utils::inet_pton($IP), $limit);
 		} else {
 			$sqlArgs = array($afterTime, $limit);
 		}
@@ -326,7 +326,7 @@ class wfLog {
 					if( $res['UA'] ) {
 						$b = $browscap->getBrowser($res['UA']);
 						if( $b && $b['Parent'] != 'DefaultProperties' ) {
-							$jsRun = wfUtils::truthyToBoolean($res['jsRun']);
+							$jsRun = \WBCR\Titan\Firewall\Utils::truthyToBoolean($res['jsRun']);
 							if( !wfConfig::liveTrafficEnabled() && !$jsRun ) {
 								$jsRun = !(isset($b['Crawler']) && $b['Crawler']);
 							}
@@ -372,8 +372,8 @@ class wfLog {
 
 		foreach($results as &$res) {
 			$res['type'] = $type;
-			$res['IP'] = wfUtils::inet_ntop($res['IP']);
-			$res['timeAgo'] = wfUtils::makeTimeAgo($serverTime - $res['ctime']);
+			$res['IP'] = \WBCR\Titan\Firewall\Utils::inet_ntop($res['IP']);
+			$res['timeAgo'] = \WBCR\Titan\Firewall\Utils::makeTimeAgo($serverTime - $res['ctime']);
 			$res['blocked'] = false;
 			$res['rangeBlocked'] = false;
 			$res['ipRangeID'] = -1;
@@ -398,7 +398,7 @@ class wfLog {
 
 			$res['extReferer'] = false;
 			if( isset($res['referer']) && $res['referer'] ) {
-				if( wfUtils::hasXSS($res['referer']) ) { //filtering out XSS
+				if( \WBCR\Titan\Firewall\Utils::hasXSS($res['referer']) ) { //filtering out XSS
 					$res['referer'] = '';
 				}
 			}
@@ -447,11 +447,11 @@ class wfLog {
 						'isCrawler' => !empty($b['Crawler']) ? $b['Crawler'] : "",
 					);
 
-					if( isset($res['jsRun']) && !wfConfig::liveTrafficEnabled() && !wfUtils::truthyToBoolean($res['jsRun']) ) {
+					if( isset($res['jsRun']) && !wfConfig::liveTrafficEnabled() && !\WBCR\Titan\Firewall\Utils::truthyToBoolean($res['jsRun']) ) {
 						$res['jsRun'] = !(isset($b['Crawler']) && $b['Crawler']) ? '1' : '0';
 					}
 				} else {
-					$IP = wfUtils::getIP();
+					$IP = \WBCR\Titan\Firewall\Utils::getIP();
 					$res['browser'] = array(
 						'isCrawler' => !wfLog::isHumanRequest($IP, $res['UA']) ? 'true' : ''
 					);
@@ -462,7 +462,7 @@ class wfLog {
 				$ud = get_userdata($res['userID']);
 				if( $ud ) {
 					$res['user'] = array(
-						'editLink' => wfUtils::editUserLink($res['userID']),
+						'editLink' => \WBCR\Titan\Firewall\Utils::editUserLink($res['userID']),
 						'display_name' => $res['display_name'],
 						'ID' => $res['userID']
 					);
@@ -484,10 +484,10 @@ class wfLog {
 				$IPs[] = $res['IP'];
 			}
 		}
-		$IPLocs = wfUtils::getIPsGeo($IPs); //Creates an array with IP as key and data as value
+		$IPLocs = \WBCR\Titan\Firewall\Utils::getIPsGeo($IPs); //Creates an array with IP as key and data as value
 
 		foreach($results as &$res) {
-			$ip_printable = wfUtils::inet_ntop($res['IP']);
+			$ip_printable = \WBCR\Titan\Firewall\Utils::inet_ntop($res['IP']);
 			if( isset($IPLocs[$ip_printable]) ) {
 				$res['loc'] = $IPLocs[$ip_printable];
 			} else {
@@ -532,7 +532,7 @@ class wfLog {
 		}
 		if( wfConfig::get('liveTraf_ignoreIPs') ) {
 			$IPs = explode(',', wfConfig::get('liveTraf_ignoreIPs'));
-			$IP = wfUtils::getIP();
+			$IP = \WBCR\Titan\Firewall\Utils::getIP();
 			foreach($IPs as $ignoreIP) {
 				if( $ignoreIP == $IP ) {
 					return false;
@@ -559,7 +559,7 @@ class wfLog {
 
 	public function firewallBadIPs()
 	{
-		$IP = wfUtils::getIP();
+		$IP = \WBCR\Titan\Firewall\Utils::getIP();
 		if( \WBCR\Titan\Firewall\Model\Block::isWhitelisted($IP) ) {
 			return;
 		}
@@ -590,7 +590,7 @@ class wfLog {
 				$this->currentRequest->action = 'cbl:redirect';
 				$this->logHit();
 
-				wfUtils::doNotCache();
+				\WBCR\Titan\Firewall\Utils::doNotCache();
 				wp_redirect($bypassRedirDest, 302);
 				exit();
 			} else if( $match === \WBCR\Titan\Firewall\Model\Block::MATCH_COUNTRY_REDIR ) {
@@ -607,7 +607,7 @@ class wfLog {
 
 				wfActivityReport::logBlockedIP($IP, null, 'country');
 
-				wfUtils::doNotCache();
+				\WBCR\Titan\Firewall\Utils::doNotCache();
 				wp_redirect(wfConfig::get('cbl_redirURL'), 302);
 				exit();
 			} else if( $match !== \WBCR\Titan\Firewall\Model\Block::MATCH_NONE ) {
@@ -644,7 +644,7 @@ class wfLog {
 				return;
 			}
 
-			$IP = wfUtils::getIP();
+			$IP = \WBCR\Titan\Firewall\Utils::getIP();
 			$secsToGo = 0;
 			if( $action == 'block' ) { //Rate limited - block temporarily
 				$secsToGo = \WBCR\Titan\Firewall\Model\Block::blockDuration();
@@ -699,7 +699,7 @@ class wfLog {
 
 		if( $sendEventToCentral ) {
 			do_action('wordfence_security_event', 'block', array(
-				'ip' => wfUtils::inet_ntop($this->currentRequest->IP),
+				'ip' => \WBCR\Titan\Firewall\Utils::inet_ntop($this->currentRequest->IP),
 				'reason' => $this->currentRequest->actionDescription ? $this->currentRequest->actionDescription : $reason,
 				'duration' => $secsToGo,
 			));
@@ -716,7 +716,7 @@ class wfLog {
 		$this->logHit();
 
 		wfConfig::inc('total503s');
-		wfUtils::doNotCache();
+		\WBCR\Titan\Firewall\Utils::doNotCache();
 		header('HTTP/1.1 503 Service Temporarily Unavailable');
 		header('Status: 503 Service Temporarily Unavailable');
 		if( $secsToGo ) {
@@ -729,14 +729,14 @@ class wfLog {
 
 	private function redirect($URL)
 	{
-		wfUtils::doNotCache();
+		\WBCR\Titan\Firewall\Utils::doNotCache();
 		wp_redirect($URL, 302);
 		exit();
 	}
 
 	private function googleSafetyCheckOK()
 	{ //returns true if OK to block. Returns false if we must not block.
-		$cacheKey = md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . ' ' . wfUtils::getIP());
+		$cacheKey = md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . ' ' . \WBCR\Titan\Firewall\Utils::getIP());
 		//Cache so we can call this multiple times in one request
 		if( !isset(self::$gbSafeCache[$cacheKey]) ) {
 			$nb = wfConfig::get('neverBlockBG');
@@ -745,7 +745,7 @@ class wfLog {
 			} else if( $nb == 'neverBlockUA' || $nb == 'neverBlockVerified' ) {
 				if( wfCrawl::isGoogleCrawler() ) { //Check the UA using regex
 					if( $nb == 'neverBlockVerified' ) {
-						if( wfCrawl::isVerifiedGoogleCrawler(wfUtils::getIP()) ) { //UA check passed, now verify using PTR if configured to
+						if( wfCrawl::isVerifiedGoogleCrawler(\WBCR\Titan\Firewall\Utils::getIP()) ) { //UA check passed, now verify using PTR if configured to
 							self::$gbSafeCache[$cacheKey] = false; //This is a verified Google crawler, so no we can't block it
 						} else {
 							self::$gbSafeCache[$cacheKey] = true; //This is a crawler claiming to be Google but it did not verify
@@ -786,7 +786,7 @@ class wfLog {
 		$results = $this->getDB()->querySelect("select ctime, level, type, msg from " . $this->statusTable . " where ctime > %f order by ctime asc", $lastCtime);
 		$timeOffset = 3600 * get_option('gmt_offset');
 		foreach($results as &$rec) {
-			//$rec['timeAgo'] = wfUtils::makeTimeAgo(time() - $rec['ctime']);
+			//$rec['timeAgo'] = \WBCR\Titan\Firewall\Utils::makeTimeAgo(time() - $rec['ctime']);
 			$rec['date'] = date('M d H:i:s', $rec['ctime'] + $timeOffset);
 			$rec['msg'] = wp_kses_data((string)$rec['msg']);
 		}
