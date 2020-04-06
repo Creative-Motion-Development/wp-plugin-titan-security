@@ -138,13 +138,22 @@ class Dashboard extends Base {
 	{
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Titan security', 'titan-security');
+		$this->menu_title = __('Titan Anti-spam', 'titan-security');
 		$this->page_title = __('Dashboard', 'titan-security');;
 		$this->menu_sub_title = $this->page_title;
 		$this->page_menu_short_description = __('Start scanning and information about problems', 'titan-security');
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
+
+		parent::__construct($plugin);
+	}
+
+	/**
+	 * Init class and page data
+	 */
+	public function init()
+	{
 		$this->firewall = new \WBCR\Titan\Model\Firewall();
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
@@ -152,8 +161,6 @@ class Dashboard extends Base {
 		$this->scanner = new \WBCR\Titan\Scanner();
 		$this->antispam = new \WBCR\Titan\Antispam();
 		$this->check = new \WBCR\Titan\Check();
-
-		parent::__construct($plugin);
 	}
 
 	/**
@@ -224,6 +231,8 @@ class Dashboard extends Base {
 	 */
 	public function showPageContent()
 	{
+		$this->init();
+
 		if( !$this->plugin->is_premium() ) {
 			$this->plugin->view->print_template('require-license-activate');
 

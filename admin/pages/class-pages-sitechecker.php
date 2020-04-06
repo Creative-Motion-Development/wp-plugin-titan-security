@@ -75,12 +75,16 @@ class SiteChecker extends Base {
 		$this->menu_title = __('Site Checker', 'titan-security');
 		$this->page_menu_short_description = __('Checking sites for availability', 'titan-security');
 
-		if( $this->plugin->is_premium() ) {
-			require_once $this->MODULE_PATH . "/boot.php";
-			$this->module = new Titan\SiteChecker();
-		}
-
 		parent::__construct($plugin);
+	}
+
+	/**
+	 * Init class and page data
+	 */
+	public function init()
+	{
+		require_once $this->MODULE_PATH . "/boot.php";
+		$this->module = new Titan\SiteChecker();
 	}
 
 	/**
@@ -105,7 +109,7 @@ class SiteChecker extends Base {
 			]);
 			$this->scripts->add($this->MODULE_URL . '/assets/js/app.js', ['jquery']);
 			$this->scripts->localize('wt_app', [
-				'https' => __( 'Your site must work on HTTPS', 'titan-security' ),
+				'https' => __( 'Your site must work on HTTPS to subscribe to notifications', 'titan-security' ),
 				'notice' => __( 'Your browser does not support notifications', 'titan-security' ),
 				'worker' => __( 'ServiceWorker not supported. Your site must work on HTTPS', 'titan-security' ),
 			]);
@@ -124,6 +128,7 @@ class SiteChecker extends Base {
 			return;
 		}
 
+		$this->init();
 		$this->module->showPageContent();
 	}
 

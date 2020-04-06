@@ -185,12 +185,12 @@ class PluginSettings extends Base {
 	 */
 	public function export() {
 		?>
-		<div class="wbcr-clearfy-export-import">
+		<div class="wbcr-titan-export-import">
 			<p>
-				<label for="wbcr-clearfy-import-export">
+				<label for="wbcr-titan-export-textarea">
 					<strong><?php _e( 'Import/Export settings', 'titan-security' ) ?></strong>
 				</label>
-				<textarea id="wbcr-clearfy-import-export"><?php echo $this->getExportOptions(); ?></textarea>
+				<textarea id="wbcr-titan-export-textarea"><?php echo $this->getExportOptions(); ?></textarea>
 				<button class="button wtitan-import-options-button"><?php _e( 'Import options', 'titan-security' ) ?></button>
 			</p>
 		</div>

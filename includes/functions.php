@@ -59,7 +59,7 @@ function titan_scheduled_scanner() {
 		titan_remove_scheduler_scanner();
 		$matched = array_merge($matched, titan_check_cms());
 	}
-	Plugin::app()->updateOption( 'scanner', $scanner, false );
+	Plugin::app()->updateOption( 'scanner', $scanner);
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );

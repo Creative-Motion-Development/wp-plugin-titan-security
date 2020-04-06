@@ -155,7 +155,9 @@ $statistic_data = $antispam->get_statistic_data();
                         <div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
 	                        <?php
 	                        echo __('Scanned: ', 'titan-security');
-	                        echo "<span class='wt-magenta-text'>{$scanned}/{$files_count} ".__('files', 'titan-security')."</span>";
+	                        $counter = 0;
+	                        if($scanned > 0) $counter = "{$scanned}/{$files_count}";
+	                        echo "<span class='wt-magenta-text'>{$counter} ".__('files', 'titan-security')."</span>";
 	                        ?>
                         </div>
                         <div class="col-md-6 wt-dashboard-block-content-right">

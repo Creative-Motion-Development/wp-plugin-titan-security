@@ -44,7 +44,7 @@ class Base extends \Wbcr_FactoryClearfy000_PageBase {
 	}
 
 	public function getPluginTitle() {
-		return "<span class='wt-plugin-header-logo'>&nbsp;</span>".__( 'Anti-spam & Titan security', 'titan-security' );
+		return "<span class='wt-plugin-header-logo'>&nbsp;</span>".__( 'Titan Anti-spam & Security', 'titan-security' );
 	}
 
 

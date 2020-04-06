@@ -105,6 +105,34 @@ h2.nav-tab-wrapper {
     color: #ffffff !important;
 }
 
+.wbcr-titan-export-import
+{
+    padding: 0 50px;
+    text-align: right;
+}
+.wbcr-titan-export-import label
+{
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 7px 0;
+}
+.wbcr-titan-export-import #wbcr-titan-export-textarea
+{
+    width: 100%;
+    box-sizing: border-box;
+    height: 200px;
+    line-height: inherit;
+    margin: 0;
+    padding: 7px 14px;
+    box-shadow: none;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    background-color: #f1f1f1;
+    color: #444;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+}
 .wtitan-import-options-button {
-    margin: 15px;
+    margin: 15px !important;
 }

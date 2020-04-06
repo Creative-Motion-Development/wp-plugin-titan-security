@@ -139,16 +139,15 @@ class Scanner extends Module_Base {
 		$cleaned = 0;
 		$suspicious = 0;
 		$progress = 0;
-		$notverified = 0;
+		$notverified = $files_count;
 		$scanned = 0;
-		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
-			$progress = 100 - $scanner->files_count / $files_count * 100;
+		if( $scanner !== false && $files_count > 0 ) {
+			//$progress = 100 - $scanner->files_count / $files_count * 100;
 			$suspicious = count($matched);
 			$cleaned = $files_count - $scanner->files_count - $suspicious;
 			$notverified = $scanner->files_count;
 			$scanned = (int)$cleaned + (int)$suspicious;
 		}
-
 
 		return [
 			'scanner_started' => $scanner_started,
