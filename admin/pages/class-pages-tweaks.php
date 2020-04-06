@@ -113,6 +113,42 @@ class Tweaks extends Base {
 		$options[] = array(
 			'type' => 'checkbox',
 			'way' => 'buttons',
+			'name' => 'strong_password',
+			'title' => __('Strong Password Requirement', 'titan-security'),
+			'layout' => array('hint-type' => 'icon'),
+			'hint' => __('Force users to use strong passwords as rated by the WordPress password meter.', 'titan-security') . '<br><b>Clearfy: </b>' . __('Sets the redirect to exclude the possibility of obtaining a login.', 'titan-security'),
+			'default' => false,
+			'eventsOn' => [
+				'show' => '.factory-control-strong_password_min_role'
+			],
+			'eventsOff' => [
+				'hide' => '.factory-control-strong_password_min_role'
+			]
+		);
+
+		$options[] = [
+			'type' => 'dropdown',
+			'name' => 'strong_password_min_role',
+			'title' => __('Strong Password Minimum Role', 'titan-security'),
+			'data' => [
+				['administrator', 'Administrator'],
+				['editor', 'Editor'],
+				['author', 'Author'],
+				['contributor', 'Contributor'],
+				['subscriber', 'Subscriber'],
+			],
+			'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'green'],
+			'hint' => __('Minimum role at which a user must choose a strong password. For more information on WordPress roles and capabilities please see http://codex.wordpress.org/Roles_and_Capabilities. Warning: If your site invites public registrations setting the role too low may annoy your members.', 'titan-security'),
+			'default' => 'administrator'
+		];
+
+		$options[] = array(
+			'type' => 'separator'
+		);
+
+		$options[] = array(
+			'type' => 'checkbox',
+			'way' => 'buttons',
 			'name' => 'protect_author_get',
 			'title' => __('Hide author login', 'titan-security'),
 			'layout' => array('hint-type' => 'icon'),

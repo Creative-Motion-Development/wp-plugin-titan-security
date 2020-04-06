@@ -113,9 +113,13 @@ class Firewall_Attacks_Log extends Base {
 		$current_page = $this->plugin->request->get('pagenum', 1, 'intval');
 		$limit = 20;
 		$offset = ($current_page - 1) * $limit;
-		$total = $wpdb->get_var("SELECT COUNT(`id`) FROM {$wpdb->prefix}wfhits");
+
+		require_once WTITAN_PLUGIN_DIR . '/includes/firewall/class-database-schema.php';
+		$table_name = \WBCR\Titan\Database\Schema::get_table_name('hits');
+
+		$total = $wpdb->get_var("SELECT COUNT(`id`) FROM {$table_name}");
 		$num_of_pages = (int)ceil($total / $limit);
-		$hits = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}wfhits ORDER BY attackLogTime DESC LIMIT %d, %d", $offset, $limit));
+		$hits = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$table_name} ORDER BY attackLogTime DESC LIMIT %d, %d", $offset, $limit));
 
 		?>
 		<div class="wbcr-factory-page-group-header">
