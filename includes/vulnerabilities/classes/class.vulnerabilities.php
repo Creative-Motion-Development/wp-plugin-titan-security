@@ -78,7 +78,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getWordpress() {
-		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', array());
+		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', false);
 		return $this->wordpress;
 	}
 
@@ -86,7 +86,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getPlugins() {
-		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', array());
+		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', false);
 		return $this->plugins;
 	}
 
@@ -94,7 +94,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getThemes() {
-		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', array());
+		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', false);
 		return $this->themes;
 	}
 

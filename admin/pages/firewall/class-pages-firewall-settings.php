@@ -189,7 +189,7 @@ If you do not know whether your host uses more than one proxy address, contact y
 
 Once you know which proxies to trust, click the + Edit trusted proxies link below the detected IPs.
 In the Trusted proxies field that appears, enter the IP addresses of the proxies. You can enter a single IP like 10.0.0.15. You can also enter a “CIDR” range like 10.0.0.0/24. Note that your host’s trusted IPs should not be the same addresses in these examples.
-Click Save Options to save the changes, and check that your IP appears correctly in the “Your IP with this setting” field.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
+Click Save Options to save the changes, and check that your IP appears correctly in the “Your IP with this setting” field.', 'titan-security') . '<br><b>Titan</b>: ' . __('Disable admin top bar.', 'titan-security'),
 				'default' => '',
 				'filter_value' => [$this, 'filter_howget_ip_option']
 			];
@@ -445,7 +445,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 					]
 				],
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
-				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
+				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Titan</b>: ' . __('Disable admin top bar.', 'titan-security'),
 				'default' => 'no',
 			];
 
@@ -487,7 +487,7 @@ So if you have your failure count set to 20, your time period set to 5 minutes a
 				],
 
 				'layout' => ['hint-type' => 'icon', 'hint-icon-color' => 'grey'],
-				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Clearfy</b>: ' . __('Disable admin top bar.', 'titan-security'),
+				'hint' => __('In some cases, you need to disable the floating top admin panel. You can disable this panel.', 'titan-security') . '<br><b>Titan</b>: ' . __('Disable admin top bar.', 'titan-security'),
 				'default' => 'for_admins_and_publishers',
 
 			];

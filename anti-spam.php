@@ -54,7 +54,7 @@ $wtitan_plugin_info = [
 
 	// PLUGIN SUPPORT
 	'support_details' => [
-		'url' => 'https://titansitescanner.com',
+		'url' => 'https://cm-wp.com',
 		'pages_map' => [
 			'support' => 'support',           // {site}/support
 			'docs' => 'docs'               // {site}/docs

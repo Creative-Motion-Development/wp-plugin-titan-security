@@ -5,7 +5,14 @@
 
 if( is_array($args) && !empty($args) ) {
 	$audit = $args['results'];
-	if( !empty($audit) ) {
+	if( $audit === false ) {
+		?>
+        <div class="wtitan-audit-empty-container">
+			<?= sprintf(__('Click %1s to perform a security audit','titan-security'), '<span class="btn btn-primary wt-nobutton">'.__('Check now','titan-security').'</span>');?>
+        </div>
+		<?php
+	}
+	else if( !empty($audit) ) {
 		?>
 		<div class="wtitan-scanner-vulner-table-container">
 			<table class="table table-striped table-hover table-responsive" width="100%">
@@ -53,6 +60,14 @@ if( is_array($args) && !empty($args) ) {
 			</table>
 		</div>
 		<?php
+	}
+	else {
+		?>
+        <div class="wtitan-audit-empty-container">
+			<?= __('No security issues','titan-security');?>
+        </div>
+		<?php
+
 	}
 }
 ?>

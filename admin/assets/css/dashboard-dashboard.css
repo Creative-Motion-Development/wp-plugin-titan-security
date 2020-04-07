@@ -216,3 +216,14 @@ span.wt-legend-item {
     text-align: left;
     padding: 10px 20px;
 }
+.wtitan-audit-empty-container
+{
+    text-align: left;
+    font-size: 16px;
+    margin: 20px 0 20px 55px;
+}
+.wt-nobutton
+{
+    cursor: inherit !important;
+    margin: 0 5px;
+}
