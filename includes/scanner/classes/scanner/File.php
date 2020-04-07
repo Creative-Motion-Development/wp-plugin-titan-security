@@ -22,7 +22,7 @@ class File {
 	protected $hashFile;
 
 	/**
-	 * @var string|null
+	 * @var string[]|null
 	 */
 	protected $content;
 
@@ -46,10 +46,11 @@ class File {
 	 * @see File::loadData()
 	 *
 	 */
-	protected function read() {
+	public function read() {
 		$resource = fopen( $this->path, 'r' );
 		if ( $resource === false ) {
 			Writter::error( sprintf( "Failed to open the file: %s", $this->path ) );
+
 			return;
 		}
 
@@ -64,13 +65,13 @@ class File {
 	/**
 	 * This approach works faster than the usual `file_get_contents`
 	 *
-	 * @return string
+	 * @return string[]
 	 */
 	public function loadData() {
 		if ( is_null( $this->content ) ) {
 			$this->content = '';
 			foreach ( $this->read() as $line ) {
-				$this->content .= $line;
+				$this->content .= "\n" . $line;
 			}
 		}
 

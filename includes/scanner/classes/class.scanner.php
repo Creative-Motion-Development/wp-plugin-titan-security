@@ -136,28 +136,28 @@ class Scanner extends Module_Base {
 		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
 		$scanner_started = Plugin::app()->getOption('scanner_status') == 'started';
 		$files_count = Plugin::app()->getOption('scanner_files_count', 0);
-		$cleaned = 0;
-		$suspicious = 0;
-		$progress = 0;
-		$notverified = 0;
-		$scanned = 0;
-		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
-			$progress = 100 - $scanner->files_count / $files_count * 100;
-			$suspicious = count($matched);
-			$cleaned = $files_count - $scanner->files_count - $suspicious;
-			$notverified = $scanner->files_count;
-			$scanned = (int)$cleaned + (int)$suspicious;
-		}
 
+		if(!$scanner) {
+			return [
+				'scanner_started' => 0,
+				'matched' => [],
+				'progress' => 0,
+				'cleaned' => 0,
+				'suspicious' => 0,
+				'scanned' => 0,
+				'notverified' => 0,
+				'files_count' => 0,
+			];
+		}
 
 		return [
 			'scanner_started' => $scanner_started,
 			'matched' => $matched,
-			'progress' => $progress,
-			'cleaned' => $cleaned,
-			'suspicious' => $suspicious,
-			'scanned' => $scanned,
-			'notverified' => $notverified,
+			'progress' => $scanner->files_count / $files_count * 100,
+			'cleaned' => $scanner->cleaned_count,
+			'suspicious' => $scanner->suspicious_count,
+			'scanned' => $scanner->cleaned_count + $scanner->suspicious_count,
+			'notverified' => $scanner->files_count,
 			'files_count' => $files_count,
 		];
 	}

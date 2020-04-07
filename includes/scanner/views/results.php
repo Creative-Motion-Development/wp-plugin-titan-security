@@ -23,7 +23,7 @@ use WBCR\Titan\MalwareScanner\Match;
 		<?php foreach ( $matched as $file_path => $match ): ?>
 			<?php if ($match instanceof Match): ?>
 				<tr>
-					<td><?php echo $match->getFile() ?></td>
+					<td><?php echo $match->getFile()->getPath() ?></td>
 					<td>Match</td>
 					<td><?php echo $match->getMatch() ?></td>
 					<td></td>
@@ -38,7 +38,7 @@ use WBCR\Titan\MalwareScanner\Match;
 			<?php else: ?>
 				<tr>
 					<td><?php echo $file_path ?></td>
-					<td>null</td>
+					<td><?php var_dump($match) ?></td>
 					<td>null</td>
 					<td></td>
 				</tr>

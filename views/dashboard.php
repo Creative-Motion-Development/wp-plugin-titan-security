@@ -169,9 +169,9 @@ $statistic_data = $antispam->get_statistic_data();
                     </div>
                     <div class="row">
                         <div class="wt-scanner-chart">
-                            <div class="wt-scanner-chart-clean"       style="width: <?php echo round($cleaned/$files_count*100, 1);?>%;"></div>
-                            <div class="wt-scanner-chart-suspicious"  style="width: <?php echo round($suspicious/$files_count*100, 1);?>%;"></div>
-                            <div class="wt-scanner-chart-notverified" style="width: <?php echo round($notverified/$files_count*100, 1);?>%;"></div>
+                            <div class="wt-scanner-chart-clean"       style="width: <?php echo $files_count > 0 ? round($cleaned/$files_count*100, 1) : 0;?>%;"></div>
+                            <div class="wt-scanner-chart-suspicious"  style="width: <?php echo $files_count > 0 ? round($suspicious/$files_count*100, 1) : 0;?>%;"></div>
+                            <div class="wt-scanner-chart-notverified" style="width: <?php echo $files_count > 0 ? round($notverified/$files_count*100, 1) : 0;?>%;"></div>
                         </div>
                     </div>
                     <div class="row">

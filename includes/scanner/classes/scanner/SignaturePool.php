@@ -39,12 +39,67 @@ class SignaturePool {
 	public function scanFile( $file ) {
 		$matches = [];
 
-		foreach ( $this->signatures as $signature ) {
-			$match = $signature->scan( $file );
-			if ( ! is_null( $match ) ) {
-				$matches[] = $match;
+		$fData = fopen($file->getPath(), 'r');
+		if($fData === false) {
+			$e = sprintf("Open error: %s", $file->getPath());
+			Writter::error($e);
+			error_log($e);
+			return [];
+		}
+
+		if(function_exists('exif_imagetype')) {
+			$type = @exif_imagetype($file->getPath());
+			if($type !== false) {
+				return [];
 			}
 		}
+
+		$ext = explode('.', $file->getPath());
+		$ext = $ext[count($ext) - 1];
+
+		$isPHP = in_array($ext, ['php', 'phtml']);
+		$isHTML = !$isPHP && in_array($ext, ['html']);
+		$isJS = !$isPHP && !$isHTML && in_array($ext, ['js', 'svg']);
+		$isArchive = !$isPHP && !$isHTML && !$isJS && in_array($ext, ['zip', 'tar', 'gz']);
+		$isBinary = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
+			'jpg', 'jpeg', 'mp3', 'avi', 'm4v', 'mov',
+			'mp4', 'gif', 'png', 'tiff', 'svg', 'sql',
+			'tbz2', 'bz2', 'xz', 'zip', 'tgz', 'gz',
+			'tar', 'log', 'err'
+		]);
+		$isUnknown = !$isPHP && !$isHTML && !$isJS && !$isBinary;
+
+		$chunk = 0;
+		while(!feof($fData)) {
+			if($isUnknown || $isArchive) {
+				fclose($fData);
+				return [];
+			}
+			$chunk++;
+			$data = fread($fData, 1024 * 1024 * 1); // 1MB
+
+			foreach($this->signatures as $signature) {
+
+				if($signature->getType() != 'both') {
+					if($isPHP && $signature->getType() != 'server') {
+						continue;
+					}
+
+					if(($isHTML || $isJS) && $signature->getType() != 'browser') {
+						continue;
+					}
+				}
+
+				$found = preg_match("/" . $signature->getSignature() . "/mi", $data, $matched, PREG_OFFSET_CAPTURE);
+				if($found) {
+					$match = $matched[0];
+					$matches[] = new Match($signature, $file, $match[1], $match[0]);
+					break;
+				}
+			}
+		}
+
+		fclose($fData);
 
 		$file->clearLoadedData();
 		gc_collect_cycles();
