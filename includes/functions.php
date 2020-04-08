@@ -49,13 +49,7 @@ function titan_scheduled_scanner() {
 		$files_count = Scanner::SPEED_FILES[ Scanner::SPEED_MEDIUM ];
 	}
 
-	tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_CPU | TIDEWAYS_XHPROF_FLAGS_MEMORY );
-
 	$matched = $scanner->scan( $files_count );
-
-	$data = tideways_xhprof_disable();
-	$filename = '/mnt/d/__MINE/__JOB/wordpress/_profiler/' . intval(microtime(true)) . mt_rand(1,10000) . '.xhprof';
-	file_put_contents($filename, serialize($data));
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
