@@ -239,8 +239,8 @@ class Dashboard extends Base {
 		$this->init();
 
 		if( !$this->plugin->is_premium() ) {
-			//$this->plugin->view->print_template('require-license-activate');
-			//return;
+			$this->plugin->view->print_template('require-license-activate');
+			return;
 		}
 		//FIREWALL
 		$firewall = array();
