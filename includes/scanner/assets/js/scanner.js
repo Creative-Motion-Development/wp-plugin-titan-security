@@ -43,7 +43,7 @@
 
                 case 'stop_scan':
                     btn.attr('data-action', 'start_scan');
-                    btn.html('Scan');
+                    btn.html('Start scan');
                     break;
 
                 default:
