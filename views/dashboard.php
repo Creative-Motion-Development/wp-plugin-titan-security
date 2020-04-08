@@ -3,6 +3,8 @@ if(is_array($data)) extract($data);
 /**
  * @var array                       $data
  * @var bool                        $scanner_started
+ * @var string                      $scanner_speed
+ * @var array                       $scanner_speeds
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit           $audit
  * @var \WBCR\Titan\SiteChecker     $sites
@@ -155,7 +157,9 @@ $statistic_data = $antispam->get_statistic_data();
                         <div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
 	                        <?php
 	                        echo __('Scanned: ', 'titan-security');
-	                        echo "<span class='wt-magenta-text'>{$scanned}/{$files_count} ".__('files', 'titan-security')."</span>";
+	                        $counter = 0;
+	                        if($scanned > 0) $counter = "{$scanned}/{$files_count}";
+	                        echo "<span class='wt-magenta-text'>{$counter} ".__('files', 'titan-security')."</span>";
 	                        ?>
                         </div>
                         <div class="col-md-6 wt-dashboard-block-content-right">
@@ -192,7 +196,33 @@ $statistic_data = $antispam->get_statistic_data();
                             </table>
                         </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-8 wt-dashboard-block-content" style="text-align: left;">
+
+                        </div>
+                        <div class="col-md-4 wt-dashboard-block-content" style="text-align: right;">
+                            <div class="form-group form-group-dropdown  factory-control-scanner_speed">
+                                <div class="control-group col-sm-12">
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+                                        <div class="wt-dashboard-form-label"><?=__( 'Scanning speed', 'titan-security' );?></div>
+                                        <div class="btn-group factory-buttons-group">
+                                            <?php foreach($scanner_speeds as $speeds) :?>
+                                                <button type="button" class="btn btn-default btn-small wt-scanner-speed-button factory-<?=$speeds[0]; ?> <?php echo $speeds[0]==$scanner_speed ? 'active' : ''; ?>" data-value="<?=$speeds[0]; ?>"><?=$speeds[1];?></button>
+	                                        <?php endforeach;?>
+                                            <input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?=$scanner_speed;?>">
+                                        </div>
+                                        <div class="factory-hints" style="margin-left: 45px;">
+	                                        <?php foreach($scanner_speeds as $speeds) :?>
+                                                <div class="factory-hint factory-hint-<?=$speeds[0]; ?>" style="display: <?php echo $speeds[0]==$scanner_speed ? '' : 'none'; ?>;"><?=$speeds[2];?></div>
+	                                        <?php endforeach;?>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">&nbsp;</div>
+                    </div>
             </div>
         </div>
     </div>

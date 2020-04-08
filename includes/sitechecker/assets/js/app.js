@@ -89,19 +89,19 @@
 
     } else {
         if (!('Notification' in window)) {
-            showError(wt_app.notice);
+            showErrorNearButton(wt_app.notice);
         } else if (!('serviceWorker' in navigator)) {
-            showError(wt_app.worker);
+            console.warn(wt_app.worker);
         } else if (!('localStorage' in window)) {
-            showError('LocalStorage not supported');
+            console.warn('LocalStorage not supported');
         } else if (!('fetch' in window)) {
-            showError('fetch not supported');
+            console.warn('fetch not supported');
         } else if (!('postMessage' in window)) {
-            showError('postMessage not supported');
+            console.warn('postMessage not supported');
         }
 
         if(!window.location.protocol.startsWith('https')) {
-            showError(wt_app.https);
+            showErrorNearButton(wt_app.https);
         }
 
         console.warn('This browser does not support desktop notification.');
@@ -166,6 +166,17 @@
         }
 
         showNotice(error, 'danger', 0);
+    }
+
+    function showErrorNearButton (error, error_data) {
+        if (typeof error_data !== "undefined") {
+            console.error(error, error_data);
+        } else {
+            console.error(error);
+        }
+
+        $('.wt-sitechecker-button-subscribe#subscribe').after('<div class="wt-checker-error">'+error+'</div>');
+        //showNotice(error, 'danger', 0);
     }
 
     function getToken() {

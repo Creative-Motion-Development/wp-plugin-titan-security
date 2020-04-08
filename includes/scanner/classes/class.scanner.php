@@ -133,14 +133,14 @@ class Scanner extends Module_Base {
 
 		/** @var MalwareScanner\Scanner $scanner */
 		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
-		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', false);
 		$scanner_started = Plugin::app()->getOption('scanner_status') == 'started';
 		$files_count = Plugin::app()->getOption('scanner_files_count', 0);
 
 		if(!$scanner) {
 			return [
 				'scanner_started' => 0,
-				'matched' => [],
+				'matched' => false,
 				'progress' => 0,
 				'cleaned' => 0,
 				'suspicious' => 0,

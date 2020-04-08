@@ -53,15 +53,11 @@ function titan_scheduled_scanner() {
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
+	Plugin::app()->updateOption( 'scanner', $scanner);
 
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
-		$matched = array_merge($matched, titan_check_cms());
 	}
-	Plugin::app()->updateOption( 'scanner', $scanner, false );
-
-	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
-	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 }
 
 /**
@@ -162,7 +158,9 @@ function titan_create_scheduler_scanner() {
 		'wp-signup.php',
 		'wp-trackback.php',
 		'xmlrpc.php',
-		'debug.log'
+		'debug.log',
+		'node_modules',
+		'vendor'
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
@@ -268,6 +266,21 @@ function titan_init_https_redirect() {
 		die;
 	}
 }
+
+add_action( Plugin::app()->getPluginName()."/factory/premium/license_activate", 'titan_set_scanner_speed_active' );
+function titan_set_scanner_speed_active() {
+	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
+	if($scanner_speed == 'free')
+		Plugin::app()->updatePopulateOption( 'scanner_speed', 'slow' );
+}
+
+add_action( Plugin::app()->getPluginName()."/factory/premium/license_deactivate", 'titan_set_scanner_speed_deactive' );
+function titan_set_scanner_speed_deactive() {
+	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
+	if($scanner_speed !== 'free')
+		Plugin::app()->updatePopulateOption( 'scanner_speed', 'free' );
+}
+
 
 /**
  * @return int|float [Memory limit in MB]

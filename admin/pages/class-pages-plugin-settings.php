@@ -33,12 +33,7 @@ class PluginSettings extends Base {
 	/**
 	 * @var string
 	 */
-	public $page_parent_page = 'none';
-
-	/**
-	 * @var string
-	 */
-	public $page_menu_dashicon = 'dashicons-list-view';
+	public $page_menu_dashicon = 'dashicons-admin-generic';
 
 	/**
 	 * {@inheritdoc}
@@ -46,11 +41,24 @@ class PluginSettings extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public $page_menu_position = 1;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
+	 * @var bool
+	 */
+	public $internal = false;
+
+	/**
 	 * @param Wbcr_Factory000_Plugin $plugin
 	 */
 	public function __construct( Wbcr_Factory000_Plugin $plugin ) {
-		$this->menu_title                  = __( 'Titan Settings', 'titan-security' );
-		$this->page_menu_short_description = __( 'Useful tweaks', 'titan-security' );
+		$this->menu_title                  = __( 'Settings', 'titan-security' );
+		$this->page_menu_short_description = __( 'Global plugin settings', 'titan-security' );
 
 		parent::__construct( $plugin );
 
@@ -127,37 +135,28 @@ class PluginSettings extends Base {
 
 		if ( Plugin::app()->is_premium() ) {
 			$data = [
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
-					'title' => __( 'Slow', 'titan-security' )
-				],
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
-					'title' => __( 'Medium', 'titan-security' )
-				],
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
-					'title' => __( 'Fast', 'titan-security' )
-				],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' )] ,
 			];
 		} else {
 			$data = [
 				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
-					'title' => __( 'Free', 'titan-security' ),
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ),
 				]
 			];
 		}
 
 		$options[] = [
 			'type'   => 'dropdown',
-			'way'    => 'default',
+			'way'    => 'buttons',
 			'name'   => 'scanner_speed',
 			'title'  => __( 'Scanning speed', 'titan-security' ),
 			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
 			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ) . "<br>" .
                         __("Recommended speed: ", 'titan-security') . get_recommended_scanner_speed(),
 			'data'   => $data,
+			'default' => $this->plugin->is_premium() ? \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW : \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
 		];
 
 		$options[] = [
@@ -186,12 +185,12 @@ class PluginSettings extends Base {
 	 */
 	public function export() {
 		?>
-		<div class="wbcr-clearfy-export-import">
+		<div class="wbcr-titan-export-import">
 			<p>
-				<label for="wbcr-clearfy-import-export">
+				<label for="wbcr-titan-export-textarea">
 					<strong><?php _e( 'Import/Export settings', 'titan-security' ) ?></strong>
 				</label>
-				<textarea id="wbcr-clearfy-import-export"><?php echo $this->getExportOptions(); ?></textarea>
+				<textarea id="wbcr-titan-export-textarea"><?php echo $this->getExportOptions(); ?></textarea>
 				<button class="button wtitan-import-options-button"><?php _e( 'Import options', 'titan-security' ) ?></button>
 			</p>
 		</div>

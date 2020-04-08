@@ -164,3 +164,9 @@
   width: 30px;
   height: 30px;
 }
+.wt-checker-error
+{
+  display: block;
+  color: #f6065b;
+  margin-top: 5px;
+}

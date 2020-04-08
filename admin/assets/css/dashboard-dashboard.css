@@ -1,7 +1,7 @@
 #wpfooter
 {
     position: initial !important;
-    display: inline;
+    /*display: inline;*/
 }
 .wt-dashboard-container
 {
@@ -211,8 +211,42 @@ span.wt-legend-item {
 {
     text-align: center;
 }
-.wbcr-titan-content table tbody td:first-child
+.wbcr-titan-content table tbody td
 {
+    word-break: break-word;
     text-align: left;
     padding: 10px 20px;
+}
+.wbcr-titan-content table tbody td:first-child
+{
+    width: 50%;
+}
+.wtitan-audit-empty-container
+{
+    text-align: left;
+    font-size: 16px;
+    margin: 20px 0 20px 55px;
+}
+.wt-nobutton
+{
+    cursor: inherit !important;
+    margin: 0 5px;
+}
+.wt-dashboard-form-label
+{
+    width: unset;
+    text-align: left;
+    float: unset;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    margin-right: 10px;
+}
+.wt-dashboard-block-content .factory-buttons-group .btn-default
+{
+    font-size: 16px;
+}
+.factory-hints
+{
+    text-align: left !important;
 }

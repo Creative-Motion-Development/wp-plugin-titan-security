@@ -26,7 +26,7 @@ class Logs extends Base {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $page_menu_dashicon = 'dashicons-admin-tools';
+	public $page_menu_dashicon = 'dashicons-list-view';
 
 	/**
 	 * {@inheritdoc}
@@ -36,7 +36,7 @@ class Logs extends Base {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $page_menu_position = 1;
+	public $page_menu_position = 2;
 
 
 	/**
@@ -87,7 +87,7 @@ class Logs extends Base {
 		<div class="wbcr-factory-page-group-header">
 			<strong><?php _e('Error Log', 'titan-security') ?></strong>
 			<p>
-				<?php _e('In this section, you can track image optimization errors. Sending this log to us, will help in solving possible optimization issues.', 'titan-security') ?>
+				<?php _e('In this section, you can track errors. Sending this log to us, will help in solving possible issues.', 'titan-security') ?>
 			</p>
 		</div>
 		<div class="wbcr-factory-page-group-body">
