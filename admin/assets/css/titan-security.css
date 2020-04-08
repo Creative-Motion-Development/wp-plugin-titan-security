@@ -39,12 +39,19 @@ h2.nav-tab-wrapper {
 }
 
 #WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-header .wbcr-factory-button.wbcr-factory-type-save {
+    background-color: #5d05b7 !important;
+    color: #ffffff !important;
+    display: block;
+    position: fixed !important;
+    right: 40px;
+    top: 50px;
+    border-radius: 15px;
+    border: 2px solid #ffffff;
+}
+#WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-header .wbcr-factory-button.wbcr-factory-type-save:hover {
     background-color: #ffffff !important;
     color: #5d05b7 !important;
-}
-
-#WBCR .wbcr-factory-pages-000-impressive-page-template .wbcr-factory-page-header .wbcr-factory-button.wbcr-factory-type-save:hover {
-    background-color: #dbcde8 !important;
+    border-color: #5d05b7 !important;
 }
 
 #WBCR .wbcr-factory-pages-000-impressive-page-template input[type="checkbox"]:checked::before {
@@ -135,4 +142,8 @@ h2.nav-tab-wrapper {
 }
 .wtitan-import-options-button {
     margin: 15px !important;
+}
+.wbcr-factory-nav-tab .dashicons-yes-alt
+{
+    color: green !important;
 }

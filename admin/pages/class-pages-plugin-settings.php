@@ -33,12 +33,7 @@ class PluginSettings extends Base {
 	/**
 	 * @var string
 	 */
-	public $page_parent_page = 'none';
-
-	/**
-	 * @var string
-	 */
-	public $page_menu_dashicon = 'dashicons-list-view';
+	public $page_menu_dashicon = 'dashicons-admin-generic';
 
 	/**
 	 * {@inheritdoc}
@@ -46,11 +41,24 @@ class PluginSettings extends Base {
 	public $show_right_sidebar_in_options = false;
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public $page_menu_position = 1;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
+	 * @var bool
+	 */
+	public $internal = false;
+
+	/**
 	 * @param Wbcr_Factory000_Plugin $plugin
 	 */
 	public function __construct( Wbcr_Factory000_Plugin $plugin ) {
-		$this->menu_title                  = __( 'Titan Settings', 'titan-security' );
-		$this->page_menu_short_description = __( 'Useful tweaks', 'titan-security' );
+		$this->menu_title                  = __( 'Settings', 'titan-security' );
+		$this->page_menu_short_description = __( 'Global plugin settings', 'titan-security' );
 
 		parent::__construct( $plugin );
 

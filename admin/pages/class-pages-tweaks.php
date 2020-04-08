@@ -32,7 +32,7 @@ class Tweaks extends Base {
 	 * @since  1.0
 	 * @var string
 	 */
-	public $page_menu_dashicon = 'dashicons-forms';
+	public $page_menu_dashicon = 'dashicons-admin-tools';
 
 	/**
 	 * {@inheritDoc}
