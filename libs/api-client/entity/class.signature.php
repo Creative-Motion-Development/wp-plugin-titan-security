@@ -17,6 +17,10 @@ class Signature extends Loader {
 	const SEVERITY_WARNING = 'w';
 	const SEVERITY_INFO = 'i';
 
+	const TYPE_SERVER = 'server';
+	const TYPE_BROWSER = 'browser';
+	const TYPE_BOTH = 'both';
+
 	const FORMAT_REGEXP = 're';
 	const FORMAT_CONST = 'const';
 	const FORMAT_MD5 = 'md5';
@@ -44,6 +48,14 @@ class Signature extends Loader {
 	/**
 	 * @var string
 	 */
+	public $type;
+	/**
+	 * @var int[]
+	 */
+	public $common_indexes;
+	/**
+	 * @var string
+	 */
 	public $content;
 
 	/**
@@ -54,14 +66,18 @@ class Signature extends Loader {
 	 * @param string $format
 	 * @param string $severity
 	 * @param string $title
+	 * @param string $type
+	 * @param int[]  $common_indexes
 	 * @param string $content
 	 */
-	public function __construct($id, $child_id, $format, $severity, $title, $content) {
+	public function __construct($id, $child_id, $format, $severity, $title, $type, $common_indexes, $content) {
 		$this->id = $id;
 		$this->child_id = $child_id;
 		$this->format = $format;
 		$this->severity = $severity;
 		$this->title = $title;
+		$this->type = $type;
+		$this->common_indexes = $common_indexes;
 		$this->content = $content;
 	}
 

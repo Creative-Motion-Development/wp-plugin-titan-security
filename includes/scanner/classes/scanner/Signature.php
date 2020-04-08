@@ -2,15 +2,16 @@
 
 namespace WBCR\Titan\MalwareScanner;
 
-use Exception;
-use WBCR\Titan\Logger\Writter;
-
 /**
  * Class Signature
  *
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
 class Signature {
+	const TYPE_SERVER = 'server';
+	const TYPE_BROWSER = 'browser';
+	const TYPE_BOTH = 'both';
+
 	/**
 	 * @var int
 	 */
@@ -39,6 +40,16 @@ class Signature {
 	/**
 	 * @var string
 	 */
+	protected $type;
+
+	/**
+	 * @var int[]
+	 */
+	protected $common_indexes;
+
+	/**
+	 * @var string
+	 */
 	protected $signature;
 
 	/**
@@ -49,15 +60,19 @@ class Signature {
 	 * @param int|null $childId
 	 * @param string $sever
 	 * @param string $title
+	 * @param string $type
+	 * @param int[] $common_indexes
 	 * @param string $signature
 	 */
-	public function __construct( $id, $format, $childId, $sever, $title, $signature ) {
-		$this->id        = (int) $id;
-		$this->format    = $format;
-		$this->childId   = (int) $childId;
-		$this->sever     = $sever;
-		$this->title     = $title;
-		$this->signature = $signature;
+	public function __construct( $id, $format, $childId, $sever, $title, $type, $common_indexes, $signature ) {
+		$this->id             = (int) $id;
+		$this->format         = $format;
+		$this->childId        = (int) $childId;
+		$this->sever          = $sever;
+		$this->title          = $title;
+		$this->type           = $type;
+		$this->common_indexes = $common_indexes;
+		$this->signature      = $signature;
 	}
 
 	/**
@@ -98,66 +113,22 @@ class Signature {
 	/**
 	 * @return string
 	 */
-	public function getSignature() {
-		return $this->signature;
+	public function getType() {
+		return $this->type;
 	}
 
 	/**
-	 * @param File $file
-	 *
-	 * @return Match|null
+	 * @return int[]
 	 */
-	public function scan( $file ) {
-		$content = $file->loadData();
+	public function getCommonIndexes() {
+		return $this->common_indexes;
+	}
 
-		$match = null;
-
-		switch ( $this->format ) {
-
-			case 're':
-				try {
-
-//
-//
-//                             Safety Pig Fenya
-//                             Saves from memory leaks
-//                                                       _
-//                               _._ _..._ .-',     _.._(`))
-//                              '-. `     '  /-._.-'    ',/
-//                                 )         \            '.
-//                                / _    _    |             \
-//                               |  a    a    /              |
-//                               \   .-.                     ;
-//                                '-('' ).-'       ,'       ;
-//                                   '-;           |      .'
-//                                      \           \    /
-//                                      | 7  .__  _.-\   \
-//                                      | |  |  ``/  /`  /
-//                                     /,_|  |   /,_/   /
-//                                        /,_/      '`-'
-//
-//
-
-					// Without it consumption is 15-20 megabytes
-//					set_error_handler( function ( $_, $msg ) use ( $signature ) {
-//						$msg = sprintf( "Error execution regex #%d: \"/%s/mi\" (%s)\n", $signature->getId(), $signature->getSignature(), $msg );
-//						Writter::error( $msg );
-//						error_log( $msg );
-//					} );
-
-					$result = preg_match( "/{$this->getSignature()}/mi", $content, $matches );
-
-					if ( $result ) {
-						$match = new Match( $file, $matches[0] );
-					}
-				} catch ( Exception $e ) {
-					Writter::error( sprintf( "%s:\n%s", $e->getMessage(), $e->getTraceAsString() ) );
-				}
-				break;
-
-		}
-
-		return $match;
+	/**
+	 * @return string
+	 */
+	public function getSignature() {
+		return $this->signature;
 	}
 
 	/**
@@ -181,8 +152,8 @@ class Signature {
 	 * @return Signature|null
 	 */
 	public static function fromArray( $params ) {
-		if ( empty( $params['id'] ) || empty( $params['format'] ) || empty( $params['severity'] ) || empty( $params['title'] )
-		     || empty( $params['content'] ) ) {
+		if ( empty( $params['id'] ) || empty( $params['format'] ) || empty( $params['severity'] )
+		     || empty( $params['title'] ) || empty( $params['type'] ) || empty( $params['content'] ) ) {
 			return null;
 		}
 
@@ -190,6 +161,12 @@ class Signature {
 			$params['child_id'] = null;
 		}
 
-		return new Signature( $params['id'], $params['format'], $params['child_id'], $params['severity'], $params['title'], $params['content'] );
+		if ( ! isset( $params['common_indexes'] ) ) {
+			$params['common_indexes'] = [];
+		}
+
+		return new Signature(
+			$params['id'], $params['format'], $params['child_id'], $params['severity'],
+			$params['title'], $params['type'], $params['common_indexes'], $params['content'] );
 	}
 }

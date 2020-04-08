@@ -1,9 +1,9 @@
 <?php
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+//if ( ! defined( 'ABSPATH' ) ) {
+//	exit;
+//}
 
 require_once 'File.php';
 require_once 'Match.php';

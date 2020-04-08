@@ -35,6 +35,12 @@ class Scanner {
 
 	public $files_count = 0;
 
+	public $cleaned_count = 0;
+
+	public $suspicious_count = 0;
+
+	public $peak_memory_usage = 0;
+
 	/**
 	 * @var HashListPool
 	 */
@@ -102,7 +108,7 @@ class Scanner {
 	 * @return int
 	 */
 	public function get_files_count() {
-		return count( $this->fileList );
+		return $this->files_count;
 	}
 
 	/**
@@ -126,15 +132,10 @@ class Scanner {
 			if ( is_dir( $newPath ) ) {
 				$this->loadFilesFromPath( $newPath );
 			} else {
-				$this->fileList[ $newPath ] = $this->loadFile( $newPath );
+				$this->fileList[] = $this->loadFile( $newPath );
 				$this->files_count ++;
 			}
 		}
-	}
-
-	public function remove_scanned_files( $i = 100 ) {
-		$this->files_count -= $i;
-		$this->fileList    = array_slice( $this->fileList, $i );
 	}
 
 	/**
@@ -160,36 +161,46 @@ class Scanner {
 
 	/**
 	 * @param int $count
-	 * @param array $matchCache
 	 *
-	 * @return Match[]|null[]
+	 * @return Match[]
 	 */
-	public function scan( $count = 100, $matchCache = [] ) {
+	public function scan( $count = 100 ) {
 		$matches = [];
 
 		$i = 0;
 		foreach ( $this->fileList as $file ) {
 			$i ++;
-			$cachedHash = $this->hashList->getFileHash( $file->getPath() );
-			if ( $cachedHash && $cachedHash == $file->getFileHash() ) {
-				if ( isset( $matchCache[ $file->getPath() ] ) ) {
-					$matches[ $file->getPath() ] = $matchCache[ $file->getPath() ];
-				} else {
-					$matches[ $file->getPath() ] = null;
-				}
-			} else {
-				$fileMatch = $this->signaturePool->scanFile( $file );
-				if ( ! empty( $fileMatch ) ) {
-					$matches[ $file->getPath() ] = $fileMatch;
-				}
-			}
 
+			$fileMatch = $this->signaturePool->scanFile( $file );
+			if ( ! empty( $fileMatch ) ) {
+				$this->updateData( true );
+				$matches[] = $fileMatch;
+			} else {
+				$this->updateData( false );
+			}
 
 			if ( $i == $count ) {
 				break;
 			}
 		}
 
+		$this->fileList = array_slice($this->fileList, $count);
+
 		return $matches;
+	}
+
+	/**
+	 * @param bool $isSuspicious
+	 */
+	protected function updateData( $isSuspicious ) {
+		if ( $this->files_count > 0 ) {
+			$this->files_count --;
+
+			if ( $isSuspicious ) {
+				$this->suspicious_count ++;
+			} else {
+				$this->cleaned_count ++;
+			}
+		}
 	}
 }

@@ -33,11 +33,11 @@ function titan_scheduled_scanner() {
 	require_once WTITAN_PLUGIN_DIR . '/libs/api-client/boot.php';
 	require_once WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
 
-	/** @var Scanner $scanner */
-	$scanner = get_option( Plugin::app()->getPrefix() . 'scanner', null );
-	if ( is_null( $scanner ) ) {
+	/** @var Scanner $scanner */$scanner = get_option( Plugin::app()->getPrefix() . 'scanner', null );
+	if ( is_null( $scanner ) || $scanner === false ) {
+		\WBCR\Titan\Logger\Writter::error('Scanner does not exists');
 		error_log( 'Scanner does not exists' );
-
+		titan_remove_scheduler_scanner();
 		return;
 	}
 
@@ -49,9 +49,8 @@ function titan_scheduled_scanner() {
 		$files_count = Scanner::SPEED_FILES[ Scanner::SPEED_MEDIUM ];
 	}
 
-	$matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-	$matched = $scanner->scan( $files_count, $matched );
-	$scanner->remove_scanned_files( $files_count );
+	$matched = $scanner->scan( $files_count );
+
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 
@@ -150,6 +149,20 @@ function titan_create_scheduler_scanner() {
 	$scanner = new WBCR\Titan\MalwareScanner\Scanner( ABSPATH, $signature_pool, $file_hash_pool, [
 		'wp-admin',
 		'wp-includes',
+		'wp-activate.php',
+		'wp-blog-header.php',
+		'wp-comments-post.php',
+		'wp-config-sample.php',
+		'wp-cron.php',
+		'wp-links-opml.php',
+		'wp-load.php',
+		'wp-login.php',
+		'wp-mail.php',
+		'wp-settings.php',
+		'wp-signup.php',
+		'wp-trackback.php',
+		'xmlrpc.php',
+		'debug.log'
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
