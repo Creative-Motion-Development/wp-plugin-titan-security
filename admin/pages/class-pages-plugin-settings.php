@@ -155,7 +155,8 @@ class PluginSettings extends Base {
 			'name'   => 'scanner_speed',
 			'title'  => __( 'Scanning speed', 'titan-security' ),
 			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
+			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ) . "<br>" .
+                        __("Recommended speed: ", 'titan-security') . get_recommended_scanner_speed(),
 			'data'   => $data,
 		];
 
