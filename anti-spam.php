@@ -94,7 +94,14 @@ $wtitan_plugin_info = [
 		['libs/factory/clearfy', 'factory_clearfy_000', 'all'],
 		['libs/factory/freemius', 'factory_freemius_000', 'all'],
 		['libs/factory/feedback', 'factory_feedback_000', 'admin']
-	]
+	],
+	'load_plugin_components' => array(
+		'hide-login-page' => array(
+			'autoload' => 'libs/hide-login-page/titan.php',
+			'plugin_prefix' => 'WHLP_'
+		)
+	)
+
 ];
 
 $wtitan_compatibility = new Wbcr_Factory000_Requirements(__FILE__, array_merge($wtitan_plugin_info, [
@@ -259,8 +266,8 @@ try {
 		'plugin_text_domain' => $wtitan_compatibility->get_text_domain(),
 	]));
 
-	if($plugin->is_premium()) {
-		require_once( WTITAN_PLUGIN_DIR . '/libs/antispam-premium/anti-spam-premium.php' );
+	if( $plugin->is_premium() ) {
+		require_once(WTITAN_PLUGIN_DIR . '/libs/antispam-premium/anti-spam-premium.php');
 	}
 } catch( Exception $e ) {
 	// Plugin wasn't initialized due to an error

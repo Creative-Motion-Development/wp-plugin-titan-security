@@ -22,3 +22,6 @@
 [submodule "libs/factory/feedback"]
 	path = libs/factory/feedback
 	url = ssh://git@bitbucket.org/webcraftic/wp-plugins-factory-feedback
+[submodule "libs/hide-login-page"]
+	path = libs/hide-login-page
+	url = ssh://git@bitbucket.org/webcraftic/wp-plugin-hide-login-page

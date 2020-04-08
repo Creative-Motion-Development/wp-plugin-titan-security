@@ -116,7 +116,7 @@ class Tweaks extends Base {
 			'name' => 'strong_password',
 			'title' => __('Strong Password Requirement', 'titan-security'),
 			'layout' => array('hint-type' => 'icon'),
-			'hint' => __('Force users to use strong passwords as rated by the WordPress password meter.', 'titan-security') . '<br><b>Clearfy: </b>' . __('Sets the redirect to exclude the possibility of obtaining a login.', 'titan-security'),
+			'hint' => __('Force users to use strong passwords as rated by the WordPress password meter.', 'titan-security') . '<br><b>Titan: </b>' . __('Sets the redirect to exclude the possibility of obtaining a login.', 'titan-security'),
 			'default' => false,
 			'eventsOn' => [
 				'show' => '.factory-control-strong_password_min_role'
@@ -152,7 +152,7 @@ class Tweaks extends Base {
 			'name' => 'protect_author_get',
 			'title' => __('Hide author login', 'titan-security'),
 			'layout' => array('hint-type' => 'icon'),
-			'hint' => __('An attacker can find out the author\'s login, using a similar request to get your site. mysite.com/?author=1', 'titan-security') . '<br><b>Clearfy: </b>' . __('Sets the redirect to exclude the possibility of obtaining a login.', 'titan-security'),
+			'hint' => __('An attacker can find out the author\'s login, using a similar request to get your site. mysite.com/?author=1', 'titan-security') . '<br><b>Titan: </b>' . __('Sets the redirect to exclude the possibility of obtaining a login.', 'titan-security'),
 			'default' => false
 		);
 
@@ -162,7 +162,7 @@ class Tweaks extends Base {
 			'name' => 'change_login_errors',
 			'title' => __('Hide errors when logging into the site', 'titan-security'),
 			'layout' => array('hint-type' => 'icon'),
-			'hint' => __('WP by default shows whether you entered a wrong login or incorrect password, which allows attackers to understand if there is a certain user on the site, and then start searching through the passwords.', 'titan-security') . '<br><b>Clearfy: </b>' . __('Changes in the text of the error so that attackers could not find the login.', 'titan-security'),
+			'hint' => __('WP by default shows whether you entered a wrong login or incorrect password, which allows attackers to understand if there is a certain user on the site, and then start searching through the passwords.', 'titan-security') . '<br><b>Titan: </b>' . __('Changes in the text of the error so that attackers could not find the login.', 'titan-security'),
 			'default' => false
 		);
 
@@ -172,7 +172,7 @@ class Tweaks extends Base {
 			'name' => 'remove_x_pingback',
 			'title' => __('Disable XML-RPC', 'titan-security'),
 			'layout' => array('hint-type' => 'icon', 'hint-icon-color' => 'grey'),
-			'hint' => __('A pingback is basically an automated comment that gets created when another blog links to you. A self-pingback is created when you link to an article within your own blog. Pingbacks are essentially nothing more than spam and simply waste resources.', 'titan-security') . '<br><b>Clearfy: </b>' . __('Removes the server responses a reference to the xmlrpc file.', 'titan-security'),
+			'hint' => __('A pingback is basically an automated comment that gets created when another blog links to you. A self-pingback is created when you link to an article within your own blog. Pingbacks are essentially nothing more than spam and simply waste resources.', 'titan-security') . '<br><b>Titan: </b>' . __('Removes the server responses a reference to the xmlrpc file.', 'titan-security'),
 			'default' => false,
 			'eventsOn' => array(
 				'show' => '#wbcr-clearfy-xml-rpc-danger-message'
@@ -202,7 +202,7 @@ class Tweaks extends Base {
 			'name' => 'remove_html_comments',
 			'title' => __('Remove html comments', 'titan-security'),
 			'layout' => array('hint-type' => 'icon', 'hint-icon-color' => 'grey'),
-			'hint' => __('This function will remove all html comments in the source code, except for special and hidden comments. This is necessary to hide the version of installed plugins.', 'titan-security') . '<br><br><b>Clearfy: </b>' . __('Remove html comments in source code.', 'titan-security'),
+			'hint' => __('This function will remove all html comments in the source code, except for special and hidden comments. This is necessary to hide the version of installed plugins.', 'titan-security') . '<br><br><b>Titan: </b>' . __('Remove html comments in source code.', 'titan-security'),
 			'default' => false
 		);
 
@@ -212,7 +212,7 @@ class Tweaks extends Base {
 			'name' => 'remove_meta_generator',
 			'title' => __('Remove meta generator', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
 			'layout' => array('hint-type' => 'icon'),
-			'hint' => __('Allows attacker to learn the version of WP installed on the site. This meta tag has no useful function.', 'titan-security') . '<br><b>Clearfy: </b>' . sprintf(__('Removes the meta tag from the %s section', 'titan-security'), '&lt;head&gt;'),
+			'hint' => __('Allows attacker to learn the version of WP installed on the site. This meta tag has no useful function.', 'titan-security') . '<br><b>Titan: </b>' . sprintf(__('Removes the meta tag from the %s section', 'titan-security'), '&lt;head&gt;'),
 			'default' => false
 		);
 
@@ -228,7 +228,7 @@ class Tweaks extends Base {
 			'title' => __('Remove Version from Script', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
 			'layout' => ['hint-type' => 'icon'],
 			'hint' => __('To make it more difficult for others to hack your website you can remove the WordPress version number from your site, your css and js. Without that number it\'s not possible to see if you run not the current version to exploit bugs from the older versions. <br><br>
-					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Clearfy: </b>' . __('Removes wordpress version number from scripts (not logged in user only).', 'titan-security'),
+					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Titan: </b>' . __('Removes wordpress version number from scripts (not logged in user only).', 'titan-security'),
 			'default' => false
 		];
 
@@ -239,7 +239,7 @@ class Tweaks extends Base {
 			'title' => __('Remove Version from Stylesheet', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
 			'layout' => ['hint-type' => 'icon'],
 			'hint' => __('To make it more difficult for others to hack your website you can remove the WordPress version number from your site, your css and js. Without that number it\'s not possible to see if you run not the current version to exploit bugs from the older versions. <br><br>
-					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Clearfy: </b>' . __('Removes the wordpress version number from stylesheets (not logged in user only).', 'titan-security'),
+					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Titan: </b>' . __('Removes the wordpress version number from stylesheets (not logged in user only).', 'titan-security'),
 			'default' => false
 			/*'eventsOn' => array(
 				'show' => '.factory-control-disable_remove_style_version_for_auth_users'
