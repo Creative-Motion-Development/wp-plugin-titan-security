@@ -169,14 +169,12 @@ class Scanner {
 
 		$i = 0;
 		foreach ( $this->fileList as $file ) {
-			$this->peak_memory_usage = memory_get_peak_usage(true);
-
 			$i ++;
 
 			$fileMatch = $this->signaturePool->scanFile( $file );
 			if ( ! empty( $fileMatch ) ) {
 				$this->updateData( true );
-				$matches = array_merge( $matches, $fileMatch );
+				$matches[] = $fileMatch;
 			} else {
 				$this->updateData( false );
 			}

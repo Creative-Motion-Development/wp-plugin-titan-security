@@ -24,7 +24,7 @@ use WBCR\Titan\MalwareScanner\Match;
 			<?php if ($match instanceof Match): ?>
 				<tr>
 					<td><?php echo $match->getFile()->getPath() ?></td>
-					<td>Match</td>
+					<td><?php echo $match->getSignature()->getType() == 'both' ? 'Server & browser' : $match->getSignature()->getType() ?></td>
 					<td><?php echo $match->getMatch() ?></td>
 					<td></td>
 				</tr>

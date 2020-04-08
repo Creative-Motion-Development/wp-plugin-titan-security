@@ -15,6 +15,42 @@ class SignaturePool {
 	 */
 	private $signatures;
 
+	private static $common_strings = [
+		"<\\?php",
+		"code",
+		"eval",
+		"include",
+		"content",
+		"\\.(?:com|net|org|ru|su)",
+		"echo",
+		"https?(\\?)?:",
+		"<(?:\\?(?:\\s|php|=)|%(?:\\s|=)|script)",
+		"<(?:\\s[\\*|\\+](?:\\?)?)?script",
+		"hack",
+		"error_reporting",
+		"<(?:\\s[\\*|\\+](?:\\?)?)?title",
+		"\\.html",
+		"preg_",
+		"\\.php",
+		"xml:lang",
+		"href",
+		"title(?:\\s[\\*|\\+](?:\\?)?)?>",
+		"Tornido",
+		"<a",
+		"function",
+		"cialis|viagra",
+		"center",
+		"copy",
+		"new",
+		"require",
+		"false",
+		"document",
+		"(?:&Rho;|P)ay(?:&Rho;|P)al",
+		"email",
+		"window.location",
+		"<(?:\\\\?(?:\\\\s|php|=)|%(?:\\\\s|=)|script)"
+	];
+
 	/**
 	 * SignaturePool constructor.
 	 *
@@ -34,23 +70,21 @@ class SignaturePool {
 	/**
 	 * @param File $file
 	 *
-	 * @return Match[]
+	 * @return Match|null
 	 */
 	public function scanFile( $file ) {
-		$matches = [];
-
 		$fData = fopen($file->getPath(), 'r');
 		if($fData === false) {
 			$e = sprintf("Open error: %s", $file->getPath());
 			Writter::error($e);
 			error_log($e);
-			return [];
+			return null;
 		}
 
 		if(function_exists('exif_imagetype')) {
 			$type = @exif_imagetype($file->getPath());
 			if($type !== false) {
-				return [];
+				return null;
 			}
 		}
 
@@ -73,28 +107,40 @@ class SignaturePool {
 		while(!feof($fData)) {
 			if($isUnknown || $isArchive) {
 				fclose($fData);
-				return [];
+				return null;
 			}
 			$chunk++;
 			$data = fread($fData, 1024 * 1024 * 1); // 1MB
 
 			foreach($this->signatures as $signature) {
+				if($signature->getType() == Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
+					continue;
+				}
 
-				if($signature->getType() != 'both') {
-					if($isPHP && $signature->getType() != 'server') {
+				if(in_array($signature->getType(), [Signature::TYPE_BOTH, Signature::TYPE_BROWSER]) && ($isPHP || $isHTML)) {
+					continue;
+				}
+
+				if(substr($signature->getSignature(), 0, 1) == '^') {
+					// Skipping malware signature ({$rule[0]}) because it only applies to the file beginning
+					continue;
+				}
+
+				foreach($signature->getCommonIndexes() as $index) {
+					if(!isset(self::$common_strings[$index])) {
 						continue;
 					}
-
-					if(($isHTML || $isJS) && $signature->getType() != 'browser') {
-						continue;
+					$s = self::$common_strings[$index];
+					if(preg_match('/' . $s . '/i', $data)) {
+						continue 2;
 					}
 				}
 
-				$found = preg_match("/" . $signature->getSignature() . "/mi", $data, $matched, PREG_OFFSET_CAPTURE);
+				$found = preg_match("/" . $signature->getSignature() . "/mi", $data, $matched,
+					PREG_OFFSET_CAPTURE);
 				if($found) {
 					$match = $matched[0];
-					$matches[] = new Match($signature, $file, $match[1], $match[0]);
-					break;
+					return new Match($signature, $file, $match[1], $match[0]);
 				}
 			}
 		}
@@ -104,7 +150,7 @@ class SignaturePool {
 		$file->clearLoadedData();
 		gc_collect_cycles();
 
-		return $matches;
+		return null;
 	}
 
 	/**

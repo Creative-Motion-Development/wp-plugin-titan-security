@@ -8,6 +8,10 @@ namespace WBCR\Titan\MalwareScanner;
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
 class Signature {
+	const TYPE_SERVER = 'server';
+	const TYPE_BROWSER = 'browser';
+	const TYPE_BOTH = 'both';
+
 	/**
 	 * @var int
 	 */
@@ -39,6 +43,11 @@ class Signature {
 	protected $type;
 
 	/**
+	 * @var int[]
+	 */
+	protected $common_indexes;
+
+	/**
 	 * @var string
 	 */
 	protected $signature;
@@ -52,16 +61,18 @@ class Signature {
 	 * @param string $sever
 	 * @param string $title
 	 * @param string $type
+	 * @param int[] $common_indexes
 	 * @param string $signature
 	 */
-	public function __construct( $id, $format, $childId, $sever, $title, $type, $signature ) {
-		$this->id        = (int) $id;
-		$this->format    = $format;
-		$this->childId   = (int) $childId;
-		$this->sever     = $sever;
-		$this->title     = $title;
-		$this->type     = $type;
-		$this->signature = $signature;
+	public function __construct( $id, $format, $childId, $sever, $title, $type, $common_indexes, $signature ) {
+		$this->id             = (int) $id;
+		$this->format         = $format;
+		$this->childId        = (int) $childId;
+		$this->sever          = $sever;
+		$this->title          = $title;
+		$this->type           = $type;
+		$this->common_indexes = $common_indexes;
+		$this->signature      = $signature;
 	}
 
 	/**
@@ -107,12 +118,19 @@ class Signature {
 	}
 
 	/**
+	 * @return int[]
+	 */
+	public function getCommonIndexes() {
+		return $this->common_indexes;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSignature() {
 		return $this->signature;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -135,7 +153,7 @@ class Signature {
 	 */
 	public static function fromArray( $params ) {
 		if ( empty( $params['id'] ) || empty( $params['format'] ) || empty( $params['severity'] )
-		     || empty( $params['title']) || empty( $params['type'] ) || empty( $params['content'] ) ) {
+		     || empty( $params['title'] ) || empty( $params['type'] ) || empty( $params['content'] ) ) {
 			return null;
 		}
 
@@ -143,8 +161,12 @@ class Signature {
 			$params['child_id'] = null;
 		}
 
+		if ( ! isset( $params['common_indexes'] ) ) {
+			$params['common_indexes'] = [];
+		}
+
 		return new Signature(
 			$params['id'], $params['format'], $params['child_id'], $params['severity'],
-			$params['title'], $params['type'], $params['content'] );
+			$params['title'], $params['type'], $params['common_indexes'], $params['content'] );
 	}
 }
