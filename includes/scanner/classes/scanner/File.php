@@ -84,9 +84,11 @@ class File {
 
 	/**
 	 * @return string
+	 *
+	 * @param bool $short
 	 */
-	public function getPath() {
-		return $this->path;
+	public function getPath($short = false) {
+		return $short ? str_replace( ABSPATH, '', $this->path) : $this->path;
 	}
 
 	/**

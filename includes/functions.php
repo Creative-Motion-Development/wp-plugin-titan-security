@@ -255,3 +255,17 @@ function titan_init_https_redirect() {
 		die;
 	}
 }
+
+add_action( Plugin::app()->getPluginName()."/factory/premium/license_activate", 'titan_set_scanner_speed_active' );
+function titan_set_scanner_speed_active() {
+	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
+	if($scanner_speed == 'free')
+		Plugin::app()->updatePopulateOption( 'scanner_speed', 'slow' );
+}
+
+add_action( Plugin::app()->getPluginName()."/factory/premium/license_deactivate", 'titan_set_scanner_speed_deactive' );
+function titan_set_scanner_speed_deactive() {
+	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
+	if($scanner_speed !== 'free')
+		Plugin::app()->updatePopulateOption( 'scanner_speed', 'free' );
+}

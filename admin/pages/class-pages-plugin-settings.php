@@ -135,36 +135,27 @@ class PluginSettings extends Base {
 
 		if ( Plugin::app()->is_premium() ) {
 			$data = [
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
-					'title' => __( 'Slow', 'titan-security' )
-				],
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
-					'title' => __( 'Medium', 'titan-security' )
-				],
-				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
-					'title' => __( 'Fast', 'titan-security' )
-				],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
+				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' )] ,
 			];
 		} else {
 			$data = [
 				[
-					'value' => \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
-					'title' => __( 'Free', 'titan-security' ),
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ),
 				]
 			];
 		}
 
 		$options[] = [
 			'type'   => 'dropdown',
-			'way'    => 'default',
+			'way'    => 'buttons',
 			'name'   => 'scanner_speed',
 			'title'  => __( 'Scanning speed', 'titan-security' ),
 			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
 			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
 			'data'   => $data,
+			'default' => $this->plugin->is_premium() ? \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW : \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
 		];
 
 		$options[] = [

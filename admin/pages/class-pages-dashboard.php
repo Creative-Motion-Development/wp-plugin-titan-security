@@ -146,6 +146,8 @@ class Dashboard extends Base {
 
 		$this->view = $this->plugin->view();
 
+		add_action('wp_ajax_wtitan_change_scanner_speed', [$this, 'change_scanner_speed']);
+
 		parent::__construct($plugin);
 	}
 
@@ -221,6 +223,9 @@ class Dashboard extends Base {
 
 		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
+		$this->scripts->localize('wtdashboard', [
+			'nonce' => wp_create_nonce("wtitan_change_scanner_speed"),
+		]);
 
 		//$this->scripts->add('https://www.gstatic.com/charts/loader.js', [],'', WANTISPAMP_PLUGIN_VERSION);
 	}
@@ -234,9 +239,8 @@ class Dashboard extends Base {
 		$this->init();
 
 		if( !$this->plugin->is_premium() ) {
-			$this->plugin->view->print_template('require-license-activate');
-
-			return;
+			//$this->plugin->view->print_template('require-license-activate');
+			//return;
 		}
 		//FIREWALL
 		$firewall = array();
@@ -255,6 +259,42 @@ class Dashboard extends Base {
 		//---
 		$scanner_started = $this->plugin->getOption('scanner_status') == 'started';
 
+		$scanner_speed = $this->plugin->getOption('scanner_speed', 'none');
+		if($scanner_speed == 'none') {
+			if ( $this->plugin->is_premium() )
+				$scanner_speed = 'slow';
+			else
+				$scanner_speed = 'free';
+		}
+		if ( Plugin::app()->is_premium() ) {
+			$scanner_speeds = [
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
+					__( 'Slow', 'titan-security' ),
+					__( 'Slow hint', 'titan-security' )
+				],
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
+					__( 'Medium', 'titan-security' ),
+					__( 'Medium hint', 'titan-security' )
+				],
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
+					__( 'Fast', 'titan-security' ),
+					__( 'Fast hint', 'titan-security' )
+				] ,
+			];
+		} else {
+			$scanner_speeds = [
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
+					__( 'Free', 'titan-security' ),
+					__( 'Free hint', 'titan-security' )
+				]
+			];
+		}
+
+
 		$this->view->print_template('dashboard', [
 			'scanner_started' => $scanner_started,
 			'this_plugin' => $this->plugin,
@@ -265,7 +305,37 @@ class Dashboard extends Base {
 			'scanner' => $this->scanner->get_current_results(),
 			'antispam' => $this->antispam,
 			'check_content' => $check_content,
+			'scanner_speed' => $scanner_speed,
+			'scanner_speeds' => $scanner_speeds,
 		]);
 	}
+
+	/**
+	 * AJAX change scanner speed
+	 */
+	public function change_scanner_speed()
+	{
+		check_ajax_referer('wtitan_change_scanner_speed');
+
+		if( !current_user_can('manage_options') ) {
+			wp_send_json(array('error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+		}
+
+		if(isset($_POST['speed'])) {
+
+			$speed = $_POST['speed'];
+
+			\WBCR\Titan\Plugin::app()->updatePopulateOption( 'scanner_speed', $speed );
+
+			wp_send_json( [
+				'message' => __( "Scanner speed successfully changed", "titan-security" ),
+				'speed'    => $speed
+			] );
+		}
+		else {
+			wp_send_json(array('error_message' => __('Scanner speed is not selected', 'titan-security')));
+		}
+	}
+
 
 }

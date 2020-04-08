@@ -24,7 +24,7 @@ use WBCR\Titan\MalwareScanner\Match;
 			<?php foreach ( $match_array as $match ): ?>
 				<?php if ($match instanceof Match): ?>
 					<tr>
-						<td><?php echo $match->getFile()->getPath() ?></td>
+						<td><?php echo $match->getFile()->getPath(true); ?></td>
 
 						<td><?php echo htmlspecialchars( $match->getMatch()); ?></td>
 						<td></td>
