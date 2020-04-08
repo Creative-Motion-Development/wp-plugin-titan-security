@@ -268,3 +268,44 @@ function titan_init_https_redirect() {
 		die;
 	}
 }
+
+/**
+ * @return int|float [Memory limit in MB]
+ */
+function get_memory_limit() {
+	$mem = ini_get('memory_limit');
+	$last = $mem[strlen($mem) - 1];
+	$mem = (int) $mem;
+	do{
+		switch($last) {
+			case 'g':
+			case 'G':
+				$mem = $mem * 1024;
+				$last = 'm';
+				break;
+
+			case 'm':
+			case 'M':
+				break 2;
+
+			default:
+				$mem = ((int) $mem) / 1024 / 1024; // bytes to mbytes
+				break 2;
+		}
+	} while(true);
+
+	return $mem;
+}
+
+function get_recommended_scanner_speed() {
+	$mem = get_memory_limit();
+	if($mem > 100) {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST;
+	} elseif($mem > 60) {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM;
+	} else {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW;
+	}
+
+	return $recommendation;
+}
