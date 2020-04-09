@@ -53,15 +53,11 @@ function titan_scheduled_scanner() {
 
 	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
+	Plugin::app()->updateOption( 'scanner', $scanner);
 
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
-		$matched = array_merge($matched, titan_check_cms());
 	}
-	Plugin::app()->updateOption( 'scanner', $scanner);
-
-	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
-	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
 }
 
 /**
@@ -162,7 +158,9 @@ function titan_create_scheduler_scanner() {
 		'wp-signup.php',
 		'wp-trackback.php',
 		'xmlrpc.php',
-		'debug.log'
+		'debug.log',
+		'node_modules',
+		'vendor'
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
@@ -281,4 +279,46 @@ function titan_set_scanner_speed_deactive() {
 	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
 	if($scanner_speed !== 'free')
 		Plugin::app()->updatePopulateOption( 'scanner_speed', 'free' );
+}
+
+
+/**
+ * @return int|float [Memory limit in MB]
+ */
+function get_memory_limit() {
+	$mem = ini_get('memory_limit');
+	$last = $mem[strlen($mem) - 1];
+	$mem = (int) $mem;
+	do{
+		switch($last) {
+			case 'g':
+			case 'G':
+				$mem = $mem * 1024;
+				$last = 'm';
+				break;
+
+			case 'm':
+			case 'M':
+				break 2;
+
+			default:
+				$mem = ((int) $mem) / 1024 / 1024; // bytes to mbytes
+				break 2;
+		}
+	} while(true);
+
+	return $mem;
+}
+
+function get_recommended_scanner_speed() {
+	$mem = get_memory_limit();
+	if($mem > 100) {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST;
+	} elseif($mem > 60) {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM;
+	} else {
+		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW;
+	}
+
+	return $recommendation;
 }

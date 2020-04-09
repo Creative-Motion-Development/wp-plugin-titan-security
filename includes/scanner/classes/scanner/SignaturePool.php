@@ -113,11 +113,20 @@ class SignaturePool {
 			$data = fread($fData, 1024 * 1024 * 1); // 1MB
 
 			foreach($this->signatures as $signature) {
-				if($signature->getType() == Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
+				$type = $signature->getType();
+				if(empty($type)) {
+					$type = 'server';
+				}
+
+				if($type == 'ignore') {
 					continue;
 				}
 
-				if(in_array($signature->getType(), [Signature::TYPE_BOTH, Signature::TYPE_BROWSER]) && ($isPHP || $isHTML)) {
+				if($type == Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
+					continue;
+				}
+
+				if(in_array($type, [Signature::TYPE_BOTH, Signature::TYPE_BROWSER]) && ($isPHP || $isHTML)) {
 					continue;
 				}
 

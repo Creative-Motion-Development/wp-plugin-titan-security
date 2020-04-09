@@ -271,17 +271,17 @@ class Dashboard extends Base {
 				[
 					\WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
 					__( 'Slow', 'titan-security' ),
-					__( 'Slow hint', 'titan-security' )
+					__( 'Suitable for the most budget hosting services', 'titan-security' )
 				],
 				[
 					\WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
 					__( 'Medium', 'titan-security' ),
-					__( 'Medium hint', 'titan-security' )
+					__( 'The best option for almost any capacity', 'titan-security' )
 				],
 				[
 					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
 					__( 'Fast', 'titan-security' ),
-					__( 'Fast hint', 'titan-security' )
+					__( 'Checks the maximum number of files per minute. We recommend that you have more than 100 MB of RAM', 'titan-security' )
 				] ,
 			];
 		} else {
