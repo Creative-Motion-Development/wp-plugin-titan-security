@@ -322,3 +322,13 @@ function get_recommended_scanner_speed() {
 
 	return $recommendation;
 }
+
+/**
+ * @param $time
+ *
+ * @return int
+ */
+function correct_timezone( $time ) {
+	$localOffset = (new DateTime)->getOffset();
+	return $time + $localOffset;
+}

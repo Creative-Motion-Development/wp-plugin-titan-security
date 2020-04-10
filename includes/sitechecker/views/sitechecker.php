@@ -37,6 +37,7 @@
 	<div class="wtitan-sitechecker-table-container">
 		<table class="table table-striped table-hover table-responsive">
 			<tbody>
+			<?php var_dump((new DateTime('now'))->format('P')); ?>
 			<tr class="wtitan-sitechecker-table-first-tr">
 				<td class="wtitan-sitechecker-table-description">URL</td>
 				<td class="wtitan-sitechecker-table-slim">Frequency</td>
@@ -51,7 +52,7 @@
 					<td><?php echo $url->frequency; ?> сек</td>
 					<td><?php echo round($url->uptime, 1); ?>%</td>
 					<td><?php echo round($url->avg_request_time, 1); ?> сек</td>
-					<td><?php echo date('d.m.Y H:i', $url->next_check) ?></td>
+					<td><?php echo date('d.m.Y H:i', correct_timezone($url->next_check)) ?></td>
 					<td>
                         <button class="btn wt-sitechecker-button-delete" data-id="<?php echo $url->id; ?>">&nbsp;</button>
                         <span class="wt-spinner" id="wt-spinner" style="display: none;"></span>
