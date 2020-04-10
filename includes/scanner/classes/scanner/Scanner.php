@@ -16,6 +16,11 @@ class Scanner {
 	const SPEED_MEDIUM = 'medium';
 	const SPEED_FAST = 'fast';
 
+	const SCHEDULE_DAILY = 'daily';
+	const SCHEDULE_WEEKLY = 'weekly';
+	const SCHEDULE_CUSTOM = 'custom';
+	const SCHEDULE_DISABLED = 'disabled';
+
 	const SPEED_LIST = [
 		self::SPEED_FREE,
 		self::SPEED_SLOW,

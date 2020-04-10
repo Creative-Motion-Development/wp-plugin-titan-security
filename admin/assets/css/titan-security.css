@@ -147,3 +147,11 @@ h2.nav-tab-wrapper {
 {
     color: green !important;
 }
+input[id*="scanner_schedule"], select[id*="scanner_schedule"]
+{
+    width: 200px !important;
+}
+.wt-schedule-controls-daily, .wt-schedule-controls-weekly, .wt-schedule-controls-custom
+{
+    display: none;
+}

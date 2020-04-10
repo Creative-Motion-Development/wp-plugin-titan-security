@@ -145,8 +145,10 @@ class Dashboard extends Base {
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
+		$this->antispam = new \WBCR\Titan\Antispam();
 
 		add_action('wp_ajax_wtitan_change_scanner_speed', [$this, 'change_scanner_speed']);
+		add_action('wp_ajax_wtitan_change_scanner_schedule', [$this, 'change_scanner_schedule']);
 
 		parent::__construct($plugin);
 	}
@@ -161,7 +163,6 @@ class Dashboard extends Base {
 		$this->audit = new Audit();
 		$this->sites = new SiteChecker();
 		$this->scanner = new \WBCR\Titan\Scanner();
-		$this->antispam = new \WBCR\Titan\Antispam();
 		$this->check = new \WBCR\Titan\Check();
 	}
 
@@ -224,7 +225,7 @@ class Dashboard extends Base {
 		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
 		$this->scripts->localize('wtdashboard', [
-			'nonce' => wp_create_nonce("wtitan_change_scanner_speed"),
+			'nonce' => wp_create_nonce("wtitan_change_scanner"),
 		]);
 
 		//$this->scripts->add('https://www.gstatic.com/charts/loader.js', [],'', WANTISPAMP_PLUGIN_VERSION);
@@ -294,6 +295,42 @@ class Dashboard extends Base {
 			];
 		}
 
+		$schedule = $this->plugin->getOption('scanner_schedule', 'none');
+		if($schedule == 'none') {
+			$schedule = 'disabled';
+		}
+		if ( Plugin::app()->is_premium() ) {
+			$schedules = [
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
+					__( 'Daily', 'titan-security' ),
+					__( 'Scan every day', 'titan-security' )
+				],
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
+					__( 'Weekly', 'titan-security' ),
+					__( 'Scan every week', 'titan-security' )
+				],
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
+					__( 'Custom', 'titan-security' ),
+					__( 'Select the date and time of the next scan', 'titan-security' )
+				],
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+					__( 'Disabled', 'titan-security' ),
+					__( 'Disable scheduled scanning', 'titan-security' )
+				],
+			];
+		} else {
+			$schedules = [
+				[
+					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+					__( 'Disabled', 'titan-security' ),
+					__( 'Disable scheduled scanning', 'titan-security' )
+				]
+			];
+		}
 
 		$this->view->print_template('dashboard', [
 			'scanner_started' => $scanner_started,
@@ -307,6 +344,8 @@ class Dashboard extends Base {
 			'check_content' => $check_content,
 			'scanner_speed' => $scanner_speed,
 			'scanner_speeds' => $scanner_speeds,
+			'schedule' => $schedule,
+			'schedules' => $schedules,
 		]);
 	}
 
@@ -315,7 +354,7 @@ class Dashboard extends Base {
 	 */
 	public function change_scanner_speed()
 	{
-		check_ajax_referer('wtitan_change_scanner_speed');
+		check_ajax_referer('wtitan_change_scanner');
 
 		if( !current_user_can('manage_options') ) {
 			wp_send_json(array('error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
@@ -334,6 +373,33 @@ class Dashboard extends Base {
 		}
 		else {
 			wp_send_json(array('error_message' => __('Scanner speed is not selected', 'titan-security')));
+		}
+	}
+
+	/**
+	 * AJAX change scanner speed
+	 */
+	public function change_scanner_schedule()
+	{
+		check_ajax_referer('wtitan_change_scanner');
+
+		if( !current_user_can('manage_options') ) {
+			wp_send_json(array('error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+		}
+
+		if(isset($_POST['schedule'])) {
+
+			$schedule = $_POST['schedule'];
+
+			\WBCR\Titan\Plugin::app()->updatePopulateOption( 'scanner_schedule', $schedule );
+
+			wp_send_json( [
+				'message' => __( "Scanner schedule successfully changed", "titan-security" ),
+				'schedule'    => $schedule
+			] );
+		}
+		else {
+			wp_send_json(array('error_message' => __('Scanner schedule is not selected', 'titan-security')));
 		}
 	}
 

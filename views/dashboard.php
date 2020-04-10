@@ -5,6 +5,8 @@ if(is_array($data)) extract($data);
  * @var bool                        $scanner_started
  * @var string                      $scanner_speed
  * @var array                       $scanner_speeds
+ * @var string                      $schedule
+ * @var array                       $schedules
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit           $audit
  * @var \WBCR\Titan\SiteChecker     $sites
@@ -158,8 +160,8 @@ $statistic_data = $antispam->get_statistic_data();
 	                        <?php
 	                        echo __('Scanned: ', 'titan-security');
 	                        $counter = 0;
-	                        if($scanned > 0) $counter = "{$scanned}/{$files_count}";
-	                        echo "<span class='wt-magenta-text'>{$counter} ".__('files', 'titan-security')."</span>";
+	                        if($scanned > 0) $counter = "{$scanned} / {$files_count}";
+	                        echo "<span class='wt-magenta-text' id='wtitan-files-num'>{$counter}</span>&nbsp;".__('files', 'titan-security');
 	                        ?>
                         </div>
                         <div class="col-md-6 wt-dashboard-block-content-right">
@@ -173,9 +175,9 @@ $statistic_data = $antispam->get_statistic_data();
                     </div>
                     <div class="row">
                         <div class="wt-scanner-chart">
-                            <div class="wt-scanner-chart-clean"       style="width: <?php echo $files_count > 0 ? round($cleaned/$files_count*100, 1) : 0;?>%;"></div>
-                            <div class="wt-scanner-chart-suspicious"  style="width: <?php echo $files_count > 0 ? round($suspicious/$files_count*100, 1) : 0;?>%;"></div>
-                            <div class="wt-scanner-chart-notverified" style="width: <?php echo $files_count > 0 ? round($notverified/$files_count*100, 1) : 0;?>%;"></div>
+                            <div class="wt-scanner-chart-clean"       style="width: <?php echo $progress[0];?>%;"></div>
+                            <div class="wt-scanner-chart-suspicious"  style="width: <?php echo $progress[1];?>%;"></div>
+                            <div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2];?>%;"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -184,13 +186,13 @@ $statistic_data = $antispam->get_statistic_data();
                                 <tbody>
                                     <tr>
                                         <td><span class="wt-scanner-chart-clean wt-legend-item"></span></td>
-                                        <td>Cleaned - <?php echo $cleaned ?></td>
+                                        <td>Cleaned - <span id="wtitan-cleaned-num"><?php echo $cleaned ?></span></td>
 
                                         <td><span class="wt-scanner-chart-suspicious wt-legend-item"></span></td>
-                                        <td>Suspicious - <?php echo $suspicious ?></td>
+                                        <td>Suspicious - <span id="wtitan-suspicious-num"><?php echo $suspicious ?></span></td>
 
                                         <td><span class="wt-scanner-chart-notverified wt-legend-item"></span></td>
-                                        <td>Not verified - <?php echo $notverified ?></td>
+                                        <td>Not verified - <span id="wtitan-notverified-num"><?php echo $notverified ?></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -198,7 +200,24 @@ $statistic_data = $antispam->get_statistic_data();
                     </div>
                     <div class="row">
                         <div class="col-md-8 wt-dashboard-block-content" style="text-align: left;">
-
+                            <div class="form-group form-group-dropdown  factory-control-scanner_speed">
+                                <div class="control-group col-sm-12">
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+                                        <div class="wt-dashboard-form-label"><?=__( 'Scanning speed', 'titan-security' );?></div>
+                                        <div class="btn-group factory-buttons-group">
+					                        <?php foreach($schedules as $sched) :?>
+                                                <button type="button" class="btn btn-default btn-small wt-scanner-schedule-button factory-<?=$sched[0]; ?> <?php echo $sched[0]==$schedule ? 'active' : ''; ?>" data-value="<?=$sched[0]; ?>"><?=$sched[1];?></button>
+					                        <?php endforeach;?>
+                                            <input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?=$schedule;?>">
+                                        </div>
+                                        <div class="factory-hints" style="margin-left: 45px;">
+					                        <?php foreach($schedules as $sched) :?>
+                                                <div class="factory-hint factory-hint-<?=$sched[0]; ?>" style="display: <?php echo $sched[0]==$schedule ? '' : 'none'; ?>;"><?=$sched[2];?></div>
+					                        <?php endforeach;?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4 wt-dashboard-block-content" style="text-align: right;">
                             <div class="form-group form-group-dropdown  factory-control-scanner_speed">
@@ -217,7 +236,6 @@ $statistic_data = $antispam->get_statistic_data();
 	                                        <?php endforeach;?>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

@@ -145,6 +145,59 @@ jQuery(document).ready(function($) {
 
     });
 
+    $('.wt-scanner-schedule-button').click(function() {
+        var select = $(this);
+        console.log(select.val());
+
+        $('.wt-scanner-schedule-button').addClass('disabled');
+
+        $.ajax(ajaxurl, {
+            type: 'post',
+            dataType: 'json',
+            data: {
+                action: 'wtitan_change_scanner_schedule',
+                schedule: select.data('value'),
+                _wpnonce: wtdashboard.nonce
+            },
+            success: function(data, textStatus, jqXHR) {
+                var noticeId;
+
+                console.log(data);
+
+                if( !data || data.error ) {
+
+                    if( data ) {
+                        noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.error_message, 'danger');
+                    }
+
+                    setTimeout(function() {
+                        $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                    }, 5000);
+                    return;
+                }
+                else {
+                    if( data ) {
+                        noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.message, 'success');
+                    }
+                    setTimeout(function() {
+                        $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                    }, 5000);
+                }
+                $('.wt-scanner-schedule-button').removeClass('disabled');
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                $('.wt-scanner-schedule-button').removeClass('disabled');
+                console.log(xhr.status);
+                console.log(xhr.responseText);
+                console.log(thrownError);
+
+                var noticeId = $.wbcr_factory_clearfy_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
+            }
+        });
+
+    });
+
     jQuery('#wt-quickstart-scan').on('click', function(e) {
         e.preventDefault();
         var btn = jQuery(this);

@@ -322,3 +322,54 @@ function get_recommended_scanner_speed() {
 
 	return $recommendation;
 }
+
+add_action( 'plugins_loaded', 'titan_init_check_schedule' );
+function titan_init_check_schedule() {
+	$format_date = 'Y/m/d H:i';
+	$format_time = 'H:i';
+
+	$is_schedule = false;
+
+	$lasttime = Plugin::app()->getPopulateOption( 'scanner_schedule_last_time', wp_date($format_date) );
+	$schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
+	$last = date_parse_from_format ( $format_time ,$lasttime);
+
+	switch($schedule)
+	{
+		case 'daily':
+			$daily = Plugin::app()->getPopulateOption( 'scanner_schedule_daily', '2000/01/01 23:00' );
+			$daily = date_parse_from_format ( $format_time ,$daily);
+			$daily = $daily['hour']*60 + $daily['minute'];
+			$last = $last['hour']*60 + $last['minute'];
+			if($last <= $daily) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'weekly':
+			$week = Plugin::app()->getPopulateOption( 'scanner_schedule_weekly_day', '7' );
+			$time = Plugin::app()->getPopulateOption( 'scanner_schedule_weekly_time', '2000/01/01 23:00' );
+			$time = date_parse_from_format ( $format_time ,$time);
+			$time = $time['hour']*60 + $time['minute'];
+			$last = $last['hour']*60 + $last['minute'];
+			$this_week = date('N');
+			if($this_week == $week && $last <= $time) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'custom':
+			$time = Plugin::app()->getPopulateOption( 'scanner_schedule_custom', '2000/01/01 23:00' );
+			$time = strtotime( $time);
+			$last = strtotime( $lasttime);
+			if($last <= $time) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'disabled':
+			break;
+	}
+	if($is_schedule)
+		Plugin::app()->updatePopulateOption( 'scanner_schedule_last_time', wp_date( $format_date ) );
+}
