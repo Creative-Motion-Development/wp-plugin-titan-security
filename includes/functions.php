@@ -323,6 +323,16 @@ function get_recommended_scanner_speed() {
 	return $recommendation;
 }
 
+/**
+ * @param $time
+ *
+ * @return int
+ */
+function correct_timezone( $time ) {
+	$localOffset = (new DateTime)->getOffset();
+	return $time + $localOffset;
+}
+
 add_action( 'plugins_loaded', 'titan_init_check_schedule' );
 function titan_init_check_schedule() {
 	$format_date = 'Y/m/d H:i';

@@ -12,6 +12,11 @@ class Signature {
 	const TYPE_BROWSER = 'browser';
 	const TYPE_BOTH = 'both';
 
+	const SEVER_CRITICAL = 'c';
+	const SEVERITY_SUSPICIOUS = 's';
+	const SEVER_WARNING = 'w';
+	const SEVER_INTO = 'i';
+
 	/**
 	 * @var int
 	 */
