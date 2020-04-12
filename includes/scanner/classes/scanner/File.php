@@ -83,7 +83,17 @@ class File {
 		$this->content = null;
 	}
 
-	/**
+    public function toArray()
+    {
+        return [
+            'path'=>$this->path,
+            'hash_file'=>$this->hashFile,
+            'content' => $this->content
+        ];
+    }
+
+
+    /**
 	 * @return string
 	 *
 	 * @param bool $short

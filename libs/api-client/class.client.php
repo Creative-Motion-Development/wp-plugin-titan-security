@@ -420,6 +420,20 @@ class Client {
 		return $response->response['is_successful_delete'];
 	}
 
+    public function send_notification( $method, $template, $vars = [] ) {
+        $response = $this->request(true, 'notice/send', [
+            'method'   => $method,
+            'template' => $template,
+            'vars'     => $vars
+        ]);
+
+        if ( $response->is_error() ) {
+            return false;
+        }
+
+        return true;
+    }
+
 	//
 	// checker urls
 	//
