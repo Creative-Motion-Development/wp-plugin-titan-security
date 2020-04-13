@@ -162,11 +162,9 @@ class Scanner {
 	/**
 	 * @param int $count
 	 *
-	 * @return Match[]
+	 * @return \Generator
 	 */
 	public function scan( $count = 100 ) {
-		$matches = [];
-
 		$i = 0;
 		foreach ( $this->fileList as $file ) {
 			$i ++;
@@ -174,19 +172,17 @@ class Scanner {
 			$fileMatch = $this->signaturePool->scanFile( $file );
 			if ( ! empty( $fileMatch ) ) {
 				$this->updateData( true );
-				$matches[] = $fileMatch;
+				yield $fileMatch;
 			} else {
 				$this->updateData( false );
 			}
 
-			if ( $i == $count ) {
+			if ( $i === $count ) {
 				break;
 			}
 		}
 
-		$this->fileList = array_slice($this->fileList, $count);
-
-		return $matches;
+		$this->fileList = array_slice( $this->fileList, $count );
 	}
 
 	/**
