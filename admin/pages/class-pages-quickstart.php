@@ -93,7 +93,7 @@ class QuickStart extends Base {
 	/**
 	 * @var object|\WBCR\Titan\Model\Firewall
 	 */
-	public $firewall;
+	//public $firewall;
 
 	/**
 	 * @var object|\WBCR\Titan\Vulnerabilities
@@ -134,7 +134,7 @@ class QuickStart extends Base {
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
-		$this->firewall = new \WBCR\Titan\Model\Firewall();
+		//$this->firewall = new \WBCR\Titan\Model\Firewall();
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
 		$this->sites = new SiteChecker();
@@ -148,7 +148,7 @@ class QuickStart extends Base {
 	 */
 	public function getMenuTitle()
 	{
-		return apply_filters( 'wbcr/titan/admin_menu_title', $this->menu_title );
+		return apply_filters('wbcr/titan/admin_menu_title', $this->menu_title);
 	}
 
 	/**
@@ -197,21 +197,21 @@ class QuickStart extends Base {
 		}
 		//FIREWALL
 		$firewall = array();
-		$firewall['this-firewall'] = $this->firewall;
-		$firewall['firewall_mode'] = $this->plugin->getPopulateOption('firewall_mode');
-		$firewall['firewall_status_percent'] = $this->firewall->wafStatus();
-		if( $firewall['firewall_status_percent'] > 0.70 ) {
-			$firewall['firewall_status_color'] = "#1fa02fc9";
-		} else {
-			$firewall['firewall_status_color'] = "#5d05b7";
-		}
+		//$firewall['this-firewall'] = $this->firewall;
+		//$firewall['firewall_mode'] = $this->plugin->getPopulateOption('firewall_mode');
+		//$firewall['firewall_status_percent'] = $this->firewall->wafStatus();
+		//if( $firewall['firewall_status_percent'] > 0.70 ) {
+		//	$firewall['firewall_status_color'] = "#1fa02fc9";
+		//} else {
+		//	$firewall['firewall_status_color'] = "#5d05b7";
+		//}
 		//end FIREWALL
 
 		$scanner_started = $this->plugin->getOption('scanner_status') == 'started';
 		$this->view->print_template('quickstart', [
 			'scanner_started' => $scanner_started,
 			'this_plugin' => $this->plugin,
-			'firewall' => $firewall,
+			//'firewall' => $firewall,
 			'vulnerabilities' => $this->vulnerabilities,
 			'audit' => $this->audit,
 			'sites' => $this->sites,

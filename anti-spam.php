@@ -228,28 +228,6 @@ if( !defined('WTITAN_DEBUG') ) {
 }
 #endcomp
 
-if( !defined('WFWAF_LOG_PATH') ) {
-	if( !defined('WP_CONTENT_DIR') ) { //Loading before WordPress
-		exit();
-	}
-	//define('WFWAF_LOG_PATH', WP_CONTENT_DIR . '/titan_logs/');
-	define('WFWAF_LOG_PATH', WTITAN_PLUGIN_DIR . '/includes/firewall/titan_logs/');
-}
-
-/**
- * Constant to determine if Titan is installed on another WordPress site one or more directories up in
- * auto_prepend_file mode.
- */
-define('WFWAF_SUBDIRECTORY_INSTALL', class_exists('wfWAF') && !in_array(realpath(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php'), get_included_files()));
-
-if( !WFWAF_SUBDIRECTORY_INSTALL ) {
-	require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/libs/waf/init.php');
-	if( !wfWAF::getInstance() ) {
-		define('WFWAF_AUTO_PREPEND', false);
-		require_once(WTITAN_PLUGIN_DIR . '/includes/firewall/bootstrap.php');
-	}
-}
-
 /**
  * -----------------------------------------------------------------------------
  * PLUGIN INIT

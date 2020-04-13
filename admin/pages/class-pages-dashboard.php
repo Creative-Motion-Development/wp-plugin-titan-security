@@ -94,7 +94,7 @@ class Dashboard extends Base {
 	/**
 	 * @var object|\WBCR\Titan\Model\Firewall
 	 */
-	public $firewall;
+	//public $firewall;
 
 	/**
 	 * @var object|\WBCR\Titan\Vulnerabilities
@@ -145,7 +145,7 @@ class Dashboard extends Base {
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
-		$this->firewall = new \WBCR\Titan\Model\Firewall();
+		//$this->firewall = new \WBCR\Titan\Model\Firewall();
 		$this->vulnerabilities = new Vulnerabilities();
 		$this->audit = new Audit();
 		$this->sites = new SiteChecker();
@@ -161,7 +161,7 @@ class Dashboard extends Base {
 	 */
 	public function getMenuTitle()
 	{
-		return apply_filters( 'wbcr/titan/admin_menu_title', $this->menu_title );
+		return apply_filters('wbcr/titan/admin_menu_title', $this->menu_title);
 	}
 
 	/**
@@ -214,7 +214,6 @@ class Dashboard extends Base {
 
 		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
 		$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/dashboard.js');
-
 		//$this->scripts->add('https://www.gstatic.com/charts/loader.js', [],'', WANTISPAMP_PLUGIN_VERSION);
 	}
 
@@ -231,14 +230,9 @@ class Dashboard extends Base {
 		}
 		//FIREWALL
 		$firewall = array();
-		$firewall['this-firewall'] = $this->firewall;
+
 		$firewall['firewall_mode'] = $this->plugin->getPopulateOption('firewall_mode');
-		$firewall['firewall_status_percent'] = $this->firewall->wafStatus();
-		if( $firewall['firewall_status_percent'] > 0.70 ) {
-			$firewall['firewall_status_color'] = "#1fa02fc9";
-		} else {
-			$firewall['firewall_status_color'] = "#5d05b7";
-		}
+		$firewall['firewall_pro_activated'] = defined('WTITANP_PLUGIN_ACTIVE') && WTITANP_PLUGIN_ACTIVE;
 		//end FIREWALL
 
 		//AUDIT

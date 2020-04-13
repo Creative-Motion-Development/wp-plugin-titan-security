@@ -2,7 +2,7 @@
 # Prevent build artifacts, large binary files, and other large file types
 # such as log files, media files, and executables from slowing down your workflow.
 
-/includes/firewall/titan_logs/config.php
+/wp-content/plugins/wp-plugin-titan-premium/includes/firewall/titan_logs/config.php
 .DS_Store
 .idea
 *.css.map
