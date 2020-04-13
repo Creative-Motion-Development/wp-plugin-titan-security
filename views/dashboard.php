@@ -3,17 +3,12 @@ if( is_array($data) ) {
 	extract($data);
 }
 /**
- * <<<<<<< HEAD
- * @var array $data
- * @var bool $scanner_started
- * =======
  * @var array $data
  * @var bool $scanner_started
  * @var string $scanner_speed
  * @var array $scanner_speeds
  * @var string $schedule
  * @var array $schedules
- * >>>>>>> 5ef010c1762d615f8cb9aec78ff193343749cc73
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit $audit
  * @var \WBCR\Titan\SiteChecker $sites
@@ -179,8 +174,9 @@ $statistic_data = $antispam->get_statistic_data();
 							<?php
 							echo __('Scanned: ', 'titan-security');
 							$counter = 0;
-							if( $scanned > 0 )
+							if( $scanned > 0 ) {
 								$counter = "{$scanned} / {$files_count}";
+							}
 							echo "<span class='wt-magenta-text' id='wtitan-files-num'>{$counter}</span>&nbsp;" . __('files', 'titan-security');
 							?>
 						</div>
