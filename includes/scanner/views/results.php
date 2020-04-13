@@ -19,13 +19,13 @@ if($matched === false ) {
 }
 else if(!empty($matched)) {
 	?>
-	<div class="wbcr-titan-content">
+	<div class="wt-titan-content">
         <table class="table table-striped table-hover table-responsive" width="100%">
             <thead>
             <tr>
                 <td class="wtitan-vulner-table-slim"></td>
                 <td class="wtitan-vulner-table-name">Path</td>
-                <td class="wtitan-vulner-table-description">Type</td>
+                <td class="wtitan-vulner-table-description">Description</td>
                 <td class="wtitan-vulner-table-slim">Match</td>
                 <td class="wtitan-vulner-table-slim"></td>
             </tr>
@@ -53,7 +53,7 @@ else if(!empty($matched)) {
 					            <?php break;
 			            } ?>
                         <td><?php echo $match->getFile()->getPath( true ) ?></td>
-                        <td><?php echo $match->getSignature()->getType() == 'both' ? 'Server & browser' : $match->getSignature()->getType() ?></td>
+                        <td><?php echo $match->getSignature()->getTitle() ?></td>
                         <td><?php echo htmlspecialchars( $match->getMatch() ); ?></td>
                         <td></td>
                     </tr>
