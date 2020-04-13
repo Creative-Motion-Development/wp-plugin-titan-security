@@ -185,6 +185,27 @@ function titan_remove_scheduler_scanner() {
 
 	wp_unschedule_hook( 'titan_scheduled_scanner' );
 	Plugin::app()->updateOption( 'scanner_status', 'stopped' );
+
+    try {
+        $matched = Plugin::app()->getOption('scanner_malware_matched');
+
+        if(count($matched) > 0 ) {
+            if ( Plugin::app()->is_premium() ) {
+                $license_key = Plugin::app()->premium->get_license()->get_key();
+            } else {
+                $license_key = null;
+            }
+            $client = new Client( $license_key );
+
+            $client->send_notification('email', 'virusFound', [
+                'subject' => 'VIRUS',
+                'url'   => get_site_url(),
+                'files' => $matched
+            ]);
+        }
+    } catch (Exception $e) {
+
+    }
 }
 
 /**
