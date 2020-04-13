@@ -199,18 +199,18 @@ $statistic_data = $antispam->get_statistic_data();
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-8 wt-dashboard-block-content" style="text-align: left;">
+                        <div class="col-md-6 wt-dashboard-block-content" style="text-align: left; padding-left: 0 !important; margin-left: 0 !important;">
                             <div class="form-group form-group-dropdown  factory-control-scanner_speed">
                                 <div class="control-group col-sm-12">
                                     <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
-                                        <div class="wt-dashboard-form-label"><?=__( 'Scanning speed', 'titan-security' );?></div>
+                                        <div class="wt-dashboard-form-label"><?=__( 'Scheduled scan', 'titan-security' );?></div>
                                         <div class="btn-group factory-buttons-group">
 					                        <?php foreach($schedules as $sched) :?>
                                                 <button type="button" class="btn btn-default btn-small wt-scanner-schedule-button factory-<?=$sched[0]; ?> <?php echo $sched[0]==$schedule ? 'active' : ''; ?>" data-value="<?=$sched[0]; ?>"><?=$sched[1];?></button>
 					                        <?php endforeach;?>
                                             <input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?=$schedule;?>">
                                         </div>
-                                        <div class="factory-hints" style="margin-left: 45px;">
+                                        <div class="factory-hints" style="">
 					                        <?php foreach($schedules as $sched) :?>
                                                 <div class="factory-hint factory-hint-<?=$sched[0]; ?>" style="display: <?php echo $sched[0]==$schedule ? '' : 'none'; ?>;"><?=$sched[2];?></div>
 					                        <?php endforeach;?>
@@ -219,7 +219,7 @@ $statistic_data = $antispam->get_statistic_data();
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 wt-dashboard-block-content" style="text-align: right;">
+                        <div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
                             <div class="form-group form-group-dropdown  factory-control-scanner_speed">
                                 <div class="control-group col-sm-12">
                                     <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
@@ -230,7 +230,7 @@ $statistic_data = $antispam->get_statistic_data();
 	                                        <?php endforeach;?>
                                             <input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?=$scanner_speed;?>">
                                         </div>
-                                        <div class="factory-hints" style="margin-left: 45px;">
+                                        <div class="factory-hints" style="">
 	                                        <?php foreach($scanner_speeds as $speeds) :?>
                                                 <div class="factory-hint factory-hint-<?=$speeds[0]; ?>" style="display: <?php echo $speeds[0]==$scanner_speed ? '' : 'none'; ?>;"><?=$speeds[2];?></div>
 	                                        <?php endforeach;?>
