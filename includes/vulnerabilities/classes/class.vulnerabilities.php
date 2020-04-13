@@ -78,7 +78,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getWordpress() {
-		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', array());
+		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', false);
 		return $this->wordpress;
 	}
 
@@ -86,7 +86,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getPlugins() {
-		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', array());
+		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', false);
 		return $this->plugins;
 	}
 
@@ -94,7 +94,7 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getThemes() {
-		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', array());
+		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', false);
 		return $this->themes;
 	}
 
@@ -115,17 +115,24 @@ class Vulnerabilities extends Module_Base {
 	public function get_count() {
 		$plugin_vulner_count = 0;
 		$theme_vulner_count = 0;
-		foreach ( $this->plugins as $plugin ) {
-			foreach ( $plugin as $vulner ) {
-				$plugin_vulner_count++;
+		$wp_vulner_count = 0;
+		if(is_array( $this->plugins) ) {
+			foreach ( $this->plugins as $plugin ) {
+				foreach ( $plugin as $vulner ) {
+					$plugin_vulner_count ++;
+				}
 			}
 		}
-		foreach ( $this->themes as $theme ) {
-			foreach ( $theme as $vulner ) {
-				$theme_vulner_count++;
+		if(is_array( $this->themes) ) {
+			foreach ( $this->themes as $theme ) {
+				foreach ( $theme as $vulner ) {
+					$theme_vulner_count ++;
+				}
 			}
 		}
-		return count($this->wordpress) + $plugin_vulner_count + $theme_vulner_count;
+		if(is_array( $this->wordpress) ) $wp_vulner_count = count($this->wordpress);
+
+		return $wp_vulner_count + $plugin_vulner_count + $theme_vulner_count;
 	}
 
 	/**

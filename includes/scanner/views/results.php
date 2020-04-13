@@ -8,43 +8,82 @@
  */
 
 use WBCR\Titan\MalwareScanner\Match;
-?>
-<div class="wbcr-titan-content">
-	<table class="table">
-		<thead>
-		<tr>
-			<th scope="col">Path</th>
-			<th scope="col">Type</th>
-			<th scope="col">Match</th>
-			<th scope="col"></th>
-		</tr>
-		</thead>
-		<tbody>
-		<?php foreach ( $matched as $file_path => $match ): ?>
-			<?php if ($match instanceof Match): ?>
-				<tr>
-					<td><?php echo $match->getFile() ?></td>
-					<td>Match</td>
-					<td><?php echo $match->getMatch() ?></td>
-					<td></td>
-				</tr>
-			<?php elseif ($match instanceof \WBCR\Titan\Client\Entity\CmsCheckItem): ?>
-				<tr>
-					<td><?php echo $match->path ?></td>
-					<td>Corrupted file</td>
-					<td><?php echo $match->action ?></td>
-					<td></td>
-				</tr>
-			<?php else: ?>
-				<tr>
-					<td><?php echo $file_path ?></td>
-					<td>null</td>
-					<td>null</td>
-					<td></td>
-				</tr>
-			<?php endif; ?>
 
-		<?php endforeach; ?>
-		</tbody>
-	</table>
-</div>
+if($matched === false ) {
+	?>
+    <div class="wtitan-audit-empty-container">
+		<?= sprintf(__('Click %1s to start scanning for malware','titan-security'), '<span class="btn btn-primary wt-nobutton">'.__('Start scan','titan-security').'</span>');?>
+    </div>
+	<?php
+
+}
+else if(!empty($matched)) {
+	?>
+	<div class="wbcr-titan-content">
+        <table class="table table-striped table-hover table-responsive" width="100%">
+            <thead>
+            <tr>
+                <td class="wtitan-vulner-table-slim"></td>
+                <td class="wtitan-vulner-table-name">Path</td>
+                <td class="wtitan-vulner-table-description">Type</td>
+                <td class="wtitan-vulner-table-slim">Match</td>
+                <td class="wtitan-vulner-table-slim"></td>
+            </tr>
+
+            </thead>
+            <tbody>
+            <?php foreach ( $matched as $file_path => $match ): ?>
+	            <?php if ( $match instanceof Match ): ?>
+                    <tr>
+			            <?php switch($match->getSignature()->getSever()) {
+				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL: ?>
+                                <td class="wt-severity-high"></td>
+					            <?php break;
+
+				            case \WBCR\Titan\MalwareScanner\Signature::SEVERITY_SUSPICIOUS: ?>
+                                <td class="wt-severity-medium"></td>
+					            <?php break;
+
+				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_WARNING: ?>
+                                <td class="wt-severity-medium"></td>
+					            <?php break;
+
+				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_INTO: ?>
+                                <td class="wt-severity-low"></td>
+					            <?php break;
+			            } ?>
+                        <td><?php echo $match->getFile()->getPath( true ) ?></td>
+                        <td><?php echo $match->getSignature()->getType() == 'both' ? 'Server & browser' : $match->getSignature()->getType() ?></td>
+                        <td><?php echo htmlspecialchars( $match->getMatch() ); ?></td>
+                        <td></td>
+                    </tr>
+	            <?php elseif ( $match instanceof \WBCR\Titan\Client\Entity\CmsCheckItem ): ?>
+                    <tr>
+                        <td><?php echo $match->path ?></td>
+                        <td>Corrupted file</td>
+                        <td><?php echo $match->action ?></td>
+                        <td></td>
+                    </tr>
+	            <?php else: ?>
+                    <tr>
+                        <td><?php echo $file_path ?></td>
+                        <td><?php var_dump( $match ) ?></td>
+                        <td>null</td>
+                        <td></td>
+                    </tr>
+	            <?php endif; ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+	</div>
+	<?php
+}
+else {
+	?>
+	<div class="wtitan-audit-empty-container">
+		<?= __('No malware found','titan-security');?>
+	</div>
+	<?php
+
+}
+?>

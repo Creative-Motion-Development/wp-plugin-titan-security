@@ -272,7 +272,7 @@ class Security {
 			return $errors;
 		}
 
-		return __('<strong>ERROR</strong>: Wrong login or password', 'clearfy');
+		return __('<strong>ERROR</strong>: Wrong login or password', 'titan-security');
 	}
 
 	/**

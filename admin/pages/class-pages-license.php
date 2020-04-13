@@ -70,6 +70,8 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		$this->plan_name = __('Titan security Pro', 'titan-security');
 		$this->menuIcon = WTITAN_PLUGIN_URL . '/admin/assets/img/titan-icon.png';
 
+		if($plugin->is_premium()) $this->page_menu_dashicon = 'dashicons-yes-alt';
+
 		parent::__construct($plugin);
 
 		add_action('admin_footer', [$this, 'print_confirmation_modal_tpl']);

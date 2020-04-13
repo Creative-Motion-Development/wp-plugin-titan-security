@@ -7,7 +7,16 @@ if( is_array($args) && !empty($args)) {
     $wordpress = $args['wordpress'];
     $plugins = $args['plugins'];
     $themes = $args['themes'];
-    if(!empty($wordpress) || !empty($plugins) || !empty($themes)) {
+
+    if($wordpress === false && $plugins === false && $themes === false) {
+	    ?>
+        <div class="wtitan-audit-empty-container">
+		    <?= sprintf(__('Click %1s to search for vulnerabilities','titan-security'), '<span class="btn btn-primary wt-nobutton">'.__('Check now','titan-security').'</span>');?>
+        </div>
+	    <?php
+
+    }
+    else if(!empty($wordpress) || !empty($plugins) || !empty($themes)) {
 	    ?>
         <div class="wtitan-scanner-vulner-table-container">
         <table class="table table-striped table-hover table-responsive" width="100%">
@@ -117,6 +126,14 @@ if( is_array($args) && !empty($args)) {
         </table>
         </div>
 	    <?php
+    }
+    else {
+	    ?>
+        <div class="wtitan-audit-empty-container">
+		    <?= __('No vulnerabilities','titan-security');?>
+        </div>
+	    <?php
+
     }
 }
 ?>

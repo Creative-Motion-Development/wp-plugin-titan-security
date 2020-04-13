@@ -17,6 +17,7 @@ if( !defined('ABSPATH') ) {
 /**
  * Выводит кнопку настроек в шапке интерфейса плагина
  */
+/*
 add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
 	if ( $plugin_name != WBCR\Titan\Plugin::app()->getPluginName() ) {
 		return;
@@ -27,6 +28,7 @@ add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
 	</a>
 	<?php
 } );
+*/
 
 
 /**

@@ -67,11 +67,13 @@ class Audit extends Module_Base {
 	/**
 	 * Get audit
 	 *
-	 * @return AuditResult[] Results
+	 * @return AuditResult[]|bool Results
 	 */
 	public function get_audit()
 	{
-		$this->results = get_option($this->plugin->getPrefix() . "audit_results", array());
+		$this->results = get_option($this->plugin->getPrefix() . "audit_results", false);
+		if($this->results === false) return false;
+
 		if( !is_array($this->results) )
 			$this->results = array();
 

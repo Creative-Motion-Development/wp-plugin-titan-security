@@ -15,7 +15,6 @@
         event.preventDefault();
 
         var btn = $(this);
-
         btn.attr('disabled', 'disabled');
 
         var action = btn.attr('data-action');
@@ -24,6 +23,14 @@
         if(action === 'start_scan') {
             btn.html('Starting...');
             nonce = wpnonce.start;
+            $("div.wt-scanner-chart-clean").css('width', '0%');
+            $("div.wt-scanner-chart-suspicious").css('width', '0%');
+            $("div.wt-scanner-chart-notverified").css('width', '100%');
+
+            $("#wtitan-files-num").html('0');
+            $("#wtitan-cleaned-num").html('0');
+            $("#wtitan-suspicious-num").html('0');
+            $("#wtitan-notverified-num").html('0');
         } else {
             btn.html('Stopping...');
             nonce = wpnonce.stop;
@@ -43,7 +50,7 @@
 
                 case 'stop_scan':
                     btn.attr('data-action', 'start_scan');
-                    btn.html('Scan');
+                    btn.html('Start scan');
                     break;
 
                 default:
@@ -79,13 +86,20 @@
                 return;
             }
 
-            $("#wt-total-percent").html(response.data.progress.toFixed(1) + '%');
-            $("#wt-total-percent-chart").html(response.data.progress.toFixed(1) + '<span>%</span>');
-            var canvas = $("#wtitan-scan-chart");
-            canvas.attr('data-cleaned', response.data.cleaned);
-            canvas.attr('data-suspicious', response.data.suspicious);
+            $("div.wt-scanner-chart-clean").css('width',response.data.progress[0] + '%');
+            $("div.wt-scanner-chart-suspicious").css('width',response.data.progress[1] + '%');
+            $("div.wt-scanner-chart-notverified").css('width',response.data.progress[2] + '%');
+
+            $("#wtitan-files-num").html(response.data.scanned);
             $("#wtitan-cleaned-num").html(response.data.cleaned);
             $("#wtitan-suspicious-num").html(response.data.suspicious);
+            $("#wtitan-notverified-num").html(response.data.notfiltered);
+
+            if(response.data.notfiltered === 0)
+            {
+                $('#scan').attr('data-action', 'start_scan');
+                $('#scan').html('Start scan');
+            }
         });
     }
 

@@ -262,7 +262,7 @@ class Antispam extends Base {
             <label class="col-sm-4 control-label"></label>
             <div class="control-group col-sm-8">
                 <div id="wantispam-protect-caldera-forms-message" class="wantispam-checkbox-warning-message">
-					<?php printf( __( '<b>You have to make additional settings in the Caldera Forms plugin!</b><br> Please create an Anti-spam processor for each of your forms that you want to protect. You can read this <a href="%s" target="_blank" rel="noopener">manual</a> to learn more about how to create an Anti-spam processor in the Caldera Forms plugin.', 'clearfy' ), 'https://anti-spam.space/docs/anti-spam-processor-for-caldera-forms/' ) ?>
+					<?php printf( __( '<b>You have to make additional settings in the Caldera Forms plugin!</b><br> Please create an Anti-spam processor for each of your forms that you want to protect. You can read this <a href="%s" target="_blank" rel="noopener">manual</a> to learn more about how to create an Anti-spam processor in the Caldera Forms plugin.', 'titan-security' ), 'https://anti-spam.space/docs/anti-spam-processor-for-caldera-forms/' ) ?>
                 </div>
             </div>
         </div>

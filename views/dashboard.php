@@ -3,8 +3,17 @@ if( is_array($data) ) {
 	extract($data);
 }
 /**
+ * <<<<<<< HEAD
  * @var array $data
  * @var bool $scanner_started
+ * =======
+ * @var array $data
+ * @var bool $scanner_started
+ * @var string $scanner_speed
+ * @var array $scanner_speeds
+ * @var string $schedule
+ * @var array $schedules
+ * >>>>>>> 5ef010c1762d615f8cb9aec78ff193343749cc73
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit $audit
  * @var \WBCR\Titan\SiteChecker $sites
@@ -148,6 +157,7 @@ $statistic_data = $antispam->get_statistic_data();
                                 });
                             </script>
                              Google chart API-->
+
 						</div>
 					</div>
 				</div>
@@ -168,7 +178,10 @@ $statistic_data = $antispam->get_statistic_data();
 						<div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
 							<?php
 							echo __('Scanned: ', 'titan-security');
-							echo "<span class='wt-magenta-text'>{$scanned}/{$files_count} " . __('files', 'titan-security') . "</span>";
+							$counter = 0;
+							if( $scanned > 0 )
+								$counter = "{$scanned} / {$files_count}";
+							echo "<span class='wt-magenta-text' id='wtitan-files-num'>{$counter}</span>&nbsp;" . __('files', 'titan-security');
 							?>
 						</div>
 						<div class="col-md-6 wt-dashboard-block-content-right">
@@ -177,14 +190,14 @@ $statistic_data = $antispam->get_statistic_data();
 							<?php else: ?>
 								<button class="btn btn-primary wt-dashboard-scan-button" id="scan" data-action="start_scan"><?php echo __('Start scan', 'titan-security'); ?></button>
 							<?php endif; ?>
-						
+
 						</div>
 					</div>
 					<div class="row">
 						<div class="wt-scanner-chart">
-							<div class="wt-scanner-chart-clean" style="width: <?php echo round($cleaned / $files_count * 100, 1); ?>%;"></div>
-							<div class="wt-scanner-chart-suspicious" style="width: <?php echo round($suspicious / $files_count * 100, 1); ?>%;"></div>
-							<div class="wt-scanner-chart-notverified" style="width: <?php echo round($notverified / $files_count * 100, 1); ?>%;"></div>
+							<div class="wt-scanner-chart-clean" style="width: <?php echo $progress[0]; ?>%;"></div>
+							<div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1]; ?>%;"></div>
+							<div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2]; ?>%;"></div>
 						</div>
 					</div>
 					<div class="row">
@@ -193,40 +206,85 @@ $statistic_data = $antispam->get_statistic_data();
 								<tbody>
 								<tr>
 									<td><span class="wt-scanner-chart-clean wt-legend-item"></span></td>
-									<td>Cleaned - <?php echo $cleaned ?></td>
-									
+									<td>Cleaned - <span id="wtitan-cleaned-num"><?php echo $cleaned ?></span></td>
+
 									<td><span class="wt-scanner-chart-suspicious wt-legend-item"></span></td>
-									<td>Suspicious - <?php echo $suspicious ?></td>
-									
+									<td>Suspicious - <span id="wtitan-suspicious-num"><?php echo $suspicious ?></span>
+									</td>
+
 									<td><span class="wt-scanner-chart-notverified wt-legend-item"></span></td>
-									<td>Not verified - <?php echo $notverified ?></td>
+									<td>Not verified -
+										<span id="wtitan-notverified-num"><?php echo $notverified ?></span></td>
 								</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-8 wt-dashboard-block-content" style="text-align: left;">
+							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
+								<div class="control-group col-sm-12">
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+										<div class="wt-dashboard-form-label"><?= __('Scanning speed', 'titan-security'); ?></div>
+										<div class="btn-group factory-buttons-group">
+											<?php foreach($schedules as $sched) : ?>
+												<button type="button" class="btn btn-default btn-small wt-scanner-schedule-button factory-<?= $sched[0]; ?> <?php echo $sched[0] == $schedule ? 'active' : ''; ?>" data-value="<?= $sched[0]; ?>"><?= $sched[1]; ?></button>
+											<?php endforeach; ?>
+											<input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?= $schedule; ?>">
+										</div>
+										<div class="factory-hints" style="margin-left: 45px;">
+											<?php foreach($schedules as $sched) : ?>
+												<div class="factory-hint factory-hint-<?= $sched[0]; ?>" style="display: <?php echo $sched[0] == $schedule ? '' : 'none'; ?>;"><?= $sched[2]; ?></div>
+											<?php endforeach; ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 wt-dashboard-block-content" style="text-align: right;">
+							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
+								<div class="control-group col-sm-12">
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+										<div class="wt-dashboard-form-label"><?= __('Scanning speed', 'titan-security'); ?></div>
+										<div class="btn-group factory-buttons-group">
+											<?php foreach($scanner_speeds as $speeds) : ?>
+												<button type="button" class="btn btn-default btn-small wt-scanner-speed-button factory-<?= $speeds[0]; ?> <?php echo $speeds[0] == $scanner_speed ? 'active' : ''; ?>" data-value="<?= $speeds[0]; ?>"><?= $speeds[1]; ?></button>
+											<?php endforeach; ?>
+											<input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?= $scanner_speed; ?>">
+										</div>
+										<div class="factory-hints" style="margin-left: 45px;">
+											<?php foreach($scanner_speeds as $speeds) : ?>
+												<div class="factory-hint factory-hint-<?= $speeds[0]; ?>" style="display: <?php echo $speeds[0] == $scanner_speed ? '' : 'none'; ?>;"><?= $speeds[2]; ?></div>
+											<?php endforeach; ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">&nbsp;</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="wt-dashboard-container">
-		<div class="wt-row">
-			<!-- AUDIT -->
-			<div class="col-md-12 wt-block-gutter">
-				<div class="wt-dashboard-block">
-					<div class="row">
-						<div class="col-md-6 wt-dashboard-block-header">
-							<h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
-						<div class="col-md-6 wt-dashboard-block-header-right">
-							<button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now', 'titan-security'); ?></button>
-							<div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
+		<div class="wt-dashboard-container">
+			<div class="wt-row">
+				<!-- AUDIT -->
+				<div class="col-md-12 wt-block-gutter">
+					<div class="wt-dashboard-block">
+						<div class="row">
+							<div class="col-md-6 wt-dashboard-block-header">
+								<h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
+							<div class="col-md-6 wt-dashboard-block-header-right">
+								<button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now', 'titan-security'); ?></button>
+								<div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
+							</div>
+						</div>
+						<div class="row">
+							<?php echo $check_content; ?>
 						</div>
 					</div>
-					<div class="row">
-						<?php echo $check_content; ?>
-					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
-</div>

@@ -47,20 +47,27 @@ class Scanner extends Module_Base {
 
 		$status = Plugin::app()->getOption('scanner_status', 'stopped');
 		if( $status === 'stopped' ) {
-			wp_send_json_success(false);
+			//wp_send_json_success(false);
 		}
 
-		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
-		$matchedCount = count(get_option(Plugin::app()->getPrefix() . 'titan_scanner_malware_matched', []));
-		$files_count = Plugin::app()->getOption('scanner_files_count');
 		$cleaned = $suspicious = $progress = 0;
-		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
-			$progress = 100 - $scanner->files_count / $files_count * 100;
-			$suspicious = $matchedCount;
-			$cleaned = $files_count - $scanner->files_count - $suspicious;
-		}
+		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
+		if($scanner) {
+			$matchedCount = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', false );
+			$files_count = Plugin::app()->getOption( 'scanner_files_count', 0 );
 
-		wp_send_json_success(compact('cleaned', 'suspicious', 'progress'));
+			$cleaned = $scanner->cleaned_count;
+			$suspicious = $scanner->suspicious_count;
+			$notfiltered = $scanner->files_count;
+			$scanned = $scanner->cleaned_count + $scanner->suspicious_count . ' / ' . $files_count;
+			$progress    = [
+				$files_count > 0 ? round( $scanner->cleaned_count / $files_count * 100, 1 ) : 0,
+				$files_count > 0 ? round( $scanner->suspicious_count / $files_count * 100, 1 ) : 0,
+				$files_count > 0 ? round( $scanner->files_count / $files_count * 100, 1 ) : 0
+			];
+
+			wp_send_json_success(compact('cleaned', 'suspicious', 'progress', 'notfiltered', 'scanned', 'files_count'));
+		}
 	}
 
 	public function ajax_start_scan()
@@ -133,32 +140,37 @@ class Scanner extends Module_Base {
 
 		/** @var MalwareScanner\Scanner $scanner */
 		$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
-		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', false);
 		$scanner_started = Plugin::app()->getOption('scanner_status') == 'started';
 		$files_count = Plugin::app()->getOption('scanner_files_count', 0);
-		$cleaned = 0;
-		$suspicious = 0;
-		$progress = 0;
-		$notverified = 0;
-		$scanned = 0;
-		if( $scanner !== false && $scanner->files_count > 0 && $files_count > 0 ) {
-			$progress = 100 - $scanner->files_count / $files_count * 100;
-			$suspicious = count($matched);
-			$cleaned = $files_count - $scanner->files_count - $suspicious;
-			$notverified = $scanner->files_count;
-			$scanned = (int)$cleaned + (int)$suspicious;
-		}
+		$progress = [
+			$files_count > 0 ? round($scanner->cleaned_count/$files_count*100, 1) : 0,
+			$files_count > 0 ? round($scanner->suspicious_count/$files_count*100, 1) : 0,
+			$files_count > 0 ? round($scanner->files_count/$files_count*100, 1) : 0
+		];
 
+		if(!$scanner) {
+			return [
+				'scanner_started' => 0,
+				'matched' => false,
+				'progress' => 0,
+				'cleaned' => 0,
+				'suspicious' => 0,
+				'scanned' => 0,
+				'notverified' => 0,
+				'files_count' => 0,
+			];
+		}
 
 		return [
 			'scanner_started' => $scanner_started,
 			'matched' => $matched,
-			'progress' => $progress,
-			'cleaned' => $cleaned,
-			'suspicious' => $suspicious,
-			'scanned' => $scanned,
-			'notverified' => $notverified,
+			'cleaned' => $scanner->cleaned_count,
+			'suspicious' => $scanner->suspicious_count,
+			'scanned' => $scanner->cleaned_count + $scanner->suspicious_count,
+			'notverified' => $scanner->files_count,
 			'files_count' => $files_count,
+			'progress' => $progress,
 		];
 	}
 	/**
