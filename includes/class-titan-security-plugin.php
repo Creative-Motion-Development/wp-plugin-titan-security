@@ -226,7 +226,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			$settings_url = admin_url('admin.php');
 		}
 
-		$settings_url = $settings_url . '?page=quickstart-' . $this->getPluginName();
+		$settings_url = $settings_url . '?page=dashboard-' . $this->getPluginName();
 		$extra_menu_title = apply_filters('wbcr/titan/adminbar_menu_title', __('Titan Security', 'titan-security'));
 
 		$menu_items = [];

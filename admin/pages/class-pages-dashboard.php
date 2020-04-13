@@ -240,11 +240,6 @@ class Dashboard extends Base {
 	{
 		$this->init();
 
-		if( !$this->plugin->is_premium() ) {
-			$this->plugin->view->print_template('require-license-activate');
-
-			return;
-		}
 		//FIREWALL
 		$firewall = array();
 
@@ -288,7 +283,7 @@ class Dashboard extends Base {
 				[
 					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
 					__('Free', 'titan-security'),
-					__('Free hint', 'titan-security')
+					__('Free speed is slow', 'titan-security')
 				]
 			];
 		}

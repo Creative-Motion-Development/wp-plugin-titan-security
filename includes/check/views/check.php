@@ -10,7 +10,7 @@ foreach ( $args['modules'] as $key => $module ) {
 	$active = "";
     if(isset($module['active']) && !empty($module['active'])) $active = $module['active'];
     if(isset($module['count'])) $count = " ({$module['count']})";
-	$scanner_menu    .= "<li class='{$active}'><a href='#wtitan-{$key}'><span class='dashicons {$module['icon']}'></span> {$module['name']}{$count}</a></li>\n";
+	$scanner_menu    .= "<li class='{$active}{$module['style']}'><a href='#wtitan-{$key}'><span class='dashicons {$module['icon']}'></span> {$module['name']}{$count}</a></li>\n";
 	$scanner_content .= "<div class='wtitan-tab-table-container tab-pane {$active}' id='wtitan-{$key}'>{$module['content']}</div>\n";
 }
 ?>

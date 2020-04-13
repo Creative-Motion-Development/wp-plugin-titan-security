@@ -8,7 +8,11 @@ if( is_array($args) && !empty($args)) {
     $plugins = $args['plugins'];
     $themes = $args['themes'];
 
-    if($wordpress === false && $plugins === false && $themes === false) {
+    if(!$this->plugin->is_premium())
+    {
+	    $this->plugin->view->print_template('pro-version');
+    }
+    else if($wordpress === false && $plugins === false && $themes === false) {
 	    ?>
         <div class="wtitan-audit-empty-container">
 		    <?= sprintf(__('Click %1s to search for vulnerabilities','titan-security'), '<span class="btn btn-primary wt-nobutton">'.__('Check now','titan-security').'</span>');?>

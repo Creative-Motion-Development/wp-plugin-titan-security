@@ -293,6 +293,10 @@ function titan_set_scanner_speed_active() {
 	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
 	if($scanner_speed == 'free')
 		Plugin::app()->updatePopulateOption( 'scanner_speed', 'slow' );
+
+	$scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
+	if($scanner_schedule == 'disabled')
+		Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
 }
 
 add_action( Plugin::app()->getPluginName()."/factory/premium/license_deactivate", 'titan_set_scanner_speed_deactive' );
@@ -300,6 +304,10 @@ function titan_set_scanner_speed_deactive() {
 	$scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
 	if($scanner_speed !== 'free')
 		Plugin::app()->updatePopulateOption( 'scanner_speed', 'free' );
+
+	$scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
+	if($scanner_schedule !== 'disabled')
+		Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
 }
 
 
@@ -361,7 +369,7 @@ function titan_init_check_schedule() {
 
 	$is_schedule = false;
 
-	$lasttime = Plugin::app()->getPopulateOption( 'scanner_schedule_last_time', wp_date($format_date) );
+	$lasttime = Plugin::app()->getPopulateOption( 'scanner_schedule_last_time', date_i18n($format_date) );
 	$schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
 	$last = date_parse_from_format ( $format_time ,$lasttime);
 

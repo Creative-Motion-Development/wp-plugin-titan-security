@@ -15,7 +15,7 @@
     background: #fff;
     text-align: center;
     border-radius: 5px;
-    min-height: 14em !important;
+    min-height: 16em !important;
 }
 .wt-row
 {
@@ -129,6 +129,26 @@
     background-color: #efefef !important;
 }
 /*----------------*/
+li.wt-tabs-pro a:after
+{
+    display: inline-block;
+    position: relative;
+    content: 'PRO';
+    background: #ff5722;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    font-style: normal;
+    padding: 4px 6px;
+    margin-left: 4px;
+    vertical-align: top;
+    top: 0;
+    left: 5px;
+    right: 0;
+    z-index: 11;
+    cursor: pointer;
+}
 .wt-scan-icon-loader
 {
     height: 55px;
@@ -235,9 +255,9 @@ span.wt-legend-item {
 .wt-dashboard-form-label
 {
     width: unset;
-    text-align: left;
+    /*text-align: left;*/
     float: unset;
-    display: inline-block;
+    display: block;
     vertical-align: middle;
     font-size: 16px;
     margin-right: 10px;
