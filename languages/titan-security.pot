@@ -1,0 +1,1439 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Anti-spam & Titan Security\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-14 08:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.3.3; wp-5.4"
+
+#: admin/pages/class-pages-antispam.php:137
+#, php-format
+msgid "%s spam comments were blocked by Anti-spam plugin so far."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:291
+msgid ""
+"<b>Use this option carefully!</b><br> Plugins like jetpack may have problems "
+"using this option."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:265
+#, php-format
+msgid ""
+"<b>You have to make additional settings in the Caldera Forms plugin!</b><br> "
+"Please create an Anti-spam processor for each of your forms that you want to "
+"protect. You can read this <a href=\"%s\" target=\"_blank\" rel=\"noopener\">"
+"manual</a> to learn more about how to create an Anti-spam processor in the "
+"Caldera Forms plugin."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:110
+msgid "<strong>Base settings</strong>."
+msgstr ""
+
+#: includes/tweaks/class-security-tweaks.php:275
+msgid "<strong>ERROR</strong>: Wrong login or password"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:196
+msgid "<strong>Hide WordPress versions</strong>"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:175
+msgid ""
+"A pingback is basically an automated comment that gets created when another "
+"blog links to you. A self-pingback is created when you link to an article "
+"within your own blog. Pingbacks are essentially nothing more than spam and "
+"simply waste resources."
+msgstr ""
+
+#: admin/pages/class-pages-license.php:213
+msgid "Activate 30 days trial"
+msgstr ""
+
+#: views/pro-version.php:3 views/require-license-activate.php:55
+msgid "Activate license"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:174
+msgid "Additional modules to spam protect."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:191
+msgid "Advanced protection of comment forms"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:105
+msgid "Advanced settings"
+msgstr ""
+
+#: includes/check/views/main.php:18
+msgid ""
+"After launching, the it will check your site for vulnerabilities and doing "
+"security audit. After you solve the detected security problems , you need to "
+"run the check again."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:438
+msgid ""
+"Allowing anyone to view all files in the Uploads folder with a browser will "
+"allow them to easily download all your uploaded files."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:215
+msgid ""
+"Allows attacker to learn the version of WP installed on the site. This meta "
+"tag has no useful function."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:155
+msgid ""
+"An attacker can find out the author's login, using a similar request to get "
+"your site. mysite.com/?author=1"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:114
+msgid ""
+"An unknown error occurred during trial activation. Details of the error are "
+"wrote in error log."
+msgstr ""
+
+#: admin/class-page-titan-basic.php:102
+msgid "And also write your ideas on how to extend or improve the plugin."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:93
+msgid "Anti-spam"
+msgstr ""
+
+#. Name of the plugin
+msgid "Anti-spam & Titan Security"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:144
+msgid "Anti-spam mode"
+msgstr ""
+
+#: views/dashboard.php:116
+msgid "Anti-spam status"
+msgstr ""
+
+#: includes/antispam/classes/class-antispam.php:90
+msgid "Anti-spam successfully disabled"
+msgstr ""
+
+#: includes/antispam/classes/class-antispam.php:86
+msgid "Anti-spam successfully enabled"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:131
+msgid "Antivirus settings"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:193
+msgid "Are you sure you want to change the database prefix?"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:194
+msgid ""
+"Attention! The prefix for the names of all tables in your database will be "
+"changed. Please backup the database and wp-config.php file. If an error "
+"occurs when changing the database prefix, you can restore data from backup "
+"by replacing the wp-config.php file and restoring the database backup "
+"manually."
+msgstr ""
+
+#: admin/pages/class-pages-check.php:83
+msgid "Audit"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:206
+msgid "Authentication Unique Keys and Salts are not set in wp-config.php file"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:310
+msgid "Author URL by ID access"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:267
+#, php-format
+msgid "Available only on <a href='%1s'>%2s</a>"
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:44
+#: includes/scanner/classes/class.scanner.php:85
+#: includes/scanner/classes/class.scanner.php:87
+#: includes/scanner/classes/class.scanner.php:111
+#: includes/scanner/classes/class.scanner.php:113
+#: includes/sitechecker/classes/class.sitechecker.php:115
+msgid "Available only to premium users"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:137
+msgid "Base options."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:110
+msgid "Basic recommended security settings."
+msgstr ""
+
+#: views/pro-version.php:4 views/require-license-activate.php:58
+msgid "Buy license"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:177
+#, php-format
+msgid ""
+"By agreeing to the trial, you confirm that you have read <a href=\"%s\" "
+"target=\"_blank\" rel=\"noreferrer noopener\">Terms of Service</a> and the\n"
+"           \t\t\t\t\t <a href=\"%s\" target=\"_blank\" rel=\"noreferrer "
+"noopener\">Privacy Policy (GDPR compilant)</a>"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:311
+msgid ""
+"By knowing the username, you are one step closer to logging in using the "
+"username to brute-force the password, or to gain access in a similar way."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:228
+msgid ""
+"Caldera Forms has powerful anti-spam by default. The Anti-spam plugin "
+"provides additional anti-spam protection for your Caldera Forms."
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:119
+msgid "Cancelled"
+msgstr ""
+
+#: admin/pages/class-pages-cert-info.php:87
+msgid "Cert info"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:165
+msgid ""
+"Changes in the text of the error so that attackers could not find the login."
+msgstr ""
+
+#: views/dashboard.php:249 includes/audit/views/all-audit.php:11
+#: includes/check/views/main.php:13
+#: includes/vulnerabilities/views/all-table.php:18
+msgid "Check now"
+msgstr ""
+
+#: admin/pages/class-pages-scanner.php:68
+msgid "Checking site for viruses"
+msgstr ""
+
+#: admin/pages/class-pages-sitechecker.php:76
+msgid "Checking sites for availability"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:283
+msgid ""
+"Checks the maximum number of files per minute. We recommend that you have "
+"more than 100 MB of RAM"
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:100
+#, php-format
+msgid "Clean-up Logs (<span id=\"js-wlogger-size\">%s</span>)"
+msgstr ""
+
+#: includes/audit/views/all-audit.php:11
+#, php-format
+msgid "Click %1s to perform a security audit"
+msgstr ""
+
+#: includes/vulnerabilities/views/all-table.php:18
+#, php-format
+msgid "Click %1s to search for vulnerabilities"
+msgstr ""
+
+#: includes/scanner/views/results.php:15
+#, php-format
+msgid "Click %1s to start scanning for malware"
+msgstr ""
+
+#: libs/antispam-premium/includes/class-forms-listener.php:171
+#, php-format
+msgid "Comment #%d hasn't been checked for spam due an error:"
+msgstr ""
+
+#: libs/antispam-premium/includes/class-forms-listener.php:169
+#, php-format
+msgid "Comment #%d hasn't been checked for spam due an unknown error."
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-comments-list-table.php:75
+#: libs/antispam-premium/admin/includes/class-users-list-table.php:83
+msgid "Comment hasn't been checked for spam because of error:"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:123
+msgid "Complete Uninstall"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:169
+msgid "Confirmation"
+msgstr ""
+
+#. Author of the plugin
+msgid "CreativeMotion"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:309
+#: admin/pages/class-pages-plugin-settings.php:173
+msgid "Custom"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:299
+#: admin/pages/class-pages-plugin-settings.php:163
+msgid "Daily"
+msgstr ""
+
+#: includes/class-titan-security-plugin.php:237
+#: admin/pages/class-pages-dashboard.php:142
+msgid "Dashboard"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:112
+msgid "Database prefix has been changed!"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:198
+msgid "Database table prefix is empty or has a default value: 'wp_'"
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-dashboard-widget.php:93
+msgid "Date"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:251
+msgid "Date and time for the Custom schedule"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:253
+msgid "Date and time of the custom scan schedule"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:226
+msgid "Day for the weekly scan"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:228
+msgid "Day of the week for the weekly scan"
+msgstr ""
+
+#: includes/check/views/main.php:17 includes/scanner/views/scanner.php:32
+msgid "Description"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:94
+msgid "Detected and stoped spam"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:422
+#, php-format
+msgid "Disable it for live websites in <b>wp_config.php:</b><br>%1$s"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:295
+#: admin/pages/class-pages-plugin-settings.php:159
+msgid "Disable scheduled scanning"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:173
+msgid "Disable XML-RPC"
+msgstr ""
+
+#: views/dashboard.php:69 admin/pages/class-pages-dashboard.php:294
+#: admin/pages/class-pages-plugin-settings.php:158
+msgid "Disabled"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:165
+msgid "Display a privacy notice under your comment forms."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:224
+msgid ""
+"Displaying any debugging information in the interface can be extremely bad "
+"for site security. If any PHP errors occur on your site , they must be "
+"registered in a secure location and not displayed to visitors or potential "
+"attackers."
+msgstr ""
+
+#: includes/class-titan-security-plugin.php:242
+msgid "Do you like our plugin?"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:99
+msgid "Do you want the plugin to improved and update?"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:86
+msgid ""
+"During the setup, an unknown error occurred, please try again or contact the "
+"plugin support."
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-users-list-table.php:105
+msgid "Empty Spam"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:146
+msgid "Enable or disable anti-spam for all site."
+msgstr ""
+
+#: views/dashboard.php:63
+msgid "Enabled and Protecting"
+msgstr ""
+
+#: views/dashboard.php:92
+msgid ""
+"Enabled and Protecting: In this mode, the Titan Web Application Firewall is "
+"actively\n"
+"                                blocking requests matching known attack "
+"patterns and is actively protecting your site\n"
+"                                from attackers."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:231
+msgid ""
+"Enabling 'allow_url_include' PHP Directive will make your site vulnerable to "
+"cross-site attacks (XSS)."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:238
+msgid ""
+"Enabling 'expose_php' PHP Directive exposes to the world that PHP is "
+"installed on the server, which includes the PHP version within the HTTP "
+"header."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:267
+msgid ""
+"Enter Stylesheet/Script file names to exclude from version removal (each "
+"exclude file starts with a new line)"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:276
+msgid "Error"
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:60 admin/pages/class-pages-logs.php:88
+msgid "Error Log"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:178
+msgid ""
+"Every good developer should enable debugging before starting work on a new "
+"plugin or theme. In fact, WordPress Codex \"strongly recommends\" that "
+"developers use WP_DEBUG. Unfortunately, many developers forget to disable "
+"debugging mode even when the site is running. Displaying debug logs in the "
+"web interface will allow hackers to learn a lot about your WordPress website."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:267
+msgid "Example"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:265
+msgid "Exclude stylesheet/script file names"
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:96
+msgid "Export Debug Information"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:282
+#: admin/pages/class-pages-plugin-settings.php:139
+msgid "Fast"
+msgstr ""
+
+#: views/dashboard.php:155
+msgid "files"
+msgstr ""
+
+#: views/dashboard.php:54 views/quickstart.php:55
+msgid "Firewall"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:461
+msgid ""
+"Firewall protects against password brute force and blocks suspicious "
+"activity."
+msgstr ""
+
+#: views/audit/fix-database-prefix.php:9
+msgid "Fixing database prefix"
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-dashboard-widget.php:147
+#, php-format
+msgid "For all time using the plugin, %s spam attacks were stopped."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:119
+msgid ""
+"Force users to use strong passwords as rated by the WordPress password meter."
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:267
+#: admin/pages/class-pages-plugin-settings.php:136
+msgid "Free"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:268
+msgid "Free speed is slow"
+msgstr ""
+
+#: views/quickstart.php:180
+msgid "Frequency"
+msgstr ""
+
+#: views/quickstart.php:45
+msgid "Full scan your site."
+msgstr ""
+
+#: admin/class-page-titan-basic.php:68
+msgid "Get starting free support"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:53
+msgid "Global plugin settings"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:112
+msgid "Go rate us and push ideas"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:60
+msgid "Having Issues?"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:101
+msgid ""
+"Help the author, leave a review on wordpress.org. Thanks to feedback, we "
+"will know that the plugin is really useful to you and is needed."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:153
+msgid "Hide author login"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:163
+msgid "Hide errors when logging into the site"
+msgstr ""
+
+#. URI of the plugin
+msgid "http://wordpress.org/plugins/anti-spam/"
+msgstr ""
+
+#: includes/audit/classes/class.cert.php:168
+msgid "HTTPS is not activated on this site."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:270
+msgid "HTTPS is not available on this site"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://cm-wp.com/"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:72
+#, php-format
+msgid ""
+"If you find a php error or a vulnerability in plugin, you can <a href=\"%s\" "
+"target=\"_blank\" rel=\"noopener\">create ticket</a> in hot support that we "
+"responded instantly."
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:291
+msgid "Import options"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:261
+msgid "Import/Export"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:288
+msgid "Import/Export settings"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:193
+msgid ""
+"In order to protect your comment forms, you need to make it difficult or "
+"impossible for an automated tool to fill in or submit the form while keeping "
+"it as easy as possible for your customers to fill out the form."
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:90
+msgid ""
+"In this section, you can track errors. Sending this log to us, will help in "
+"solving possible issues."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:345
+msgid "Incompatible plugins found"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:405
+msgid ""
+"It is important to hide or delete the readme.html or readme.txt file, "
+"because it contains information about the WP version."
+msgstr ""
+
+#: libs/antispam-premium/admin/pages/class-pages-settings.php:82
+#, php-format
+msgid "It remains to check %s comments."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:204
+msgid "Job Spam-Free for WordPress Contact Forms."
+msgstr ""
+
+#: views/dashboard.php:66
+msgid "Learning Mode"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:68
+msgid "License"
+msgstr ""
+
+#: includes/check/classes/class.check.php:150 includes/check/views/hided.php:34
+msgid "Malware"
+msgstr ""
+
+#: includes/scanner/views/scanner.php:17
+msgid "Malware scan"
+msgstr ""
+
+#: views/quickstart.php:56
+msgid "Manage Firewall"
+msgstr ""
+
+#: views/quickstart.php:128
+msgid "Manage scanner"
+msgstr ""
+
+#: views/quickstart.php:132
+msgid "Manage site checker"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:277
+#: admin/pages/class-pages-plugin-settings.php:138
+msgid "Medium"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:141
+msgid ""
+"Minimum role at which a user must choose a strong password. For more "
+"information on WordPress roles and capabilities please see http://codex."
+"wordpress.org/Roles_and_Capabilities. Warning: If your site invites public "
+"registrations setting the role too low may annoy your members."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:174
+msgid "Modules."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:365
+msgid "Need to update plugins, as previous versions may be vulnerable:"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:386
+msgid "Need to update themes, as previous versions may be vulnerable:"
+msgstr ""
+
+#: includes/vulnerabilities/views/all-table.php:43
+#: includes/vulnerabilities/views/all-table.php:70
+#: includes/vulnerabilities/views/all-table.php:101
+#: includes/vulnerabilities/views/plugins-table.php:20
+#: includes/vulnerabilities/views/themes-table.php:18
+#: includes/vulnerabilities/views/wordpress-table.php:17
+msgid "No description of the vulnerability"
+msgstr ""
+
+#: includes/scanner/views/results.php:83
+msgid "No malware found"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:264
+msgid "No openssl extension for php"
+msgstr ""
+
+#: includes/audit/views/all-audit.php:67
+msgid "No security issues"
+msgstr ""
+
+#: includes/vulnerabilities/views/all-table.php:137
+msgid "No vulnerabilities"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:153
+msgid "Older versions of MySQL are very slow and vulnerable"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:145
+msgid "Older versions of PHP are slow and vulnerable"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:161
+msgid "Older versions of Wordpress may be vulnerable"
+msgstr ""
+
+#: includes/functions.php:22
+msgid "Once 30 sec"
+msgstr ""
+
+#: includes/audit/classes/class.cert.php:160
+msgid "PHP openssl extension is missing"
+msgstr ""
+
+#: views/pro-version.php:2 views/require-license-activate.php:49
+msgid "Please activate your license to use this plugin feature."
+msgstr ""
+
+#: libs/antispam-premium/admin/pages/class-pages-settings.php:80
+msgid "Please wait! Checking comments..."
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:61
+msgid "Plugin debug report"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:113
+msgid "Plugin menu in adminbar"
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-dashboard-widget.php:103
+msgid "Plugin stopped spam attacks"
+msgstr ""
+
+#: views/quickstart.php:114 includes/vulnerabilities/views/all-table.php:66
+msgid "Plugins"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:122
+msgid "Prefix cannot be empty!"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:253
+msgid "Problems with the SSL certificate were detected on your site"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:69
+msgid "Product activation"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:226
+msgid "Protect Caldera Forms"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:202
+msgid "Protect Contact Forms 7"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:214
+msgid "Protect Ninja Forms"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:181
+msgid "Protect Register Form"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:216
+msgid "Protects contact forms of the Ninja Forms plugin from spam."
+msgstr ""
+
+#: views/quickstart.php:182
+msgid "Push"
+msgstr ""
+
+#: views/quickstart.php:35 admin/pages/class-pages-quickstart.php:131
+msgid "Quick start"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:404
+msgid "Readme.html or readme.txt file is available in the site root"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:213
+#: admin/pages/class-pages-tweaks.php:228
+#: admin/pages/class-pages-tweaks.php:239
+msgid "Recommended"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:149
+msgid "Recommended speed: "
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:183
+msgid ""
+"Registration form can be protected in a matter of minutes with a few new "
+"fields and limits imposed."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:203
+msgid "Remove html comments"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:205
+msgid "Remove html comments in source code."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:213
+msgid "Remove meta generator"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:228
+msgid "Remove Version from Script"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:239
+msgid "Remove Version from Stylesheet"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:215
+#, php-format
+msgid "Removes the meta tag from the %s section"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:175
+msgid "Removes the server responses a reference to the xmlrpc file."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:242
+msgid ""
+"Removes the wordpress version number from stylesheets (not logged in user "
+"only)."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:231
+msgid ""
+"Removes wordpress version number from scripts (not logged in user only)."
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:154
+msgid "Save spam comments"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:156
+msgid ""
+"Save spam comments into spam section. Useful for testing how the plugin "
+"works."
+msgstr ""
+
+#: includes/scanner/views/scanner.php:25
+msgid "Scan"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:300
+#: admin/pages/class-pages-plugin-settings.php:164
+msgid "Scan every day"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:305
+#: admin/pages/class-pages-plugin-settings.php:169
+msgid "Scan every week"
+msgstr ""
+
+#: views/dashboard.php:150
+msgid "Scanned: "
+msgstr ""
+
+#: views/dashboard.php:145 views/quickstart.php:127
+#: admin/pages/class-pages-scanner.php:67
+msgid "Scanner"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:380
+msgid "Scanner schedule is not selected"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:376
+msgid "Scanner schedule successfully changed"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:354
+msgid "Scanner speed is not selected"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:350
+msgid "Scanner speed successfully changed"
+msgstr ""
+
+#: includes/scanner/views/scanner.php:33
+msgid ""
+"Scanning all files of your site for malware. At each launch, site scanning "
+"starts from the beginning"
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:121
+msgid "Scanning cancelled"
+msgstr ""
+
+#: views/dashboard.php:219 admin/pages/class-pages-plugin-settings.php:146
+msgid "Scanning speed"
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:95
+msgid "Scanning started"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:182
+msgid "Schedule scan"
+msgstr ""
+
+#: views/dashboard.php:199
+msgid "Scheduled scan"
+msgstr ""
+
+#: views/dashboard.php:247 views/quickstart.php:59 views/quickstart.php:107
+#: includes/check/classes/class.check.php:135 includes/check/views/hided.php:31
+#: includes/check/views/main.php:12
+msgid "Security audit"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:84
+msgid "Security audit and vulnerability detection"
+msgstr ""
+
+#: views/quickstart.php:108
+msgid "Security issues detected!"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:56
+msgid "Security tweaks"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:310
+#: admin/pages/class-pages-plugin-settings.php:174
+msgid "Select the date and time of the next scan"
+msgstr ""
+
+#: admin/pages/class-pages-sitechecker.php:114
+msgid "ServiceWorker not supported. Your site must work on HTTPS"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:119
+#: admin/pages/class-pages-tweaks.php:155
+msgid "Sets the redirect to exclude the possibility of obtaining a login."
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:52
+msgid "Settings"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:345
+msgid "Settings are not defined or do not exist."
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:85
+msgid "Settings successfully updated!"
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-dashboard-widget.php:104
+msgid "Show statistics for 7 days"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:304
+msgid ""
+"Since user names make up half of the login credentials, this made it easier "
+"for hackers to launch brute- force attacks. You need to set complex and "
+"unique names for your site administrators."
+msgstr ""
+
+#: admin/pages/class-pages-sitechecker.php:75
+msgid "Site Checker"
+msgstr ""
+
+#: views/quickstart.php:131
+msgid "Site checker"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:272
+#: admin/pages/class-pages-plugin-settings.php:137
+msgid "Slow"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:346
+msgid ""
+"Some plugins on your site are not compatible with PHP and Wordpress versions:"
+" "
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-dashboard-widget.php:93
+msgid "Spam attack"
+msgstr ""
+
+#: views/dashboard.php:110
+msgid "Spam blocked: "
+msgstr ""
+
+#: libs/antispam-premium/anti-spam-premium.php:124
+#: libs/antispam-premium/admin/includes/class-comments-list-table.php:130
+msgid "Spam checking queue"
+msgstr ""
+
+#: admin/pages/class-pages-cert-info.php:88
+msgid "SSL certificate information"
+msgstr ""
+
+#: views/dashboard.php:162 views/quickstart.php:36
+#: includes/scanner/views/results.php:15
+msgid "Start scan"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:144
+#: admin/pages/class-pages-quickstart.php:133
+msgid "Start scanning and information about problems"
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:93
+msgid "Started"
+msgstr ""
+
+#: views/dashboard.php:160 includes/scanner/views/scanner.php:21
+msgid "Stop scanning"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:132
+msgid "Strong Password Minimum Role"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:117
+msgid "Strong Password Requirement"
+msgstr ""
+
+#: libs/antispam-premium/admin/includes/class-comments-list-table.php:77
+#: libs/antispam-premium/admin/includes/class-users-list-table.php:85
+msgid "Successfully was checked for spam!"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:273
+msgid "Suitable for the most budget hosting services"
+msgstr ""
+
+#: admin/boot.php:52
+#, php-format
+msgid ""
+"Thanks for activating the premium Titan security plugin. You got a bonus, "
+"premium <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Anti-spam</a> "
+"plugin. Want to <a href=\"%s\" target=\"_blank\" rel=\"noopener\">install it "
+"now</a>?"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:230
+msgid "The 'allow_url_include' PHP directive is enabled"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:223
+msgid "The 'display_errors' PHP directive is enabled"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:237
+msgid "The 'expose_php' PHP directive outputs the PHP version"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:278
+msgid "The best option for almost any capacity"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:132
+msgid ""
+"The database prefix cannot be changed because the wp-config.php file is not "
+"writable."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:460
+msgid "The firewall is disabled."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:421
+msgid ""
+"The plugins and themes file editor is a security issue because it not only "
+"shows the PHP source code, it also enables attackers to inject malicious "
+"code into your site if they manage to gain access to admin."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:420
+msgid "The plugins and themes file editor is enabled on your site"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:148
+#: admin/pages/class-pages-plugin-settings.php:184
+msgid "The speed of scanning affects the resources consumed"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:259
+msgid "The SSL certificate ends "
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:303
+msgid "The standard administrator login 'admin' is used"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:437
+msgid "The Uploads folder is browsable."
+msgstr ""
+
+#: views/quickstart.php:115 includes/vulnerabilities/views/all-table.php:97
+msgid "Themes"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:199
+msgid ""
+"This allows hackers to plan a massive attack based on the default prefix "
+"'wp_'"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:205
+msgid ""
+"This function will remove all html comments in the source code, except for "
+"special and hidden comments. This is necessary to hide the version of "
+"installed plugins."
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:106
+#: admin/pages/class-pages-plugin-settings.php:132
+#: admin/pages/class-pages-plugin-settings.php:261
+msgid "This group of settings allows you to configure the work of the plugin."
+msgstr ""
+
+#: includes/class.module-base.php:95
+msgid "This script file does not exist!"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:115
+msgid ""
+"This setting allows you to enable/disable the additional menu of the plugin, "
+"in the admin bar."
+msgstr ""
+
+#: includes/antispam/functions.php:70
+#, php-format
+msgid ""
+"This site uses Antispam to reduce spam. <a href=\"%s\" target=\"_blank\" "
+"rel=\"nofollow noopener\">Learn how your comment data is processed</a>."
+msgstr ""
+
+#: includes/class.module-base.php:66
+msgid "This template does not exist!"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:201
+msgid "Time for the daily scan"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:236
+#: admin/pages/class-pages-plugin-settings.php:238
+msgid "Time for the weekly scan"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:141
+msgid "Titan Anti-spam"
+msgstr ""
+
+#: admin/class-page-titan-basic.php:47
+msgid "Titan Anti-spam & Security"
+msgstr ""
+
+#: includes/class-titan-security-plugin.php:230
+msgid "Titan Security"
+msgstr ""
+
+#: anti-spam.php:53 admin/pages/class-pages-license.php:83
+#: admin/pages/class-pages-quickstart.php:130
+msgid "Titan security"
+msgstr ""
+
+#. Description of the plugin
+msgid "Titan Security - Anti-spam, Anti-virus, Firewall and Malware Scan"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:70
+msgid "Titan security Pro"
+msgstr ""
+
+#: admin/pages/class-pages-antispam.php:167
+msgid ""
+"To help your site with transparency under privacy laws like the GDPR, "
+"Antispam can display a notice to your users under your comment forms. This "
+"feature is disabled by default, however, you can turn it on above."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:230
+#: admin/pages/class-pages-tweaks.php:241
+msgid ""
+"To make it more difficult for others to hack your website you can remove the "
+"WordPress version number from your site, your css and js. Without that "
+"number it's not possible to see if you run not the current version to "
+"exploit bugs from the older versions. <br><br>\n"
+"\t\t\t\t\tAdditionally it can improve the loading speed of your site, "
+"because without query strings in the URL the css and js files can be cached."
+msgstr ""
+
+#: admin/pages/class-pages-license.php:104
+msgid "Trial is activated successfully!"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:55
+msgid "Tweaks"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:273
+#: includes/audit/classes/class.cert.php:156
+msgid "Unknown error"
+msgstr ""
+
+#: views/quickstart.php:181
+msgid "Uptime"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:227
+msgid "URL adding error"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:182
+msgid "URL deletion error"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:209
+msgid "URL is empty"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:174
+msgid "URL not deleted"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:220
+msgid "URL successfully added"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:167
+msgid "URL successfully deleted"
+msgstr ""
+
+#: views/quickstart.php:179
+msgid "URL's"
+msgstr ""
+
+#: libs/antispam-premium/includes/class-forms-listener.php:101
+#, php-format
+msgid "User #%d hasn't been checked for spam due an error:"
+msgstr ""
+
+#: libs/antispam-premium/includes/class-forms-listener.php:99
+#, php-format
+msgid "User #%d hasn't been checked for spam due an unknown error."
+msgstr ""
+
+#: libs/antispam-premium/includes/cron-schedules.php:108
+msgid "User hasn't been checked for spam due an error:"
+msgstr ""
+
+#: includes/audit/classes/class.cert.php:164
+msgid "Verification is only available on HTTPS"
+msgstr ""
+
+#: views/quickstart.php:60
+msgid "View more details"
+msgstr ""
+
+#: views/quickstart.php:111 admin/pages/class-pages-vulnerabilities.php:79
+#: includes/check/classes/class.check.php:143
+msgid "Vulnerabilities"
+msgstr ""
+
+#: admin/pages/class-pages-vulnerabilities.php:80
+msgid "Vulnerabilities in your Wordpress, plugins, and themes"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:174
+msgid "We are using some personal data, like your's e-mail."
+msgstr ""
+
+#: admin/class-page-titan-basic.php:63
+msgid ""
+"We provide free support for this plugin. If you are pushed with a problem, "
+"just create a new ticket. We will definitely help you!"
+msgstr ""
+
+#: views/dashboard.php:60
+msgid "Web Application Firewall Status"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:304
+#: admin/pages/class-pages-plugin-settings.php:168
+msgid "Weekly"
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:203
+msgid "What time should start scanning"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:192
+msgid ""
+"When enabled, WordPress will use non-compressed versions (dev versions) of "
+"JS and CSS files . The default is to use min versions of the files. For "
+"security and performance reasons, this constant must be disabled on the "
+"production site."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:185
+msgid ""
+"When its enabled, all SQL queries will be saved in the $wpdb->queries "
+"variable as an array. For security and performance reasons, this constant "
+"must be disabled on the production site."
+msgstr ""
+
+#: admin/pages/class-pages-plugin-settings.php:125
+msgid ""
+"When the plugin is deleted from the Plugins menu, also delete all plugin "
+"settings."
+msgstr ""
+
+#: views/audit/fix-database-prefix.php:10
+msgid ""
+"With the use of this tweak you can easily replce your database prefix to "
+"other keyword and you don’t need to change it manyally."
+msgstr ""
+
+#: views/quickstart.php:113 includes/vulnerabilities/views/all-table.php:40
+msgid "Wordpress"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:184
+msgid "Wordpress Database Debug mode is enabled on your site"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:177
+msgid "Wordpress Debug mode is enabled on your site"
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:196
+msgid ""
+"WordPress itself and many plugins shows their version at the public areas of "
+"your site. An attacker received this information may be aware of the "
+"vulnerabilities found in the version of the WordPress core or plugins."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:191
+msgid "Wordpress Script Debug Mode is enabled on your site"
+msgstr ""
+
+#: admin/pages/class-pages-logs.php:98
+msgid "Working..."
+msgstr ""
+
+#: admin/pages/class-pages-tweaks.php:165
+msgid ""
+"WP by default shows whether you entered a wrong login or incorrect password, "
+"which allows attackers to understand if there is a certain user on the site, "
+"and then start searching through the passwords."
+msgstr ""
+
+#: admin/pages/class-pages-check.php:201
+msgid "Yes, confirm"
+msgstr ""
+
+#: admin/pages/class-pages-check.php:185 admin/pages/class-pages-check.php:229
+#: admin/pages/class-pages-check.php:286
+msgid "You are not have permission for this action!"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:207
+msgid ""
+"You can generate these using the <a href='https://api.wordpress.org/secret-"
+"key/1.1/salt/'>WordPress.org secret-key service</a>"
+msgstr ""
+
+#: views/audit/fix-database-prefix.php:19
+msgid "You current table prefix is"
+msgstr ""
+
+#: includes/scanner/classes/class.scanner.php:38
+#: includes/scanner/classes/class.scanner.php:78
+#: includes/scanner/classes/class.scanner.php:80
+#: includes/scanner/classes/class.scanner.php:104
+#: includes/scanner/classes/class.scanner.php:106
+#: includes/sitechecker/classes/class.sitechecker.php:109
+#: includes/sitechecker/classes/class.sitechecker.php:154
+#: includes/sitechecker/classes/class.sitechecker.php:199
+msgid "You don't have enough capability to edit this information"
+msgstr ""
+
+#: admin/pages/class-pages-dashboard.php:340
+#: admin/pages/class-pages-dashboard.php:366
+#: admin/pages/class-pages-plugin-settings.php:326
+#: includes/antispam/classes/class-antispam.php:75
+msgid "You don't have enough capability to edit this information."
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:364
+#, php-format
+msgid "You have %1s plugins that need to be updated"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:385
+#, php-format
+msgid "You have %1s themes that need to be updated"
+msgstr ""
+
+#: admin/pages/class-pages-license.php:124
+#, php-format
+msgid ""
+"You have already activated the trial earlier, you cannot activate the trial "
+"more than once. However, if your key has not expired yet, you can find it in "
+"your account (<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">"
+"%s</a>), and then insert the key in the license form to activate the premium "
+"plugin. To restore access to your account, use your admin email."
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:142
+msgid "You have subscribed to PUSH notifications"
+msgstr ""
+
+#: includes/sitechecker/classes/class.sitechecker.php:132
+msgid "You have unsubscribed to PUSH notifications"
+msgstr ""
+
+#: admin/pages/class-pages-sitechecker.php:113
+msgid "Your browser does not support notifications"
+msgstr ""
+
+#: libs/antispam-premium/includes/3rd-party/class-extension.php:117
+msgid "Your message has been marked as spam!"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:152
+#, php-format
+msgid "Your MySQL version %1s is less than the recommended %2s"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:144
+#, php-format
+msgid "Your PHP version %1s is less than the recommended %2s"
+msgstr ""
+
+#: admin/pages/class-pages-sitechecker.php:112
+msgid "Your site must work on HTTPS to subscribe to notifications"
+msgstr ""
+
+#: includes/audit/classes/class.audit.php:160
+#, php-format
+msgid "Your Wordpress version %1s is less than the recommended %2s"
+msgstr ""
