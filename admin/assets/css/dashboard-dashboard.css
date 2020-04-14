@@ -186,6 +186,12 @@ li.wt-tabs-pro a:after
     border-radius: 5px;
     margin: 0 10px 10px 10px;
 }
+.wt-scanner-chart-clean[style*="width: 0%"],
+.wt-scanner-chart-suspicious[style*="width: 0%"],
+.wt-scanner-chart-notverified[style*="width: 0%"]
+{
+    display: none !important;
+}
 .wt-scanner-chart-clean, .wt-scanner-chart-suspicious, .wt-scanner-chart-notverified
 {
     border: 1px solid #c1c1c1;

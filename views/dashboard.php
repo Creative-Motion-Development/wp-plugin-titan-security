@@ -32,7 +32,7 @@ if( isset($scanner) ) {
  * @var bool   $is_premium
  * @var string $scanner_started
  * @var string $matched
- * @var string $progress
+ * @var array  $progress
  * @var string $suspicious
  * @var string $cleaned
  * @var string $notverified
@@ -168,8 +168,8 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 					<div class="row">
 						<div class="wt-scanner-chart">
 							<div class="wt-scanner-chart-clean" style="width: <?php echo $progress[0]; ?>%;"></div>
-							<div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1]; ?>%;"></div>
-							<div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2]; ?>%;"></div>
+							<div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1];?>%;"></div>
+							<div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2];?>%;"></div>
 						</div>
 					</div>
 					<div class="row">

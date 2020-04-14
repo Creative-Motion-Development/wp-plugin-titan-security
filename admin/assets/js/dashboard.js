@@ -208,7 +208,7 @@ jQuery(document).ready(function($) {
         audit_ajax(false);
     });
 
-    $('.factory-checkbox--disabled.wtitan-control-premium-label').click(function(e) {
+    $('.factory-checkbox--disabled.wtitan-control-premium-label .factory-buttons-group').click(function(e) {
         e.stopPropagation();
         window.location.href = 'https://titansitescanner.com/pricing/';
     });

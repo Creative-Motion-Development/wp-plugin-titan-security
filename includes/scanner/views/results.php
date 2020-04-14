@@ -19,15 +19,14 @@ if($matched === false ) {
 }
 else if(!empty($matched)) {
 	?>
-	<div class="wbcr-titan-content">
+	<div class="wtitan-scanner-vulner-table-container">
         <table class="table table-striped table-hover table-responsive" width="100%">
             <thead>
             <tr>
-                <td class="wtitan-vulner-table-slim"></td>
-                <td class="wtitan-vulner-table-name">Path</td>
-                <td class="wtitan-vulner-table-description">Type</td>
+                <td class="wtitan-vulner-table-severity"></td>
+                <td class="wtitan-vulner-table-name" style="text-align: left;">Path</td>
+                <td class="wtitan-vulner-table-slim">Type</td>
                 <td class="wtitan-vulner-table-slim">Match</td>
-                <td class="wtitan-vulner-table-slim"></td>
             </tr>
 
             </thead>
@@ -52,7 +51,7 @@ else if(!empty($matched)) {
                                 <td class="wt-severity-low"></td>
 					            <?php break;
 			            } ?>
-                        <td><?php echo $match->getFile()->getPath( true ) ?></td>
+                        <td style="text-align: left;"><?php echo $match->getFile()->getPath( true ) ?></td>
                         <td><?php echo $match->getSignature()->getTitle() ?></td>
                         <td><?php echo htmlspecialchars( $match->getMatch() ); ?></td>
                     </tr>

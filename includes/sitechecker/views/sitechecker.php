@@ -13,11 +13,13 @@ $pro_class = $is_premium ? '' : 'wt-element-pro';
 			<tbody>
 				<tr>
                     <td>
-                        <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" id="subscribe" <?= $disabled;?>>
+                        <div class="<?= $pro_class;?>">
+                            <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe" id="subscribe" <?= $disabled;?>>
                             Subscribe
-                        </button>
+                            </button>
+                        </div>
                         <button class="btn btn-secondary btn-lg wt-sitechecker-button-subscribe" style="display: none;"
-                                id="unsubscribe">Unsubscribe
+                            id="unsubscribe">Unsubscribe
                         </button>
                     </td>
 					<td>

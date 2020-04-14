@@ -124,16 +124,16 @@ class Scanner extends Module_Base {
 		$scanner_started = Plugin::app()->getOption('scanner_status') == 'started';
 		$files_count = Plugin::app()->getOption('scanner_files_count', 0);
 		$progress = [
-			$files_count > 0 ? round($scanner->cleaned_count/$files_count*100, 1) : 0,
-			$files_count > 0 ? round($scanner->suspicious_count/$files_count*100, 1) : 0,
-			$files_count > 0 ? round($scanner->files_count/$files_count*100, 1) : 0
+			$files_count > 0 ? floor($scanner->cleaned_count/$files_count*100) : 0,
+			$files_count > 0 ? ceil($scanner->suspicious_count/$files_count*100) : 0,
+			$files_count > 0 ? floor($scanner->files_count/$files_count*100) : 0
 		];
 
 		if(!$scanner) {
 			return [
 				'scanner_started' => 0,
 				'matched' => false,
-				'progress' => 0,
+				'progress' => [0,0,100],
 				'cleaned' => 0,
 				'suspicious' => 0,
 				'scanned' => 0,
