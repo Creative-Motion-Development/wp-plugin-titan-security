@@ -92,6 +92,7 @@ class SiteChecker extends Module_Base {
 		if(empty($urls) || !is_array( $urls)) $urls = array();
 		$args = array(
 			'urls' => $urls,
+			'is_premium' => $this->plugin->is_premium(),
 		);
 		echo $this->render_template( 'sitechecker', $args);
 	}

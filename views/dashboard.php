@@ -29,6 +29,7 @@ if( isset($scanner) ) {
 	extract($scanner);
 }
 /**
+ * @var bool   $is_premium
  * @var string $scanner_started
  * @var string $matched
  * @var string $progress
@@ -38,7 +39,7 @@ if( isset($scanner) ) {
  * @var string $files_count
  * @var string $scanned
  */
-
+$pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premium-label';
 //$statistic_data = $antispam->get_statistic_data();
 ?>
 <div class="wbcr-content-section">
@@ -104,7 +105,7 @@ if( isset($scanner) ) {
 					<div class="row">
 						<div class="col-md-6 wt-dashboard-block-content">
 							<?php
-							if(WBCR\Titan\Plugin::app()->is_premium()) {
+							if($is_premium) {
 								$count = $antispam->get_statistic_data()->total;
 								echo __( 'Spam blocked: ', 'titan-security' );
 								echo "<span class='wt-magenta-text'>{$count}</span>";
@@ -127,34 +128,6 @@ if( isset($scanner) ) {
 					<div class="row">
 						<div class="col-md-12 wt-dashboard-block-content">
 							<div id="wt-antispam-chart-div"></div>
-							<!-- Google chart API
-                            <script type="text/javascript">
-                                jQuery(document).ready(function($) {
-                                    google.charts.load('current', {'packages': ['bar']});
-                                    google.charts.setOnLoadCallback(function() {
-                                        var data = google.visualization.arrayToDataTable([
-                                            ['<?php _e('Date', 'titan-security') ?>', '<?php _e('Spam attack', 'titan-security') ?>'],
-					                        <?php foreach((array)$statistic_data->stat as $day => $number): ?>
-                                            ['<?php echo date("d.m", strtotime($day)) ?>', <?php echo (int)$number ?>],
-					                        <?php endforeach; ?>
-                                        ]);
-
-                                        var options = {
-                                            chart: {
-                                                title: '<?php _e('Plugin stopped spam attacks', 'titan-security') ?>',
-                                                subtitle: '<?php _e('Show statistics for 7 days', 'titan-security') ?>',
-                                            },
-                                            legend: {position: "none"}
-                                        };
-
-                                        var chart = new google.charts.Bar(document.getElementById('wt-antispam-chart-div'));
-
-                                        chart.draw(data, google.charts.Bar.convertOptions(options));
-                                    });
-                                });
-                            </script>
-                             Google chart API-->
-
 						</div>
 					</div>
 				</div>
@@ -222,7 +195,7 @@ if( isset($scanner) ) {
 						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
-									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">
 										<div class="wt-dashboard-form-label"><?= __('Scheduled scan', 'titan-security'); ?></div>
 										<div class="btn-group factory-buttons-group">
 											<?php foreach($schedules as $sched) : ?>
@@ -242,7 +215,7 @@ if( isset($scanner) ) {
 						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
-									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">
 										<div class="wt-dashboard-form-label"><?= __('Scanning speed', 'titan-security'); ?></div>
 										<div class="btn-group factory-buttons-group">
 											<?php foreach($scanner_speeds as $speeds) : ?>

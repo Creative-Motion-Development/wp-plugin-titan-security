@@ -155,3 +155,55 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"]
 {
     display: none;
 }
+.wtitan-audit-empty-container
+{
+    text-align: left;
+    font-size: 16px;
+    margin: 20px 0 20px 55px;
+}
+.wt-element-pro:after
+{
+    display: inline-block;
+    position: relative;
+    content: 'PRO';
+    background: #ff5722;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    font-style: normal;
+    padding: 4px 6px;
+    margin-left: 4px;
+    vertical-align: top;
+    top: -10px;
+    left: -25px;
+    right: 0;
+    z-index: 11;
+}
+.wtitan-control-premium-label .factory-buttons-group:after {
+    display: inline-block;
+    position: relative;
+    content: 'PRO';
+    background: #ff5722;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    font-style: normal;
+    padding: 4px 6px;
+    margin-left: 4px;
+    vertical-align: top;
+    top: -8px;
+    left: -10px;
+    right: auto;
+    z-index: 11;
+    cursor: pointer;
+}
+.factory-checkbox--disabled button {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

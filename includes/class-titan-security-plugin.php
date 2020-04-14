@@ -175,7 +175,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/password-requirements/boot.php');
 		}
 
-		$enable_menu = $this->getPopulateOption('titan_extra_menu', false);
+		$enable_menu = $this->getPopulateOption('extra_menu', false);
 		if( $enable_menu ) {
 			add_action('admin_enqueue_scripts', [$this, 'admin_bar_enqueue']);
 			add_action('wp_enqueue_scripts', [$this, 'admin_bar_enqueue']);
@@ -214,7 +214,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 */
 	public function admin_bar_menu($wp_admin_bar)
 	{
-		$enable_menu = $this->getPopulateOption('titan_extra_menu', false);
+		$enable_menu = $this->getPopulateOption('extra_menu', false);
 
 		if( !$this->currentUserCan() || !$enable_menu ) {
 			return;
