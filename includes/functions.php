@@ -49,11 +49,20 @@ function titan_scheduled_scanner() {
 		$files_count = Scanner::SPEED_FILES[ Scanner::SPEED_MEDIUM ];
 	}
 
-	$matched = $scanner->scan( $files_count );
+	$matched = Plugin::app()->getOption( 'scanner_malware_matched', [] );
 
-	$matched = array_merge( $matched, Plugin::app()->getOption( 'scanner_malware_matched', [] ) );
+	foreach ( $scanner->scan( $files_count ) as $match ) {
+		/** @var \WBCR\Titan\MalwareScanner\Match $match */
+		if ( $match->getSignature()->getSever() === \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL ) {
+			array_unshift( $matched, $match );
+		} else {
+			array_push( $matched, $match );
+		}
+	}
+
+
 	Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
-	Plugin::app()->updateOption( 'scanner', $scanner);
+	Plugin::app()->updateOption( 'scanner', $scanner );
 
 	if ( $scanner->get_files_count() < 1 ) {
 		titan_remove_scheduler_scanner();
