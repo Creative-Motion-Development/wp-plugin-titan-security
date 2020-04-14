@@ -15,7 +15,7 @@ jQuery(document).ready(function($) {
 
     jQuery('#wt-checker-check').on('click', function(e) {
         e.preventDefault();
-        jQuery(this).hide();
+        jQuery(this).attr('disabled', 'disabled');
         jQuery('.wt-scan-icon-loader').show();
         vulnerability_ajax();
         audit_ajax();

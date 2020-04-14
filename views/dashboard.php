@@ -156,6 +156,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 							?>
 						</div>
 						<div class="col-md-6 wt-dashboard-block-content-right">
+                            <div class="wt-dashboard-scan-button-loader" style="display: none;"></div>
 							<?php if( $scanner_started ): ?>
 								<button class="btn btn-primary wt-dashboard-scan-button" id="scan" data-action="stop_scan"><?php echo __('Stop scanning', 'titan-security'); ?></button>
 							<?php else: ?>
@@ -246,8 +247,8 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 							<div class="col-md-6 wt-dashboard-block-header">
 								<h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
 							<div class="col-md-6 wt-dashboard-block-header-right">
+								<div class="wt-scan-icon-loader" data-status="" style="display: none;"></div>
 								<button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now', 'titan-security'); ?></button>
-								<div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
 							</div>
 						</div>
 						<div class="row">

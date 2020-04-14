@@ -39,12 +39,6 @@ class Scanner extends Module_Base {
 			]);
 		}
 
-		if( !Plugin::app()->premium->is_activate() ) {
-			wp_send_json_error([
-				'error_message' => __('Available only to premium users', 'titan-security'),
-			]);
-		}
-
 		$status = Plugin::app()->getOption('scanner_status', 'stopped');
 		if( $status === 'stopped' ) {
 			//wp_send_json_success(false);
@@ -81,13 +75,6 @@ class Scanner extends Module_Base {
 			]);
 		}
 
-		if( !Plugin::app()->premium->is_activate() ) {
-			\WBCR\Titan\Logger\Writter::error('Scanner start action: ' . __("Available only to premium users", "titan-security"));
-			wp_send_json_error([
-				'message' => __('Available only to premium users', 'titan-security'),
-			]);
-		}
-
 		titan_create_scheduler_scanner();
 
 		\WBCR\Titan\Logger\Writter::warning('Scanner start action: ' . __('Started', "titan-security"));
@@ -104,13 +91,6 @@ class Scanner extends Module_Base {
 			\WBCR\Titan\Logger\Writter::info('Scanner stop action:' . __("You don't have enough capability to edit this information", "titan-security"));
 			wp_send_json_error([
 				'message' => __("You don't have enough capability to edit this information", "titan-security"),
-			]);
-		}
-
-		if( !Plugin::app()->premium->is_activate() ) {
-			\WBCR\Titan\Logger\Writter::info('Scanner stop action:' . __('Available only to premium users', 'titan-security'));
-			wp_send_json_error([
-				'message' => __('Available only to premium users', 'titan-security'),
 			]);
 		}
 

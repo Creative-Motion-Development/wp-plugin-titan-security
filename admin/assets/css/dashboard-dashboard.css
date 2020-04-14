@@ -171,6 +171,16 @@ li.wt-tabs-pro a:after
     margin: 20px 10px 0 0 !important;
 }
 /*--- Scanner -------*/
+.wt-dashboard-scan-button-loader, .wt-scan-icon-loader
+{
+    display: inline-block;
+    height: 34px;
+    width: 34px;
+    background: transparent url("../img/loader.gif") no-repeat center bottom;
+    background-size: contain;
+    vertical-align: bottom;
+
+}
 .wt-scanner-chart, .wt-scanner-legend
 {
     border-radius: 5px;

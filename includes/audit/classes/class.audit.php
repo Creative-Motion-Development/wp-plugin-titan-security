@@ -47,7 +47,6 @@ class Audit extends Module_Base {
 
 		$this->module_dir = WTITAN_PLUGIN_DIR . "/includes/audit";
 		$this->module_url = WTITAN_PLUGIN_URL . "/includes/audit";
-		//$this->client = new Client($this->license_key);
 
 		add_action('wp_ajax_wtitan_audit_all', array($this, 'show_audit_all'));
 

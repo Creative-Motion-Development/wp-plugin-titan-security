@@ -146,25 +146,19 @@ class Dashboard extends Base {
 
 		$this->view = $this->plugin->view();
 
+		$this->vulnerabilities = new Vulnerabilities();
+		$this->audit = new Audit();
+		$this->check = new \WBCR\Titan\Check();
 		$this->antispam = new \WBCR\Titan\Antispam();
+
+		if($this->plugin->is_premium()) {
+			$this->sites = new SiteChecker();
+		}
 
 		add_action('wp_ajax_wtitan_change_scanner_speed', [$this, 'change_scanner_speed']);
 		add_action('wp_ajax_wtitan_change_scanner_schedule', [$this, 'change_scanner_schedule']);
 
 		parent::__construct($plugin);
-	}
-
-	/**
-	 * Init class and page data
-	 */
-	public function init()
-	{
-
-		$this->vulnerabilities = new Vulnerabilities();
-		$this->audit = new Audit();
-		$this->sites = new SiteChecker();
-		$this->scanner = new \WBCR\Titan\Scanner();
-		$this->check = new \WBCR\Titan\Check();
 	}
 
 	/**
@@ -319,7 +313,7 @@ class Dashboard extends Base {
 			'vulnerabilities' => $this->vulnerabilities,
 			'audit' => $this->audit,
 			'sites' => $this->sites,
-			'scanner' => $this->scanner->get_current_results(),
+			'scanner' => $this->check->scanner->get_current_results(),
 			'antispam' => $this->antispam,
 			'check_content' => $check_content,
 			'scanner_speed' => $scanner_speed,
