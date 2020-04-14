@@ -190,7 +190,7 @@ class Antispam extends Base {
 			'name'     => 'protect_comments_form',
 			'title'    => __( 'Advanced protection of comment forms', 'titan-security' ),
 			'layout'   => [ 'hint-type' => 'icon', 'hint-icon-color' => 'green' ],
-			'hint'     => sprintf( __( 'In order to protect your comment forms, you need to make it difficult or impossible for an automated tool to fill in or submit the form while keeping it as easy as possible for your customers to fill out the form.', 'titan-security' ), $this->plugin::app()->getPluginTitle() ),
+			'hint'     => __( 'In order to protect your comment forms, you need to make it difficult or impossible for an automated tool to fill in or submit the form while keeping it as easy as possible for your customers to fill out the form.', 'titan-security' ),
 			'default'  => false,
 			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wantispam-checkbox-premium-label' ] : [],
 		];

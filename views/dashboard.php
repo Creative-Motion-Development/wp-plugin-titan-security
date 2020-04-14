@@ -282,5 +282,5 @@ $statistic_data = $antispam->get_statistic_data();
 				</div>
 			</div>
 		</div>
-
 	</div>
+

@@ -15,7 +15,7 @@
     background: #fff;
     text-align: center;
     border-radius: 5px;
-    min-height: 14em !important;
+    min-height: 16em !important;
 }
 .wt-row
 {
@@ -235,9 +235,9 @@ span.wt-legend-item {
 .wt-dashboard-form-label
 {
     width: unset;
-    text-align: left;
+    /*text-align: right;*/
     float: unset;
-    display: inline-block;
+    display: block;
     vertical-align: middle;
     font-size: 16px;
     margin-right: 10px;
