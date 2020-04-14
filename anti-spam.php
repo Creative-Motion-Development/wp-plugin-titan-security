@@ -95,12 +95,12 @@ $wtitan_plugin_info = [
 		['libs/factory/freemius', 'factory_freemius_000', 'all'],
 		['libs/factory/feedback', 'factory_feedback_000', 'admin']
 	],
-	'load_plugin_components' => array(
+	/*'load_plugin_components' => array(
 		'hide-login-page' => array(
 			'autoload' => 'libs/hide-login-page/titan.php',
 			'plugin_prefix' => 'WHLP_'
 		)
-	)
+	)*/
 
 ];
 
