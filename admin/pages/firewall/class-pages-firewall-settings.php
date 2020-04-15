@@ -111,7 +111,7 @@ class Firewall_Settings extends Base {
 	 */
 	public function getPageOptions()
 	{
-		$is_premium = \WBCR\Titan\Plugin::app()->premium->is_activate() && \WBCR\Titan\Plugin::app()->premium->is_install_package();
+		$is_premium = \WBCR\Titan\Plugin::app()->premium->is_active() && \WBCR\Titan\Plugin::app()->premium->is_install_package();
 
 		$options[] = [
 			'type' => 'html',
@@ -351,7 +351,7 @@ Click Save Options to save the changes, and check that your IP appears correctly
 	public function get_rules_control()
 	{
 		?>
-		<div class="form-group">
+		<div class="form-group wtitan-section-disabled">
 			<label class="col-sm-4 control-label"></label>
 			<div class="control-group col-sm-8">
 				<strong>Rules</strong>
@@ -365,6 +365,65 @@ Click Save Options to save the changes, and check that your IP appears correctly
 						</tr>
 						</thead>
 						<tbody>
+
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="119">
+							</td>
+							<td>rce</td>
+							<td>Duplicator Installer wp-config.php Overwrite</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="18">
+							</td>
+							<td>priv-esc</td>
+							<td>User Roles Manager Privilege Escalation &lt;= 4.24</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="66">
+							</td>
+							<td>dos</td>
+							<td>WordPress Core &lt;= 4.5.3 - DoS</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="117">
+							</td>
+							<td>privesc</td>
+							<td>WordPress Core: Arbitrary File Deletion</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="126" checked="checked">
+							</td>
+							<td>privesc</td>
+							<td>WordPress &lt;= 5.0 - PHP Object Injection via Meta Data &amp; Authenticated File
+								Delete
+							</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="1" checked="checked">
+							</td>
+							<td>whitelist</td>
+							<td>Whitelisted URL</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="2" checked="checked">
+							</td>
+							<td>lfi</td>
+							<td>Slider Revolution: Local File Inclusion</td>
+						</tr>
+						<tr>
+							<td style="text-align: center">
+								<input type="checkbox" class="js-wtitan-excluded-rules__checkbox" value="60" checked="checked">
+							</td>
+							<td>file_upload</td>
+							<td>Slider Revolution: Arbitrary File Upload</td>
+						</tr>
 						</tbody>
 					</table>
 					<input type="hidden" id="js-wtitan-excluded-rules__field" name="titan_disabled_rules" value="">

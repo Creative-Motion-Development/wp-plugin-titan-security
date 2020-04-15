@@ -101,6 +101,19 @@
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+#WBCR .wtitan-section-disabled {
+  opacity: 0.4;
+}
+#WBCR .wtitan-section-disabled select,
+#WBCR .wtitan-section-disabled button,
+#WBCR .wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 .wtitan-excluded-rules {
   height: 150px;
   width: 100%;

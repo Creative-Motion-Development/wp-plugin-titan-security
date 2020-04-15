@@ -1,6 +1,19 @@
 .wtitan-attacks-log {
   padding: 0 20px;
 
+  &.wtitan-section-disabled {
+    opacity: 0.4;
+
+    select, button, a {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
   &__nav {
     padding: 15px;
     text-align: right;
