@@ -144,7 +144,7 @@ class Check extends Module_Base {
 					'icon'    => 'dashicons-buddicons-replies',
 					'content' => $content_vulner,
 					'count'   => $this->vulnerabilities->get_count(),
-					'style'   => 'wt-tabs-pro',
+					'style'   => $this->plugin->is_premium() ? '' : 'wt-tabs-pro',
 				),
 				'malware' => array(
 					'name'    => __('Malware', 'titan-security'),
