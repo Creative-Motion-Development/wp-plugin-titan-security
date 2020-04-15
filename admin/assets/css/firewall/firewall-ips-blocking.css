@@ -1,6 +1,19 @@
 .wtitan-ips-blocking {
   padding: 5px 20px;
 }
+.wtitan-ips-blocking.wtitan-section-disabled {
+  opacity: 0.4;
+}
+.wtitan-ips-blocking.wtitan-section-disabled select,
+.wtitan-ips-blocking.wtitan-section-disabled button,
+.wtitan-ips-blocking.wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 .wtitan-ips-blocking__controls {
   display: flex;
   flex-direction: row;

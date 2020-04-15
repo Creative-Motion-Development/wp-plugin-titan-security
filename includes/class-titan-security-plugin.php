@@ -35,11 +35,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	private $plugin_data;
 
 	/**
-	 * @var \wfWAFStorageFile
-	 */
-	private $firewall_storage;
-
-	/**
 	 * @var \WBCR\Titan\Views
 	 */
 	public $view;
@@ -123,9 +118,19 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Tweaks', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-tweaks.php');
 
+		self::app()->registerPage('WBCR\Titan\Page\Brute_Force', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-bruteforce.php');
+
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
+
+		// Firewall
+		if( !defined('WTITANP_PLUGIN_ACTIVE') ) {
+			self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
+			self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
+			self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
+			//self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
+		}
 	}
 
 	/**
@@ -165,6 +170,8 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 */
 	private function global_scripts()
 	{
+		// Bruteforce
+		//require_once(WTITAN_PLUGIN_DIR . '/includes/bruteforce/class-limit-login-attempts.php');
 
 		// Tweaks
 		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/class-security-tweaks.php');
