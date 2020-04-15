@@ -207,3 +207,7 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"]
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+#wp-admin-bar-titan-premium a span
+{
+    color: #ffbe00;
+}

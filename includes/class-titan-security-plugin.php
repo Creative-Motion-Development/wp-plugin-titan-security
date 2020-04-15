@@ -246,6 +246,15 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			'title' => '<span class="dashicons dashicons-heart"></span> ' . __('Do you like our plugin?', 'titan-security'),
 			'href' => 'https://wordpress.org/support/plugin/anti-spam/reviews/'
 		];
+		if(!$this->is_premium())
+		{
+			$menu_items['titan-premium'] = [
+				'id'    => 'titan-premium',
+				'title' => '<span class="dashicons dashicons-star-filled"></span> ' . __( 'Upgrade to premium', 'titan-security' ),
+				'href'  => $this->get_support()->get_pricing_url( true, 'adminbar_menu' )
+			];
+
+		}
 
 		if( empty($menu_items) ) {
 			return;

@@ -54,10 +54,11 @@ $wtitan_plugin_info = [
 
 	// PLUGIN SUPPORT
 	'support_details' => [
-		'url' => 'https://cm-wp.com',
+		'url' => 'https://titansitescanner.com',
 		'pages_map' => [
 			'support' => 'support',           // {site}/support
-			'docs' => 'docs'               // {site}/docs
+			'docs' => 'docs',               // {site}/docs
+			'pricing' => 'pricing',           // {site}/prices
 		]
 	],
 
