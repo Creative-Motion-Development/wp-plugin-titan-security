@@ -1,7 +1,7 @@
 #WBCR {
   .premium-label(@labelPositionTop:-8px, @labelPositionRight:auto, @labelPositionBottom:auto,  @labelPositionLeft:-10px) {
     display: inline-block;
-    position: relative;
+    position: absolute;
     content: 'PRO';
     background: #f6065b;
     border-radius: 4px;
@@ -41,19 +41,19 @@
     }
 
     &.factory-control-premium-label:before {
-      .premium-label(0px, auto, auto, -5px);
+      .premium-label(0px, auto, auto, 70px);
     }
   }
 
   .factory-checkbox {
     &.factory-control-premium-label:after {
-      .premium-label(-10px, auto, auto, -15px);
+      .premium-label(-10px, -15px, auto, auto);
     }
   }
 
   .factory-dropdown {
-    &.factory-control-premium-label:after {
-      .premium-label(-47px, -630px, 0, auto);
+    &.factory-control-premium-label .factory-buttons-group:after {
+      .premium-label(-10px, -15px, auto, auto);
     }
   }
 
