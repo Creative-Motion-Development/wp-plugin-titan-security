@@ -112,7 +112,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Antispam', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-antispam.php');
 
-		//self::app()->registerPage('WBCR\Titan\Page\QuickStart', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-quickstart.php');
 		self::app()->registerPage('WBCR\Titan\Page\Dashboard', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-dashboard.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');

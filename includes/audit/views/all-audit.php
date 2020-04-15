@@ -38,7 +38,7 @@ if( is_array($args) && !empty($args) ) {
 						<td class="wt-severity-<?php echo $result->severity; ?>"></td>
 						<td><?php echo $result->title; ?></td>
 						<td class="wtitan-vulner-table-description"><?php echo $result->description; ?></td>
-						<td><?php echo wp_date('d.m.Y H:i', $result->timestamp); ?></td>
+						<td><?php echo date_i18n('d.m.Y H:i', $result->timestamp); ?></td>
 						<td>
 							<a class="btn btn-default wt-scanner-hide-button"
 							   data-id="<?php echo $key; ?>"

@@ -427,5 +427,5 @@ function titan_init_check_schedule() {
 			break;
 	}
 	if($is_schedule)
-		Plugin::app()->updatePopulateOption( 'scanner_schedule_last_time', wp_date( $format_date ) );
+		Plugin::app()->updatePopulateOption( 'scanner_schedule_last_time', date_i18n( $format_date ) );
 }
