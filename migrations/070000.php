@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WTITANUpdate070000 extends Wbcr_Factory000_Update {
 
 	public function install() {
-		if('no' === $this->plugin->getOption( 'titan_extra_menu', 'no')) {
-			$this->plugin->updateOption( 'titan_extra_menu', true);
+		if('no' === $this->plugin->getOption( 'extra_menu', 'no')) {
+			$this->plugin->updateOption( 'extra_menu', true);
 		}
 		if('no' === $this->plugin->getOption( 'antispam_mode', 'no')) {
 			$this->plugin->updateOption( 'antispam_mode', true);
