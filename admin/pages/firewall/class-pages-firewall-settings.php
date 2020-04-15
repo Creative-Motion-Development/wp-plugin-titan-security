@@ -111,7 +111,7 @@ class Firewall_Settings extends Base {
 	 */
 	public function getPageOptions()
 	{
-		$is_premium = \WBCR\Titan\Plugin::app()->is_premium();
+		$is_premium = \WBCR\Titan\Plugin::app()->premium->is_activate() && \WBCR\Titan\Plugin::app()->premium->is_install_package();
 
 		$options[] = [
 			'type' => 'html',
