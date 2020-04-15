@@ -1,9 +1,9 @@
 #WBCR .factory-textarea.factory-control-premium-label:before {
   border: 1px solid red;
   display: inline-block;
-  position: relative;
+  position: absolute;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -24,9 +24,9 @@
 }
 #WBCR .factory-list.factory-control-premium-label:before {
   display: inline-block;
-  position: relative;
+  position: absolute;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -36,7 +36,7 @@
   margin-left: 4px;
   vertical-align: top;
   top: 0px;
-  left: -5px;
+  left: 70px;
   right: auto;
   bottom: auto;
   z-index: 11;
@@ -44,9 +44,9 @@
 }
 #WBCR .factory-checkbox.factory-control-premium-label:after {
   display: inline-block;
-  position: relative;
+  position: absolute;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -56,17 +56,17 @@
   margin-left: 4px;
   vertical-align: top;
   top: -10px;
-  left: -80px;
-  right: auto;
+  left: auto;
+  right: -15px;
   bottom: auto;
   z-index: 11;
   cursor: pointer;
 }
-#WBCR .factory-dropdown.factory-control-premium-label:after {
+#WBCR .factory-dropdown.factory-control-premium-label .factory-buttons-group:after {
   display: inline-block;
-  position: relative;
+  position: absolute;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -75,10 +75,10 @@
   padding: 4px 6px;
   margin-left: 4px;
   vertical-align: top;
-  top: -47px;
+  top: -10px;
   left: auto;
-  right: auto;
-  bottom: 0;
+  right: -15px;
+  bottom: auto;
   z-index: 11;
   cursor: pointer;
 }
