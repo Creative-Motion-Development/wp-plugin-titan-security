@@ -3,7 +3,7 @@
   display: inline-block;
   position: relative;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -26,7 +26,7 @@
   display: inline-block;
   position: relative;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -46,7 +46,7 @@
   display: inline-block;
   position: relative;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -56,7 +56,7 @@
   margin-left: 4px;
   vertical-align: top;
   top: -10px;
-  left: -80px;
+  left: -15px;
   right: auto;
   bottom: auto;
   z-index: 11;
@@ -66,7 +66,7 @@
   display: inline-block;
   position: relative;
   content: 'PRO';
-  background: #ff5722;
+  background: #f6065b;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -77,7 +77,7 @@
   vertical-align: top;
   top: -47px;
   left: auto;
-  right: auto;
+  right: -630px;
   bottom: 0;
   z-index: 11;
   cursor: pointer;
