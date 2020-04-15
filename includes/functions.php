@@ -169,7 +169,8 @@ function titan_create_scheduler_scanner() {
 		'xmlrpc.php',
 		'debug.log',
 		'node_modules',
-		'vendor'
+		'vendor',
+		'wp-plugin-titan-security', 'anti-spam',
 	] );
 
 	Plugin::app()->updateOption( 'scanner', $scanner );
