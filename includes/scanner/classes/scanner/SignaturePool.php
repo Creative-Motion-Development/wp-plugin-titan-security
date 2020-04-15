@@ -145,7 +145,7 @@ class SignaturePool {
 					}
 				}
 
-				$found = preg_match("/" . $signature->getSignature() . "/iS", $data, $matched,
+				$found = preg_match("/(" . $signature->getSignature() . ")/iS", $data, $matched,
 					PREG_OFFSET_CAPTURE);
 				if($found) {
 					$match = $matched[0];

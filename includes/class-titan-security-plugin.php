@@ -107,7 +107,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Antispam', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-antispam.php');
 
-		//self::app()->registerPage('WBCR\Titan\Page\QuickStart', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-quickstart.php');
 		self::app()->registerPage('WBCR\Titan\Page\Dashboard', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-dashboard.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
@@ -118,8 +117,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Tweaks', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-tweaks.php');
 
-		self::app()->registerPage('WBCR\Titan\Page\Brute_Force', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-bruteforce.php');
-
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
@@ -129,7 +126,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
 			self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
 			self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
-			//self::app()->registerPage('WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php');
 		}
 	}
 
@@ -170,8 +166,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	 */
 	private function global_scripts()
 	{
-		// Bruteforce
-		//require_once(WTITAN_PLUGIN_DIR . '/includes/bruteforce/class-limit-login-attempts.php');
 
 		// Tweaks
 		require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/class-security-tweaks.php');
@@ -198,9 +192,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		return current_user_can($permission);
 	}
 
-	/**
-	 * @return bool
-	 */
+	/*
+	* @return bool
+	*/
 	public function is_premium()
 	{
 		if( $this->premium->is_active() && $this->premium->is_activate() ) {

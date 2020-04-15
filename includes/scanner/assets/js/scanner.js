@@ -6,6 +6,7 @@
     var intervalId;
     var loader = jQuery('.wt-scan-icon-loader');
 
+
     jQuery(document).ready(function($) {
         if($('#scan').attr('data-action') === 'stop_scan')
             intervalId = setInterval(status_scan, 15000);
@@ -15,7 +16,10 @@
         event.preventDefault();
 
         var btn = $(this);
+        var btn_loader = $('.wt-dashboard-scan-button-loader');
+
         btn.attr('disabled', 'disabled');
+        btn_loader.show();
 
         var action = btn.attr('data-action');
         var nonce;
@@ -41,6 +45,7 @@
             _wpnonce: nonce
         }, function(response) {
             btn.removeAttr('disabled');
+            btn_loader.hide();
             switch (action) {
                 case 'start_scan':
                     btn.attr('data-action', 'stop_scan');
@@ -64,10 +69,6 @@
             } else {
                 type = 'warning';
             }
-
-            var status = loader.attr('data-status');
-            if(status === '11') loader.hide();
-            else loader.attr('data-status', loader.attr('data-status')+1);
 
             var noticeId = $.wbcr_factory_clearfy_000.app.showNotice(response.data.message, type);
             setTimeout(function() {

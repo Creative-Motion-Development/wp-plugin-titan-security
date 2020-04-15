@@ -18,7 +18,10 @@ function audit_ajax(action_before = true) {
             console.log('audit - ok');
 
             var status = loader.attr('data-status');
-            if((status === '11') || (action_before && status === '1')) loader.hide();
+            if((status === '11') || (action_before && status === '1')) {
+                loader.hide();
+                jQuery('#wt-checker-check').removeAttr('disabled');
+            }
             else loader.attr('data-status', loader.attr('data-status')+1);
 
             var noticeId = jQuery.wbcr_factory_clearfy_000.app.showNotice('Security audit success', 'success');

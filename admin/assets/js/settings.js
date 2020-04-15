@@ -124,4 +124,10 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
+    $('.factory-checkbox--disabled.wtitan-control-premium-label').click(function(e) {
+        e.stopPropagation();
+        window.location.href = 'https://titansitescanner.com/pricing/';
+    });
+
 });

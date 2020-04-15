@@ -29,17 +29,18 @@ if( isset($scanner) ) {
 	extract($scanner);
 }
 /**
+ * @var bool   $is_premium
  * @var string $scanner_started
  * @var string $matched
- * @var string $progress
+ * @var array  $progress
  * @var string $suspicious
  * @var string $cleaned
  * @var string $notverified
  * @var string $files_count
  * @var string $scanned
  */
-
-$statistic_data = $antispam->get_statistic_data();
+$pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premium-label';
+//$statistic_data = $antispam->get_statistic_data();
 ?>
 <div class="wbcr-content-section">
 	
@@ -51,7 +52,7 @@ $statistic_data = $antispam->get_statistic_data();
 					<div class="row">
 						<div class="col-md-12 wt-dashboard-block-header">
 							<h4><?php _e('Firewall', 'titan-security'); ?> <?php if( !$firewall_pro_activated ): ?>
-									<span style="color:#f6065b">PRO</span><?php endif; ?></h4>
+									<span class="wt-dashboard-pro-span">PRO</span><?php endif; ?></h4>
 						</div>
 					</div>
 					<div class="row">
@@ -104,9 +105,11 @@ $statistic_data = $antispam->get_statistic_data();
 					<div class="row">
 						<div class="col-md-6 wt-dashboard-block-content">
 							<?php
-							$count = $antispam->get_statistic_data()->total;
-							echo __('Spam blocked: ', 'titan-security');
-							echo "<span class='wt-magenta-text'>{$count}</span>";
+							if($is_premium) {
+								$count = $antispam->get_statistic_data()->total;
+								echo __( 'Spam blocked: ', 'titan-security' );
+								echo "<span class='wt-magenta-text'>{$count}</span>";
+							}
 							?>
 						</div>
 						<div class="col-md-6 wt-dashboard-block-content-right">
@@ -125,34 +128,6 @@ $statistic_data = $antispam->get_statistic_data();
 					<div class="row">
 						<div class="col-md-12 wt-dashboard-block-content">
 							<div id="wt-antispam-chart-div"></div>
-							<!-- Google chart API
-                            <script type="text/javascript">
-                                jQuery(document).ready(function($) {
-                                    google.charts.load('current', {'packages': ['bar']});
-                                    google.charts.setOnLoadCallback(function() {
-                                        var data = google.visualization.arrayToDataTable([
-                                            ['<?php _e('Date', 'titan-security') ?>', '<?php _e('Spam attack', 'titan-security') ?>'],
-					                        <?php foreach((array)$statistic_data->stat as $day => $number): ?>
-                                            ['<?php echo date("d.m", strtotime($day)) ?>', <?php echo (int)$number ?>],
-					                        <?php endforeach; ?>
-                                        ]);
-
-                                        var options = {
-                                            chart: {
-                                                title: '<?php _e('Plugin stopped spam attacks', 'titan-security') ?>',
-                                                subtitle: '<?php _e('Show statistics for 7 days', 'titan-security') ?>',
-                                            },
-                                            legend: {position: "none"}
-                                        };
-
-                                        var chart = new google.charts.Bar(document.getElementById('wt-antispam-chart-div'));
-
-                                        chart.draw(data, google.charts.Bar.convertOptions(options));
-                                    });
-                                });
-                            </script>
-                             Google chart API-->
-
 						</div>
 					</div>
 				</div>
@@ -181,6 +156,7 @@ $statistic_data = $antispam->get_statistic_data();
 							?>
 						</div>
 						<div class="col-md-6 wt-dashboard-block-content-right">
+                            <div class="wt-dashboard-scan-button-loader" style="display: none;"></div>
 							<?php if( $scanner_started ): ?>
 								<button class="btn btn-primary wt-dashboard-scan-button" id="scan" data-action="stop_scan"><?php echo __('Stop scanning', 'titan-security'); ?></button>
 							<?php else: ?>
@@ -192,8 +168,8 @@ $statistic_data = $antispam->get_statistic_data();
 					<div class="row">
 						<div class="wt-scanner-chart">
 							<div class="wt-scanner-chart-clean" style="width: <?php echo $progress[0]; ?>%;"></div>
-							<div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1]; ?>%;"></div>
-							<div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2]; ?>%;"></div>
+							<div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1];?>%;"></div>
+							<div class="wt-scanner-chart-notverified" style="width: <?php echo $progress[2];?>%;"></div>
 						</div>
 					</div>
 					<div class="row">
@@ -217,18 +193,18 @@ $statistic_data = $antispam->get_statistic_data();
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-8 wt-dashboard-block-content" style="text-align: left;">
+						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
-									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
-										<div class="wt-dashboard-form-label"><?= __('Scanning speed', 'titan-security'); ?></div>
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">
+										<div class="wt-dashboard-form-label"><?= __('Scheduled scan', 'titan-security'); ?></div>
 										<div class="btn-group factory-buttons-group">
 											<?php foreach($schedules as $sched) : ?>
 												<button type="button" class="btn btn-default btn-small wt-scanner-schedule-button factory-<?= $sched[0]; ?> <?php echo $sched[0] == $schedule ? 'active' : ''; ?>" data-value="<?= $sched[0]; ?>"><?= $sched[1]; ?></button>
 											<?php endforeach; ?>
 											<input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?= $schedule; ?>">
 										</div>
-										<div class="factory-hints" style="margin-left: 45px;">
+										<div class="factory-hints" style="">
 											<?php foreach($schedules as $sched) : ?>
 												<div class="factory-hint factory-hint-<?= $sched[0]; ?>" style="display: <?php echo $sched[0] == $schedule ? '' : 'none'; ?>;"><?= $sched[2]; ?></div>
 											<?php endforeach; ?>
@@ -237,10 +213,10 @@ $statistic_data = $antispam->get_statistic_data();
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4 wt-dashboard-block-content" style="text-align: right;">
+						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
-									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way" data-way="buttons">
+									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">
 										<div class="wt-dashboard-form-label"><?= __('Scanning speed', 'titan-security'); ?></div>
 										<div class="btn-group factory-buttons-group">
 											<?php foreach($scanner_speeds as $speeds) : ?>
@@ -248,7 +224,7 @@ $statistic_data = $antispam->get_statistic_data();
 											<?php endforeach; ?>
 											<input type="hidden" id="titan_scanner_speed" class="factory-result" name="titan_scanner_speed" value="<?= $scanner_speed; ?>">
 										</div>
-										<div class="factory-hints" style="margin-left: 45px;">
+										<div class="factory-hints" style="">
 											<?php foreach($scanner_speeds as $speeds) : ?>
 												<div class="factory-hint factory-hint-<?= $speeds[0]; ?>" style="display: <?php echo $speeds[0] == $scanner_speed ? '' : 'none'; ?>;"><?= $speeds[2]; ?></div>
 											<?php endforeach; ?>
@@ -271,8 +247,8 @@ $statistic_data = $antispam->get_statistic_data();
 							<div class="col-md-6 wt-dashboard-block-header">
 								<h4><?php _e('Security audit', 'titan-security'); ?></h4></div>
 							<div class="col-md-6 wt-dashboard-block-header-right">
+								<div class="wt-scan-icon-loader" data-status="" style="display: none;"></div>
 								<button class="btn btn-primary wt-dashboard-audit-button" id="wt-checker-check"><?php echo __('Check now', 'titan-security'); ?></button>
-								<div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
 							</div>
 						</div>
 						<div class="row">

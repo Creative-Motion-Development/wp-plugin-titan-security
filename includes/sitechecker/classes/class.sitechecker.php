@@ -55,7 +55,12 @@ class SiteChecker extends Module_Base {
 	 * @return array
 	 */
 	public function getSites() {
-		$this->sites = $this->client->get_checker_urls();
+		if ( Plugin::app()->is_premium() ) {
+			$this->sites = $this->client->get_checker_urls();
+		} else {
+			$this->sites = [];
+		}
+
 		return $this->sites;
 	}
 
@@ -92,6 +97,7 @@ class SiteChecker extends Module_Base {
 		if(empty($urls) || !is_array( $urls)) $urls = array();
 		$args = array(
 			'urls' => $urls,
+			'is_premium' => $this->plugin->is_premium(),
 		);
 		echo $this->render_template( 'sitechecker', $args);
 	}

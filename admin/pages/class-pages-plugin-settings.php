@@ -97,7 +97,7 @@ class PluginSettings extends Base {
 	 * @since 7.0.0
 	 */
 	public function getPageOptions() {
-
+		$is_premium = $this->plugin->is_premium();
 		$options = [];
 
 		$options[] = [
@@ -111,7 +111,7 @@ class PluginSettings extends Base {
 			'way'     => 'buttons',
 			'name'    => 'extra_menu',
 			'title'   => __( 'Plugin menu in adminbar', 'titan-security' ),
-			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'red' ],
+			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
 			'hint'    => __( 'This setting allows you to enable/disable the additional menu of the plugin, in the admin bar.', 'titan-security' ),
 			'default' => false
 		];
@@ -132,19 +132,28 @@ class PluginSettings extends Base {
 			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];
 
-		if ( Plugin::app()->is_premium() ) {
-			$data = [
-				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
-				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
-				[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' )] ,
-			];
-		} else {
-			$data = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ),
-				]
-			];
-		}
+        $data = [
+            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ) ],
+            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
+            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
+            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' )] ,
+        ];
+
+		$options[] = [
+			'type'   => 'dropdown',
+			'way'    => 'buttons',
+			'name'   => 'scanner_type',
+			'title'  => __( 'Scanning type', 'titan-security' ),
+			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'   => __( "The basic scan includes fewer signatures", 'titan-security' ) . "<br>" .
+			            __("Advanced scanning includes a full set of signatures", 'titan-security'),
+			'data'   => [
+				[ 'basic', __( 'Basic scan', 'titan-security' ) ],
+				[ 'advanced', __( 'Advanced scan', 'titan-security' ) ],
+			],
+			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
+			'default' => $this->plugin->is_premium() ? 'advanced' : 'basic',
+		];
 
 		$options[] = [
 			'type'   => 'dropdown',
@@ -155,41 +164,32 @@ class PluginSettings extends Base {
 			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ) . "<br>" .
                         __("Recommended speed: ", 'titan-security') . get_recommended_scanner_speed(),
 			'data'   => $data,
+			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
 			'default' => $this->plugin->is_premium() ? \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW : \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
 		];
 
-		if ( Plugin::app()->is_premium() ) {
-			$data_schedule = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
-					__( 'Daily', 'titan-security' ),
-					__( 'Scan every day', 'titan-security' )
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
-					__( 'Weekly', 'titan-security' ),
-					__( 'Scan every week', 'titan-security' )
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
-					__( 'Custom', 'titan-security' ),
-					__( 'Select the date and time of the next scan', 'titan-security' )
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
-					__( 'Disabled', 'titan-security' ),
-					__( 'Disable scheduled scanning', 'titan-security' )
-				],
-			];
-		} else {
-			$data_schedule = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
-					__( 'Disabled', 'titan-security' ),
-					__( 'Disable scheduled scanning', 'titan-security' )
-				]
-			];
-		}
+        $data_schedule = [
+	        [
+		        \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+		        __( 'Disabled', 'titan-security' ),
+		        __( 'Disable scheduled scanning', 'titan-security' )
+	        ],
+            [
+                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
+                __( 'Daily', 'titan-security' ),
+                __( 'Scan every day', 'titan-security' )
+            ],
+            [
+                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
+                __( 'Weekly', 'titan-security' ),
+                __( 'Scan every week', 'titan-security' )
+            ],
+            [
+                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
+                __( 'Custom', 'titan-security' ),
+                __( 'Select the date and time of the next scan', 'titan-security' )
+            ],
+        ];
 
 		$options[] = [
 			'type'   => 'dropdown',
@@ -199,66 +199,78 @@ class PluginSettings extends Base {
 			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
 			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
 			'data'   => $data_schedule,
+			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
 			'default' => \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
 		];
 
-/*
-* Schedule settings
-* */
-		$options[] = [ 'type' => 'html', 'html' => '<div class="wt-schedule-controls wt-schedule-controls-daily">' ];
-		$options[] = [
-			'type'   => 'textbox',
-			'name'   => 'scanner_schedule_daily',
-			'title'  => __( 'Time for the daily scan', 'titan-security' ),
-			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "What time should start scanning", 'titan-security' ),
-		];
-		$options[] = [ 'type' => 'html', 'html' => '</div>' ];
+		if( Plugin::app()->is_premium() ) {
+			/*
+			* Schedule settings
+			* */
+			$options[] = [
+				'type' => 'html',
+				'html' => '<div class="wt-schedule-controls wt-schedule-controls-daily">'
+			];
+			$options[] = [
+				'type'   => 'textbox',
+				'name'   => 'scanner_schedule_daily',
+				'title'  => __( 'Time for the daily scan', 'titan-security' ),
+				'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+				'hint'   => __( "What time should start scanning", 'titan-security' ),
+			];
+			$options[] = [ 'type' => 'html', 'html' => '</div>' ];
 
 //------------------------------------------------------------------
 
-		$options[] = [ 'type' => 'html', 'html' => '<div class="wt-schedule-controls wt-schedule-controls-weekly">' ];
-		$data_schedule_week = [
-			[1, 'Monday'],
-            [2, 'Tuesday'],
-            [3, 'Wednesday'],
-            [4, 'Thursday'],
-            [5, 'Friday'],
-            [6, 'Saturday'],
-            [7, 'Sunday'],
-        ];
-		$options[] = [
-			'type'    => 'dropdown',
-			'way'     => 'default',
-			'name'    => 'scanner_schedule_weekly_day',
-			'title'   => __( 'Day for the weekly scan', 'titan-security' ),
-			'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'    => __( "Day of the week for the weekly scan", 'titan-security' ),
-			'data'    => $data_schedule_week,
-			'default' => '',
-		];
+			$options[]          = [
+				'type' => 'html',
+				'html' => '<div class="wt-schedule-controls wt-schedule-controls-weekly">'
+			];
+			$data_schedule_week = [
+				[ 1, 'Monday' ],
+				[ 2, 'Tuesday' ],
+				[ 3, 'Wednesday' ],
+				[ 4, 'Thursday' ],
+				[ 5, 'Friday' ],
+				[ 6, 'Saturday' ],
+				[ 7, 'Sunday' ],
+			];
+			$options[]          = [
+				'type'    => 'dropdown',
+				'way'     => 'default',
+				'name'    => 'scanner_schedule_weekly_day',
+				'title'   => __( 'Day for the weekly scan', 'titan-security' ),
+				'layout'  => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+				'hint'    => __( "Day of the week for the weekly scan", 'titan-security' ),
+				'data'    => $data_schedule_week,
+				'default' => '',
+			];
 
-		$options[] = [
-			'type'   => 'textbox',
-			'name'   => 'scanner_schedule_weekly_time',
-			'title'  => __( 'Time for the weekly scan', 'titan-security' ),
-			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "Time for the weekly scan", 'titan-security' ),
-		];
-		$options[] = [ 'type' => 'html', 'html' => '</div>' ];
+			$options[] = [
+				'type'   => 'textbox',
+				'name'   => 'scanner_schedule_weekly_time',
+				'title'  => __( 'Time for the weekly scan', 'titan-security' ),
+				'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+				'hint'   => __( "Time for the weekly scan", 'titan-security' ),
+			];
+			$options[] = [ 'type' => 'html', 'html' => '</div>' ];
 
 //------------------------------------------------------------------
 
-		$options[] = [ 'type' => 'html', 'html' => '<div class="wt-schedule-controls wt-schedule-controls-custom">' ];
-		$options[] = [
-			'type'      => 'textbox',
-			'name'      => 'scanner_schedule_custom',
-			'title'     => __( 'Date and time for the Custom schedule', 'titan-security' ),
-			'layout'    => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'      => __( "Date and time of the custom scan schedule", 'titan-security' ),
-		];
-		$options[] = [ 'type' => 'html', 'html' => '</div>' ];
+			$options[] = [
+				'type' => 'html',
+				'html' => '<div class="wt-schedule-controls wt-schedule-controls-custom">'
+			];
+			$options[] = [
+				'type'   => 'textbox',
+				'name'   => 'scanner_schedule_custom',
+				'title'  => __( 'Date and time for the Custom schedule', 'titan-security' ),
+				'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+				'hint'   => __( "Date and time of the custom scan schedule", 'titan-security' ),
+			];
+			$options[] = [ 'type' => 'html', 'html' => '</div>' ];
 //------------------------------------------------------------------
+		}
 
 		$options[] = [
 			'type' => 'html',

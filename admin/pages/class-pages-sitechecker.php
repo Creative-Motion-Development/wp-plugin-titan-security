@@ -96,10 +96,10 @@ class SiteChecker extends Base {
 	{
 		parent::assets($scripts, $styles);
 
-		if( $this->plugin->is_premium() ) {
-			$this->styles->add($this->MODULE_URL . '/assets/css/sitechecker-dashboard.css');
-			$this->scripts->add($this->MODULE_URL . '/assets/js/sitechecker.js', ['jquery']);
+		$this->styles->add($this->MODULE_URL . '/assets/css/sitechecker-dashboard.css');
+		$this->scripts->add($this->MODULE_URL . '/assets/js/sitechecker.js', ['jquery']);
 
+		if( $this->plugin->is_premium() ) {
 			$this->scripts->add($this->MODULE_URL . '/assets/js/firebase.min.js');
 			$this->scripts->localize('wtitan', [
 				'path' => $this->MODULE_URL . '/assets/js/firebase-messaging-sw.js',
@@ -122,12 +122,6 @@ class SiteChecker extends Base {
 	 */
 	public function showPageContent()
 	{
-		if( !$this->plugin->is_premium() ) {
-			$this->plugin->view->print_template('require-license-activate');
-
-			return;
-		}
-
 		$this->init();
 		$this->module->showPageContent();
 	}

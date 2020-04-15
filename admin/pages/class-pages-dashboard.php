@@ -139,14 +139,22 @@ class Dashboard extends Base {
 		$this->plugin = $plugin;
 
 		$this->menu_title = __('Titan Anti-spam', 'titan-security');
-		$this->page_title = __('Dashboard', 'titan-security');;
+		$this->page_title = __('Dashboard', 'titan-security');
+		$this->title_plugin_action_link = $this->page_title;
 		$this->menu_sub_title = $this->page_title;
 		$this->page_menu_short_description = __('Start scanning and information about problems', 'titan-security');
 		$this->menu_icon = '~/admin/assets/img/icon.png';
 
 		$this->view = $this->plugin->view();
 
+		$this->vulnerabilities = new Vulnerabilities();
+		$this->audit = new Audit();
+		$this->check = new \WBCR\Titan\Check();
 		$this->antispam = new \WBCR\Titan\Antispam();
+
+		if($this->plugin->is_premium()) {
+			$this->sites = new SiteChecker();
+		}
 
 		add_action('wp_ajax_wtitan_change_scanner_speed', [$this, 'change_scanner_speed']);
 		add_action('wp_ajax_wtitan_change_scanner_schedule', [$this, 'change_scanner_schedule']);
@@ -155,23 +163,11 @@ class Dashboard extends Base {
 	}
 
 	/**
-	 * Init class and page data
-	 */
-	public function init()
-	{
-
-		$this->vulnerabilities = new Vulnerabilities();
-		$this->audit = new Audit();
-		$this->sites = new SiteChecker();
-		$this->scanner = new \WBCR\Titan\Scanner();
-		$this->check = new \WBCR\Titan\Check();
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getMenuTitle()
 	{
+		$this->check = new \WBCR\Titan\Check();
 		return apply_filters('wbcr/titan/admin_menu_title', $this->menu_title);
 	}
 
@@ -240,11 +236,6 @@ class Dashboard extends Base {
 	{
 		$this->init();
 
-		if( !$this->plugin->is_premium() ) {
-			$this->plugin->view->print_template('require-license-activate');
-
-			return;
-		}
 		//FIREWALL
 		$firewall = array();
 
@@ -265,79 +256,65 @@ class Dashboard extends Base {
 				$scanner_speed = 'free';
 			}
 		}
-		if( Plugin::app()->is_premium() ) {
-			$scanner_speeds = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
-					__('Slow', 'titan-security'),
-					__('Suitable for the most budget hosting services', 'titan-security')
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
-					__('Medium', 'titan-security'),
-					__('The best option for almost any capacity', 'titan-security')
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
-					__('Fast', 'titan-security'),
-					__('Checks the maximum number of files per minute. We recommend that you have more than 100 MB of RAM', 'titan-security')
-				],
-			];
-		} else {
-			$scanner_speeds = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
-					__('Free', 'titan-security'),
-					__('Free hint', 'titan-security')
-				]
-			];
-		}
+		$scanner_speeds = [
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
+				__('Free', 'titan-security'),
+				__('Free speed is slow', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW,
+				__('Slow', 'titan-security'),
+				__('Suitable for the most budget hosting services', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM,
+				__('Medium', 'titan-security'),
+				__('The best option for almost any capacity', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST,
+				__('Fast', 'titan-security'),
+				__('Checks the maximum number of files per minute. We recommend that you have more than 100 MB of RAM', 'titan-security')
+			],
+		];
 
 		$schedule = $this->plugin->getOption('scanner_schedule', 'none');
 		if( $schedule == 'none' ) {
 			$schedule = 'disabled';
 		}
-		if( Plugin::app()->is_premium() ) {
-			$schedules = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
-					__('Daily', 'titan-security'),
-					__('Scan every day', 'titan-security')
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
-					__('Weekly', 'titan-security'),
-					__('Scan every week', 'titan-security')
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
-					__('Custom', 'titan-security'),
-					__('Select the date and time of the next scan', 'titan-security')
-				],
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
-					__('Disabled', 'titan-security'),
-					__('Disable scheduled scanning', 'titan-security')
-				],
-			];
-		} else {
-			$schedules = [
-				[
-					\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
-					__('Disabled', 'titan-security'),
-					__('Disable scheduled scanning', 'titan-security')
-				]
-			];
-		}
+		$schedules = [
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+				__('Disabled', 'titan-security'),
+				__('Disable scheduled scanning', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
+				__('Daily', 'titan-security'),
+				__('Scan every day', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
+				__('Weekly', 'titan-security'),
+				__('Scan every week', 'titan-security')
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
+				__('Custom', 'titan-security'),
+				__('Select the date and time of the next scan', 'titan-security')
+			],
+		];
 
 		$this->view->print_template('dashboard', [
+			'is_premium' => $this->plugin->is_premium(),
 			'scanner_started' => $scanner_started,
 			'this_plugin' => $this->plugin,
 			'firewall' => $firewall,
 			'vulnerabilities' => $this->vulnerabilities,
 			'audit' => $this->audit,
 			'sites' => $this->sites,
-			'scanner' => $this->scanner->get_current_results(),
+			'scanner' => $this->check->scanner->get_current_results(),
 			'antispam' => $this->antispam,
 			'check_content' => $check_content,
 			'scanner_speed' => $scanner_speed,
