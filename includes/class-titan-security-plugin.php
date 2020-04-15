@@ -226,7 +226,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			$settings_url = admin_url('admin.php');
 		}
 
-		$settings_url = $settings_url . '?page=dashboard-' . $this->getPluginName();
+		$dashboard_url = $settings_url . '?page=dashboard-' . $this->getPluginName();
 		$extra_menu_title = apply_filters('wbcr/titan/adminbar_menu_title', __('Titan Security', 'titan-security'));
 
 		$menu_items = [];
@@ -235,7 +235,12 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		$menu_items['titan-dashboard'] = [
 			'id' => 'titan-dashboard',
 			'title' => '<span class="dashicons dashicons-dashboard"></span> ' . __('Dashboard', 'titan-security'),
-			'href' => $settings_url
+			'href' => $dashboard_url
+		];
+		$menu_items['titan-settings'] = [
+			'id' => 'titan-settings',
+			'title' => '<span class="dashicons dashicons-admin-generic"></span> ' . __('Settings', 'titan-security'),
+			'href' => $settings_url . '?page=plugin_settings-' . $this->getPluginName()
 		];
 		$menu_items['titan-rating'] = [
 			'id' => 'titan-rating',

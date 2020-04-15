@@ -166,7 +166,7 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"]
     display: inline-block;
     position: relative;
     content: 'PRO';
-    background: #ff5722;
+    background: #f6065b;
     border-radius: 4px;
     color: #fff;
     font-size: 10px;
@@ -184,7 +184,7 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"]
     display: inline-block;
     position: relative;
     content: 'PRO';
-    background: #ff5722;
+    background: #f6065b;
     border-radius: 4px;
     color: #fff;
     font-size: 10px;

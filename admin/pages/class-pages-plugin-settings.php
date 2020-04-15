@@ -142,6 +142,22 @@ class PluginSettings extends Base {
 		$options[] = [
 			'type'   => 'dropdown',
 			'way'    => 'buttons',
+			'name'   => 'scanner_type',
+			'title'  => __( 'Scanning type', 'titan-security' ),
+			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'   => __( "The basic scan includes fewer signatures", 'titan-security' ) . "<br>" .
+			            __("Advanced scanning includes a full set of signatures", 'titan-security'),
+			'data'   => [
+				[ 'basic', __( 'Basic scan', 'titan-security' ) ],
+				[ 'advanced', __( 'Advanced scan', 'titan-security' ) ],
+			],
+			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
+			'default' => $this->plugin->is_premium() ? 'advanced' : 'basic',
+		];
+
+		$options[] = [
+			'type'   => 'dropdown',
+			'way'    => 'buttons',
 			'name'   => 'scanner_speed',
 			'title'  => __( 'Scanning speed', 'titan-security' ),
 			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],

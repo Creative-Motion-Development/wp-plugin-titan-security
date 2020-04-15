@@ -306,6 +306,10 @@ function titan_set_scanner_speed_active() {
 	$scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
 	if($scanner_schedule == 'disabled')
 		Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
+
+	$scanner_type = Plugin::app()->getPopulateOption( 'scanner_type', 'basic' );
+	if($scanner_type == 'basic')
+		Plugin::app()->updatePopulateOption( 'scanner_type', 'advanced' );
 }
 
 add_action( Plugin::app()->getPluginName()."/factory/premium/license_deactivate", 'titan_set_scanner_speed_deactive' );
@@ -317,6 +321,10 @@ function titan_set_scanner_speed_deactive() {
 	$scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
 	if($scanner_schedule !== 'disabled')
 		Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
+
+	$scanner_type = Plugin::app()->getPopulateOption( 'scanner_type', 'basic' );
+	if($scanner_type !== 'basic')
+		Plugin::app()->updatePopulateOption( 'scanner_type', 'basic' );
 }
 
 
