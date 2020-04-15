@@ -7,7 +7,6 @@
   background: #fff;
   text-align: center;
   padding: 20px;
-  vertical-align: top;
 }
 #wtitan-firewall-dashboard-top-section table td h4 {
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -67,5 +66,18 @@
 .wf-status-renewing svg rect,
 .wf-status-renewing svg path {
   fill: #11967a;
+}
+.wtitan-section-disabled {
+  opacity: 0.4;
+}
+.wtitan-section-disabled select,
+.wtitan-section-disabled button,
+.wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 /*# sourceMappingURL=firewall-dashboard.css.map */

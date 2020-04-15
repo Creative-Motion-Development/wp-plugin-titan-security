@@ -35,11 +35,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 	private $plugin_data;
 
 	/**
-	 * @var \wfWAFStorageFile
-	 */
-	private $firewall_storage;
-
-	/**
 	 * @var \WBCR\Titan\Views
 	 */
 	public $view;
@@ -125,6 +120,13 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
+
+		// Firewall
+		if( !defined('WTITANP_PLUGIN_ACTIVE') ) {
+			self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
+			self::app()->registerPage('WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php');
+			self::app()->registerPage('WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php');
+		}
 	}
 
 	/**
@@ -153,8 +155,6 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/logs.php');
 		}
 
-		add_action('admin_bar_menu', [$this, 'admin_bar_menu'], 80);
-
 		add_action('plugins_loaded', function () {
 			$this->register_pages();
 		}, 30);
@@ -174,25 +174,12 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			require_once(WTITAN_PLUGIN_DIR . '/includes/tweaks/password-requirements/boot.php');
 		}
 
-		$enable_menu = $this->getPopulateOption('extra_menu', false);
-		if( $enable_menu ) {
-			add_action('admin_enqueue_scripts', [$this, 'admin_bar_enqueue']);
-			add_action('wp_enqueue_scripts', [$this, 'admin_bar_enqueue']);
-		}
-
 		// Logger
 		require_once(WTITAN_PLUGIN_DIR . '/includes/logger/class-logger-writter.php');
 		new \WBCR\Titan\Logger\Writter();
 
 		// Antispam
 		require_once(WTITAN_PLUGIN_DIR . '/includes/antispam/boot.php');
-	}
-
-	/**
-	 */
-	public function admin_bar_enqueue()
-	{
-		wp_enqueue_style('titan-adminbar-styles', WTITAN_PLUGIN_URL . '/assets/css/admin-bar.css', [], $this->getPluginVersion());
 	}
 
 	/**
@@ -205,83 +192,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		return current_user_can($permission);
 	}
 
-	/**
-	 * Add menu to admin bar
-	 *
-	 * @param \WP_Admin_Bar $wp_admin_bar
-	 *
-	 */
-	public function admin_bar_menu($wp_admin_bar)
-	{
-		$enable_menu = $this->getPopulateOption('extra_menu', false);
-
-		if( !$this->currentUserCan() || !$enable_menu ) {
-			return;
-		}
-
-		if( $this->isNetworkActive() ) {
-			$settings_url = network_admin_url('settings.php');
-		} else {
-			$settings_url = admin_url('admin.php');
-		}
-
-		$dashboard_url = $settings_url . '?page=dashboard-' . $this->getPluginName();
-		$extra_menu_title = apply_filters('wbcr/titan/adminbar_menu_title', __('Titan Security', 'titan-security'));
-
-		$menu_items = [];
-		$menu_items = apply_filters('wbcr/titan/adminbar_menu_items', $menu_items);
-
-		$menu_items['titan-dashboard'] = [
-			'id' => 'titan-dashboard',
-			'title' => '<span class="dashicons dashicons-dashboard"></span> ' . __('Dashboard', 'titan-security'),
-			'href' => $dashboard_url
-		];
-		$menu_items['titan-settings'] = [
-			'id' => 'titan-settings',
-			'title' => '<span class="dashicons dashicons-admin-generic"></span> ' . __('Settings', 'titan-security'),
-			'href' => $settings_url . '?page=plugin_settings-' . $this->getPluginName()
-		];
-		$menu_items['titan-rating'] = [
-			'id' => 'titan-rating',
-			'title' => '<span class="dashicons dashicons-heart"></span> ' . __('Do you like our plugin?', 'titan-security'),
-			'href' => 'https://wordpress.org/support/plugin/anti-spam/reviews/'
-		];
-		if(!$this->is_premium())
-		{
-			$menu_items['titan-premium'] = [
-				'id'    => 'titan-premium',
-				'title' => '<span class="dashicons dashicons-star-filled"></span> ' . __( 'Upgrade to premium', 'titan-security' ),
-				'href'  => $this->get_support()->get_pricing_url( true, 'adminbar_menu' )
-			];
-
-		}
-
-		if( empty($menu_items) ) {
-			return;
-		}
-
-		$wp_admin_bar->add_menu([
-			'id' => 'titan-menu',
-			'title' => '<span class="wtitan-admin-bar-menu-icon"></span><span class="wtitan-admin-bar-menu-title">' . $extra_menu_title . ' <span class="dashicons dashicons-arrow-down"></span></span>',
-			'href' => $settings_url
-		]);
-
-		foreach((array)$menu_items as $id => $item) {
-			$wp_admin_bar->add_menu([
-				'id' => $id,
-				'parent' => 'titan-menu',
-				'title' => $item['title'],
-				'href' => $item['href'],
-				'meta' => [
-					'class' => isset($item['class']) ? $item['class'] : ''
-				]
-			]);
-		}
-	}
-
-	/**
-	 * @return bool
-	 */
+	/*
+	* @return bool
+	*/
 	public function is_premium()
 	{
 		if( $this->premium->is_active() && $this->premium->is_activate() ) {

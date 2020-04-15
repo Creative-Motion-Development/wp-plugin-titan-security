@@ -258,5 +258,5 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 				</div>
 			</div>
 		</div>
-
 	</div>
+
