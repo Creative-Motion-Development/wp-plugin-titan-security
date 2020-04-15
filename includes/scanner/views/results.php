@@ -19,7 +19,7 @@ if($matched === false ) {
 }
 else if(!empty($matched)) {
 	?>
-	<div class="wtitan-scanner-vulner-table-container">
+	<div class="wtitan-scanner-vulner-table-container wtitan-scanner-results">
         <table class="table table-striped table-hover table-responsive" width="100%">
             <thead>
             <tr>
@@ -53,7 +53,7 @@ else if(!empty($matched)) {
 			            } ?>
                         <td style="text-align: left;"><?php echo $match->getFile()->getPath( true ) ?></td>
                         <td><?php echo $match->getSignature()->getTitle() ?></td>
-                        <td><?php echo htmlspecialchars( $match->getMatch() ); ?></td>
+                        <td><code><?php echo htmlspecialchars( $match->getMatch() ); ?></code></td>
                     </tr>
 	            <?php elseif ( $match instanceof \WBCR\Titan\Client\Entity\CmsCheckItem ): ?>
                     <tr>

@@ -128,7 +128,15 @@
 .wtitan-scanner-vulner-table-container table thead td {
     background-color: #efefef !important;
 }
-
+.wtitan-scanner-results table td
+{
+    word-break: break-word;
+}
+.wtitan-scanner-results table td code
+{
+    word-break: break-word;
+    white-space: normal;
+}
 /*----------------*/
 li.wt-tabs-pro a:after {
     display: inline-block;
