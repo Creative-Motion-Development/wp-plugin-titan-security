@@ -81,13 +81,6 @@ class SignaturePool {
 			return null;
 		}
 
-		if(function_exists('exif_imagetype')) {
-			$type = @exif_imagetype($file->getPath());
-			if($type !== false) {
-				return null;
-			}
-		}
-
 		$ext = explode('.', $file->getPath());
 		$ext = $ext[count($ext) - 1];
 
@@ -95,13 +88,27 @@ class SignaturePool {
 		$isHTML = !$isPHP && in_array($ext, ['html']);
 		$isJS = !$isPHP && !$isHTML && in_array($ext, ['js', 'svg']);
 		$isArchive = !$isPHP && !$isHTML && !$isJS && in_array($ext, ['zip', 'tar', 'gz']);
-		$isBinary = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
-			'jpg', 'jpeg', 'mp3', 'avi', 'm4v', 'mov',
-			'mp4', 'gif', 'png', 'tiff', 'svg', 'sql',
-			'tbz2', 'bz2', 'xz', 'zip', 'tgz', 'gz',
-			'tar', 'log', 'err'
+		$isImage = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
+			'jpg', 'jpeg', 'png', 'webp', 'gif'
+			]);
+		$isMedia = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
+			'pm3', 'm4v', 'avi', 'mov', 'mp4'
+			]);
+		$isBinary = !$isPHP && !$isHTML && !$isJS && !$isArchive && !$isImage && !$isMedia && in_array($ext, [
+			'tiff', 'svg', 'sql', 'tbz2', 'bz2', 'xz', 'zip', 'tgz', 'gz', 'log', 'err'
 		]);
-		$isUnknown = !$isPHP && !$isHTML && !$isJS && !$isBinary;
+		$isUnknown = !$isPHP && !$isHTML && !$isJS && !$isArchive && !$isImage && !$isMedia && !$isBinary;
+
+		if ( $isImage && function_exists( 'exif_imagetype' ) ) {
+			$type = @exif_imagetype( $file->getPath() );
+			if ( $type !== false ) {
+				return null;
+			}
+		}
+
+		if ( $isMedia ) {
+			return null;
+		}
 
 		$chunk = 0;
 		while(!feof($fData)) {
