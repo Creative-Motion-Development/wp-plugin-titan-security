@@ -52,7 +52,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 					<div class="row">
 						<div class="col-md-12 wt-dashboard-block-header">
 							<h4><?php _e('Firewall', 'titan-security'); ?> <?php if( !$firewall_pro_activated ): ?>
-									<span style="color:#f6065b">PRO</span><?php endif; ?></h4>
+									<span class="wt-dashboard-pro-span">PRO</span><?php endif; ?></h4>
 						</div>
 					</div>
 					<div class="row">

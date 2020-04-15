@@ -149,6 +149,17 @@ li.wt-tabs-pro a:after
     z-index: 11;
     cursor: pointer;
 }
+.wt-dashboard-pro-span
+{
+    background: #f6065b;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    font-style: normal;
+    padding: 4px 6px;
+    margin-left: 4px;
+}
 .wt-scan-icon-loader
 {
     height: 55px;
