@@ -100,6 +100,8 @@ class Firewall_Login_Attempts extends Base {
 	 */
 	public function showPageContent()
 	{
+		require_once(WTITAN_PLUGIN_DIR . '/includes/bruteforce/class-helpers.php');
+		
 		$lockouts = (array)$this->get_option('bruteforce_lockouts');
 		$lockouts_log = $this->plugin->getOption('bruteforce_logged');
 		$log = \WBCR\Titan\Bruteforce\Helpers::sorted_log_by_date($lockouts_log);
@@ -112,7 +114,7 @@ class Firewall_Login_Attempts extends Base {
 		</div>
 		
 		<div class="wtitan-attacks-log">
-
+			
 			<table class="wtitan-attacks-log__table wp-list-table widefat striped plugins wp-list-table__plugins">
 				<thead>
 				<tr>
