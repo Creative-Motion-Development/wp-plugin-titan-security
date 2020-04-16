@@ -24,7 +24,7 @@ function wantispamp_obfuscate_param( $value = null ) {
 function wantispamp_array( $array ) {
 	require_once( WANTISPAMP_PLUGIN_DIR . '/includes/class-array.php' );
 
-	return new \WBCR\Antispam\Premium\Arr( $array );
+	return new \WBCR\Titan\Premium\Arr( $array );
 }
 
 /**
@@ -93,7 +93,7 @@ function wantispamp_check_existing_comments() {
 	$comments = wantispamp_get_comment_list();
 
 	if ( empty( $comments ) ) {
-		return [ false, 0 ];
+		return [ true, 0 ];
 	}
 
 	$items = [];
@@ -112,7 +112,7 @@ function wantispamp_check_existing_comments() {
 
 	\WBCR\Titan\Logger\Writter::info( sprintf( "%d comments prepared to checking!", sizeof( $items ) ) );
 
-	$cm_api  = new WBCR\Antispam\Premium\Api\Request();
+	$cm_api  = new WBCR\Titan\Premium\Api\Request();
 	$request = $cm_api->check_spam( $items );
 
 	if ( is_wp_error( $request ) ) {

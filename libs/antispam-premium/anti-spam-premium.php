@@ -81,13 +81,13 @@ if ( ! function_exists( 'wantispamp_premium_load' ) ) {
 		require_once( WANTISPAMP_PLUGIN_DIR . '/includes/plugin-rest-api.php' );
 
 		if ( is_admin() ) {
-			//require_once( WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-settings.php' );
+			require_once( WANTISPAMP_PLUGIN_DIR . '/admin/pages/class-pages-settings.php' );
 			require_once( WANTISPAMP_PLUGIN_DIR . '/admin/includes/class-comments-list-table.php' );
 			require_once( WANTISPAMP_PLUGIN_DIR . '/admin/includes/class-users-list-table.php' );
 			require_once( WANTISPAMP_PLUGIN_DIR . '/admin/boot.php' );
 
 			// Rewrite free plugin settings page
-			//$plugin->registerPage( 'WBCR\Antispam\Premium\Page\Settings', WANTISPAMP_PLUGIN_DIR . '/admin/pages/class-pages-settings.php' );
+			$plugin->registerPage( 'WBCR\Titan\Page\Progress', WANTISPAMP_PLUGIN_DIR . '/admin/pages/class-pages-settings.php' );
 		}
 
 		if ( ! wp_doing_ajax() || ! isset( $_REQUEST['action'] ) ) {

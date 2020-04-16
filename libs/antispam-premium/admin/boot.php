@@ -34,7 +34,7 @@ add_action( 'current_screen', function () {
 	}
 
 	require_once WANTISPAMP_PLUGIN_DIR . '/admin/includes/class-dashboard-widget.php';
-	new \WBCR\Antispam\Premium\Dashboard_Widget();
+	new \WBCR\Titan\Premium\Dashboard_Widget();
 }, 10, 2 );
 
 /**
@@ -58,7 +58,7 @@ add_action( 'wbcr/factory/pages/impressive/print_all_notices', function ( $plugi
 	}
 
 	$manage_comments_link = '<a href="' . admin_url( 'edit-comments.php?comment_status=moderated' ) . '">' . $count_comments . '</a>';
-	$action_link          = '<a class="button button-default" href="' . wp_nonce_url( \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'settings', [ 'action' => 'check-existing-comments' ] ), 'wantispam_checking_unapproved_comments' ) . '">' . __( 'Yes, do it' ) . '</a>';
+	$action_link          = '<a class="button button-default" href="' . wp_nonce_url( \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'progress', [ 'action' => 'check-existing-comments' ] ), 'wantispam_checking_unapproved_comments' ) . '">' . __( 'Yes, do it' ) . '</a>';
 
 	$notice_text = sprintf( __( "You have %s unapproved comments. Would you like to send them for spam checking? %s", "anti-spam" ), $manage_comments_link, $action_link );
 
@@ -83,7 +83,7 @@ add_action( 'wbcr/factory/admin_notices', function ( $notices, $plugin_name ) {
 	}
 
 	$manage_comments_link = '<a href="' . admin_url( 'edit-comments.php?comment_status=moderated' ) . '">' . $count_comments . '</a>';
-	$action_link          = '<a class="button button-default" href="' . wp_nonce_url( \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'settings', [ 'action' => 'check-existing-comments' ] ), 'wantispam_checking_unapproved_comments' ) . '">' . __( 'Yes, do it' ) . '</a>';
+	$action_link          = '<a class="button button-default" href="' . wp_nonce_url( \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'progress', [ 'action' => 'check-existing-comments' ] ), 'wantispam_checking_unapproved_comments' ) . '">' . __( 'Yes, do it' ) . '</a>';
 
 	$notice_text = sprintf( __( "You have %s unapproved comments. Would you like to send them for spam checking? %s", "anti-spam" ), $manage_comments_link, $action_link );
 

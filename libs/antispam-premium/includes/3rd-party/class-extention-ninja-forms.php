@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium;
+namespace WBCR\Titan\Premium;
 
 /**
  * Ninja Forms plugin integration

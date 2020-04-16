@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium\Api;
+namespace WBCR\Titan\Premium\Api;
 
 /**
  * The class implement some protections ways against spam
@@ -29,7 +29,7 @@ class Request {
 			return new \WP_Error( 'http_request_failed', 'Variable $items is empty! You must pass number days to get statistic for period.' );
 		}
 
-		$request_url = \WBCR\Antispam\Premium\Api\Request::SERVER_API_URL_V1 . \WBCR\Antispam\Premium\Api\Request::STAT_ENDPOINT;
+		$request_url = \WBCR\Titan\Premium\Api\Request::SERVER_API_URL_V1 . \WBCR\Titan\Premium\Api\Request::STAT_ENDPOINT;
 		$request_url = add_query_arg( [ 'days' => (int) $days ], $request_url );
 
 		return $this->request( $request_url, 'GET' );

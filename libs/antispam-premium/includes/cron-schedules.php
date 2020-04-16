@@ -29,7 +29,7 @@ add_action( 'wantispamp_check_status_queue', function () {
 
 	\WBCR\Titan\Logger\Writter::warning( "Cron event [START]!" );
 
-	$cm_api = new WBCR\Antispam\Premium\Api\Request();
+	$cm_api = new WBCR\Titan\Premium\Api\Request();
 
 	// Check status for comments
 	$checking_comments = $wpdb->get_results( $wpdb->prepare( "

@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium;
+namespace WBCR\Titan\Premium;
 
 /**
  * The class extend Comments_List_Table
@@ -142,7 +142,7 @@ class Comments_List_Table_Extension {
 
 }
 
-new \WBCR\Antispam\Premium\Comments_List_Table_Extension();
+new \WBCR\Titan\Premium\Comments_List_Table_Extension();
 
 
 

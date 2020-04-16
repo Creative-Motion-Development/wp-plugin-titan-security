@@ -32,7 +32,7 @@ jQuery(function($) {
 				console.error("[AntiSpam PRO] Response error:");
 				console.log(response);
 
-				$.wantispam.app.showNotice("[AntiSpam PRO] Ajax error: " + response.data.error_message, 'danger');
+				$.wbcr_factory_clearfy_000.app.showNotice("[AntiSpam PRO] Ajax error: " + response.data.error_message, 'danger');
 				return;
 			}
 
@@ -65,7 +65,7 @@ jQuery(function($) {
 			console.log(status);
 			console.log(error);
 
-			$.wantispam.app.showNotice("[AntiSpam PRO] Ajax error: " + error, 'danger');
+			$.wbcr_factory_clearfy_000.app.showNotice("[AntiSpam PRO] Ajax error: " + error, 'danger');
 		});
 	}
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium;
+namespace WBCR\Titan\Premium;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -199,7 +199,7 @@ class Dashboard_Widget {
 			return $cached;
 		}
 
-		$api  = new \WBCR\Antispam\Premium\Api\Request();
+		$api  = new \WBCR\Titan\Premium\Api\Request();
 		$data = $api->get_statistic( 7 );
 
 		if ( is_wp_error( $data ) ) {

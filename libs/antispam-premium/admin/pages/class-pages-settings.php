@@ -1,6 +1,8 @@
 <?php
 
-namespace WBCR\Antispam\Premium\Page;
+namespace WBCR\Titan\Page;
+
+//require_once WTITAN_PLUGIN_DIR. "admin/class-page-titan-basic.php";
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +18,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class Settings extends \WBCR\Antispam\Page\Settings {
+class Progress extends \WBCR\Titan\Page\Base {
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public $id = 'progress';
+
+	/**
+	 *
+	 * @var string
+	 */
+	public $page_parent_page = 'none';
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since  6.0
+	 * @var bool
+	 */
+	public $show_right_sidebar_in_options = false;
+
+	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
+		$this->plugin = $plugin;
+		parent::__construct( $plugin );
+	}
 
 	/**
 	 * Enqueue page assets
@@ -59,6 +85,7 @@ class Settings extends \WBCR\Antispam\Page\Settings {
 
 		ob_start();
 		?>
+		<script type="application/javascript" src="<?=WANTISPAMP_PLUGIN_URL . '/admin/assets/js/check-existing-comments.js'; ?>"></script>
         <style>
             #wantispam-check-existing-comments {
                 padding: 30px;

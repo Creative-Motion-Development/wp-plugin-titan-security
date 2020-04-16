@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Antispam\Premium;
+namespace WBCR\Titan\Premium;
 
 /**
  * The class implement some protections ways against spam
@@ -16,7 +16,7 @@ class Listener {
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  6.0
-	 * @var \WBCR\Antispam\Premium\Api\Request
+	 * @var \WBCR\Titan\Premium\Api\Request
 	 */
 	protected $cm_api;
 
@@ -178,7 +178,7 @@ class Listener {
 	}
 }
 
-new \WBCR\Antispam\Premium\Listener();
+new \WBCR\Titan\Premium\Listener();
 
 
 
