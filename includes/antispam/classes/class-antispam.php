@@ -123,7 +123,7 @@ class Antispam extends Module_Base {
 			return $cached;
 		}
 
-		$api  = new \WBCR\Antispam\Premium\Api\Request();
+		$api  = new \WBCR\Titan\Premium\Api\Request();
 		$data = $api->get_statistic( 7 );
 
 		if ( is_wp_error( $data ) ) {
