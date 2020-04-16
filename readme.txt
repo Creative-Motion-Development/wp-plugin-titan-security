@@ -11,16 +11,17 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Anti-spam, Site Security Check & Malware Scanner.
 
 == Description ==
-= Titan includes anti-spam, firewall, malware scanner, site accessibility checking, security and threats audits for WordPress websites. Our security functions provide Titan with the latest firewall rules, malware signatures, and database of malicious IP addresses - all you need to ensure the security of your website.
+Titan includes anti-spam, firewall, malware scanner, site accessibility checking, security and threats audits for WordPress websites. Our security functions provide Titan with the latest firewall rules, malware signatures, and database of malicious IP addresses - all you need to ensure the security of your website.
 
-Titan is a comprehensive WordPress security solution, completed by a set of additional features as add-ons, which was placed into a simple and intuitive interface. =
+Titan is a comprehensive WordPress security solution, completed by a set of additional features as add-ons, which was placed into a simple and intuitive interface.
 
-Why did we update Anti-Spam and what is Titan?
+**Why did we update Anti-Spam and what is Titan?**
 
 Let me tell you before we start: your favorite Anti-Spam had not disappeared! Instead of that it revived and became stronger to stand guard over the secure of your site!
 The latest update of Anti-Spam is called Titan Anti-spam & Security and represents the brand new version of a plugin.
 
-Why TITAN?
+**Why TITAN?**
+
 We aim to create a plugin as reliable as this metal - and easy-to-use at the same time. The new name of our plugin sets the pace with newest and highest standards of quality.
 
 What has been changed except the name?
@@ -30,10 +31,11 @@ Constant feedback from users and versatile development experience lets us claim 
 We considered all possibilities thoroughly to secure the best future for the plugin.
 Let me introduce new secure functionality that was developed with spending a lot of time, effort and consideration:
 
-### Features ###
+## Features ##
 
 == ANTI-SPAM ==
 ANTI-SPAM CHECKS YOUR COMMENTS THROUGH OUR GLOBAL SPAM DATABASE, THEN A SELF-LEARNING NEURAL NETWORK RE-CHECKS UNFILTERED COMMENTS, TO PREVENT YOUR SITE FROM PUBLISHING MALICIOUS CONTENT.
+
 * No captcha.
 * We have created algorithms to ensure reliability and accuracy against spam bots. It will save your time and resources, allowing you to focus on developing and improving your website and business. Antispam provides logs of all the processed requests that allows you to check the spam filters results. Regular analysis of parameters allows you to find new spam behavior patterns.
 * A comment posted by a user appears on the site right away. The background check marks spam comments as spam and hides them on a site. This helps to improve user experience and increase engagement.
@@ -47,6 +49,7 @@ ANTI-SPAM CHECKS YOUR COMMENTS THROUGH OUR GLOBAL SPAM DATABASE, THEN A SELF-LEA
 
 == WORDPRESS FIREWALL ==
 The web application firewall detects and blocks malicious traffic. It protects your website at the endpoint by providing deep integration with WordPress. In contrast to cloud alternatives, it does not violate encryption, cannot be bypassed and does not contribute to data leakage.
+
 * Protection brute force  attacks by restricting login attempts.
 * [PRO] Update real-time firewall rules and malware signatures through the threat protection channel.
 * [PRO] Real-time IP Block List blocks all requests from malicious IP addresses, protecting your site and reducing load.
@@ -172,7 +175,7 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
-= 7.1.1 =
+= 7.0.0 =
 * Add wordpress firewall [PRO]
 * Add malware scanner
 * Add security audit
