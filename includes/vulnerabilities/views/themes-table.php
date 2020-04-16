@@ -20,7 +20,7 @@ if(!empty( $args )) {
 			<tr>
 				<td><?php echo $vulner->name; ?></td>
 				<td class="wtitan-vulner-table-description"><?php echo $vulner->description; ?></td>
-				<td><?php echo $vulner->max_affected_version == '0.0.0.0.1' ? 'null' : $vulner->max_affected_version; ?></td>
+				<td><?php echo $vulner->max_affected_version == '0.0.0.0.1' ? '0.0' : $vulner->max_affected_version; ?></td>
 				<td><?php echo $vulner->safe_version; ?></td>
 				<td>
 					<?php if ( ! empty( $vulner->safe_version ) ) : ?>
