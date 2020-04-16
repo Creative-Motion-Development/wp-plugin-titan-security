@@ -33,6 +33,8 @@ class Activation extends \Wbcr_Factory000_Activator {
 		$log_message .= "{$tab}-Plugin Version in DB: {$plugin_version_in_db}\r\n";
 		$log_message .= "{$tab}-Current Plugin Version: {$current_plugin_version}";
 
+		require_once WTITAN_PLUGIN_DIR . '/includes/bruteforce/do_activate.php';
+
 		\WBCR\Titan\Logger\Writter::info($log_message);
 	}
 
