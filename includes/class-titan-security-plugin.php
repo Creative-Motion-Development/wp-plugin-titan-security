@@ -135,10 +135,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		}
 
 		self::app()->registerPage('WBCR\Titan\Page\Brute_Force', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-bruteforce.php');
-
-		if( !defined('WTITANP_PLUGIN_ACTIVE') ) {
-			self::app()->registerPage('WBCR\Titan\Page\Firewall_Login_Attempts', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-login-attempts.php');
-		}
+		self::app()->registerPage('WBCR\Titan\Page\Firewall_Login_Attempts', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-login-attempts.php');
 	}
 
 	/**
@@ -267,14 +264,12 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			'title' => '<span class="dashicons dashicons-heart"></span> ' . __('Do you like our plugin?', 'titan-security'),
 			'href' => 'https://wordpress.org/support/plugin/anti-spam/reviews/'
 		];
-		if(!$this->is_premium())
-		{
+		if( !$this->is_premium() ) {
 			$menu_items['titan-premium'] = [
-				'id'    => 'titan-premium',
-				'title' => '<span class="dashicons dashicons-star-filled"></span> ' . __( 'Upgrade to premium', 'titan-security' ),
-				'href'  => $this->get_support()->get_pricing_url( true, 'adminbar_menu' )
+				'id' => 'titan-premium',
+				'title' => '<span class="dashicons dashicons-star-filled"></span> ' . __('Upgrade to premium', 'titan-security'),
+				'href' => $this->get_support()->get_pricing_url(true, 'adminbar_menu')
 			];
-
 		}
 
 		if( empty($menu_items) ) {

@@ -58,7 +58,7 @@ class Brute_Force extends Base {
 	{
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Limit Login Attempts', 'titan-security');
+		$this->menu_title = __('Limit login Attempts', 'titan-security');
 		$this->page_menu_short_description = __('Stop login attacks', 'titan-security');
 
 		$this->view = \WBCR\Titan\Plugin::app()->view();

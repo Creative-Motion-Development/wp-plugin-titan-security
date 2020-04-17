@@ -78,8 +78,9 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		add_action('wp_ajax_wtitan_activate_trial', array($this, 'activate_trial'));
 	}
 
-	public function getPluginTitle() {
-		return "<span class='wt-plugin-header-logo'>&nbsp;</span>".__( 'Titan Anti-spam & Security', 'titan-security' );
+	public function getPluginTitle()
+	{
+		return "<span class='wt-plugin-header-logo'>&nbsp;</span>" . __('Titan security', 'titan-security');
 	}
 
 	/**
