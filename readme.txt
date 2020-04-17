@@ -1,4 +1,4 @@
-=== Anti-spam & Titan security ===
+=== Titan Anti-spam & Security ===
 Contributors: creativemotion
 Tags: antispam, firewall, malware scanner, security, antivirus, firewall, malware, scan, spam
 Requires at least: 4.9
