@@ -80,7 +80,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 	public function getPluginTitle()
 	{
-		return "<span class='wt-plugin-header-logo'>&nbsp;</span>" . __('Titan security', 'titan-security');
+		return "<span class='wt-plugin-header-logo'>&nbsp;</span>" . __('Titan Anti-spam & Security', 'titan-security');
 	}
 
 	/**
