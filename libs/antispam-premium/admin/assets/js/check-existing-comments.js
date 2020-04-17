@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-
-
 jQuery(function($) {
 	let contanierElement = $('#wantispam-check-existing-comments'),
 		progressBarElement = contanierElement.find('progress'),
