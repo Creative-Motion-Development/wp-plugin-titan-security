@@ -175,7 +175,13 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
-= 7.0.0 =
+= 7.0.2 - 17.04.2020 =
+* Fixed: Minor bugs
+
+= 7.0.1 - 17.04.2020 =
+* The Htts warning notice has been hidden
+
+= 7.0.0 - 17.04.2020  =
 * Add wordpress firewall [PRO]
 * Add malware scanner
 * Add security audit
