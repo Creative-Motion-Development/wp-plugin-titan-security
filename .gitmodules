@@ -25,3 +25,6 @@
 [submodule "libs/hide-login-page"]
 	path = libs/hide-login-page
 	url = ssh://git@bitbucket.org/webcraftic/wp-plugin-hide-login-page
+[submodule "libs/two-factor"]
+	path = libs/two-factor
+	url = https://github.com/Creative-Motion-Development/wp-plugin-two-factor-auth
