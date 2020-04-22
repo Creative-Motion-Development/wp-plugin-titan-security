@@ -37,6 +37,9 @@ class Base extends \Wbcr_FactoryClearfy000_PageBase {
 	 */
 	public function assets( $scripts, $styles ) {
 		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/titan-security.css' );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/titan-security.js' );
+		$this->scripts->localize('wtitan_trial', wp_create_nonce("wtitan_hide_trial_notice"));
+
 
 		parent::assets( $scripts, $styles );
 	}
