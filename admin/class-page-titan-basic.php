@@ -40,6 +40,9 @@ class Base extends \Wbcr_FactoryClearfy000_PageBase {
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/titan-security.js' );
 		$this->scripts->localize('wtitan_trial', wp_create_nonce("wtitan_hide_trial_notice"));
 
+		/* Install addons styles and scripts */
+		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/install-addons.css' );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/install-addons.js' );
 
 		parent::assets( $scripts, $styles );
 	}
@@ -58,9 +61,9 @@ class Base extends \Wbcr_FactoryClearfy000_PageBase {
 		$hot_support_url  = $this->plugin->get_support()->get_site_url() . '/support';
 
 		?>
-        <div id="wbcr-clr-support-widget" class="wbcr-factory-sidebar-widget">
+        <div id="wtitan-support-widget" class="wbcr-factory-sidebar-widget">
             <p><strong><?php _e( 'Having Issues?', 'titan-security' ); ?></strong></p>
-            <div class="wbcr-clr-support-widget-body">
+            <div class="wtitan-support-widget-body">
                 <p>
 					<?php _e( 'We provide free support for this plugin. If you are pushed with a problem, just create a new ticket. We will definitely help you!', 'titan-security' ); ?>
                 </p>

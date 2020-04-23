@@ -49,12 +49,12 @@ jQuery(document).ready(function($) {
             $this.prop('disabled', false);
 
             if( response.data.update_notice ) {
-                if( !$('.wbcr-clr-update-package').length ) {
+                if( !$('.wtitan-update-package').length ) {
                     $.wbcr_factory_clearfy_217.app.showNotice(response.data.update_notice);
                 }
             } else {
-                if( $('.wbcr-clr-update-package').length ) {
-                    $('.wbcr-clr-update-package').closest('.wbcr-factory-warning-notice').remove();
+                if( $('.wtitan-update-package').length ) {
+                    $('.wtitan-update-package').closest('.wbcr-factory-warning-notice').remove();
                 }
             }
         });
