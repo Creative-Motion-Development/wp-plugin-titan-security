@@ -234,8 +234,6 @@ class Dashboard extends Base {
 	 */
 	public function showPageContent()
 	{
-		$this->init();
-
 		//FIREWALL
 		$firewall = array();
 

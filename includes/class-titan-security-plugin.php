@@ -162,6 +162,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			require(WTITAN_PLUGIN_DIR . '/admin/ajax/logs.php');
+			require(WTITAN_PLUGIN_DIR . '/admin/ajax/notice.php');
 		}
 
 		add_action('admin_bar_menu', [$this, 'admin_bar_menu'], 80);

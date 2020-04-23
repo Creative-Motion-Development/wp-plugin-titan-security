@@ -211,3 +211,14 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"]
 {
     color: #ffbe00;
 }
+.wt-notice-trial-button
+{
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    vertical-align: baseline;
+}
+.wt-notice-hide-link
+{
+    float: right;
+    cursor: pointer;
+}
