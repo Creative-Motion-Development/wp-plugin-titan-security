@@ -43,7 +43,7 @@ class PluginSettings extends Base {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $page_menu_position = 1;
+	public $page_menu_position = 2;
 
 	/**
 	 * @param Wbcr_Factory000_Plugin $plugin

@@ -114,13 +114,13 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Dashboard', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-dashboard.php');
 
-		//self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
-		//self::app()->registerPage('WBCR\Titan\Page\Scanner', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-scanner.php');
 		self::app()->registerPage('WBCR\Titan\Page\SiteChecker', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-sitechecker.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\Logs', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-logs.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\Tweaks', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-tweaks.php');
+
+		self::app()->registerPage('WBCR\Titan\Page\Components', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-components.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
@@ -307,5 +307,121 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			return false;
 		}
 	}
+
+
+	/**
+	 * @param string $component_name
+	 *
+	 * @return bool
+	 */
+	public function isActivateComponent($component_name)
+	{
+		if( !is_string($component_name) ) {
+			return false;
+		}
+
+		$deactivate_components = $this->getPopulateOption('deactive_preinstall_components', []);
+
+		if( !is_array($deactivate_components) ) {
+			$deactivate_components = [];
+		}
+
+		if( $deactivate_components && in_array($component_name, $deactivate_components) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string $component_name
+	 *
+	 * @return bool
+	 */
+	public function deactivateComponent($component_name)
+	{
+		if( !$this->isActivateComponent($component_name) ) {
+			return true;
+		}
+
+		do_action('wbcr_clearfy_pre_deactivate_component', $component_name);
+
+		$deactivate_components = $this->getPopulateOption('deactive_preinstall_components', []);
+
+		if( !empty($deactivate_components) && is_array($deactivate_components) ) {
+			$deactivate_components[] = $component_name;
+		} else {
+			$deactivate_components = [];
+			$deactivate_components[] = $component_name;
+		}
+
+		$this->updatePopulateOption('deactive_preinstall_components', $deactivate_components);
+
+		do_action('wbcr_clearfy_deactivated_component', $component_name);
+
+		return true;
+	}
+
+	/**
+	 * @param string $component_name
+	 *
+	 * @return bool
+	 */
+	public function activateComponent($component_name)
+	{
+		if( $this->isActivateComponent($component_name) ) {
+			return true;
+		}
+
+		do_action('wbcr_clearfy_pre_activate_component', $component_name);
+
+		$deactivate_components = $this->getPopulateOption('deactive_preinstall_components', []);
+
+		if( !empty($deactivate_components) && is_array($deactivate_components) ) {
+			$index = array_search($component_name, $deactivate_components);
+			unset($deactivate_components[$index]);
+		}
+
+		if( empty($deactivate_components) ) {
+			$this->deletePopulateOption('deactive_preinstall_components');
+		} else {
+			$this->updatePopulateOption('deactive_preinstall_components', $deactivate_components);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Allows you to get a button to install the plugin component
+	 *
+	 * @param $component_type
+	 * @param $slug
+	 * param $premium
+	 *
+	 * @return \WTITAN_InstallPluginsButton
+	 */
+	public function getInstallComponentsButton($component_type, $slug)
+	{
+		require_once WTITAN_PLUGIN_DIR . '/admin/includes/classes/class.install-plugins-button.php';
+
+		return new \WTITAN_InstallPluginsButton($component_type, $slug);
+	}
+
+	/**
+	 * Allows you to get a button to delete the plugin component
+	 *
+	 * @param $component_type
+	 * @param $slug
+	 *
+	 * @return \WTITAN_InstallPluginsButton
+	 */
+	public function getDeleteComponentsButton($component_type, $slug)
+	{
+		require_once WTITAN_PLUGIN_DIR . '/admin/includes/classes/class.install-plugins-button.php';
+		require_once WTITAN_PLUGIN_DIR . '/admin/includes/classes/class.delete-plugins-button.php';
+
+		return new \WTITAN_DeletePluginsButton($component_type, $slug);
+	}
+
 }
 
