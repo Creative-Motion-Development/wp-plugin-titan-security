@@ -145,6 +145,7 @@
 							if( $this.closest('.plugin-card').length ) {
 								self.setComponentActivate($this);
 								$this.closest('.plugin-card').find('.delete-now').remove();
+								$this.closest('.plugin-card').find('.settings-button').show();
 							}
 
 							$.wbcr_factory_clearfy_000.hooks.run('clearfy/components/pre_activate', [
@@ -184,6 +185,7 @@
 
 								if( response.data['delete_button'] && response.data['delete_button'] != '' ) {
 									$this.before($(response.data['delete_button']).addClass('delete-now'));
+									$this.closest('.plugin-card').find('.settings-button').hide();
 								}
 							}
 

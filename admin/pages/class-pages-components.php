@@ -179,7 +179,8 @@ class Components extends Base {
 				'build'       => 'free',
 				'base_path'   => 'hide-login-page/hide-login-page.php',
 				'icon'        => 'https://ps.w.org/hide-login-page/assets/icon-256x256.png',
-				'description' => __( 'Hide Login Page is a very light plugin that lets you easily and safely change the url of the login form page to anything you want.', 'titan-security' )
+				'description' => __( 'Hide Login Page is a very light plugin that lets you easily and safely change the url of the login form page to anything you want. The settings are located in the Tweaks tab.', 'titan-security' ),
+				'settings_url' => admin_url('admin.php?page=hlp_hide_login-'.$this->plugin->getPluginName())
 			],
 		] );
 
