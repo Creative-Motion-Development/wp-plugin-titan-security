@@ -175,7 +175,8 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
-= 7.0.2 - 17.04.2020 =
+= 7.0.2 - 30.04.2020 =
+* Add COMPONENTS tab
 * Fixed: Minor bugs
 
 = 7.0.1 - 17.04.2020 =
