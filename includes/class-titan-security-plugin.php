@@ -129,6 +129,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
 
+		//Hidden page
+		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
+
 		// Firewall
 		if( !defined('WTITANP_PLUGIN_ACTIVE') ) {
 			self::app()->registerPage('WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php');
