@@ -68,6 +68,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		if( is_admin() ) {
 			$this->admin_scripts();
+			if( defined('DOING_AJAX') && DOING_AJAX ) {
+				require(WTITAN_PLUGIN_DIR . '/admin/ajax/install-addons.php');
+			}
 		}
 	}
 

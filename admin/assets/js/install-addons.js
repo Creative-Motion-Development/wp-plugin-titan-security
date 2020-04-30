@@ -10,7 +10,7 @@
 (function($) {
 	'use strict';
 
-	var externalAddon = {
+	var wtitan_externalAddon = {
 		init: function() {
 			this.events();
 		},
@@ -33,7 +33,7 @@
 				var action = 'install-plugin';
 
 				if( storage == 'freemius' || ((storage == 'wordpress' || storage == 'internal') && (plugin_action == 'activate' || plugin_action == 'deactivate')) ) {
-					action = 'wbcr-clearfy-update-component';
+					action = 'wtitan-update-component';
 				} else if( storage == 'wordpress' && plugin_action == 'delete' ) {
 					action = 'delete-plugin';
 				}
@@ -247,7 +247,7 @@
 					container = $this.closest('p');
 
 				var data = {
-					action: 'wbcr-clearfy-update-package',
+					action: 'wtitan-update-package',
 					_wpnonce: wpnonce
 				};
 
@@ -355,7 +355,7 @@
 	};
 
 	$(document).ready(function() {
-		externalAddon.init();
+		wtitan_externalAddon.init();
 	});
 
 })(jQuery);
