@@ -68,6 +68,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		if( is_admin() ) {
 			$this->admin_scripts();
+			if( defined('DOING_AJAX') && DOING_AJAX ) {
+				require(WTITAN_PLUGIN_DIR . '/admin/ajax/install-addons.php');
+			}
 		}
 	}
 
@@ -125,6 +128,9 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
+
+		//Hidden page
+		self::app()->registerPage('WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php');
 
 		// Firewall
 		if( !defined('WTITANP_PLUGIN_ACTIVE') ) {

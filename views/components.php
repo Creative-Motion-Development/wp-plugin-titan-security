@@ -1,8 +1,9 @@
 <?php
+
 use WBCR\Titan\Plugin;
 
-if( is_array($data) ) {
-	extract($data);
+if ( is_array( $data ) ) {
+	extract( $data );
 }
 /**
  * @var array $components
@@ -11,9 +12,9 @@ if( is_array($data) ) {
 <div class="wbcr-factory-page-group-header"><?php
 
 	_e( '<strong>Plugin Components</strong>.', 'titan-security' ) ?>
-	<p>
+    <p>
 		<?php _e( 'These are components of the plugin bundle. When you activate the plugin, all the components turned on by default. If you don’t need some function, you can easily turn it off on this page.', 'titan-security' ) ?>
-	</p>
+    </p>
 </div>
 <div class="wbcr-clearfy-components">
 	<?php
@@ -46,31 +47,39 @@ if( is_array($data) ) {
 		$delete_button->addClass( 'delete-now' );
 
 		?>
-		<div class="plugin-card<?php echo esc_attr( $status_class ) ?>">
+        <div class="plugin-card<?php echo esc_attr( $status_class ) ?>">
 			<?php if ( isset( $component['build'] ) ): ?>
-				<div class="plugin-card-<?php echo esc_attr( $component['build'] ) ?>-ribbon"><?php echo ucfirst( esc_html( $component['build'] ) ) ?></div>
+                <div class="plugin-card-<?php echo esc_attr( $component['build'] ) ?>-ribbon"><?php echo ucfirst( esc_html( $component['build'] ) ) ?></div>
 			<?php endif; ?>
-			<div class="plugin-card-top">
-				<div class="name column-name">
-					<h3>
-						<a href="<?php echo esc_url( $component['url'] ) ?>" class="thickbox open-plugin-details-modal">
+            <div class="plugin-card-top">
+                <div class="name column-name">
+                    <h3>
+                        <a href="<?php echo esc_url( $component['url'] ) ?>" class="thickbox open-plugin-details-modal">
 							<?php echo esc_html( $component['title'] ) ?>
-							<img src="<?php echo esc_attr( $component['icon'] ) ?>" class="plugin-icon" alt="<?php echo esc_attr( $component['title'] ) ?>">
-						</a>
-					</h3>
-				</div>
-				<div class="desc column-description">
-					<p><?php echo esc_html( $component['description'] ); ?></p>
-				</div>
-			</div>
-			<div class="plugin-card-bottom">
+                            <img src="<?php echo esc_attr( $component['icon'] ) ?>" class="plugin-icon"
+                                 alt="<?php echo esc_attr( $component['title'] ) ?>">
+                        </a>
+                    </h3>
+                </div>
+                <div class="desc column-description">
+                    <p><?php echo esc_html( $component['description'] ); ?></p>
+                </div>
+            </div>
+            <div class="plugin-card-bottom">
 				<?php if ( 'premium' === $component['build'] && ! ( Plugin::app()->premium->is_activate() && Plugin::app()->premium->is_install_package() ) ): ?>
-					<a target="_blank" href="<?php echo esc_url( $component['url'] ) ?>" class="button button-default install-now"><?php _e( 'Read more', 'titan-security' ); ?></a>
-				<?php else: ?>
-					<?php $delete_button->renderButton(); ?><?php $install_button->renderButton(); ?>
-				<?php endif; ?>
-			</div>
-		</div>
+                    <a target="_blank" href="<?php echo esc_url( $component['url'] ) ?>"
+                       class="button button-default install-now"><?php _e( 'Read more', 'titan-security' ); ?></a>
+				<?php else:
+					$delete_button->renderButton();
+
+					if ( $install_button->isPluginActivate() ) {$display = '';} else {$display = 'style="display: none;"';}
+					?><a href="<?php echo esc_url( $component['settings_url'] ) ?>"
+                         class="button button-primary settings-button" <?php echo $display; ?>><?php _e( 'Settings', 'titan-security' ); ?></a><?php
+
+					$install_button->renderButton();
+				endif; ?>
+            </div>
+        </div>
 	<?php endforeach; ?>
-	<div class="clearfix"></div>
+    <div class="clearfix"></div>
 </div>

@@ -107,7 +107,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 							<?php
 							if($is_premium) {
 								$count = $antispam->get_statistic_data()->total;
-								echo __( 'Spam blocked: ', 'titan-security' );
+								echo __( 'Spam blocked in the last 7 days: ', 'titan-security' );
 								echo "<span class='wt-magenta-text'>{$count}</span>";
 							}
 							?>
