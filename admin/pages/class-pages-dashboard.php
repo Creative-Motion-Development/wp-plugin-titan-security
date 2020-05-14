@@ -158,6 +158,7 @@ class Dashboard extends Base {
 
 		add_action('wp_ajax_wtitan_change_scanner_speed', [$this, 'change_scanner_speed']);
 		add_action('wp_ajax_wtitan_change_scanner_schedule', [$this, 'change_scanner_schedule']);
+		add_action('wp_ajax_wtitan_change_digest_state', [$this, 'change_digest_state']);
 
 		parent::__construct($plugin);
 	}
@@ -224,6 +225,7 @@ class Dashboard extends Base {
 
 		$this->scripts->localize('wtdashboard', [
 			'nonce' => wp_create_nonce("wtitan_change_scanner"),
+            'digest_nonce' => wp_create_nonce('wtitan_change_digest_state'),
 		]);
 		//$this->scripts->add('https://www.gstatic.com/charts/loader.js', [],'', WANTISPAMP_PLUGIN_VERSION);
 	}
@@ -304,6 +306,8 @@ class Dashboard extends Base {
 			],
 		];
 
+		$isDigestEnabled = $this->plugin->getOption('digest', 'disable') === 'enable';
+
 		$this->view->print_template('dashboard', [
 			'is_premium' => $this->plugin->is_premium(),
 			'scanner_started' => $scanner_started,
@@ -319,6 +323,7 @@ class Dashboard extends Base {
 			'scanner_speeds' => $scanner_speeds,
 			'schedule' => $schedule,
 			'schedules' => $schedules,
+            'isDigestEnabled' => $isDigestEnabled,
 		]);
 	}
 
@@ -347,6 +352,35 @@ class Dashboard extends Base {
 			wp_send_json(array('error_message' => __('Scanner speed is not selected', 'titan-security')));
 		}
 	}
+
+    /**
+     * AJAX Changing digest state
+     */
+	public function change_digest_state() {
+	    check_ajax_referer( 'wtitan_change_digest_state' );
+
+	    $value = $_POST['value'];
+	    if(!in_array($value, ['disable', 'enable'])) {
+	        wp_send_json([
+	            'error_message' => __('Reload the page and try again', 'titan-security'),
+            ]);
+        }
+
+	    $this->plugin->updateOption('digest', $value);
+
+	    if($value == 'enable') {
+            $msg = 'You have enabled receiving the digest';
+            wp_schedule_event(time(), 'daily', 'titan_malware_daily_digest');
+        } else {
+            $msg = 'You have disabled receiving the digest';
+            wp_unschedule_hook('titan_malware_daily_digest');
+        }
+
+
+        wp_send_json([
+	        'message' => __($msg, 'titan-security'),
+        ]);
+    }
 
 	/**
 	 * AJAX change scanner speed

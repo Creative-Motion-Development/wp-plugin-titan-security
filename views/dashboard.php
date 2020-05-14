@@ -9,6 +9,7 @@ if( is_array($data) ) {
  * @var array $scanner_speeds
  * @var string $schedule
  * @var array $schedules
+ * @var bool $isDigestEnabled
  * @var \WBCR\Titan\Vulnerabilities $vulnerabilities
  * @var \WBCR\Titan\Audit $audit
  * @var \WBCR\Titan\SiteChecker $sites
@@ -43,7 +44,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 //$statistic_data = $antispam->get_statistic_data();
 ?>
 <div class="wbcr-content-section">
-	
+
 	<div class="wt-dashboard-container">
 		<div class="wt-row">
 			<!-- FIREWALL -->
@@ -70,7 +71,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 								</option>
 							</select>
 						</div>
-						
+
 						<div class="col-md-3 wt-dashboard-block-content">
 							<div class="wtitan-status-block wtitan-status--loading" style="display: none;">
 								<span class="wt-dashboard-icon-loader"></span>
@@ -82,7 +83,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 								<span class="wt-firewall-icon-clock"></span>
 							</div>
 							<div class="wtitan-status-block wtitan-status--disabled wt-firewall-icon-dissmiss" style="display: <?php echo("disabled" === $firewall_mode ? 'block' : 'none') ?>;">
-							
+
 							</div>
 						</div>
 
@@ -134,7 +135,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="wt-dashboard-container">
 		<div class="wt-row">
 			<!-- SCANNER -->
@@ -193,7 +194,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
+						<div class="col-md-4 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
 									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">
@@ -213,7 +214,31 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6 wt-dashboard-block-content" style="text-align: left;">
+                        <div class="col-md-4 wt-dashboard-block-content" style="text-align: left">
+                            <div class="form-group form-group-dropdown factory-control-scanner_digest">
+                                <div class="control-group col-sm-12">
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class ?>" data-way="buttons">
+                                        <div class="wt-dashboard-form-label"><?= __('Digest', 'titan-security') ?></div>
+                                        <div class="btn-group factory-buttons-groups">
+                                            <button class="btn btn-default btn-small factory-<?= $isDigestEnabled ? 'disabled active' : 'enabled'?>"
+                                                <?= $isDigestEnabled ? 'disabled' : 'enabled' ?> data-action="digest-state" data-value="enable">
+                                                <?= __('Enable', 'titan-security') ?>
+                                            </button>
+                                            <button class="btn btn-default btn-small factory-<?= !$isDigestEnabled ? 'disabled active' : 'enabled'?>"
+                                                <?= !$isDigestEnabled ? 'disabled' : 'enabled' ?> data-action="digest-state" data-value="disable">
+                                                <?= __('Disable', 'titan-security') ?>
+                                            </button>
+                                        </div>
+                                        <div class="factory-hints" style="">
+                                            <div class="factory-hint factory-hint-disabled">
+                                                <?= __('You can get a daily and weekly digest on threats found', 'titan-security') ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div class="col-md-4 wt-dashboard-block-content" style="text-align: left;">
 							<div class="form-group form-group-dropdown  factory-control-scanner_speed">
 								<div class="control-group col-sm-12">
 									<div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>" data-way="buttons">

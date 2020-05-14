@@ -7,7 +7,7 @@ namespace WBCR\Titan\MalwareScanner;
  *
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
-class Signature {
+class Signature implements \JsonSerializable {
 	const TYPE_SERVER = 'server';
 	const TYPE_BROWSER = 'browser';
 	const TYPE_BOTH = 'both';
@@ -174,4 +174,18 @@ class Signature {
 			$params['id'], $params['format'], $params['child_id'], $params['severity'],
 			$params['title'], $params['type'], $params['common_indexes'], $params['content'] );
 	}
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'format' => $this->format,
+            'sever' => $this->sever,
+            'title' => $this->title,
+            'type' => $this->type,
+        ];
+    }
 }

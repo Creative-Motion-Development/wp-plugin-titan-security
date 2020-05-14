@@ -6,10 +6,14 @@
  * @copyright (c) 10.02.2020, Webcraftic
  */
 
+use WBCR\Titan\Cert\Cert;
 use WBCR\Titan\Client\Client;
 use WBCR\Titan\Client\Entity\CmsCheckItem;
+use WBCR\Titan\Logger\Writter;
 use WBCR\Titan\MalwareScanner\HashListPool;
+use WBCR\Titan\MalwareScanner\Match;
 use WBCR\Titan\MalwareScanner\Scanner;
+use WBCR\Titan\MalwareScanner\Signature;
 use WBCR\Titan\Plugin;
 
 add_filter('cron_schedules', 'titan_add_minute_schedule');
@@ -23,7 +27,31 @@ function titan_add_minute_schedule($schedules)
 		'display' => __('Once 30 sec', 'titan-security'),
 	];
 
+	$schedules['daily'] = [
+	    'interval' => 86400, // 1 day
+        'display' => __('Daily', 'titan-security'),
+    ];
+
 	return $schedules;
+}
+
+add_action('titan_malware_daily_digest', 'titan_malware_daily_digest');
+function titan_malware_daily_digest() {
+    if(!Plugin::app()->is_premium()) {
+        return;
+    }
+
+    /**
+     * @var Match[] $matched
+     */
+    $matched = get_option(Plugin::app()->getPrefix() . 'matched_daily', []);
+
+    Writter::info("Sending daily digest");
+
+    $client = new Client(Plugin::app()->premium->get_license()->get_key());
+    $client->send_notification('email', 'digestDaily', [
+        'infectedFiles' => $matched,
+    ]);
 }
 
 add_action('titan_scheduled_scanner', 'titan_scheduled_scanner');
@@ -38,7 +66,7 @@ function titan_scheduled_scanner()
 	/** @var Scanner $scanner */
 	$scanner = get_option(Plugin::app()->getPrefix() . 'scanner', null);
 	if( is_null($scanner) || $scanner === false ) {
-		\WBCR\Titan\Logger\Writter::error('Scanner does not exists');
+		Writter::error('Scanner does not exists');
 		error_log('Scanner does not exists');
 		titan_remove_scheduler_scanner();
 
@@ -56,8 +84,8 @@ function titan_scheduled_scanner()
 	$matched = Plugin::app()->getOption('scanner_malware_matched', []);
 
 	foreach($scanner->scan($files_count) as $match) {
-		/** @var \WBCR\Titan\MalwareScanner\Match $match */
-		if( $match->getSignature()->getSever() === \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL ) {
+		/** @var Match $match */
+		if( $match->getSignature()->getSever() === Signature::SEVER_CRITICAL ) {
 			array_unshift($matched, $match);
 		} else {
 			array_push($matched, $match);
@@ -204,7 +232,13 @@ function titan_remove_scheduler_scanner()
 	Plugin::app()->updateOption('scanner_status', 'stopped');
 
 	try {
-		$matched = Plugin::app()->getOption('scanner_malware_matched');
+	    /** @var Match[] $matched */
+		$matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+		$dailyMatched = get_option( Plugin::app()->getPrefix() . 'matched_daily', []);
+
+		$dailyMatched = array_merge($dailyMatched, $matched);
+		$dailyMatched = array_unique($dailyMatched, SORT_STRING);
+		Plugin::app()->updateOption('matched_daily', $dailyMatched);
 
 		if( count($matched) > 0 ) {
 			if( Plugin::app()->is_premium() ) {
@@ -264,13 +298,13 @@ function collect_wp_hash_sum($path = ABSPATH)
  * @return bool
  */
 add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin, $obj) {
-	if( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) {
+	if( $plugin->getPluginName() != Plugin::app()->getPluginName() ) {
 		return;
 	}
 
-	if( !empty($_GET['page']) && "sitechecker-" . \WBCR\Titan\Plugin::app()->getPluginName() === $_GET['page'] ) {
+	if( !empty($_GET['page']) && "sitechecker-" . Plugin::app()->getPluginName() === $_GET['page'] ) {
 		require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
-		$cert = \WBCR\Titan\Cert\Cert::get_instance();
+		$cert = Cert::get_instance();
 		$output = false;
 		$message = '';
 		$type = 'warning';
@@ -388,11 +422,11 @@ function get_recommended_scanner_speed()
 {
 	$mem = get_memory_limit();
 	if( $mem > 100 ) {
-		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST;
+		$recommendation = Scanner::SPEED_FAST;
 	} elseif( $mem > 60 ) {
-		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM;
+		$recommendation = Scanner::SPEED_MEDIUM;
 	} else {
-		$recommendation = \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW;
+		$recommendation = Scanner::SPEED_SLOW;
 	}
 
 	return $recommendation;

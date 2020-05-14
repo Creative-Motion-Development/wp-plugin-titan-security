@@ -198,6 +198,32 @@ jQuery(document).ready(function($) {
 
     });
 
+    jQuery('[data-action="digest-state"]').on('click', function(e) {
+        e.preventDefault();
+        var btn = jQuery(this);
+
+        var enable = btn.attr('data-value');
+
+        jQuery.post(ajaxurl, {
+            action: 'wtitan_change_digest_state',
+            _wpnonce: wtdashboard.digest_nonce,
+            value: enable,
+        }, function(response) {
+            console.log(response);
+
+            var msg = (!response || response.error_message) ? response.error_message : response.message;
+            var type = (!response || response.error_message) ? 'danger' : 'success';
+
+            jQuery('[data-action="digest-state"][disabled]').removeAttr('disabled');
+            btn.attr('disabled', 'disabled');
+
+            var noticeId = jQuery.wbcr_factory_clearfy_000.app.showNotice(msg, type);
+            setTimeout(function() {
+                jQuery.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+            }, 5000);
+        });
+    })
+
     jQuery('#wt-quickstart-scan').on('click', function(e) {
         e.preventDefault();
         var btn = jQuery(this);
