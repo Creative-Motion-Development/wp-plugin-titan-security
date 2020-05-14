@@ -10,7 +10,7 @@ use WBCR\Titan\Logger\Writter;
  *
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
-class File {
+class File implements \JsonSerializable {
 	/**
 	 * @var string
 	 */
@@ -115,4 +115,9 @@ class File {
 	public function getContent() {
 		return $this->loadData();
 	}
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
 }
