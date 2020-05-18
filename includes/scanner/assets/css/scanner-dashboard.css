@@ -1,47 +1,63 @@
-.wbcr-titan-content {
-    margin: 15px;
+.wbcr-titan-content
+{
+	margin: 15px;
 }
 
-#scan {
-    position: relative;
-}
-#scan > span.text {
-    position: relative;
-    z-index: 1;
+#scan
+{
+	position: relative;
 }
 
-#scan > span.progress {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 100%;
-    z-index: 0;
+#scan > span.text
+{
+	position: relative;
+	z-index: 1;
 }
+
+#scan > span.progress
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 100%;
+	z-index: 0;
+}
+
 /*----------------*/
 .wt-scanner-container
 {
-    margin: 15px 15px 15px 15px;
+	margin: 15px 15px 15px 15px;
 }
+
 .wt-scanner-block-scan
 {
-    text-align: center;
+	text-align: center;
 }
-.wt-scanner-block-scan table {
-    width: 100%;
+
+.wt-scanner-block-scan table
+{
+	width: 100%;
 }
-.wt-scanner-block-scan table td:first-child {
-    width: 20%;
+
+.wt-scanner-block-scan table td:first-child
+{
+	width: 20%;
 }
-.wt-scanner-block-scan table td {
-    border: 1px solid #efefef;
-    background: #fff;
-    text-align: center;
-    padding: 20px;
+
+.wt-scanner-block-scan table td
+{
+	border: 1px solid #efefef;
+	background: #fff;
+	text-align: center;
+	padding: 20px;
 }
-.wt-scanner-block-scan table td h4 {
-    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+
+.wt-scanner-block-scan table td h4
+{
+	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 16px;
 }
+
 /*----------------*/

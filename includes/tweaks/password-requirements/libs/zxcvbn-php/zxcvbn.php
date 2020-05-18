@@ -15,13 +15,13 @@ class ITSEC_Zxcvbn {
 	private $scorer;
 
 	public function __construct() {
-		$this->matcher   = new ITSEC_Zxcvbn_Matcher();
-		$this->scorer    = new ITSEC_Zxcvbn_Scorer();
+		$this->matcher = new ITSEC_Zxcvbn_Matcher();
+		$this->scorer  = new ITSEC_Zxcvbn_Scorer();
 	}
 
 	/**
-	 * @param string $password         The Password to test.
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 * @param string $password The Password to test.
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Results
 	 */
@@ -33,7 +33,7 @@ class ITSEC_Zxcvbn {
 		$this->matcher->set_user_input_dictionary( $penalty_strings );
 		$matches = $this->matcher->omnimatch( $password );
 
-		$result = $this->scorer->most_guessable_match_sequence( $password, $matches );
+		$result            = $this->scorer->most_guessable_match_sequence( $password, $matches );
 		$result->calc_time = microtime( true ) - $start;
 
 		return $result;

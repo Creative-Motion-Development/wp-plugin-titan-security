@@ -83,23 +83,23 @@ class File implements \JsonSerializable {
 		$this->content = null;
 	}
 
-    public function toArray()
-    {
-        return [
-            'path'=>$this->path,
-            'hash_file'=>$this->hashFile,
-            'content' => $this->content
-        ];
-    }
+	public function toArray() {
+		return [
+			'path'      => $this->path,
+			'hash_file' => $this->hashFile,
+			'content'   => $this->content
+		];
+	}
 
 
-    /**
+	/**
+	 * @param bool $short
+	 *
 	 * @return string
 	 *
-	 * @param bool $short
 	 */
-	public function getPath($short = false) {
-		return $short ? str_replace( ABSPATH, '', $this->path) : $this->path;
+	public function getPath( $short = false ) {
+		return $short ? str_replace( ABSPATH, '', $this->path ) : $this->path;
 	}
 
 	/**
@@ -116,8 +116,7 @@ class File implements \JsonSerializable {
 		return $this->loadData();
 	}
 
-    public function jsonSerialize()
-    {
-        return $this->toArray();
-    }
+	public function jsonSerialize() {
+		return $this->toArray();
+	}
 }

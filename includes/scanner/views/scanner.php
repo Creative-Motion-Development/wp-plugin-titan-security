@@ -1,36 +1,37 @@
 <?php
 /**
- * @var bool    $scanner_started
+ * @var bool $scanner_started
  * @var Match[] $matched
- * @var float   $progress
- * @var int     $cleaned
- * @var int     $suspicious
+ * @var float $progress
+ * @var int $cleaned
+ * @var int $suspicious
  */
 
 use WBCR\Titan\MalwareScanner\Match;
+
 ?>
 <div class="wbcr-content-section">
     <div class="wt-scanner-container wt-scanner-block-scan">
         <table>
             <tr>
                 <td>
-                    <h4><?php echo __('Malware scan','titan-security'); ?></h4>
+                    <h4><?php echo __( 'Malware scan', 'titan-security' ); ?></h4>
                     <div class="wrio-statistic-buttons-wrap">
-		                <?php if ( $scanner_started ): ?>
+						<?php if ( $scanner_started ): ?>
                             <button type="button" id="scan" data-action="stop_scan" class="wt-malware-scan-button">
                                 <span class="text"><?php echo __( 'Stop scanning', 'titan-security' ) ?></span>
                             </button>
-		                <?php else: ?>
+						<?php else: ?>
                             <button type="button" id="scan" data-action="start_scan" class="wt-malware-scan-button">
-				                <?php echo __( 'Scan', 'titan-security' ) ?>
+								<?php echo __( 'Scan', 'titan-security' ) ?>
                             </button>
-		                <?php endif; ?>
+						<?php endif; ?>
                         <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                     </div>
                 </td>
                 <td>
-                    <h4><?php echo __('Description','titan-security'); ?></h4>
-                    <p><?php echo __('Scanning all files of your site for malware. At each launch, site scanning starts from the beginning','titan-security'); ?>
+                    <h4><?php echo __( 'Description', 'titan-security' ); ?></h4>
+                    <p><?php echo __( 'Scanning all files of your site for malware. At each launch, site scanning starts from the beginning', 'titan-security' ); ?>
                     </p>
                 </td>
             </tr>
@@ -44,7 +45,7 @@ use WBCR\Titan\MalwareScanner\Match;
                             style="display: block;">
                     </canvas>
                     <div id="wt-total-percent-chart" class="wio-chart-percent">
-                        <?php echo round( $progress, 1 ) ?><span>%</span>
+						<?php echo round( $progress, 1 ) ?><span>%</span>
                     </div>
                     <p class="wio-global-optim-phrase wio-clear">
                         Scanned <span class="wio-total-percent" id="wt-total-percent">
@@ -68,7 +69,7 @@ use WBCR\Titan\MalwareScanner\Match;
                             </li>
                         </ul>
                     </div>
-	                <?php echo $this->render_template( 'results', $args);?>
+					<?php echo $this->render_template( 'results', $args ); ?>
                 </div>
             </div>
         </div>

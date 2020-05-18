@@ -140,15 +140,7 @@ class Signature implements \JsonSerializable {
 	 * @return string
 	 */
 	public function __toString() {
-		return sprintf(
-			"[ID%s][child=%s sever=%s title=%s format=%s]: %s",
-			$this->getId(),
-			$this->getChildId(),
-			$this->getSever(),
-			$this->getTitle(),
-			$this->getFormat(),
-			$this->getSignature()
-		);
+		return sprintf( "[ID%s][child=%s sever=%s title=%s format=%s]: %s", $this->getId(), $this->getChildId(), $this->getSever(), $this->getTitle(), $this->getFormat(), $this->getSignature() );
 	}
 
 	/**
@@ -157,8 +149,7 @@ class Signature implements \JsonSerializable {
 	 * @return Signature|null
 	 */
 	public static function fromArray( $params ) {
-		if ( empty( $params['id'] ) || empty( $params['format'] ) || empty( $params['severity'] )
-		     || empty( $params['title'] ) || empty( $params['type'] ) || empty( $params['content'] ) ) {
+		if ( empty( $params['id'] ) || empty( $params['format'] ) || empty( $params['severity'] ) || empty( $params['title'] ) || empty( $params['type'] ) || empty( $params['content'] ) ) {
 			return null;
 		}
 
@@ -170,22 +161,19 @@ class Signature implements \JsonSerializable {
 			$params['common_indexes'] = [];
 		}
 
-		return new Signature(
-			$params['id'], $params['format'], $params['child_id'], $params['severity'],
-			$params['title'], $params['type'], $params['common_indexes'], $params['content'] );
+		return new Signature( $params['id'], $params['format'], $params['child_id'], $params['severity'], $params['title'], $params['type'], $params['common_indexes'], $params['content'] );
 	}
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return [
-            'id' => $this->id,
-            'format' => $this->format,
-            'sever' => $this->sever,
-            'title' => $this->title,
-            'type' => $this->type,
-        ];
-    }
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id'     => $this->id,
+			'format' => $this->format,
+			'sever'  => $this->sever,
+			'title'  => $this->title,
+			'type'   => $this->type,
+		];
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Bruteforce_Match extends ITSEC_Zxcvbn_Match {
 	private static $cardinality = 10;
 	private static $min_submatch_guesses_single_char = 10;
@@ -15,21 +16,24 @@ class ITSEC_Zxcvbn_Bruteforce_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
 	public static function match( $password, array $penalty_strings = array() ) {
 		// Matches entire string.
 		$match = new self( $password, array( 'begin' => 0, 'end' => strlen( $password ) - 1, 'token' => $password ) );
-		return array($match);
+
+		return array( $match );
 	}
 
 	public function estimate_guesses() {
-		$guesses = pow( self::$cardinality, strlen( $this->token ) );
-		$min_guesses = ( 1 === strlen( $this->token ) )? self::$min_submatch_guesses_single_char : self::$min_submatch_guesses_multi_char;
+		$guesses       = pow( self::$cardinality, strlen( $this->token ) );
+		$min_guesses   = ( 1 === strlen( $this->token ) ) ? self::$min_submatch_guesses_single_char : self::$min_submatch_guesses_multi_char;
 		$this->guesses = max( $guesses, $min_guesses );
+
 		return $this->guesses;
 	}
 

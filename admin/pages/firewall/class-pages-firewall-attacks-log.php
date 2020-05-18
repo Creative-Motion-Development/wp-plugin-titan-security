@@ -3,7 +3,7 @@
 namespace WBCR\Titan\Page;
 
 // Exit if accessed directly
-if( !defined('ABSPATH') ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -69,16 +69,15 @@ class Firewall_Attacks_Log extends Base {
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
 	 */
-	public function __construct($plugin)
-	{
+	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
 
-		$this->menu_title = __('Attacks log', 'titan-security');
-		$this->page_menu_short_description = __('Attacks log', 'titan-security');
+		$this->menu_title                  = __( 'Attacks log', 'titan-security' );
+		$this->page_menu_short_description = __( 'Attacks log', 'titan-security' );
 
 		$this->view = \WBCR\Titan\Plugin::app()->view();
 
-		parent::__construct($plugin);
+		parent::__construct( $plugin );
 	}
 
 
@@ -88,51 +87,49 @@ class Firewall_Attacks_Log extends Base {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function assets($scripts, $styles)
-	{
-		parent::assets($scripts, $styles);
+	public function assets( $scripts, $styles ) {
+		parent::assets( $scripts, $styles );
 
-		$this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall/firewall-attacks-log.css');
+		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/firewall/firewall-attacks-log.css' );
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function showPageContent()
-	{
+	public function showPageContent() {
 
 		?>
-		<div class="wbcr-factory-page-group-header">
-			<strong><?php _e('Attack list', 'titan-security') ?></strong>
-			<p>
-				<?php _e('In this table, you can see the attacks on your site that the Titan firewall repelled.', 'titan-security') ?>
-			</p>
-		</div>
+        <div class="wbcr-factory-page-group-header">
+            <strong><?php _e( 'Attack list', 'titan-security' ) ?></strong>
+            <p>
+				<?php _e( 'In this table, you can see the attacks on your site that the Titan firewall repelled.', 'titan-security' ) ?>
+            </p>
+        </div>
 
-		<div class="wtitan-attacks-log wtitan-section-disabled">
-			<table class="wtitan-attacks-log__table wp-list-table widefat striped plugins wp-list-table__plugins">
-				<thead>
-				<tr>
-					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('IP', 'titan-security'); ?></strong></th>
-					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('Event', 'titan-security'); ?></strong>
-					</th>
-					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('...', 'titan-security'); ?></strong>
-					</th>
+        <div class="wtitan-attacks-log wtitan-section-disabled">
+            <table class="wtitan-attacks-log__table wp-list-table widefat striped plugins wp-list-table__plugins">
+                <thead>
+                <tr>
+                    <th class='wtitan-attacks-log__table-column'>
+                        <strong><?php _e( 'IP', 'titan-security' ); ?></strong></th>
+                    <th class='wtitan-attacks-log__table-column'>
+                        <strong><?php _e( 'Event', 'titan-security' ); ?></strong>
+                    </th>
+                    <th class='wtitan-attacks-log__table-column'>
+                        <strong><?php _e( '...', 'titan-security' ); ?></strong>
+                    </th>
 
-					<th class='wtitan-attacks-log__table-column'>
-						<strong><?php _e('Attack time', 'titan-security'); ?></strong>
-					</th>
-				</tr>
-				</thead>
-				<tbody id="the-list">
-				</tbody>
-			</table>
+                    <th class='wtitan-attacks-log__table-column'>
+                        <strong><?php _e( 'Attack time', 'titan-security' ); ?></strong>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="the-list">
+                </tbody>
+            </table>
 
-		</div>
+        </div>
 		<?php
 	}
 }

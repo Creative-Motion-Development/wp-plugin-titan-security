@@ -1,4 +1,5 @@
 <?php
+
 namespace WBCR\Titan;
 
 // Exit if accessed directly
@@ -62,14 +63,14 @@ class AuditResult {
 	 * @param string $description
 	 * @param string $severity
 	 * @param string $fix
-	 * @param bool   $hided
+	 * @param bool $hided
 	 */
 	public function __construct( $title, $description, $severity, $fix, $hided = false ) {
-		$this->title = $title;
+		$this->title       = $title;
 		$this->description = $description;
-		$this->timestamp = time();
-		$this->severity = $severity;
-		$this->fix = $fix;
-		$this->hided = $hided;
+		$this->timestamp   = time();
+		$this->severity    = $severity;
+		$this->fix         = $fix;
+		$this->hided       = $hided;
 	}
 }

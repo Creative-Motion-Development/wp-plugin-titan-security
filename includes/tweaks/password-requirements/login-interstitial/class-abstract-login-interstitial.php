@@ -15,8 +15,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function show_to_user(\WP_User $user, $is_requested)
-	{
+	public function show_to_user( \WP_User $user, $is_requested ) {
 		return true;
 	}
 
@@ -27,8 +26,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function show_on_wp_login_only(\WP_User $user)
-	{
+	public function show_on_wp_login_only( \WP_User $user ) {
 		return false;
 	}
 
@@ -40,15 +38,14 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return void
 	 */
-	abstract public function render(Login_Interstitial_Session $session, array $args);
+	abstract public function render( Login_Interstitial_Session $session, array $args );
 
 	/**
 	 * Run code before any HTML it outputted for rendering an interstitial.
 	 *
 	 * @param Login_Interstitial_Session $session
 	 */
-	public function pre_render(Login_Interstitial_Session $session)
-	{
+	public function pre_render( Login_Interstitial_Session $session ) {
 	}
 
 	/**
@@ -58,8 +55,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function is_completion_forced(Login_Interstitial_Session $session)
-	{
+	public function is_completion_forced( Login_Interstitial_Session $session ) {
 		return true;
 	}
 
@@ -68,8 +64,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function has_submit()
-	{
+	public function has_submit() {
 		return false;
 	}
 
@@ -81,11 +76,10 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return \WP_Error|null
 	 */
-	public function submit(Login_Interstitial_Session $session, array $data)
-	{
-		_doing_it_wrong(__METHOD__, 'Must override ::submit if has submit handler.', '5.3.0');
+	public function submit( Login_Interstitial_Session $session, array $data ) {
+		_doing_it_wrong( __METHOD__, 'Must override ::submit if has submit handler.', '5.3.0' );
 
-		return new \WP_Error('internal_server_error', 'Internal Server Error');
+		return new \WP_Error( 'internal_server_error', 'Internal Server Error' );
 	}
 
 	/**
@@ -93,8 +87,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function has_async_action()
-	{
+	public function has_async_action() {
 		return false;
 	}
 
@@ -112,8 +105,7 @@ abstract class Login_Interstitial_Base {
 	 *      Void/null if action not processed.
 	 *      Or display custom HTML and die.
 	 */
-	public function handle_async_action(Login_Interstitial_Session $session, $action, array $args)
-	{
+	public function handle_async_action( Login_Interstitial_Session $session, $action, array $args ) {
 	}
 
 	/**
@@ -121,8 +113,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return bool
 	 */
-	public function has_ajax_handlers()
-	{
+	public function has_ajax_handlers() {
 		return false;
 	}
 
@@ -132,8 +123,7 @@ abstract class Login_Interstitial_Base {
 	 * @param Login_Interstitial_Session $session
 	 * @param array $data
 	 */
-	public function handle_ajax(Login_Interstitial_Session $session, array $data)
-	{
+	public function handle_ajax( Login_Interstitial_Session $session, array $data ) {
 	}
 
 	/**
@@ -143,8 +133,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return string
 	 */
-	public function get_info_message(Login_Interstitial_Session $session)
-	{
+	public function get_info_message( Login_Interstitial_Session $session ) {
 		return '';
 	}
 
@@ -154,8 +143,7 @@ abstract class Login_Interstitial_Base {
 	 * @param Login_Interstitial_Session $session
 	 * @param array $data
 	 */
-	public function after_submit(Login_Interstitial_Session $session, array $data)
-	{
+	public function after_submit( Login_Interstitial_Session $session, array $data ) {
 	}
 
 	/**
@@ -163,8 +151,7 @@ abstract class Login_Interstitial_Base {
 	 *
 	 * @return int
 	 */
-	public function get_priority()
-	{
+	public function get_priority() {
 		return 5;
 	}
 }

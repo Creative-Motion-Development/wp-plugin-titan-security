@@ -73,31 +73,50 @@ class SignaturePool {
 	 * @return Match|null
 	 */
 	public function scanFile( $file ) {
-		$fData = fopen($file->getPath(), 'r');
-		if($fData === false) {
-			$e = sprintf("Open error: %s", $file->getPath());
-			Writter::error($e);
-			error_log($e);
+		$fData = fopen( $file->getPath(), 'r' );
+		if ( $fData === false ) {
+			$e = sprintf( "Open error: %s", $file->getPath() );
+			Writter::error( $e );
+			error_log( $e );
+
 			return null;
 		}
 
-		$ext = explode('.', $file->getPath());
-		$ext = $ext[count($ext) - 1];
+		$ext = explode( '.', $file->getPath() );
+		$ext = $ext[ count( $ext ) - 1 ];
 
-		$isPHP = in_array($ext, ['php', 'phtml']);
-		$isHTML = !$isPHP && in_array($ext, ['html']);
-		$isJS = !$isPHP && !$isHTML && in_array($ext, ['js', 'svg']);
-		$isArchive = !$isPHP && !$isHTML && !$isJS && in_array($ext, ['zip', 'tar', 'gz']);
-		$isImage = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
-			'jpg', 'jpeg', 'png', 'webp', 'gif'
-			]);
-		$isMedia = !$isPHP && !$isHTML && !$isJS && !$isArchive && in_array($ext, [
-			'pm3', 'm4v', 'avi', 'mov', 'mp4'
-			]);
-		$isBinary = !$isPHP && !$isHTML && !$isJS && !$isArchive && !$isImage && !$isMedia && in_array($ext, [
-			'tiff', 'svg', 'sql', 'tbz2', 'bz2', 'xz', 'zip', 'tgz', 'gz', 'log', 'err'
-		]);
-		$isUnknown = !$isPHP && !$isHTML && !$isJS && !$isArchive && !$isImage && !$isMedia && !$isBinary;
+		$isPHP     = in_array( $ext, [ 'php', 'phtml' ] );
+		$isHTML    = ! $isPHP && in_array( $ext, [ 'html' ] );
+		$isJS      = ! $isPHP && ! $isHTML && in_array( $ext, [ 'js', 'svg' ] );
+		$isArchive = ! $isPHP && ! $isHTML && ! $isJS && in_array( $ext, [ 'zip', 'tar', 'gz' ] );
+		$isImage   = ! $isPHP && ! $isHTML && ! $isJS && ! $isArchive && in_array( $ext, [
+				'jpg',
+				'jpeg',
+				'png',
+				'webp',
+				'gif'
+			] );
+		$isMedia   = ! $isPHP && ! $isHTML && ! $isJS && ! $isArchive && in_array( $ext, [
+				'pm3',
+				'm4v',
+				'avi',
+				'mov',
+				'mp4'
+			] );
+		$isBinary  = ! $isPHP && ! $isHTML && ! $isJS && ! $isArchive && ! $isImage && ! $isMedia && in_array( $ext, [
+				'tiff',
+				'svg',
+				'sql',
+				'tbz2',
+				'bz2',
+				'xz',
+				'zip',
+				'tgz',
+				'gz',
+				'log',
+				'err'
+			] );
+		$isUnknown = ! $isPHP && ! $isHTML && ! $isJS && ! $isArchive && ! $isImage && ! $isMedia && ! $isBinary;
 
 		if ( $isImage && function_exists( 'exif_imagetype' ) ) {
 			$type = @exif_imagetype( $file->getPath() );
@@ -111,57 +130,58 @@ class SignaturePool {
 		}
 
 		$chunk = 0;
-		while(!feof($fData)) {
-			if($isUnknown || $isArchive) {
-				fclose($fData);
+		while ( ! feof( $fData ) ) {
+			if ( $isUnknown || $isArchive ) {
+				fclose( $fData );
+
 				return null;
 			}
-			$chunk++;
-			$data = fread($fData, 1024 * 1024 * 1); // 1MB
+			$chunk ++;
+			$data = fread( $fData, 1024 * 1024 * 1 ); // 1MB
 
-			foreach($this->signatures as $signature) {
+			foreach ( $this->signatures as $signature ) {
 				$type = $signature->getType();
-				if(empty($type)) {
+				if ( empty( $type ) ) {
 					$type = 'server';
 				}
 
-				if($type == 'ignore') {
+				if ( $type == 'ignore' ) {
 					continue;
 				}
 
-				if($type == Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
+				if ( $type == Signature::TYPE_SERVER && ! ( $isPHP || $isHTML ) ) {
 					continue;
 				}
 
-				if(in_array($type, [Signature::TYPE_BOTH, Signature::TYPE_BROWSER]) && ($isPHP || $isHTML)) {
+				if ( in_array( $type, [ Signature::TYPE_BOTH, Signature::TYPE_BROWSER ] ) && ( $isPHP || $isHTML ) ) {
 					continue;
 				}
 
-				if(substr($signature->getSignature(), 0, 1) == '^') {
+				if ( substr( $signature->getSignature(), 0, 1 ) == '^' ) {
 					// Skipping malware signature ({$rule[0]}) because it only applies to the file beginning
 					continue;
 				}
 
-				foreach($signature->getCommonIndexes() as $index) {
-					if(!isset(self::$common_strings[$index])) {
+				foreach ( $signature->getCommonIndexes() as $index ) {
+					if ( ! isset( self::$common_strings[ $index ] ) ) {
 						continue;
 					}
-					$s = self::$common_strings[$index];
-					if(preg_match('/' . $s . '/i', $data)) {
+					$s = self::$common_strings[ $index ];
+					if ( preg_match( '/' . $s . '/i', $data ) ) {
 						continue 2;
 					}
 				}
 
-				$found = preg_match("/(" . $signature->getSignature() . ")/iS", $data, $matched,
-					PREG_OFFSET_CAPTURE);
-				if($found) {
+				$found = preg_match( "/(" . $signature->getSignature() . ")/iS", $data, $matched, PREG_OFFSET_CAPTURE );
+				if ( $found ) {
 					$match = $matched[0];
-					return new Match($signature, $file, $match[1], $match[0]);
+
+					return new Match( $signature, $file, $match[1], $match[0] );
 				}
 			}
 		}
 
-		fclose($fData);
+		fclose( $fData );
 
 		$file->clearLoadedData();
 		gc_collect_cycles();

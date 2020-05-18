@@ -221,7 +221,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
                     jQuery('#wtitan-activate-trial-button').trigger('click');
                 });
             </script>
-            <?php
+			<?php
 		}
 
 		parent::showPageContent();

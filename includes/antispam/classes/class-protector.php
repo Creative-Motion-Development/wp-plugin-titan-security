@@ -3,6 +3,7 @@
 namespace WBCR\Titan\Antispam;
 
 use \WBCR\Titan\Plugin as Plugin;
+
 /**
  * The class implement some protections ways against spam
  *

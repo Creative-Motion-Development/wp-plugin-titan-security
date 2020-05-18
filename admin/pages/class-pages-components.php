@@ -69,8 +69,8 @@ class Components extends Base {
 	/**
 	 * Requests assets (js and css) for the page.
 	 *
-	 * @since 7.0.2
 	 * @return void
+	 * @since 7.0.2
 	 * @see   FactoryPages000_AdminPage
 	 *
 	 */
@@ -80,10 +80,11 @@ class Components extends Base {
 		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/components.css' );
 
 		/**
+		 * @param \Wbcr_Factory000_StyleList $styles
+		 * @param \Wbcr_Factory000_ScriptList $scripts
+		 *
 		 * @since 7.0.3
 		 *
-		 * @param \Wbcr_Factory000_StyleList  $styles
-		 * @param \Wbcr_Factory000_ScriptList $scripts
 		 */
 		do_action( 'wtitan/components/page_assets', $scripts, $styles );
 	}
@@ -111,7 +112,7 @@ class Components extends Base {
 				'wbcr-force-update-components-error' => 'inactive_licence'
 			],
 			'type'       => 'danger',
-			'message'    => __( 'To use premium components, you need activate a license!', 'titan-security' ) . '<a href="'.$this->plugin->getPluginPageUrl( 'license').'" class="btn btn-gold">' . __( 'Activate license', 'titan-security' ) . '</a>'
+			'message'    => __( 'To use premium components, you need activate a license!', 'titan-security' ) . '<a href="' . $this->plugin->getPluginPageUrl( 'license' ) . '" class="btn btn-gold">' . __( 'Activate license', 'titan-security' ) . '</a>'
 		];
 
 		$notices[] = [
@@ -172,22 +173,23 @@ class Components extends Base {
 
 		$response = array_merge( $response, [
 			[
-				'name'        => 'hide_login_page',
-				'title'       => __( 'Hide login page', 'titan-security' ),
-				'url'         => 'https://wordpress.org/plugins/hide-login-page/',
-				'type'        => 'wordpress',
-				'build'       => 'free',
-				'base_path'   => 'hide-login-page/hide-login-page.php',
-				'icon'        => 'https://ps.w.org/hide-login-page/assets/icon-256x256.png',
-				'description' => __( 'Hide Login Page is a very light plugin that lets you easily and safely change the url of the login form page to anything you want. The settings are located in the Tweaks tab.', 'titan-security' ),
-				'settings_url' => admin_url('admin.php?page=hlp_hide_login-'.$this->plugin->getPluginName())
+				'name'         => 'hide_login_page',
+				'title'        => __( 'Hide login page', 'titan-security' ),
+				'url'          => 'https://wordpress.org/plugins/hide-login-page/',
+				'type'         => 'wordpress',
+				'build'        => 'free',
+				'base_path'    => 'hide-login-page/hide-login-page.php',
+				'icon'         => 'https://ps.w.org/hide-login-page/assets/icon-256x256.png',
+				'description'  => __( 'Hide Login Page is a very light plugin that lets you easily and safely change the url of the login form page to anything you want. The settings are located in the Tweaks tab.', 'titan-security' ),
+				'settings_url' => admin_url( 'admin.php?page=hlp_hide_login-' . $this->plugin->getPluginName() )
 			],
 		] );
 
 		/**
+		 * @param array $response
+		 *
 		 * @since 7.0.3
 		 *
-		 * @param array $response
 		 */
 		$response = apply_filters( 'wtitan/components/items_list', $response );
 
@@ -196,7 +198,7 @@ class Components extends Base {
 		$data = [
 			'components' => $components
 		];
-		$this->plugin->view->print_template('components', $data);
+		$this->plugin->view->print_template( 'components', $data );
 	}
 }
 

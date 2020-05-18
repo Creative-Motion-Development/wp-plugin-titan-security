@@ -68,7 +68,7 @@ function wtitan_update_component() {
 			// Delete button
 			$delete_button              = WBCR\Titan\Plugin::app()->getDeleteComponentsButton( $storage, $slug );
 			$send_data['delete_button'] = $delete_button->getButton();
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			wp_send_json_error( [ 'error_message' => $e->getMessage() ] );
 		}
 	}

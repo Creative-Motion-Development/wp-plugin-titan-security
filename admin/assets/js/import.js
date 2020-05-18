@@ -5,26 +5,26 @@
  * @version 1.0
  */
 
-(function($) {
+(function ($) {
     'use strict';
 
     var wtitan_import = {
-        init: function() {
+        init: function () {
             this.importOptions();
         },
-        importOptions: function() {
+        importOptions: function () {
             var self = this;
 
-            $('.wtitan-import-options-button').click(function() {
+            $('.wtitan-import-options-button').click(function () {
                 var settings = $('#wbcr-titan-export-textarea').val(),
                     $this = $(this);
 
-                if( !settings ) {
+                if (!settings) {
                     $.wbcr_factory_clearfy_000.app.showNotice('Import options is empty!', 'danger');
                     return false;
                 }
 
-                if( void 0 == wtitan_ajax || !wtitan_ajax.import_options_nonce ) {
+                if (void 0 == wtitan_ajax || !wtitan_ajax.import_options_nonce) {
                     $.wbcr_factory_clearfy_000.app.showNotice('Unknown Javascript error, most likely the wtitan_ajax variable does not exist!', 'danger');
                     return false;
                 }
@@ -35,10 +35,10 @@
                     action: 'wtitan_import_settings',
                     _wpnonce: wtitan_ajax.import_options_nonce,
                     settings: settings
-                }, function(response) {
+                }, function (response) {
                     $this.prop('disabled', false);
 
-                    if( response.data.update_notice ) {
+                    if (response.data.update_notice) {
                         $.wbcr_factory_clearfy_000.app.showNotice(response.data.update_notice);
                     } else {
                         $('.wbcr-clr-update-package').closest('.wbcr-factory-warning-notice').remove();
@@ -48,15 +48,15 @@
                 return false;
             });
         },
-        sendRequest: function(request_data, beforeValidateCallback, successCallback) {
+        sendRequest: function (request_data, beforeValidateCallback, successCallback) {
             var self = this;
 
-            if( wtitan_ajax === undefined ) {
+            if (wtitan_ajax === undefined) {
                 console.log('Undefinded wtitan_ajax object.');
                 return;
             }
 
-            if( typeof request_data === 'object' ) {
+            if (typeof request_data === 'object') {
                 request_data.security = wtitan_ajax.ajax_nonce;
             }
 
@@ -64,23 +64,23 @@
                 type: 'post',
                 dataType: 'json',
                 data: request_data,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     var noticeId;
 
                     beforeValidateCallback && beforeValidateCallback(data);
 
-                    if( !data || data.error ) {
+                    if (!data || data.error) {
                         console.log(data);
 
-                        if( data ) {
+                        if (data) {
                             noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.error_message, 'danger');
                         } else {
-                            if( void 0 !== wtitan_ajax ) {
+                            if (void 0 !== wtitan_ajax) {
                                 noticeId = $.wbcr_factory_clearfy_000.app.showNotice(wtitan_ajax.i18n.unknown_error, 'danger');
                             }
                         }
 
-                        setTimeout(function() {
+                        setTimeout(function () {
                             $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
                         }, 5000);
                         return;
@@ -88,11 +88,11 @@
 
                     successCallback && successCallback(data);
 
-                    if( !request_data.flush_redirect ) {
-                        if( void 0 !== wtitan_ajax ) {
+                    if (!request_data.flush_redirect) {
+                        if (void 0 !== wtitan_ajax) {
                             noticeId = $.wbcr_factory_clearfy_000.app.showNotice(wtitan_ajax.i18n.success_update_settings, 'success');
 
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
                             }, 5000);
                         }
@@ -103,7 +103,7 @@
                     // открыть уведомление
 
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr.status);
                     console.log(xhr.responseText);
                     console.log(thrownError);
@@ -114,7 +114,7 @@
         }
     };
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         wtitan_import.init();
     });
 

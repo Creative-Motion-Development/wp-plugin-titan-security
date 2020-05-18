@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Regex_Match extends ITSEC_Zxcvbn_Match {
 
 	protected static $regexen = array(
@@ -14,8 +15,9 @@ class ITSEC_Zxcvbn_Regex_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
@@ -25,7 +27,7 @@ class ITSEC_Zxcvbn_Regex_Match extends ITSEC_Zxcvbn_Match {
 		foreach ( self::$regexen as $name => $regex ) {
 			preg_match_all( $regex, $password, $regex_matches, PREG_OFFSET_CAPTURE );
 			foreach ( $regex_matches[0] as $match ) {
-				$result = array(
+				$result    = array(
 					'token'       => $match[0],
 					'begin'       => $match[1],
 					'end'         => $match[1] + strlen( $match[0] ) - 1,
@@ -59,16 +61,17 @@ class ITSEC_Zxcvbn_Regex_Match extends ITSEC_Zxcvbn_Match {
 					$this->guesses = max( abs( $this->token - self::$reference_year ), self::$min_year_space );
 			}
 		}
+
 		return $this->guesses;
 	}
 
 	public function get_feedback( $is_sole_match = true ) {
-		$feedback = new stdClass();
-		$feedback->warning = '';
+		$feedback              = new stdClass();
+		$feedback->warning     = '';
 		$feedback->suggestions = array();
 
 		if ( 'recent_year' == $this->regex_name ) {
-			$feedback->warning = 'Recent years are easy to guess';
+			$feedback->warning       = 'Recent years are easy to guess';
 			$feedback->suggestions[] = 'Avoid recent years';
 			$feedback->suggestions[] = 'Avoid years that are associated with you';
 		}

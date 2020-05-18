@@ -56,7 +56,7 @@ class PluginSettings extends Base {
 
 		$this->plugin = $plugin;
 
-		add_action('wp_ajax_wtitan_import_settings', [$this, 'import_settings']);
+		add_action( 'wp_ajax_wtitan_import_settings', [ $this, 'import_settings' ] );
 	}
 
 
@@ -70,8 +70,8 @@ class PluginSettings extends Base {
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
-		$this->scripts->add( WTITAN_PLUGIN_URL.'/admin/assets/js/libs/jquery.datetimepicker.full.min.js' );
-		$this->styles->add( WTITAN_PLUGIN_URL.'/admin/assets/css/libs/jquery.datetimepicker.min.css' );
+		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/libs/jquery.datetimepicker.full.min.js' );
+		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/libs/jquery.datetimepicker.min.css' );
 
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/import.js' );
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/settings.js' );
@@ -98,12 +98,11 @@ class PluginSettings extends Base {
 	 */
 	public function getPageOptions() {
 		$is_premium = $this->plugin->is_premium();
-		$options = [];
+		$options    = [];
 
 		$options[] = [
 			'type' => 'html',
-			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Advanced settings', 'titan-security' ) . '</strong>' .
-			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
+			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Advanced settings', 'titan-security' ) . '</strong>' . '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];
 
 		$options[] = [
@@ -128,82 +127,79 @@ class PluginSettings extends Base {
 
 		$options[] = [
 			'type' => 'html',
-			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' .
-			          '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
+			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Antivirus settings', 'titan-security' ) . '</strong>' . '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];
 
-        $data = [
-            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ) ],
-            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
-            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
-            [ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' )] ,
-        ];
+		$data = [
+			[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE, __( 'Free', 'titan-security' ) ],
+			[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW, __( 'Slow', 'titan-security' ) ],
+			[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_MEDIUM, __( 'Medium', 'titan-security' ) ],
+			[ \WBCR\Titan\MalwareScanner\Scanner::SPEED_FAST, __( 'Fast', 'titan-security' ) ],
+		];
 
 		$options[] = [
-			'type'   => 'dropdown',
-			'way'    => 'buttons',
-			'name'   => 'scanner_type',
-			'title'  => __( 'Scanning type', 'titan-security' ),
-			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "The basic scan includes fewer signatures", 'titan-security' ) . "<br>" .
-			            __("Advanced scanning includes a full set of signatures", 'titan-security'),
-			'data'   => [
+			'type'     => 'dropdown',
+			'way'      => 'buttons',
+			'name'     => 'scanner_type',
+			'title'    => __( 'Scanning type', 'titan-security' ),
+			'layout'   => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'     => __( "The basic scan includes fewer signatures", 'titan-security' ) . "<br>" . __( "Advanced scanning includes a full set of signatures", 'titan-security' ),
+			'data'     => [
 				[ 'basic', __( 'Basic scan', 'titan-security' ) ],
 				[ 'advanced', __( 'Advanced scan', 'titan-security' ) ],
 			],
 			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
-			'default' => $this->plugin->is_premium() ? 'advanced' : 'basic',
+			'default'  => $this->plugin->is_premium() ? 'advanced' : 'basic',
 		];
 
 		$options[] = [
-			'type'   => 'dropdown',
-			'way'    => 'buttons',
-			'name'   => 'scanner_speed',
-			'title'  => __( 'Scanning speed', 'titan-security' ),
-			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ) . "<br>" .
-                        __("Recommended speed: ", 'titan-security') . get_recommended_scanner_speed(),
-			'data'   => $data,
+			'type'     => 'dropdown',
+			'way'      => 'buttons',
+			'name'     => 'scanner_speed',
+			'title'    => __( 'Scanning speed', 'titan-security' ),
+			'layout'   => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'     => __( "The speed of scanning affects the resources consumed", 'titan-security' ) . "<br>" . __( "Recommended speed: ", 'titan-security' ) . get_recommended_scanner_speed(),
+			'data'     => $data,
 			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
-			'default' => $this->plugin->is_premium() ? \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW : \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
+			'default'  => $this->plugin->is_premium() ? \WBCR\Titan\MalwareScanner\Scanner::SPEED_SLOW : \WBCR\Titan\MalwareScanner\Scanner::SPEED_FREE,
 		];
 
-        $data_schedule = [
-	        [
-		        \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
-		        __( 'Disabled', 'titan-security' ),
-		        __( 'Disable scheduled scanning', 'titan-security' )
-	        ],
-            [
-                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
-                __( 'Daily', 'titan-security' ),
-                __( 'Scan every day', 'titan-security' )
-            ],
-            [
-                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
-                __( 'Weekly', 'titan-security' ),
-                __( 'Scan every week', 'titan-security' )
-            ],
-            [
-                \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
-                __( 'Custom', 'titan-security' ),
-                __( 'Select the date and time of the next scan', 'titan-security' )
-            ],
-        ];
+		$data_schedule = [
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+				__( 'Disabled', 'titan-security' ),
+				__( 'Disable scheduled scanning', 'titan-security' )
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DAILY,
+				__( 'Daily', 'titan-security' ),
+				__( 'Scan every day', 'titan-security' )
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_WEEKLY,
+				__( 'Weekly', 'titan-security' ),
+				__( 'Scan every week', 'titan-security' )
+			],
+			[
+				\WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_CUSTOM,
+				__( 'Custom', 'titan-security' ),
+				__( 'Select the date and time of the next scan', 'titan-security' )
+			],
+		];
 
 		$options[] = [
-			'type'   => 'dropdown',
-			'way'    => 'buttons',
-			'name'   => 'scanner_schedule',
-			'title'  => __( 'Schedule scan', 'titan-security' ),
-			'layout' => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
-			'hint'   => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
-			'data'   => $data_schedule,
+			'type'     => 'dropdown',
+			'way'      => 'buttons',
+			'name'     => 'scanner_schedule',
+			'title'    => __( 'Schedule scan', 'titan-security' ),
+			'layout'   => [ 'hint-type' => 'icon', 'hint-icon-color' => 'grey' ],
+			'hint'     => __( "The speed of scanning affects the resources consumed", 'titan-security' ),
+			'data'     => $data_schedule,
 			'cssClass' => ! $is_premium ? [ 'factory-checkbox--disabled wtitan-control-premium-label' ] : [],
-			'default' => \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
+			'default'  => \WBCR\Titan\MalwareScanner\Scanner::SCHEDULE_DISABLED,
 		];
 
-		if( Plugin::app()->is_premium() ) {
+		if ( Plugin::app()->is_premium() ) {
 			/*
 			* Schedule settings
 			* */
@@ -298,15 +294,15 @@ class PluginSettings extends Base {
 	 */
 	public function export() {
 		?>
-		<div class="wbcr-titan-export-import">
-			<p>
-				<label for="wbcr-titan-export-textarea">
-					<strong><?php _e( 'Import/Export settings', 'titan-security' ) ?></strong>
-				</label>
-				<textarea id="wbcr-titan-export-textarea"><?php echo $this->getExportOptions(); ?></textarea>
-				<button class="button wtitan-import-options-button"><?php _e( 'Import options', 'titan-security' ) ?></button>
-			</p>
-		</div>
+        <div class="wbcr-titan-export-import">
+            <p>
+                <label for="wbcr-titan-export-textarea">
+                    <strong><?php _e( 'Import/Export settings', 'titan-security' ) ?></strong>
+                </label>
+                <textarea id="wbcr-titan-export-textarea"><?php echo $this->getExportOptions(); ?></textarea>
+                <button class="button wtitan-import-options-button"><?php _e( 'Import options', 'titan-security' ) ?></button>
+            </p>
+        </div>
 		<?php
 	}
 
@@ -314,36 +310,35 @@ class PluginSettings extends Base {
 	 * Получает и возвращает все опции разрешенные для экспорта
 	 *
 	 * @param string $return
+	 *
 	 * @return array|string
 	 */
-	public function getExportOptions($return = 'json')
-	{
+	public function getExportOptions( $return = 'json' ) {
 		$export_options = $this->getAllowOptions();
 
-		if( $return == 'array' ) {
+		if ( $return == 'array' ) {
 			return $export_options;
 		}
 
-		return htmlspecialchars(json_encode($export_options), ENT_QUOTES, 'UTF-8');
+		return htmlspecialchars( json_encode( $export_options ), ENT_QUOTES, 'UTF-8' );
 	}
 
 	/**
 	 * Ajax действите, выполняется для получения всех доступных опций для экспорта.
 	 */
-	public function import_settings()
-	{
-	    require_once WTITAN_PLUGIN_DIR."/includes/helpers.php";
+	public function import_settings() {
+		require_once WTITAN_PLUGIN_DIR . "/includes/helpers.php";
 
 		global $wpdb;
 
-		check_ajax_referer('wtitan_import_options');
+		check_ajax_referer( 'wtitan_import_options' );
 
-		if( !$this->plugin->currentUserCan() ) {
-			wp_send_json_error(array('error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+		if ( ! $this->plugin->currentUserCan() ) {
+			wp_send_json_error( array( 'error_message' => __( 'You don\'t have enough capability to edit this information.', 'titan-security' ) ) );
 			die();
 		}
 
-		$settings = Helper::maybeGetPostJson('settings');
+		$settings = Helper::maybeGetPostJson( 'settings' );
 
 		/**
 		 * Используется для фильтрации импортируемых настроек,
@@ -353,37 +348,37 @@ class PluginSettings extends Base {
 		 * wtitan/filter_import_options
 		 * @since 1.4.0
 		 */
-		$settings = apply_filters('wtitan/filter_import_options', $settings);
+		$settings = apply_filters( 'wtitan/filter_import_options', $settings );
 
 		$network_id = get_current_network_id();
 
-		if( empty($settings) || !is_array($settings) ) {
-			wp_send_json_error(array('error_message' => __('Settings are not defined or do not exist.', 'titan-security')));
+		if ( empty( $settings ) || ! is_array( $settings ) ) {
+			wp_send_json_error( array( 'error_message' => __( 'Settings are not defined or do not exist.', 'titan-security' ) ) );
 			die();
 		}
 
-		$values = array();
+		$values        = array();
 		$place_holders = array();
 
-		if( $this->plugin->isNetworkActive() ) {
+		if ( $this->plugin->isNetworkActive() ) {
 			$query = "INSERT INTO {$wpdb->sitemeta} (site_id, meta_key, meta_value) VALUES ";
 		} else {
 			$query = "INSERT INTO {$wpdb->options} (option_name, option_value) VALUES ";
 		}
 
-		foreach($settings as $option_name => $option_value) {
-			$option_name = sanitize_text_field($option_name);
+		foreach ( $settings as $option_name => $option_value ) {
+			$option_name      = sanitize_text_field( $option_name );
 			$raw_option_value = $option_value;
 
-			if( is_serialized($option_value) ) {
-				$option_value = unserialize($option_value);
+			if ( is_serialized( $option_value ) ) {
+				$option_value = unserialize( $option_value );
 			}
 
-			if( is_array($option_value) || is_object($option_value) ) {
-				$option_value = Helper::recursiveSanitizeArray($option_value, 'wp_kses_post');
-				$option_value = maybe_serialize($option_value);
+			if ( is_array( $option_value ) || is_object( $option_value ) ) {
+				$option_value = Helper::recursiveSanitizeArray( $option_value, 'wp_kses_post' );
+				$option_value = maybe_serialize( $option_value );
 			} else {
-				$option_value = wp_kses_post($option_value);
+				$option_value = wp_kses_post( $option_value );
 			}
 
 			/**
@@ -394,25 +389,25 @@ class PluginSettings extends Base {
 			 * wtitan/filter_import_values
 			 * @since 1.4.0
 			 */
-			$option_value = apply_filters('wtitan/filter_import_values', $option_value, $option_name, $raw_option_value);
+			$option_value = apply_filters( 'wtitan/filter_import_values', $option_value, $option_name, $raw_option_value );
 
-			if( $this->plugin->isNetworkActive() ) {
-				array_push($values, $network_id, $option_name, $option_value);
+			if ( $this->plugin->isNetworkActive() ) {
+				array_push( $values, $network_id, $option_name, $option_value );
 				$place_holders[] = "('%d', '%s', '%s')";/* In my case, i know they will always be integers */
 			} else {
-				array_push($values, $option_name, $option_value);
+				array_push( $values, $option_name, $option_value );
 				$place_holders[] = "('%s', '%s')";/* In my case, i know they will always be integers */
 			}
 		}
 
-		$query .= implode(', ', $place_holders);
+		$query .= implode( ', ', $place_holders );
 
 		// Удаляем все опции
-		$all_options = $this->getAllowOptions(false);
+		$all_options = $this->getAllowOptions( false );
 
-		if( !empty($all_options) ) {
-			foreach($all_options as $name => $value) {
-				$this->plugin->deletePopulateOption($name);
+		if ( ! empty( $all_options ) ) {
+			foreach ( $all_options as $name => $value ) {
+				$this->plugin->deletePopulateOption( $name );
 			}
 		}
 
@@ -420,9 +415,9 @@ class PluginSettings extends Base {
 		$this->plugin->flushOptionsCache();
 
 		// Импортируем опции
-		$wpdb->query($wpdb->prepare("$query ", $values));
+		$wpdb->query( $wpdb->prepare( "$query ", $values ) );
 
-		$send_data = array('status' => 'success');
+		$send_data = array( 'status' => 'success' );
 
 		//$package_plugin = WCL_Package::instance();
 		//$send_data['update_notice'] = $package_plugin->getUpdateNotice();
@@ -430,17 +425,16 @@ class PluginSettings extends Base {
 		// Сбрасываем кеш для кеширующих плагинов
 		Helper::flushPageCache();
 
-		do_action('wtitan_imported_settings');
+		do_action( 'wtitan_imported_settings' );
 
-		wp_send_json_success($send_data);
+		wp_send_json_success( $send_data );
 		die();
 	}
 
 	/**
 	 * @param bool
 	 */
-	public function getAllowOptions($with_prefix = true)
-	{
+	public function getAllowOptions( $with_prefix = true ) {
 		global $wpdb;
 
 		$result = array();
@@ -464,46 +458,47 @@ class PluginSettings extends Base {
 			'stats_transient_',
 		);
 
-		foreach($excluded_options as $key => $option) {
-			$excluded_options[$key] = $this->plugin->getOptionName($option);
+		foreach ( $excluded_options as $key => $option ) {
+			$excluded_options[ $key ] = $this->plugin->getOptionName( $option );
 		}
 
-		if( $this->plugin->isNetworkActive() ) {
+		if ( $this->plugin->isNetworkActive() ) {
 			$network_id = get_current_network_id();
 
-			$request = $wpdb->get_results($wpdb->prepare("
+			$request = $wpdb->get_results( $wpdb->prepare( "
 					SELECT meta_key, meta_value
 					FROM {$wpdb->sitemeta}
 					WHERE site_id = '%d' AND meta_key
-					LIKE '%s'", $network_id, $this->plugin->getPrefix() . "%"));
+					LIKE '%s'", $network_id, $this->plugin->getPrefix() . "%" ) );
 		} else {
-			$request = $wpdb->get_results($wpdb->prepare("
+			$request = $wpdb->get_results( $wpdb->prepare( "
 					SELECT option_name, option_value
 					FROM {$wpdb->options}
 					WHERE option_name
-					LIKE '%s'", $this->plugin->getPrefix() . "_%"));
+					LIKE '%s'", $this->plugin->getPrefix() . "_%" ) );
 		}
 
-		if( !empty($request) ) {
-			foreach($request as $option) {
-				if( $this->plugin->isNetworkActive() ) {
-					$option_name = $option->meta_key;
+		if ( ! empty( $request ) ) {
+			foreach ( $request as $option ) {
+				if ( $this->plugin->isNetworkActive() ) {
+					$option_name  = $option->meta_key;
 					$option_value = $option->meta_value;
 				} else {
-					$option_name = $option->option_name;
+					$option_name  = $option->option_name;
 					$option_value = $option->option_value;
 				}
-				if(!in_array($option_name, $excluded_options)) {
+				if ( ! in_array( $option_name, $excluded_options ) ) {
 					$result[ $option_name ] = $option_value;
 				}
 			}
 		}
-		if(!$with_prefix)
-			foreach($result as $key => $option) {
-				unset($result[$key]);
-				$k = preg_replace( '/^titan_/', '', $key);
-				$result[$k] = $option;
+		if ( ! $with_prefix ) {
+			foreach ( $result as $key => $option ) {
+				unset( $result[ $key ] );
+				$k            = preg_replace( '/^titan_/', '', $key );
+				$result[ $k ] = $option;
 			}
+		}
 
 		return $result;
 	}

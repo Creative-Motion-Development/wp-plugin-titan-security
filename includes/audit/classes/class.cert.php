@@ -15,7 +15,7 @@ class Cert {
 	const ERROR_UNAVAILABLE = 1;
 	const ERROR_ONLY_HTTPS = 2;
 	const ERROR_HTTPS_UNAVAILABLE = 3;
-	const ERROR_UNKNOWN_ERROR = -1;
+	const ERROR_UNKNOWN_ERROR = - 1;
 
 	/**
 	 * @var Cert
@@ -53,7 +53,7 @@ class Cert {
 	}
 
 	public function get_cert_info() {
-		if(!$this->loaded) {
+		if ( ! $this->loaded ) {
 			$this->load();
 		}
 
@@ -72,7 +72,7 @@ class Cert {
 	 *
 	 * @return bool
 	 */
-	public function is_available($load = true) {
+	public function is_available( $load = true ) {
 		if ( ! function_exists( 'openssl_x509_parse' ) ) {
 			$this->error = self::ERROR_UNAVAILABLE;
 
@@ -85,7 +85,7 @@ class Cert {
 			return false;
 		}
 
-		if($load) {
+		if ( $load ) {
 			return $this->load();
 		}
 
@@ -101,10 +101,11 @@ class Cert {
 		}
 
 		if ( empty( $this->cert_info ) ) {
-			$g    = stream_context_create( [ 'ssl' => [ 'capture_peer_cert' => true ] ] );
-			$r    = @fopen( $this->url, 'rb', false, $g );
-			if($r === false) {
+			$g = stream_context_create( [ 'ssl' => [ 'capture_peer_cert' => true ] ] );
+			$r = @fopen( $this->url, 'rb', false, $g );
+			if ( $r === false ) {
 				$this->error = self::ERROR_HTTPS_UNAVAILABLE;
+
 				return false;
 			}
 
@@ -151,21 +152,21 @@ class Cert {
 	 * @return string
 	 */
 	public function get_error_message() {
-		switch($this->error) {
+		switch ( $this->error ) {
 			case self::ERROR_UNKNOWN_ERROR:
-				return __('Unknown error', 'titan-security');
+				return __( 'Unknown error', 'titan-security' );
 				break;
 
 			case self::ERROR_UNAVAILABLE:
-				return __('PHP openssl extension is missing', 'titan-security');
+				return __( 'PHP openssl extension is missing', 'titan-security' );
 				break;
 
 			case self::ERROR_ONLY_HTTPS:
-				return __('Verification is only available on HTTPS', 'titan-security');
+				return __( 'Verification is only available on HTTPS', 'titan-security' );
 				break;
 
 			case self::ERROR_HTTPS_UNAVAILABLE:
-				return __('HTTPS is not activated on this site.', 'titan-security');
+				return __( 'HTTPS is not activated on this site.', 'titan-security' );
 				break;
 
 			case self::ERROR_NO_ERROR:
@@ -178,7 +179,7 @@ class Cert {
 	 * @return Cert
 	 */
 	public static function get_instance() {
-		if(is_null(self::$cert)) {
+		if ( is_null( self::$cert ) ) {
 			self::$cert = new Cert();
 		}
 

@@ -45,15 +45,14 @@ class Match implements \JsonSerializable {
 		$this->match     = $match;
 	}
 
-    /**
-     * @return string
-     */
-	public function __toString()
-    {
-        return sprintf("%s:%s %s", $this->file->getPath(), $this->line, $this->match);
-    }
+	/**
+	 * @return string
+	 */
+	public function __toString() {
+		return sprintf( "%s:%s %s", $this->file->getPath(), $this->line, $this->match );
+	}
 
-    /**
+	/**
 	 * @return Signature
 	 */
 	public function getSignature() {
@@ -83,9 +82,9 @@ class Match implements \JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'file'  => $this->file,
-			'match' => $this->match,
-            'signature' => $this->signature,
+			'file'      => $this->file,
+			'match'     => $this->match,
+			'signature' => $this->signature,
 		];
 	}
 }

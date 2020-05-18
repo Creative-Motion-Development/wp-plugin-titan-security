@@ -9,11 +9,11 @@ jQuery(document).ready(function ($) {
                 _ajax_nonce: wtitan_trial
             },
             beforeSend: function () {
-                btn.parent().parent('.wbcr-factory-warning-notice').animate({opacity: 'hide' , height: 'hide'}, 300);
+                btn.parent().parent('.wbcr-factory-warning-notice').animate({opacity: 'hide', height: 'hide'}, 300);
             },
             success: function (result) {
                 if (!result.success) {
-                    btn.parent().parent('.wbcr-factory-warning-notice').animate({opacity: 'show' , height: 'show'}, 300);
+                    btn.parent().parent('.wbcr-factory-warning-notice').animate({opacity: 'show', height: 'show'}, 300);
                 }
             }
         });

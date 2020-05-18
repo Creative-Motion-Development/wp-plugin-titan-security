@@ -11,7 +11,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-require_once WTITAN_PLUGIN_DIR."/includes/helpers.php";
+require_once WTITAN_PLUGIN_DIR . "/includes/helpers.php";
 
 class WTITAN_InstallPluginsButton {
 

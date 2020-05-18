@@ -1,25 +1,24 @@
 <?php
 /**
- * @var bool    $scanner_started
+ * @var bool $scanner_started
  * @var Match[] $matched
- * @var float   $progress
- * @var int     $cleaned
- * @var int     $suspicious
+ * @var float $progress
+ * @var int $cleaned
+ * @var int $suspicious
  */
 
 use WBCR\Titan\MalwareScanner\Match;
 
-if($matched === false ) {
+if ( $matched === false ) {
 	?>
     <div class="wtitan-audit-empty-container">
-		<?= sprintf(__('Click %1s to start scanning for malware','titan-security'), '<span class="btn btn-primary wt-nobutton">'.__('Start scan','titan-security').'</span>');?>
+		<?= sprintf( __( 'Click %1s to start scanning for malware', 'titan-security' ), '<span class="btn btn-primary wt-nobutton">' . __( 'Start scan', 'titan-security' ) . '</span>' ); ?>
     </div>
 	<?php
 
-}
-else if(!empty($matched)) {
+} else if ( ! empty( $matched ) ) {
 	?>
-	<div class="wtitan-scanner-vulner-table-container wtitan-scanner-results">
+    <div class="wtitan-scanner-vulner-table-container wtitan-scanner-results">
         <table class="table table-striped table-hover table-responsive" width="100%">
             <thead>
             <tr>
@@ -31,56 +30,55 @@ else if(!empty($matched)) {
 
             </thead>
             <tbody>
-            <?php foreach ( $matched as $file_path => $match ): ?>
-	            <?php if ( $match instanceof Match ): ?>
+			<?php foreach ( $matched as $file_path => $match ): ?>
+				<?php if ( $match instanceof Match ): ?>
                     <tr>
-			            <?php switch($match->getSignature()->getSever()) {
-				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL: ?>
+						<?php switch ( $match->getSignature()->getSever() ) {
+							case \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL: ?>
                                 <td class="wt-severity-high"></td>
-					            <?php break;
+								<?php break;
 
-				            case \WBCR\Titan\MalwareScanner\Signature::SEVERITY_SUSPICIOUS: ?>
+							case \WBCR\Titan\MalwareScanner\Signature::SEVERITY_SUSPICIOUS: ?>
                                 <td class="wt-severity-medium"></td>
-					            <?php break;
+								<?php break;
 
-				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_WARNING: ?>
+							case \WBCR\Titan\MalwareScanner\Signature::SEVER_WARNING: ?>
                                 <td class="wt-severity-medium"></td>
-					            <?php break;
+								<?php break;
 
-				            case \WBCR\Titan\MalwareScanner\Signature::SEVER_INTO: ?>
+							case \WBCR\Titan\MalwareScanner\Signature::SEVER_INTO: ?>
                                 <td class="wt-severity-low"></td>
-					            <?php break;
-			            } ?>
+								<?php break;
+						} ?>
                         <td style="text-align: left;"><?php echo $match->getFile()->getPath( true ) ?></td>
                         <td><?php echo $match->getSignature()->getTitle() ?></td>
                         <td><code><?php echo htmlspecialchars( $match->getMatch() ); ?></code></td>
                     </tr>
-	            <?php elseif ( $match instanceof \WBCR\Titan\Client\Entity\CmsCheckItem ): ?>
+				<?php elseif ( $match instanceof \WBCR\Titan\Client\Entity\CmsCheckItem ): ?>
                     <tr>
                         <td><?php echo $match->path ?></td>
                         <td>Corrupted file</td>
                         <td><?php echo $match->action ?></td>
                         <td></td>
                     </tr>
-	            <?php else: ?>
+				<?php else: ?>
                     <tr>
                         <td><?php echo $file_path ?></td>
                         <td><?php var_dump( $match ) ?></td>
                         <td>null</td>
                         <td></td>
                     </tr>
-	            <?php endif; ?>
-            <?php endforeach; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
             </tbody>
         </table>
-	</div>
+    </div>
 	<?php
-}
-else {
+} else {
 	?>
-	<div class="wtitan-audit-empty-container">
-		<?= __('No malware found','titan-security');?>
-	</div>
+    <div class="wtitan-audit-empty-container">
+		<?= __( 'No malware found', 'titan-security' ); ?>
+    </div>
 	<?php
 
 }

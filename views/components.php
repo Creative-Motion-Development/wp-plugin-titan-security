@@ -72,7 +72,11 @@ if ( is_array( $data ) ) {
 				<?php else:
 					$delete_button->renderButton();
 
-					if ( $install_button->isPluginActivate() ) {$display = '';} else {$display = 'style="display: none;"';}
+					if ( $install_button->isPluginActivate() ) {
+						$display = '';
+					} else {
+						$display = 'style="display: none;"';
+					}
 					?><a href="<?php echo esc_url( $component['settings_url'] ) ?>"
                          class="button button-primary settings-button" <?php echo $display; ?>><?php _e( 'Settings', 'titan-security' ); ?></a><?php
 

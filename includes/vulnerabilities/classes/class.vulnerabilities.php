@@ -1,4 +1,5 @@
 <?php
+
 namespace WBCR\Titan;
 
 // Exit if accessed directly
@@ -55,9 +56,9 @@ class Vulnerabilities extends Module_Base {
 		parent::__construct();
 		self::$app = $this;
 
-		$this->module_dir = WTITAN_PLUGIN_DIR."/includes/vulnerabilities";
-		$this->module_url = WTITAN_PLUGIN_URL."/includes/vulnerabilities";
-		$this->client = new Client($this->license_key);
+		$this->module_dir = WTITAN_PLUGIN_DIR . "/includes/vulnerabilities";
+		$this->module_url = WTITAN_PLUGIN_URL . "/includes/vulnerabilities";
+		$this->client     = new Client( $this->license_key );
 
 		$this->getWordpress();
 		$this->getPlugins();
@@ -78,7 +79,8 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getWordpress() {
-		$this->wordpress = get_option( $this->plugin->getPrefix().'vulnerabilities_wordpress', false);
+		$this->wordpress = get_option( $this->plugin->getPrefix() . 'vulnerabilities_wordpress', false );
+
 		return $this->wordpress;
 	}
 
@@ -86,7 +88,8 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getPlugins() {
-		$this->plugins = get_option( $this->plugin->getPrefix().'vulnerabilities_plugins', false);
+		$this->plugins = get_option( $this->plugin->getPrefix() . 'vulnerabilities_plugins', false );
+
 		return $this->plugins;
 	}
 
@@ -94,7 +97,8 @@ class Vulnerabilities extends Module_Base {
 	 * @return array
 	 */
 	public function getThemes() {
-		$this->themes = get_option( $this->plugin->getPrefix().'vulnerabilities_themes', false);
+		$this->themes = get_option( $this->plugin->getPrefix() . 'vulnerabilities_themes', false );
+
 		return $this->themes;
 	}
 
@@ -114,23 +118,25 @@ class Vulnerabilities extends Module_Base {
 	 */
 	public function get_count() {
 		$plugin_vulner_count = 0;
-		$theme_vulner_count = 0;
-		$wp_vulner_count = 0;
-		if(is_array( $this->plugins) ) {
+		$theme_vulner_count  = 0;
+		$wp_vulner_count     = 0;
+		if ( is_array( $this->plugins ) ) {
 			foreach ( $this->plugins as $plugin ) {
 				foreach ( $plugin as $vulner ) {
 					$plugin_vulner_count ++;
 				}
 			}
 		}
-		if(is_array( $this->themes) ) {
+		if ( is_array( $this->themes ) ) {
 			foreach ( $this->themes as $theme ) {
 				foreach ( $theme as $vulner ) {
 					$theme_vulner_count ++;
 				}
 			}
 		}
-		if(is_array( $this->wordpress) ) $wp_vulner_count = count($this->wordpress);
+		if ( is_array( $this->wordpress ) ) {
+			$wp_vulner_count = count( $this->wordpress );
+		}
 
 		return $wp_vulner_count + $plugin_vulner_count + $theme_vulner_count;
 	}
@@ -142,8 +148,8 @@ class Vulnerabilities extends Module_Base {
 	 */
 	public function get_wordpress_vulners() {
 		global $wp_version;
-		$this->wordpress = $this->validate($this->client->get_vuln_cms( $wp_version));
-		update_option( $this->plugin->getPrefix()."vulnerabilities_wordpress", $this->wordpress, 'no');
+		$this->wordpress = $this->validate( $this->client->get_vuln_cms( $wp_version ) );
+		update_option( $this->plugin->getPrefix() . "vulnerabilities_wordpress", $this->wordpress, 'no' );
 	}
 
 	/**
@@ -153,23 +159,24 @@ class Vulnerabilities extends Module_Base {
 	 */
 	public function get_plugins_vulners() {
 		$plugins_wp = get_plugins();
-		$params = new VulnerabilityPlugin();
+		$params     = new VulnerabilityPlugin();
 		foreach ( $plugins_wp as $key => $plugin ) {
-			$tmp = explode('/', $key);
-			if( isset($tmp[0]) && count($tmp) >= 2) {
-				$slug = $tmp[0];
-				$plugins_wp[$slug] = $key;
+			$tmp = explode( '/', $key );
+			if ( isset( $tmp[0] ) && count( $tmp ) >= 2 ) {
+				$slug                = $tmp[0];
+				$plugins_wp[ $slug ] = $key;
+			} else {
+				break;
 			}
-			else break;
-			$params->add_plugin( $slug, (string)$plugin['Version']);
+			$params->add_plugin( $slug, (string) $plugin['Version'] );
 		}
-		$this->plugins = $this->validate($this->client->get_vuln_plugin( $params));
+		$this->plugins = $this->validate( $this->client->get_vuln_plugin( $params ) );
 		foreach ( $this->plugins as $key => $plug ) {
 			foreach ( $plug as $k => $vuln ) {
-				$this->plugins[$key][$k]->path = $plugins_wp[ $vuln->slug ];
+				$this->plugins[ $key ][ $k ]->path = $plugins_wp[ $vuln->slug ];
 			}
 		}
-		update_option( $this->plugin->getPrefix()."vulnerabilities_plugins", $this->plugins, 'no');
+		update_option( $this->plugin->getPrefix() . "vulnerabilities_plugins", $this->plugins, 'no' );
 	}
 
 	/**
@@ -179,13 +186,15 @@ class Vulnerabilities extends Module_Base {
 	 */
 	public function get_themes_vulners() {
 		$themes_wp = wp_get_themes();
-		$params = new VulnerabilityTheme();
+		$params    = new VulnerabilityTheme();
 		foreach ( $themes_wp as $key => $theme ) {
-			if(empty($theme['Version'])) continue;
-			$params->add_theme( $key, (string)$theme['Version']);
+			if ( empty( $theme['Version'] ) ) {
+				continue;
+			}
+			$params->add_theme( $key, (string) $theme['Version'] );
 		}
-		$this->themes = $this->validate( $this->client->get_vuln_theme( $params));
-		update_option( $this->plugin->getPrefix()."vulnerabilities_themes", $this->themes, 'no');
+		$this->themes = $this->validate( $this->client->get_vuln_theme( $params ) );
+		update_option( $this->plugin->getPrefix() . "vulnerabilities_themes", $this->themes, 'no' );
 	}
 
 	/**
@@ -206,13 +215,15 @@ class Vulnerabilities extends Module_Base {
 	 *
 	 * @return array
 	 */
-	public function validate($response) {
+	public function validate( $response ) {
 		$result = array();
 		foreach ( $response as $key => $item ) {
 			foreach ( $item as $k => $vuln ) {
-				if( empty( $vuln->description ) ) continue;
-				$vuln->description = wp_strip_all_tags( $vuln->description );
-				$result[$key][$k]          = $vuln;
+				if ( empty( $vuln->description ) ) {
+					continue;
+				}
+				$vuln->description    = wp_strip_all_tags( $vuln->description );
+				$result[ $key ][ $k ] = $vuln;
 			}
 		}
 
@@ -225,7 +236,7 @@ class Vulnerabilities extends Module_Base {
 	public function showPageContent() {
 		$this->get_vulnerabilities();
 
-		echo $this->render_template( 'vulnerabilities');
+		echo $this->render_template( 'vulnerabilities' );
 	}
 
 	/**
