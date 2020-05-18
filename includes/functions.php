@@ -50,6 +50,7 @@ function titan_malware_daily_digest() {
 	$client = new Client( Plugin::app()->premium->get_license()->get_key() );
 	$client->send_notification( 'email', 'digestDaily', [
 		'infectedFiles' => $matched,
+        'email' => get_option('admin_email'),
 	] );
 }
 

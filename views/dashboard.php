@@ -259,7 +259,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                                         </div>
                                         <div class="factory-hints" style="">
                                             <div class="factory-hint">
-												<?= __( 'You can get a daily and weekly digest on threats found', 'titan-security' ) ?>
+												<?= __( 'You can get a daily digest on threats found', 'titan-security' ) ?>
                                             </div>
                                         </div>
                                     </div>
