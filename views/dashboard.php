@@ -242,7 +242,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                         <div class="col-md-4 wt-dashboard-block-content" style="text-align: left">
                             <div class="form-group form-group-dropdown factory-control-scanner_digest">
                                 <div class="control-group col-sm-12">
-                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class ?>"
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way"
                                          data-way="buttons">
                                         <div class="wt-dashboard-form-label"><?= __( 'Digest', 'titan-security' ) ?></div>
                                         <div class="btn-group factory-buttons-groups">
