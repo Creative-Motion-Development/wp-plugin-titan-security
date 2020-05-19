@@ -26,25 +26,29 @@ function titan_add_minute_schedule( $schedules ) {
 		'display'  => __( 'Once 30 sec', 'titan-security' ),
 	];
 
-	$schedules['daily'] = [
-		'interval' => 86400, // 1 day
-		'display'  => __( 'Daily', 'titan-security' ),
+	$schedules['weekly'] = [
+		'interval' => 86400 * 7, // 7 days
+		'display'  => __( 'Weekly', 'titan-security' ),
 	];
 
 	return $schedules;
 }
 
-add_action( 'titan_malware_daily_digest', 'titan_malware_daily_digest' );
-function titan_malware_daily_digest() {
+add_action( 'titan_malware_weekly_digest', 'titan_malware_weekly_digest' );
+function titan_malware_weekly_digest() {
+	if ( ! Plugin::app()->is_premium() ) {
+		return;
+	}
+
 	/**
 	 * @var Match[] $matched
 	 */
-	$matched = get_option( Plugin::app()->getPrefix() . 'matched_daily', [] );
+	$matched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
-	Writter::info( "Sending daily digest" );
+	Writter::info( "Sending weekly digest" );
 
 	$client = new Client( Plugin::app()->premium->get_license()->get_key() );
-	$client->send_notification( 'email', 'digestDaily', [
+	$client->send_notification( 'email', 'digestWeekly', [
 		'infectedFiles' => $matched,
         'email' => get_option('admin_email'),
 	] );
@@ -226,26 +230,32 @@ function titan_remove_scheduler_scanner() {
 	try {
 		/** @var Match[] $matched */
 		$matched      = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-		$dailyMatched = get_option( Plugin::app()->getPrefix() . 'matched_daily', [] );
+		$weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
-		$dailyMatched = array_merge( $dailyMatched, $matched );
-		$dailyMatched = array_unique( $dailyMatched, SORT_STRING );
-		Plugin::app()->updateOption( 'matched_daily', $dailyMatched );
+		$weeklyMatched = array_merge( $weeklyMatched, $matched );
+		$weeklyMatched = array_unique( $weeklyMatched, SORT_STRING );
+		Plugin::app()->updateOption( 'matched_weekly', $weeklyMatched );
 
-		if ( count( $matched ) > 0 ) {
-			if ( Plugin::app()->is_premium() ) {
-				$license_key = Plugin::app()->premium->get_license()->get_key();
-			} else {
-				$license_key = null;
-			}
-			$client = new Client( $license_key );
+		$client = new Client( null );
+		$client->send_notification('email', 'digestDaily', [
+		    'infectedFiles' => $weeklyMatched,
+            'email' => get_option('admin_email')
+        ]);
 
-			$client->send_notification( 'email', 'virusFound', [
-				'subject' => 'VIRUS',
-				'url'     => get_site_url(),
-				'files'   => $matched
-			] );
-		}
+//		if ( count( $matched ) > 0 ) {
+//			if ( Plugin::app()->is_premium() ) {
+//				$license_key = Plugin::app()->premium->get_license()->get_key();
+//			} else {
+//				$license_key = null;
+//			}
+//			$client = new Client( $license_key );
+//
+//			$client->send_notification( 'email', 'virusFound', [
+//				'subject' => 'VIRUS',
+//				'url'     => get_site_url(),
+//				'files'   => $matched
+//			] );
+//		}
 	} catch ( Exception $e ) {
 
 	}
