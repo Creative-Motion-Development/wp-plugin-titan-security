@@ -36,10 +36,6 @@ function titan_add_minute_schedule( $schedules ) {
 
 add_action( 'titan_malware_weekly_digest', 'titan_malware_weekly_digest' );
 function titan_malware_weekly_digest() {
-	if ( ! Plugin::app()->is_premium() ) {
-		return;
-	}
-
 	/**
 	 * @var Match[] $matched
 	 */
