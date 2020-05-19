@@ -366,10 +366,10 @@ class Dashboard extends Base {
 
 		if ( $value == 'enable' ) {
 			$msg = 'You have enabled receiving the digest';
-			wp_schedule_event( time(), 'daily', 'titan_malware_daily_digest' );
+			wp_schedule_event( time(), 'daily', 'titan_malware_weekly_digest' );
 		} else {
 			$msg = 'You have disabled receiving the digest';
-			wp_unschedule_hook( 'titan_malware_daily_digest' );
+			wp_unschedule_hook( 'titan_malware_weekly_digest' );
 		}
 
 
