@@ -54,13 +54,26 @@ function titan_malware_weekly_digest() {
 	 */
 	$matched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
+    if(empty($matched)) {
+        $matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+        if(!empty($matched)) {
+            Plugin::app()->updatePopulateOption('matched_weekly', $matched);
+        }
+    }
+
 	Writter::info( "Sending weekly digest" );
 
 	$license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
 	$client      = new Client( $license_key );
 	$client->send_notification( 'email', 'digestWeekly', get_option( 'admin_email' ), [
-		'infectedFiles' => $matched,
-		'subject'       => "[wptest.loc] Weekly security digest",
+		'infectedFiles'   => $matched,
+        'vulnerabilities' => [
+            'wordpress' => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_wordpress', [] ),
+            'plugins'   => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_plugins', [] ),
+            'themes'    => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_themes', [] ),
+        ],
+        'audit'   => get_option( Plugin::app()->getPrefix() . 'audit_results', []),
+		'subject' => "[wptest.loc] Weekly security digest",
 	] );
 }
 
