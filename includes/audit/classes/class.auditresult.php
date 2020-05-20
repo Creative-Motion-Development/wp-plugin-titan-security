@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class AuditResult {
+class AuditResult implements \JsonSerializable {
 
 	/**
 	 * @var string
@@ -73,4 +73,15 @@ class AuditResult {
 		$this->fix         = $fix;
 		$this->hided       = $hided;
 	}
+
+    public function jsonSerialize() {
+        return [
+            'title'       => $this->title,
+            'description' => $this->description,
+            'timestamp'   => $this->timestamp,
+            'severity'    => $this->severity,
+            'fix'         => $this->fix,
+            'hided'       => $this->hided,
+        ];
+    }
 }
