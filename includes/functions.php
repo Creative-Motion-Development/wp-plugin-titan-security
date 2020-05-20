@@ -18,7 +18,7 @@ use WBCR\Titan\Plugin;
 
 add_action( 'plugins_loaded', 'titan_digest_schedule' );
 function titan_digest_schedule() {
-	$digest = Plugin::app()->getOption( 'digest', false );
+	$digest = Plugin::app()->getOption( 'digest', 'disable' );
 
 	if ( $digest == 'enable' ) {
 		if ( ! wp_next_scheduled( 'titan_malware_weekly_digest' ) ) {
