@@ -269,6 +269,25 @@ class PluginSettings extends Base {
 		}
 
 		$options[] = [
+			'type'    => 'dropdown',
+			'way'     => 'buttons',
+			'name'    => 'digest',
+			'data'    => [
+				[
+					'enable',
+					__( 'Enable', 'titan-security' ),
+				],
+				[
+					'disable',
+					__( 'Disable', 'titan-security' ),
+				],
+			],
+			'title'   => __( 'Digest on E-mail', 'titan-security' ),
+			'hint'    => __( "You can get a weekly digest on threats found", 'titan-security' ),
+			'default' => 'disable'
+		];
+
+		$options[] = [
 			'type' => 'html',
 			'html' => '<div class="wbcr-factory-page-group-header">' . '<strong>' . __( 'Import/Export', 'titan-security' ) . '</strong>' . '<p>' . __( 'This group of settings allows you to configure the work of the plugin.', 'titan-security' ) . '</p>' . '</div>'
 		];

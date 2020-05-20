@@ -16,6 +16,19 @@ use WBCR\Titan\MalwareScanner\Scanner;
 use WBCR\Titan\MalwareScanner\Signature;
 use WBCR\Titan\Plugin;
 
+add_action( 'plugins_loaded', 'titan_digest_schedule' );
+function titan_digest_schedule() {
+	$digest = Plugin::app()->getOption( 'digest', false );
+
+	if ( $digest == 'enable' ) {
+		if ( ! wp_next_scheduled( 'titan_malware_weekly_digest' ) ) {
+			wp_schedule_event( time(), 'weekly', 'titan_malware_weekly_digest' );
+		}
+	} else {
+		wp_unschedule_hook( 'titan_malware_weekly_digest' );
+	}
+}
+
 add_filter( 'cron_schedules', 'titan_add_minute_schedule' );
 /**
  * @param array $schedules
@@ -43,10 +56,11 @@ function titan_malware_weekly_digest() {
 
 	Writter::info( "Sending weekly digest" );
 
-	$client = new Client( Plugin::app()->premium->get_license()->get_key() );
-	$client->send_notification( 'email', 'digestWeekly', [
+	$license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
+	$client      = new Client( $license_key );
+	$client->send_notification( 'email', 'digestWeekly', get_option( 'admin_email' ), [
 		'infectedFiles' => $matched,
-        'email' => get_option('admin_email'),
+		'subject'       => "[wptest.loc] Weekly security digest",
 	] );
 }
 
@@ -225,7 +239,7 @@ function titan_remove_scheduler_scanner() {
 
 	try {
 		/** @var Match[] $matched */
-		$matched      = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
+		$matched       = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
 		$weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
 		$weeklyMatched = array_merge( $weeklyMatched, $matched );
@@ -233,10 +247,7 @@ function titan_remove_scheduler_scanner() {
 		Plugin::app()->updateOption( 'matched_weekly', $weeklyMatched );
 
 		$client = new Client( null );
-		$client->send_notification('email', 'digestDaily', [
-		    'infectedFiles' => $weeklyMatched,
-            'email' => get_option('admin_email')
-        ]);
+		$client->send_notification( 'email', 'digestDaily', get_option( 'admin_email' ), [ 'infectedFiles' => $weeklyMatched ] );
 
 //		if ( count( $matched ) > 0 ) {
 //			if ( Plugin::app()->is_premium() ) {
