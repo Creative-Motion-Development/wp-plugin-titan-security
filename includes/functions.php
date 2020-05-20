@@ -57,10 +57,11 @@ function titan_malware_weekly_digest() {
 	Writter::info( "Sending weekly digest" );
 
 	$license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
+	$site        = get_option( 'home' );
 	$client      = new Client( $license_key );
 	$client->send_notification( 'email', 'digestWeekly', get_option( 'admin_email' ), [
 		'infectedFiles' => $matched,
-		'subject'       => "[wptest.loc] Weekly security digest",
+		'subject'       => "[{$site}] Weekly security digest",
 	] );
 }
 
