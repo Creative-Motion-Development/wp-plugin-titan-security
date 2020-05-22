@@ -260,23 +260,16 @@ function titan_remove_scheduler_scanner() {
 		$weeklyMatched = array_unique( $weeklyMatched, SORT_STRING );
 		Plugin::app()->updateOption( 'matched_weekly', $weeklyMatched );
 
-		$client = new Client( null );
-		$client->send_notification( 'email', 'digestDaily', get_option( 'admin_email' ), [ 'infectedFiles' => $weeklyMatched ] );
+		Writter::info( "Sending digest after scan" );
 
-//		if ( count( $matched ) > 0 ) {
-//			if ( Plugin::app()->is_premium() ) {
-//				$license_key = Plugin::app()->premium->get_license()->get_key();
-//			} else {
-//				$license_key = null;
-//			}
-//			$client = new Client( $license_key );
-//
-//			$client->send_notification( 'email', 'virusFound', [
-//				'subject' => 'VIRUS',
-//				'url'     => get_site_url(),
-//				'files'   => $matched
-//			] );
-//		}
+		$license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
+		$site        = get_option( 'home' );
+		$client      = new Client( $license_key );
+		$client->send_notification( 'email', 'digestDaily', get_option( 'admin_email' ), [
+			'infectedFiles'   => $weeklyMatched,
+			'subject'       => "[{$site}] Security digest",
+		] );
+
 	} catch ( Exception $e ) {
 
 	}
