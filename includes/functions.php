@@ -35,9 +35,9 @@ function titan_install_plugin_complete_actions( $install_actions, $api, $plugin_
 {
     $install_actions = titan_add_action_link( $install_actions, $plugin_file );
 
-    if ( isset( $install_actions['activate_plugin'] ) ) {
-        $install_actions['activate_plugin'] = str_replace( 'href', 'class="button button-primary" href',
-            $install_actions['activate_plugin'] );
+    if ( isset( $install_actions['scan_and_activate'] ) ) {
+        $install_actions['scan_and_activate'] = str_replace( 'href', 'class="button button-primary" href',
+            $install_actions['scan_and_activate'] );
     }
 
     return $install_actions;
@@ -49,51 +49,68 @@ function titan_add_action_link( $actions, $plugin_file )
     $scannedPlugins = Plugin::app()->getPopulateOption( 'scannedPlugins', [] );
 
     if ( ! isset( $scannedPlugins[$plugin_file] ) && ! is_plugin_active( $plugin_file ) ) {
-        if ( isset( $actions['activate_plugin'] ) ) {
-            $key = 'activate_plugin';
-        } else {
-            $key = 'activate';
-        }
-
         if ( current_user_can( 'activate_plugin', $plugin_file ) ) {
-            $actions[$key] = "<a href='" . add_query_arg( [
+            $actions['scan_and_activate'] = "<a href='" . add_query_arg( [
                     'action' => 'scan_and_activate',
                     'plugin' => urlencode( $plugin_file ),
                 ] ) . "'>" . __( 'Scan and activate', 'titan-security' ) . "</a>";
         }
+
+        ksort($actions);
     }
 
     return $actions;
 }
 
 add_action( 'current_screen', 'titan_current_screen' );
+/**
+ * @param WP_Screen $current_page
+ */
 function titan_current_screen( $current_page )
 {
     if ( isset( $_GET['plugin'], $_GET['action'] ) && $_GET['action'] === 'scan_and_activate' ) {
         $plugin     = urldecode( $_GET['plugin'] );
-        $plugin_dir = substr( $plugin, strpos( $plugin, '/' ) + 1 );
-        titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, '/plugins', $plugin_dir ), $plugin );
+        $plugin_dir = substr( $plugin, 0, strpos( $plugin, '/' ) + 1 );
+        titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin );
 
-        add_action( 'wbcr/factory/admin_notices', static function ( $notices, $plugin_name ) use ( $plugin_dir )
+        wp_redirect( admin_url( 'plugins.php?' . http_build_query([
+                'action' => 'scan_started',
+                'plugin' => $plugin,
+            ]) ) );
+    }
+
+    $pluginActivateAfterScan = Plugin::app()->getPopulateOption( 'scanner_plugin_activate', null );
+    $pluginActivateAfterScan = is_string($pluginActivateAfterScan) && !empty($pluginActivateAfterScan) ? true : false;
+    if(($current_page->id === 'plugins' && isset($_GET['action']) && $_GET['action'] === 'scan_started') || $pluginActivateAfterScan) {
+        add_action( 'admin_notices', static function ()
         {
+            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_activate' );
+            $plugin = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin)['Name'];
 
-            $notice_text = sprintf(
-                __( 'The "%s" plugin will be activated after scanning', 'titan-security' ),
-                $plugin_dir
-            );
+            /**
+             * @var Scanner $scanner
+             */
+            $scanner = get_option( Plugin::app()->getPrefix() . 'scanner' );
 
-            $notices[] = [
-                'id'              => 'wtitan_scan_plugin_start',
-                'type'            => 'success',
-                'dismissible'     => true,
-                'dismiss_expires' => 0,
-                'text'            => '<p><strong>Titan Security:</strong><br>' . $notice_text . '</p>'
-            ];
+            $speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
+            $files_count = @Scanner::SPEED_FILES[$speed];
+            if ( is_null( $files_count ) ) {
+                $files_count = Scanner::SPEED_FILES[Scanner::SPEED_MEDIUM];
+            }
 
-            return $notices;
-        }, 10, 2 );
+            $waitTime = $scanner->get_files_count() / $files_count;
 
-        wp_redirect( admin_url( 'plugins.php' ) );
+            $message = sprintf(
+                    __('<b>Titan Security:</b> The plugin "%s" will be activated after scanning. Estimated waiting time: %d min.', 'titan-security'),
+                    $plugin, $waitTime
+            )
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?= $message ?></p>
+            </div>
+            <?php
+
+        } );
     }
 }
 
@@ -333,9 +350,10 @@ function titan_remove_scheduler_scanner()
         $matched       = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
         $weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
-        if ( empty( $matched ) ) {
+        if ( count( $matched ) < 3 ) {
             $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_activate', null );
-            if ( is_string( $plugin ) ) {
+            if ( is_string( $plugin ) && ! empty( $plugin ) ) {
+//                $plugin = substr($plugin, 0, strpos($plugin, '/') + 1);
                 activate_plugin( $plugin );
             }
         }
