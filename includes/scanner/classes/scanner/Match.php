@@ -73,7 +73,12 @@ class Match implements \JsonSerializable {
 		return $this->match;
 	}
 
-	public function jsonSerialize() {
+	public function __toString()
+    {
+        return sprintf("%d_%s_%d", $this->signature->getId(), $this->file->getPath( true ), $this->line );
+    }
+
+    public function jsonSerialize() {
 		return [
 			'file'  => $this->file,
 			'match' => $this->match,
