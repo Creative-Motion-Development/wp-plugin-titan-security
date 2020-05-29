@@ -353,6 +353,7 @@ function titan_remove_scheduler_scanner()
         if ( count( $matched ) < 3 ) {
             $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_activate', null );
             if ( is_string( $plugin ) && ! empty( $plugin ) ) {
+                Plugin::app()->deletePopulateOption( 'scanner_plugin_activate' );
 //                $plugin = substr($plugin, 0, strpos($plugin, '/') + 1);
                 activate_plugin( $plugin );
             }
