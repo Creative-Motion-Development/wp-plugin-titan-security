@@ -46,17 +46,28 @@ function titan_install_plugin_complete_actions( $install_actions, $api, $plugin_
 add_action( 'plugin_action_links', 'titan_add_action_link', 999, 2 );
 function titan_add_action_link( $actions, $plugin_file )
 {
-    $scannedPlugins = Plugin::app()->getPopulateOption( 'scannedPlugins', [] );
+    $scanned_plugins = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
+    $plugin_info     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
 
-    if ( ! isset( $scannedPlugins[$plugin_file] ) && ! is_plugin_active( $plugin_file ) ) {
-        if ( current_user_can( 'activate_plugin', $plugin_file ) ) {
-            $actions['scan_and_activate'] = "<a href='" . add_query_arg( [
-                    'action' => 'scan_and_activate',
-                    'plugin' => urlencode( $plugin_file ),
-                ] ) . "'>" . __( 'Scan and activate', 'titan-security' ) . "</a>";
-        }
+    if ( isset( $scanned_plugins[$plugin_file] )
+         && version_compare( $scanned_plugins[$plugin_file], $plugin_info['Version'], '==' ) ) {
+        return $actions;
+    }
 
-        ksort($actions);
+    if ( ! current_user_can( 'activate_plugin', $plugin_file ) ) {
+        return $actions;
+    }
+
+    $actions['scan'] = sprintf( '<a href="%s">%s</a>', add_query_arg( [
+        'action' => 'scan',
+        'plugin' => urlencode( $plugin_file ),
+    ] ), __( 'Scan', 'titan-security' ) );
+
+    if( ! is_plugin_active( $plugin_file ) ) {
+        $actions['scan_and_activate'] = "<a href='" . add_query_arg( [
+                'action' => 'scan_and_activate',
+                'plugin' => urlencode( $plugin_file ),
+            ] ) . "'>" . __( 'Scan and activate', 'titan-security' ) . "</a>";
     }
 
     return $actions;
@@ -68,23 +79,43 @@ add_action( 'current_screen', 'titan_current_screen' );
  */
 function titan_current_screen( $current_page )
 {
-    if ( isset( $_GET['plugin'], $_GET['action'] ) && $_GET['action'] === 'scan_and_activate' ) {
-        $plugin     = urldecode( $_GET['plugin'] );
-        $plugin_dir = substr( $plugin, 0, strpos( $plugin, '/' ) + 1 );
-        titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin );
+    if ( isset( $_GET['plugin'], $_GET['action'] ) && in_array($_GET['action'], ['scan_and_activate', 'scan']) ) {
+        $plugin_file = urldecode( $_GET['plugin'] );
+        $plugin_dir  = substr( $plugin_file, 0, strpos( $plugin_file, '/' ) + 1 );
 
-        wp_redirect( admin_url( 'plugins.php?' . http_build_query([
-                'action' => 'scan_started',
-                'plugin' => $plugin,
-            ]) ) );
+        $scanned_plugins               = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
+        $plugin_info                   = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
+        $scanned_plugins[$plugin_file] = $plugin_info['Version'];
+        Plugin::app()->updatePopulateOption( 'scanned_plugins', $scanned_plugins );
+
+        if($_GET['action'] === 'scan_and_activate') {
+            $action = 'scan_started';
+            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file );
+        } else {
+            $action = 'just_scan';
+            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file, );
+        }
+
+        wp_redirect( admin_url( 'plugins.php?' . http_build_query( [
+                'action' => $action,
+                'plugin' => $plugin_file,
+            ] ) ) );
     }
 
-    $pluginActivateAfterScan = Plugin::app()->getPopulateOption( 'scanner_plugin_activate', null );
-    $pluginActivateAfterScan = is_string($pluginActivateAfterScan) && !empty($pluginActivateAfterScan) ? true : false;
-    if(($current_page->id === 'plugins' && isset($_GET['action']) && $_GET['action'] === 'scan_started') || $pluginActivateAfterScan) {
-        add_action( 'admin_notices', static function ()
+    $pluginActivateAfterScan = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
+    $pluginActivateAfterScan = (is_string( $pluginActivateAfterScan ) && ! empty( $pluginActivateAfterScan ));
+    if(($current_page->id === 'plugins' && isset($_GET['action'])) || $pluginActivateAfterScan) {
+        if($_GET['action'] === 'scan_started') {
+            $message = __('<b>Titan Security:</b> The plugin "%s" will be activated after scanning. Estimated waiting time: %d min.', 'titan-security');
+        } elseif($_GET['action'] === 'just_scan') {
+            $message = __('<b>Titan Security:</b> The scan plugin "%s" will be completed in ~%d min.', 'titan-security');
+        } else {
+            return;
+        }
+
+        add_action( 'admin_notices', static function () use ($message)
         {
-            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_activate' );
+            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action' );
             $plugin = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin)['Name'];
 
             /**
@@ -99,14 +130,9 @@ function titan_current_screen( $current_page )
             }
 
             $waitTime = $scanner->get_files_count() / $files_count;
-
-            $message = sprintf(
-                    __('<b>Titan Security:</b> The plugin "%s" will be activated after scanning. Estimated waiting time: %d min.', 'titan-security'),
-                    $plugin, $waitTime
-            )
             ?>
             <div class="notice notice-success is-dismissible">
-                <p><?= $message ?></p>
+                <p><?= sprintf($message, $plugin, $waitTime) ?></p>
             </div>
             <?php
 
@@ -263,9 +289,10 @@ function titan_check_cms()
  * Creating cron task
  *
  * @param  string       $path
- * @param  string|null  $activate_plugin_after_scan
+ * @param  string|null  $plugin_in_action
+ * @param  bool         $activate
  */
-function titan_create_scheduler_scanner( $path = ABSPATH, $activate_plugin_after_scan = null )
+function titan_create_scheduler_scanner( $path = ABSPATH, $plugin_in_action = null, $activate = false )
 {
     // todo: реализовать уровень проверки сайта
 
@@ -321,7 +348,8 @@ function titan_create_scheduler_scanner( $path = ABSPATH, $activate_plugin_after
     ] );
 
     Plugin::app()->updateOption( 'scanner', $scanner );
-    Plugin::app()->updateOption( 'scanner_plugin_activate', $activate_plugin_after_scan );
+    Plugin::app()->updateOption( 'scanner_plugin_in_action', $plugin_in_action );
+    Plugin::app()->updateOption( 'scanner_activate_plugin', $activate ? 'yes' : 'no' );
     Plugin::app()->updateOption( 'scanner_malware_matched', [] );
     Plugin::app()->updateOption( 'scanner_files_count', $scanner->get_files_count() );
     Plugin::app()->updateOption( 'scanner_status', 'started' );
@@ -351,12 +379,14 @@ function titan_remove_scheduler_scanner()
         $weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
         if ( count( $matched ) < 3 ) {
-            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_activate', null );
-            if ( is_string( $plugin ) && ! empty( $plugin ) ) {
-                Plugin::app()->deletePopulateOption( 'scanner_plugin_activate' );
-//                $plugin = substr($plugin, 0, strpos($plugin, '/') + 1);
+            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
+            $activate = Plugin::app()->getPopulateOption( 'scanner_activate_plugin', 'no' ) === 'yes';
+            if ( is_string( $plugin ) && ! empty( $plugin ) && $activate ) {
                 activate_plugin( $plugin );
             }
+
+            Plugin::app()->deletePopulateOption( 'scanner_plugin_in_action' );
+            Plugin::app()->deletePopulateOption( 'scanner_activate_plugin' );
         }
 
         $weeklyMatched = array_merge( $weeklyMatched, $matched );
