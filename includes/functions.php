@@ -93,7 +93,7 @@ function titan_current_screen( $current_page )
             titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file );
         } else {
             $action = 'just_scan';
-            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file, );
+            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file );
         }
 
         wp_redirect( admin_url( 'plugins.php?' . http_build_query( [
