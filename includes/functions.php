@@ -16,12 +16,14 @@ use WBCR\Titan\MalwareScanner\Scanner;
 use WBCR\Titan\MalwareScanner\Signature;
 use WBCR\Titan\Plugin;
 
+#region plugins.php
+
 add_action( 'plugins_loaded', 'titan_digest_schedule' );
 function titan_digest_schedule()
 {
     $digest = Plugin::app()->getOption( 'digest', 'disable' );
 
-    if ( $digest == 'enable' ) {
+    if ( $digest === 'enable' ) {
         if ( ! wp_next_scheduled( 'titan_malware_weekly_digest' ) ) {
             wp_schedule_event( time(), 'weekly', 'titan_malware_weekly_digest' );
         }
@@ -49,8 +51,44 @@ function titan_add_action_link( $actions, $plugin_file )
     $scanned_plugins = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
     $plugin_info     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
 
+    $plugin_in_action = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
+    if(!empty($plugin_in_action) && $plugin_in_action === $plugin_file) {
+        add_action("after_plugin_row_$plugin_file", static function($file) {
+            if ( is_network_admin() ) {
+                $active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
+            } else {
+                $active_class = is_plugin_active( $file ) ? ' active' : '';
+            }
+
+            /** @var Scanner $scanner */
+            $scanner = get_option( Plugin::app()->getPrefix() . 'scanner');
+            $total_files = Plugin::app()->getPopulateOption( 'scanner_files_count' );
+            $progress = $scanner->get_files_count() / $total_files * 100;
+
+            $current = get_site_transient( 'update_plugins' );
+            $response = $current->response[ $file ];
+            /** @var WP_Plugins_List_Table $wp_list_table */
+            $wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+
+            ?>
+                <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
+                    data-slug="<?= esc_attr($response->slug) ?>" data-plugin="<?= esc_attr($file) ?>">
+                    <td colspan="<?= esc_attr($wp_list_table->get_column_count()) ?>" class="plugin-update colspanchange">
+                        <div class="update-message notice inline notice-warning notice-alt">
+                            <p>
+                                <?= sprintf( __( 'Scanning... %.2f%%', 'titan-security' ), $progress ) ?>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            <?php
+        }, 10, 1);
+        return $actions;
+    }
+
     if ( isset( $scanned_plugins[$plugin_file] )
          && version_compare( $scanned_plugins[$plugin_file], $plugin_info['Version'], '==' ) ) {
+        $actions['scanned'] = sprintf("<a href='#'>%s</a>", __('Scanned', 'titan-security'));
         return $actions;
     }
 
@@ -139,6 +177,10 @@ function titan_current_screen( $current_page )
         } );
     }
 }
+
+#endregion plugins.php
+
+#region cron
 
 add_filter( 'cron_schedules', 'titan_add_minute_schedule' );
 /**
@@ -236,6 +278,8 @@ function titan_scheduled_scanner()
     }
 }
 
+#endregion cron
+
 /**
  * @return CmsCheckItem[]
  */
@@ -284,6 +328,8 @@ function titan_check_cms()
 
     return $result->items;
 }
+
+#region scanner
 
 /**
  * Creating cron task
@@ -384,10 +430,10 @@ function titan_remove_scheduler_scanner()
             if ( is_string( $plugin ) && ! empty( $plugin ) && $activate ) {
                 activate_plugin( $plugin );
             }
-
-            Plugin::app()->deletePopulateOption( 'scanner_plugin_in_action' );
-            Plugin::app()->deletePopulateOption( 'scanner_activate_plugin' );
         }
+
+        Plugin::app()->deletePopulateOption( 'scanner_plugin_in_action' );
+        Plugin::app()->deletePopulateOption( 'scanner_activate_plugin' );
 
         $weeklyMatched = array_merge( $weeklyMatched, $matched );
         $weeklyMatched = array_unique( $weeklyMatched, SORT_STRING );
@@ -416,33 +462,7 @@ function titan_remove_scheduler_scanner()
     }
 }
 
-/**
- * Collecting hash sums of WP files
- *
- * @param  string  $path
- *
- * @return array
- */
-function collect_wp_hash_sum( $path = ABSPATH )
-{
-    $hash = [];
-
-    foreach ( scandir( $path ) as $item ) {
-        if ( $item == '.' || $item == '..' || $item == 'plugins' || $item == 'themes' ) {
-            continue;
-        }
-
-        $newPath      = $path . $item;
-        $relativePath = str_replace( ABSPATH, '', $newPath );
-        if ( is_dir( $newPath ) ) {
-            $hash = array_merge( $hash, collect_wp_hash_sum( $newPath . '/' ) );
-        } else {
-            $hash[$relativePath] = md5_file( $newPath );
-        }
-    }
-
-    return $hash;
-}
+#endregion scanner
 
 /**
  * Displays a notification inside the Antispam interface, on all pages of the plugin.
@@ -509,6 +529,8 @@ function titan_init_https_redirect()
     }
 }
 
+#region activation/deactivation license
+
 add_action( Plugin::app()->getPluginName() . "/factory/premium/license_activate", 'titan_set_scanner_speed_active' );
 function titan_set_scanner_speed_active()
 {
@@ -547,6 +569,10 @@ function titan_set_scanner_speed_deactive()
         Plugin::app()->updatePopulateOption( 'scanner_type', 'basic' );
     }
 }
+
+#endregion activation/deactivation license
+
+#region functions
 
 /**
  * @return int|float [Memory limit in MB]
@@ -602,6 +628,36 @@ function correct_timezone( $time )
 
     return $time + $localOffset;
 }
+
+/**
+ * Collecting hash sums of WP files
+ *
+ * @param  string  $path
+ *
+ * @return array
+ */
+function collect_wp_hash_sum( $path = ABSPATH )
+{
+    $hash = [];
+
+    foreach ( scandir( $path ) as $item ) {
+        if ( $item === '.' || $item === '..' || $item === 'plugins' || $item === 'themes' ) {
+            continue;
+        }
+
+        $newPath      = $path . $item;
+        $relativePath = str_replace( ABSPATH, '', $newPath );
+        if ( is_dir( $newPath ) ) {
+            $hash = array_merge( $hash, collect_wp_hash_sum( $newPath . '/' ) );
+        } else {
+            $hash[$relativePath] = md5_file( $newPath );
+        }
+    }
+
+    return $hash;
+}
+
+#endregion functions
 
 add_action( 'plugins_loaded', 'titan_init_check_schedule' );
 function titan_init_check_schedule()
