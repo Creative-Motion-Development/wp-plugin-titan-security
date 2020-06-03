@@ -63,7 +63,7 @@ function titan_add_action_link( $actions, $plugin_file )
             /** @var Scanner $scanner */
             $scanner = get_option( Plugin::app()->getPrefix() . 'scanner');
             $total_files = Plugin::app()->getPopulateOption( 'scanner_files_count' );
-            $progress = $scanner->get_files_count() / $total_files * 100;
+            $progress = 100 - ($scanner->get_files_count() / $total_files * 100);
 
             $current = get_site_transient( 'update_plugins' );
             $response = $current->response[ $file ];
