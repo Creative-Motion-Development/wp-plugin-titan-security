@@ -64,12 +64,12 @@ class Scanner {
 	/**
 	 * Scanner constructor.
 	 *
-	 * @param string $path
+	 * @param string|string[] $paths
 	 * @param SignaturePool $signaturePool
 	 * @param HashListPool $hashList
 	 * @param array $ignoreFiles
 	 */
-	public function __construct( $path, $signaturePool, $hashList = null, $ignoreFiles = [] ) {
+	public function __construct( $paths, $signaturePool, $hashList = null, $ignoreFiles = [] ) {
 		if ( is_null( $hashList ) ) {
 			$hashList = HashListPool::fromArray( [] );
 		}
@@ -78,8 +78,15 @@ class Scanner {
 		$this->ignoreFiles   = $ignoreFiles;
 		$this->signaturePool = $signaturePool;
 
-		$this->loadFilesFromPath( $path );
-	}
+		if(is_array($paths)) {
+		    foreach($paths as $path) {
+		        $this->loadFilesFromPath( $path );
+            }
+        } else {
+            $this->loadFilesFromPath( $paths );
+        }
+
+    }
 
 	/**
 	 * @return File[]
