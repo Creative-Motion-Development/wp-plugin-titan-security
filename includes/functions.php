@@ -51,9 +51,10 @@ function titan_add_action_link( $actions, $plugin_file )
     $scanned_plugins = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
     $plugin_info     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
 
-    $plugin_in_action = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
-    if(!empty($plugin_in_action) && $plugin_in_action === $plugin_file) {
-        add_action("after_plugin_row_$plugin_file", static function($file) {
+    $plugin_in_action = Plugin::app()->getPopulateOption( 'scanner_plugins_in_action', [] );
+    if ( in_array($plugin_file, $plugin_in_action, false) ) {
+        add_action( "after_plugin_row_$plugin_file", static function ( $file )
+        {
             if ( is_network_admin() ) {
                 $active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
             } else {
@@ -61,34 +62,74 @@ function titan_add_action_link( $actions, $plugin_file )
             }
 
             /** @var Scanner $scanner */
-            $scanner = get_option( Plugin::app()->getPrefix() . 'scanner');
+            $scanner     = get_option( Plugin::app()->getPrefix() . 'scanner' );
             $total_files = Plugin::app()->getPopulateOption( 'scanner_files_count' );
-            $progress = 100 - ($scanner->get_files_count() / $total_files * 100);
+            $progress    = 100 - ($scanner->get_files_count() / $total_files * 100);
 
-            $current = get_site_transient( 'update_plugins' );
-            $response = $current->response[ $file ];
+            $current  = get_site_transient( 'update_plugins' );
+            $response = $current->response[$file];
             /** @var WP_Plugins_List_Table $wp_list_table */
             $wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 
             ?>
-                <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
-                    data-slug="<?= esc_attr($response->slug) ?>" data-plugin="<?= esc_attr($file) ?>">
-                    <td colspan="<?= esc_attr($wp_list_table->get_column_count()) ?>" class="plugin-update colspanchange">
-                        <div class="update-message notice inline notice-warning notice-alt">
-                            <p>
-                                <?= sprintf( __( 'Scanning... %.2f%%', 'titan-security' ), $progress ) ?>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
+            <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
+                data-slug="<?= esc_attr( $response->slug ) ?>" data-plugin="<?= esc_attr( $file ) ?>">
+                <td colspan="<?= esc_attr( $wp_list_table->get_column_count() ) ?>" class="plugin-update colspanchange">
+                    <div class="update-message notice inline notice-warning notice-alt">
+                        <p>
+                            <?= sprintf( __( 'Scanning... %.2f%%', 'titan-security' ), $progress ) ?>
+                        </p>
+                    </div>
+                </td>
+            </tr>
             <?php
-        }, 10, 1);
-        return $actions;
+        }, 10, 1 );
     }
 
-    if ( isset( $scanned_plugins[$plugin_file] )
-         && version_compare( $scanned_plugins[$plugin_file], $plugin_info['Version'], '==' ) ) {
-        $actions['scanned'] = sprintf("<a href='#'>%s</a>", __('Scanned', 'titan-security'));
+    /** @var Match[][] $matched_plugin */
+    $matched_plugin = get_option( Plugin::app()->getPrefix() . 'scanner_malware_plugin_matched', [] );
+    $plugin_dir = substr($plugin_file, 0, strpos($plugin_file, '/'));
+    if(isset($matched_plugin[$plugin_dir])) {
+        add_action( "after_plugin_row_{$plugin_file}", static function ( $file ) use ( $matched_plugin, $plugin_dir ) {
+            if ( is_network_admin() ) {
+                $active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
+            } else {
+                $active_class = is_plugin_active( $file ) ? ' active' : '';
+            }
+
+            $current  = get_site_transient( 'update_plugins' );
+            $response = $current->response[$file];
+            /** @var WP_Plugins_List_Table $wp_list_table */
+            $wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+
+            ?>
+            <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
+                data-slug="<?= esc_attr( $response->slug ) ?>" data-plugin="<?= esc_attr( $file ) ?>">
+                <td colspan="<?= esc_attr( $wp_list_table->get_column_count() ) ?>" class="plugin-update colspanchange">
+                    <div class="update-message notice inline notice-warning notice-alt">
+                        <p><?= __( 'Infected files:', 'titan-security') ?></p>
+                        <ul style="list-style: disc; padding-left: 17px;">
+                            <?php foreach($matched_plugin[$plugin_dir] as $match): ?>
+                                <li><?= $match->getFile()->getPath() ?></li>
+                            <?php endforeach ?>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <?php
+        }, 10, 1);
+    }
+
+    if ( isset( $scanned_plugins[$plugin_file] ) ) {
+        if ( version_compare( $scanned_plugins[$plugin_file], $plugin_info['Version'], '==' ) ) {
+            $actions['scanned'] = sprintf( "<a href='#'>%s</a>", __( 'Scanned', 'titan-security' ) );
+        } else {
+            $actions['scan'] = sprintf( '<a href="%s">%s</a>', add_query_arg( [
+                'action' => 'scan',
+                'plugin' => urlencode( $plugin_file ),
+            ] ), __( 'Rescan', 'titan-security' ) );
+        }
+
         return $actions;
     }
 
@@ -101,7 +142,7 @@ function titan_add_action_link( $actions, $plugin_file )
         'plugin' => urlencode( $plugin_file ),
     ] ), __( 'Scan', 'titan-security' ) );
 
-    if( ! is_plugin_active( $plugin_file ) ) {
+    if ( ! is_plugin_active( $plugin_file ) ) {
         $actions['scan_and_activate'] = "<a href='" . add_query_arg( [
                 'action' => 'scan_and_activate',
                 'plugin' => urlencode( $plugin_file ),
@@ -113,11 +154,11 @@ function titan_add_action_link( $actions, $plugin_file )
 
 add_action( 'current_screen', 'titan_current_screen' );
 /**
- * @param WP_Screen $current_page
+ * @param  WP_Screen  $current_page
  */
 function titan_current_screen( $current_page )
 {
-    if ( isset( $_GET['plugin'], $_GET['action'] ) && in_array($_GET['action'], ['scan_and_activate', 'scan']) ) {
+    if ( isset( $_GET['plugin'], $_GET['action'] ) && in_array( $_GET['action'], ['scan_and_activate', 'scan'] ) ) {
         $plugin_file = urldecode( $_GET['plugin'] );
         $plugin_dir  = substr( $plugin_file, 0, strpos( $plugin_file, '/' ) + 1 );
 
@@ -126,56 +167,54 @@ function titan_current_screen( $current_page )
         $scanned_plugins[$plugin_file] = $plugin_info['Version'];
         Plugin::app()->updatePopulateOption( 'scanned_plugins', $scanned_plugins );
 
-        if($_GET['action'] === 'scan_and_activate') {
-            $action = 'scan_started';
-            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file );
+        if ( $_GET['action'] === 'scan_and_activate' ) {
+            $action   = 'scan_started';
+            $activate = true;
         } else {
-            $action = 'just_scan';
-            titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), $plugin_file );
+            $action   = 'just_scan';
+            $activate = false;
         }
 
+        titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), [$plugin_file],
+            $activate );
         wp_redirect( admin_url( 'plugins.php?' . http_build_query( [
                 'action' => $action,
                 'plugin' => $plugin_file,
             ] ) ) );
     }
 
-    $pluginActivateAfterScan = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
-    $pluginActivateAfterScan = (is_string( $pluginActivateAfterScan ) && ! empty( $pluginActivateAfterScan ));
-    if(($current_page->id === 'plugins' && isset($_GET['action'])) || $pluginActivateAfterScan) {
-        if($_GET['action'] === 'scan_started') {
-            $message = __('<b>Titan Security:</b> The plugin "%s" will be activated after scanning. Estimated waiting time: %d min.', 'titan-security');
-        } elseif($_GET['action'] === 'just_scan') {
-            $message = __('<b>Titan Security:</b> The scan plugin "%s" will be completed in ~%d min.', 'titan-security');
-        } else {
-            return;
-        }
+}
 
-        add_action( 'admin_notices', static function () use ($message)
-        {
-            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action' );
-            $plugin = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin)['Name'];
+add_action( 'bulk_actions-plugins', 'titan_register_bulk_action' );
+function titan_register_bulk_action( $bulk_actions )
+{
+    $bulk_actions['scan']              = __( 'Scan', 'titan-security' );
+    $bulk_actions['scan_and_activate'] = __( "Scan and activate", 'titan-security' );
 
-            /**
-             * @var Scanner $scanner
-             */
-            $scanner = get_option( Plugin::app()->getPrefix() . 'scanner' );
+    return $bulk_actions;
+}
 
-            $speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
-            $files_count = @Scanner::SPEED_FILES[$speed];
-            if ( is_null( $files_count ) ) {
-                $files_count = Scanner::SPEED_FILES[Scanner::SPEED_MEDIUM];
-            }
-
-            $waitTime = $scanner->get_files_count() / $files_count;
-            ?>
-            <div class="notice notice-success is-dismissible">
-                <p><?= sprintf($message, $plugin, $waitTime) ?></p>
-            </div>
-            <?php
-
-        } );
+add_action( 'handle_bulk_actions-plugins', 'titan_bulk_action_handler', 10, 3 );
+function titan_bulk_action_handler( $redirect_to, $doaction, $plugins )
+{
+    if ( ! in_array( $doaction, ['scan', 'scan_and_activate'] ) ) {
+        return $redirect_to;
     }
+
+    $activate = $doaction === 'scan_and_activate';
+
+    $paths = [];
+    foreach ( $plugins as $plugin ) {
+        $plugin  = substr( $plugin, 0, strpos( $plugin, '/' ) );
+        $paths[] = sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin );
+    }
+
+    titan_create_scheduler_scanner( $paths, $plugins, $activate );
+
+    return add_query_arg( [
+        'action'  => 'bulk_scan',
+        'plugins' => $plugins
+    ], $redirect_to );
 }
 
 #endregion plugins.php
@@ -259,18 +298,41 @@ function titan_scheduled_scanner()
         $files_count = Scanner::SPEED_FILES[Scanner::SPEED_MEDIUM];
     }
 
-    $matched = Plugin::app()->getOption( 'scanner_malware_matched', [] );
+    $matched        = Plugin::app()->getOption( 'scanner_malware_matched', [] );
+    $plugin_matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_plugin_matched', [] );
 
     foreach ( $scanner->scan( $files_count ) as $match ) {
         /** @var Match $match */
+        $plugin = $match->getFile()->getPath();
+        $root   = WP_CONTENT_DIR . '/plugins/';
+        $is_plugin = strpos( $plugin, $root ) === 0;
+        $plugin = explode( DIRECTORY_SEPARATOR, str_replace( $root, '', $plugin ) );
+
+        if($is_plugin && !empty($plugin)) {
+            $plugin = $plugin[0];
+            if(!isset($plugin_matched[$plugin])) {
+                $plugin_matched[$plugin] = [];
+            }
+        } else {
+            $is_plugin = false;
+        }
+
+        /** @var Match $match */
         if ( $match->getSignature()->getSever() === Signature::SEVER_CRITICAL ) {
+            if($is_plugin) {
+                array_unshift( $plugin_matched[$plugin], $match);
+            }
             array_unshift( $matched, $match );
         } else {
+            if($is_plugin) {
+                $plugin_matched[$plugin][] = $match;
+            }
             $matched[] = $match;
         }
     }
 
     Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
+    Plugin::app()->updateOption( 'scanner_malware_plugin_matched', $plugin_matched );
     Plugin::app()->updateOption( 'scanner', $scanner );
 
     if ( $scanner->get_files_count() < 1 ) {
@@ -334,9 +396,9 @@ function titan_check_cms()
 /**
  * Creating cron task
  *
- * @param  string       $path
- * @param  string|null  $plugin_in_action
- * @param  bool         $activate
+ * @param  string|string[]  $path
+ * @param  string[]|null    $plugin_in_action
+ * @param  bool             $activate
  */
 function titan_create_scheduler_scanner( $path = ABSPATH, $plugin_in_action = null, $activate = false )
 {
@@ -394,7 +456,7 @@ function titan_create_scheduler_scanner( $path = ABSPATH, $plugin_in_action = nu
     ] );
 
     Plugin::app()->updateOption( 'scanner', $scanner );
-    Plugin::app()->updateOption( 'scanner_plugin_in_action', $plugin_in_action );
+    Plugin::app()->updateOption( 'scanner_plugins_in_action', $plugin_in_action );
     Plugin::app()->updateOption( 'scanner_activate_plugin', $activate ? 'yes' : 'no' );
     Plugin::app()->updateOption( 'scanner_malware_matched', [] );
     Plugin::app()->updateOption( 'scanner_files_count', $scanner->get_files_count() );
@@ -424,15 +486,21 @@ function titan_remove_scheduler_scanner()
         $matched       = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
         $weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
 
-        if ( count( $matched ) < 3 ) {
-            $plugin = Plugin::app()->getPopulateOption( 'scanner_plugin_in_action', null );
-            $activate = Plugin::app()->getPopulateOption( 'scanner_activate_plugin', 'no' ) === 'yes';
-            if ( is_string( $plugin ) && ! empty( $plugin ) && $activate ) {
+        $plugins        = Plugin::app()->getPopulateOption( 'scanner_plugins_in_action', [] );
+        $plugin_matched = Plugin::app()->getPopulateOption( 'scanner_malware_plugin_matched', [] );
+        $activate       = Plugin::app()->getPopulateOption( 'scanner_activate_plugin', 'no' ) === 'yes';
+        foreach ( $plugins as $plugin ) {
+            $plugin_dir = substr( $plugin, 0, strpos( $plugin, "/" ) );
+            if ( isset( $plugin_matched[$plugin_dir] ) && count( $plugin_matched[$plugin_dir] ) > 0 ) {
+                continue;
+            }
+
+            if ( $activate ) {
                 activate_plugin( $plugin );
             }
         }
 
-        Plugin::app()->deletePopulateOption( 'scanner_plugin_in_action' );
+        Plugin::app()->deletePopulateOption( 'scanner_plugins_in_action' );
         Plugin::app()->deletePopulateOption( 'scanner_activate_plugin' );
 
         $weeklyMatched = array_merge( $weeklyMatched, $matched );
