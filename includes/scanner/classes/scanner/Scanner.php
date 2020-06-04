@@ -182,7 +182,7 @@ class Scanner {
 			$i ++;
 
 			$fileMatch = $this->signaturePool->scanFile( $file );
-			if ( ! empty( $fileMatch ) ) {
+			if ( $fileMatch !== null ) {
 				$this->updateData( true );
 				yield $fileMatch;
 			} else {

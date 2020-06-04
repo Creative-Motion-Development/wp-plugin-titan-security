@@ -73,7 +73,7 @@ class SignaturePool {
 	 * @return Match|null
 	 */
 	public function scanFile( $file ) {
-		$fData = fopen($file->getPath(), 'r');
+		$fData = fopen($file->getPath(), 'rb' );
 		if($fData === false) {
 			$e = sprintf("Open error: %s", $file->getPath());
 			Writter::error($e);
@@ -84,7 +84,7 @@ class SignaturePool {
 		$ext = explode('.', $file->getPath());
 		$ext = $ext[count($ext) - 1];
 
-		$isPHP = in_array($ext, ['php', 'phtml']);
+		$isPHP = in_array($ext, ['php', 'phtml', 'php4']);
 		$isHTML = !$isPHP && in_array($ext, ['html']);
 		$isJS = !$isPHP && !$isHTML && in_array($ext, ['js', 'svg']);
 		$isArchive = !$isPHP && !$isHTML && !$isJS && in_array($ext, ['zip', 'tar', 'gz']);
@@ -110,34 +110,38 @@ class SignaturePool {
 			return null;
 		}
 
-		$chunk = 0;
+//		$chunk = 0;
 		while(!feof($fData)) {
 			if($isUnknown || $isArchive) {
 				fclose($fData);
 				return null;
 			}
-			$chunk++;
+//			$chunk++;
 			$data = fread($fData, 1024 * 1024 * 1); // 1MB
 
 			foreach($this->signatures as $signature) {
 				$type = $signature->getType();
+				if($type === 'both' && $isJS) {
+				    usleep(1);
+                }
+
 				if(empty($type)) {
 					$type = 'server';
 				}
 
-				if($type == 'ignore') {
+				if($type === 'ignore') {
 					continue;
 				}
 
-				if($type == Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
+				if($type === Signature::TYPE_SERVER && !($isPHP || $isHTML)) {
 					continue;
 				}
 
-				if(in_array($type, [Signature::TYPE_BOTH, Signature::TYPE_BROWSER]) && ($isPHP || $isHTML)) {
+				if(($isPHP || $isHTML) && in_array($type, [Signature::TYPE_BOTH, Signature::TYPE_BROWSER], false)) {
 					continue;
 				}
 
-				if(substr($signature->getSignature(), 0, 1) == '^') {
+				if( strpos( $signature->getSignature(), '^' ) === 0 ) {
 					// Skipping malware signature ({$rule[0]}) because it only applies to the file beginning
 					continue;
 				}
