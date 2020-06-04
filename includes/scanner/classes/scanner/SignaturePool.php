@@ -121,10 +121,6 @@ class SignaturePool {
 
 			foreach($this->signatures as $signature) {
 				$type = $signature->getType();
-				if($type === 'both' && $isJS) {
-				    usleep(1);
-                }
-
 				if(empty($type)) {
 					$type = 'server';
 				}
