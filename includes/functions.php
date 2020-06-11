@@ -18,326 +18,139 @@ use WBCR\Titan\Plugin;
 
 #region plugins.php
 
-add_action( 'plugins_loaded', 'titan_digest_schedule' );
+add_action('plugins_loaded', 'titan_digest_schedule');
 function titan_digest_schedule()
 {
-    $digest = Plugin::app()->getOption( 'digest', 'disable' );
+	$digest = Plugin::app()->getOption('digest', 'disable');
 
-    if ( $digest === 'enable' ) {
-        if ( ! wp_next_scheduled( 'titan_malware_weekly_digest' ) ) {
-            wp_schedule_event( time(), 'weekly', 'titan_malware_weekly_digest' );
-        }
-    } else {
-        wp_unschedule_hook( 'titan_malware_weekly_digest' );
-    }
+	if( $digest === 'enable' ) {
+		if( !wp_next_scheduled('titan_malware_weekly_digest') ) {
+			wp_schedule_event(time(), 'weekly', 'titan_malware_weekly_digest');
+		}
+	} else {
+		wp_unschedule_hook('titan_malware_weekly_digest');
+	}
 }
-
-add_action( 'install_plugin_complete_actions', 'titan_install_plugin_complete_actions', 999, 3 );
-function titan_install_plugin_complete_actions( $install_actions, $api, $plugin_file )
-{
-    $install_actions = titan_add_action_link( $install_actions, $plugin_file );
-
-    if ( isset( $install_actions['scan_and_activate'] ) ) {
-        $install_actions['scan_and_activate'] = str_replace( 'href', 'class="button button-primary" href',
-            $install_actions['scan_and_activate'] );
-    }
-
-    return $install_actions;
-}
-
-add_action( 'plugin_action_links', 'titan_add_action_link', 999, 2 );
-function titan_add_action_link( $actions, $plugin_file )
-{
-    $scanned_plugins = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
-    $plugin_info     = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
-
-    $plugin_in_action = Plugin::app()->getPopulateOption( 'scanner_plugins_in_action', [] );
-    if ( in_array($plugin_file, $plugin_in_action, false) ) {
-        add_action( "after_plugin_row_$plugin_file", static function ( $file )
-        {
-            if ( is_network_admin() ) {
-                $active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
-            } else {
-                $active_class = is_plugin_active( $file ) ? ' active' : '';
-            }
-
-            /** @var Scanner $scanner */
-            $scanner     = get_option( Plugin::app()->getPrefix() . 'scanner' );
-            $total_files = Plugin::app()->getPopulateOption( 'scanner_files_count' );
-            $progress    = 100 - ($scanner->get_files_count() / $total_files * 100);
-
-            $current  = get_site_transient( 'update_plugins' );
-            $response = $current->response[$file];
-            /** @var WP_Plugins_List_Table $wp_list_table */
-            $wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-
-            ?>
-            <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
-                data-slug="<?= esc_attr( $response->slug ) ?>" data-plugin="<?= esc_attr( $file ) ?>">
-                <td colspan="<?= esc_attr( $wp_list_table->get_column_count() ) ?>" class="plugin-update colspanchange">
-                    <div class="update-message notice inline notice-warning notice-alt">
-                        <p>
-                            <?= sprintf( __( 'Scanning... %.2f%%', 'titan-security' ), $progress ) ?>
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            <?php
-        }, 10, 1 );
-    }
-
-    /** @var Match[][] $matched_plugin */
-    $matched_plugin = get_option( Plugin::app()->getPrefix() . 'scanner_malware_plugin_matched', [] );
-    $plugin_dir = substr($plugin_file, 0, strpos($plugin_file, '/'));
-    if(isset($matched_plugin[$plugin_dir])) {
-        add_action( "after_plugin_row_{$plugin_file}", static function ( $file ) use ( $matched_plugin, $plugin_dir ) {
-            if ( is_network_admin() ) {
-                $active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
-            } else {
-                $active_class = is_plugin_active( $file ) ? ' active' : '';
-            }
-
-            $current  = get_site_transient( 'update_plugins' );
-            $response = $current->response[$file];
-            /** @var WP_Plugins_List_Table $wp_list_table */
-            $wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-
-            ?>
-            <tr class="plugin-update-tr<?= $active_class ?>" id="<?= esc_attr( $response->slug . '-scanning' ) ?>"
-                data-slug="<?= esc_attr( $response->slug ) ?>" data-plugin="<?= esc_attr( $file ) ?>">
-                <td colspan="<?= esc_attr( $wp_list_table->get_column_count() ) ?>" class="plugin-update colspanchange">
-                    <div class="update-message notice inline notice-warning notice-alt">
-                        <p><?= __( 'Infected files:', 'titan-security') ?></p>
-                        <ul style="list-style: disc; padding-left: 17px;">
-                            <?php foreach($matched_plugin[$plugin_dir] as $match): ?>
-                                <li><?= $match->getFile()->getPath() ?></li>
-                            <?php endforeach ?>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <?php
-        }, 10, 1);
-    }
-
-    if ( isset( $scanned_plugins[$plugin_file] ) ) {
-        if ( version_compare( $scanned_plugins[$plugin_file], $plugin_info['Version'], '==' ) ) {
-            $actions['scanned'] = sprintf( "<a href='#'>%s</a>", __( 'Scanned', 'titan-security' ) );
-        } else {
-            $actions['scan'] = sprintf( '<a href="%s">%s</a>', add_query_arg( [
-                'action' => 'scan',
-                'plugin' => urlencode( $plugin_file ),
-            ] ), __( 'Rescan', 'titan-security' ) );
-        }
-
-        return $actions;
-    }
-
-    if ( ! current_user_can( 'activate_plugin', $plugin_file ) ) {
-        return $actions;
-    }
-
-    $actions['scan'] = sprintf( '<a href="%s">%s</a>', add_query_arg( [
-        'action' => 'scan',
-        'plugin' => urlencode( $plugin_file ),
-    ] ), __( 'Scan', 'titan-security' ) );
-
-    if ( ! is_plugin_active( $plugin_file ) ) {
-        $actions['scan_and_activate'] = "<a href='" . add_query_arg( [
-                'action' => 'scan_and_activate',
-                'plugin' => urlencode( $plugin_file ),
-            ] ) . "'>" . __( 'Scan and activate', 'titan-security' ) . "</a>";
-    }
-
-    return $actions;
-}
-
-add_action( 'current_screen', 'titan_current_screen' );
-/**
- * @param  WP_Screen  $current_page
- */
-function titan_current_screen( $current_page )
-{
-    if ( isset( $_GET['plugin'], $_GET['action'] ) && in_array( $_GET['action'], ['scan_and_activate', 'scan'] ) ) {
-        $plugin_file = urldecode( $_GET['plugin'] );
-        $plugin_dir  = substr( $plugin_file, 0, strpos( $plugin_file, '/' ) + 1 );
-
-        $scanned_plugins               = Plugin::app()->getPopulateOption( 'scanned_plugins', [] );
-        $plugin_info                   = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_file );
-        $scanned_plugins[$plugin_file] = $plugin_info['Version'];
-        Plugin::app()->updatePopulateOption( 'scanned_plugins', $scanned_plugins );
-
-        if ( $_GET['action'] === 'scan_and_activate' ) {
-            $action   = 'scan_started';
-            $activate = true;
-        } else {
-            $action   = 'just_scan';
-            $activate = false;
-        }
-
-        titan_create_scheduler_scanner( sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin_dir ), [$plugin_file],
-            $activate );
-        wp_redirect( admin_url( 'plugins.php?' . http_build_query( [
-                'action' => $action,
-                'plugin' => $plugin_file,
-            ] ) ) );
-    }
-
-}
-
-add_action( 'bulk_actions-plugins', 'titan_register_bulk_action' );
-function titan_register_bulk_action( $bulk_actions )
-{
-    $bulk_actions['scan']              = __( 'Scan', 'titan-security' );
-    $bulk_actions['scan_and_activate'] = __( "Scan and activate", 'titan-security' );
-
-    return $bulk_actions;
-}
-
-add_action( 'handle_bulk_actions-plugins', 'titan_bulk_action_handler', 10, 3 );
-function titan_bulk_action_handler( $redirect_to, $doaction, $plugins )
-{
-    if ( ! in_array( $doaction, ['scan', 'scan_and_activate'] ) ) {
-        return $redirect_to;
-    }
-
-    $activate = $doaction === 'scan_and_activate';
-
-    $paths = [];
-    foreach ( $plugins as $plugin ) {
-        $plugin  = substr( $plugin, 0, strpos( $plugin, '/' ) );
-        $paths[] = sprintf( "%s/%s/%s", WP_CONTENT_DIR, 'plugins', $plugin );
-    }
-
-    titan_create_scheduler_scanner( $paths, $plugins, $activate );
-
-    return add_query_arg( [
-        'action'  => 'bulk_scan',
-        'plugins' => $plugins
-    ], $redirect_to );
-}
-
-#endregion plugins.php
 
 #region cron
 
-add_filter( 'cron_schedules', 'titan_add_minute_schedule' );
+add_filter('cron_schedules', 'titan_add_minute_schedule');
 /**
- * @param  array  $schedules
+ * @param array $schedules
  */
-function titan_add_minute_schedule( $schedules )
+function titan_add_minute_schedule($schedules)
 {
-    $schedules['minute'] = [
-        'interval' => 30,
-        'display'  => __( 'Once 30 sec', 'titan-security' ),
-    ];
+	$schedules['minute'] = [
+		'interval' => 30,
+		'display' => __('Once 30 sec', 'titan-security'),
+	];
 
-    $schedules['weekly'] = [
-        'interval' => 86400 * 7, // 7 days
-        'display'  => __( 'Weekly', 'titan-security' ),
-    ];
+	$schedules['weekly'] = [
+		'interval' => 86400 * 7, // 7 days
+		'display' => __('Weekly', 'titan-security'),
+	];
 
-    return $schedules;
+	return $schedules;
 }
 
-add_action( 'titan_malware_weekly_digest', 'titan_malware_weekly_digest' );
+add_action('titan_malware_weekly_digest', 'titan_malware_weekly_digest');
 function titan_malware_weekly_digest()
 {
-    /**
-     * @var Match[] $matched
-     */
-    $matched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
+	/**
+	 * @var Match[] $matched
+	 */
+	$matched = get_option(Plugin::app()->getPrefix() . 'matched_weekly', []);
 
-    if ( empty( $matched ) ) {
-        $matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-        if ( ! empty( $matched ) ) {
-            Plugin::app()->updatePopulateOption( 'matched_weekly', $matched );
-        }
-    }
+	if( empty($matched) ) {
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+		if( !empty($matched) ) {
+			Plugin::app()->updatePopulateOption('matched_weekly', $matched);
+		}
+	}
 
-    Writter::info( "Sending weekly digest" );
+	Writter::info("Sending weekly digest");
 
-    $license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
-    $client      = new Client( $license_key );
-    $client->send_notification( 'email', 'digestWeekly', get_option( 'admin_email' ), [
-        'infectedFiles'   => $matched,
-        'vulnerabilities' => [
-            'wordpress' => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_wordpress', [] ),
-            'plugins'   => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_plugins', [] ),
-            'themes'    => get_option( Plugin::app()->getPrefix() . 'vulnerabilities_themes', [] ),
-        ],
-        'audit'           => get_option( Plugin::app()->getPrefix() . 'audit_results', [] ),
-        'subject'         => "[wptest.loc] Weekly security digest",
-    ] );
+	$license_key = Plugin::app()->is_premium() ? Plugin::app()->premium->get_license()->get_key() : '';
+	$client = new Client($license_key);
+	$client->send_notification('email', 'digestWeekly', get_option('admin_email'), [
+		'infectedFiles' => $matched,
+		'vulnerabilities' => [
+			'wordpress' => get_option(Plugin::app()->getPrefix() . 'vulnerabilities_wordpress', []),
+			'plugins' => get_option(Plugin::app()->getPrefix() . 'vulnerabilities_plugins', []),
+			'themes' => get_option(Plugin::app()->getPrefix() . 'vulnerabilities_themes', []),
+		],
+		'audit' => get_option(Plugin::app()->getPrefix() . 'audit_results', []),
+		'subject' => "[wptest.loc] Weekly security digest",
+	]);
 }
 
-add_action( 'titan_scheduled_scanner', 'titan_scheduled_scanner' );
+add_action('titan_scheduled_scanner', 'titan_scheduled_scanner');
 /**
  * @throws Exception
  */
 function titan_scheduled_scanner()
 {
-    require_once WTITAN_PLUGIN_DIR . '/libs/api-client/boot.php';
-    require_once WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
+	require_once WTITAN_PLUGIN_DIR . '/libs/api-client/boot.php';
+	require_once WTITAN_PLUGIN_DIR . '/includes/scanner/classes/scanner/boot.php';
 
-    /** @var Scanner $scanner */
-    $scanner = get_option( Plugin::app()->getPrefix() . 'scanner', null );
-    if ( is_null( $scanner ) || $scanner === false ) {
-        Writter::error( 'Scanner does not exists' );
-        error_log( 'Scanner does not exists' );
-        titan_remove_scheduler_scanner();
+	/** @var Scanner $scanner */
+	$scanner = get_option(Plugin::app()->getPrefix() . 'scanner', null);
+	if( is_null($scanner) || $scanner === false ) {
+		Writter::error('Scanner does not exists');
+		error_log('Scanner does not exists');
+		titan_remove_scheduler_scanner();
 
-        return;
-    }
+		return;
+	}
 
-    set_time_limit( 0 );
+	set_time_limit(0);
 
-    $speed       = Plugin::app()->getPopulateOption( 'scanner_speed', 'slow' );
-    $files_count = @Scanner::SPEED_FILES[$speed];
-    if ( is_null( $files_count ) ) {
-        $files_count = Scanner::SPEED_FILES[Scanner::SPEED_MEDIUM];
-    }
+	$speed = Plugin::app()->getPopulateOption('scanner_speed', 'slow');
+	$files_count = @Scanner::SPEED_FILES[$speed];
+	if( is_null($files_count) ) {
+		$files_count = Scanner::SPEED_FILES[Scanner::SPEED_MEDIUM];
+	}
 
-    $matched        = Plugin::app()->getOption( 'scanner_malware_matched', [] );
-    $plugin_matched = get_option( Plugin::app()->getPrefix() . 'scanner_malware_plugin_matched', [] );
+	$matched = Plugin::app()->getOption('scanner_malware_matched', []);
+	$plugin_matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_plugin_matched', []);
 
-    foreach ( $scanner->scan( $files_count ) as $match ) {
-        /** @var Match $match */
-        $plugin = $match->getFile()->getPath();
-        $root   = WP_CONTENT_DIR . '/plugins/';
-        $is_plugin = strpos( $plugin, $root ) === 0;
-        $plugin = explode( DIRECTORY_SEPARATOR, str_replace( $root, '', $plugin ) );
+	foreach($scanner->scan($files_count) as $match) {
+		/** @var Match $match */
+		$plugin = $match->getFile()->getPath();
+		$root = WP_CONTENT_DIR . '/plugins/';
+		$is_plugin = strpos($plugin, $root) === 0;
+		$plugin = explode(DIRECTORY_SEPARATOR, str_replace($root, '', $plugin));
 
-        if($is_plugin && !empty($plugin)) {
-            $plugin = $plugin[0];
-            if(!isset($plugin_matched[$plugin])) {
-                $plugin_matched[$plugin] = [];
-            }
-        } else {
-            $is_plugin = false;
-        }
+		if( $is_plugin && !empty($plugin) ) {
+			$plugin = $plugin[0];
+			if( !isset($plugin_matched[$plugin]) ) {
+				$plugin_matched[$plugin] = [];
+			}
+		} else {
+			$is_plugin = false;
+		}
 
-        /** @var Match $match */
-        if ( $match->getSignature()->getSever() === Signature::SEVER_CRITICAL ) {
-            if($is_plugin) {
-                array_unshift( $plugin_matched[$plugin], $match);
-            }
-            array_unshift( $matched, $match );
-        } else {
-            if($is_plugin) {
-                $plugin_matched[$plugin][] = $match;
-            }
-            $matched[] = $match;
-        }
-    }
+		/** @var Match $match */
+		if( $match->getSignature()->getSever() === Signature::SEVER_CRITICAL ) {
+			if( $is_plugin ) {
+				array_unshift($plugin_matched[$plugin], $match);
+			}
+			array_unshift($matched, $match);
+		} else {
+			if( $is_plugin ) {
+				$plugin_matched[$plugin][] = $match;
+			}
+			$matched[] = $match;
+		}
+	}
 
-    Plugin::app()->updateOption( 'scanner_malware_matched', $matched );
-    Plugin::app()->updateOption( 'scanner_malware_plugin_matched', $plugin_matched );
-    Plugin::app()->updateOption( 'scanner', $scanner );
+	Plugin::app()->updateOption('scanner_malware_matched', $matched);
+	Plugin::app()->updateOption('scanner_malware_plugin_matched', $plugin_matched);
+	Plugin::app()->updateOption('scanner', $scanner);
 
-    if ( $scanner->get_files_count() < 1 ) {
-        titan_remove_scheduler_scanner();
-    }
+	if( $scanner->get_files_count() < 1 ) {
+		titan_remove_scheduler_scanner();
+	}
 }
 
 #endregion cron
@@ -347,48 +160,48 @@ function titan_scheduled_scanner()
  */
 function titan_check_cms()
 {
-    global $wp_version;
+	global $wp_version;
 
-    if ( Plugin::app()->is_premium() ) {
-        $license_key = Plugin::app()->premium->get_license()->get_key();
-    } else {
-        $license_key = null;
-    }
+	if( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
 
-    $client = new Client( $license_key );
+	$client = new Client($license_key);
 
-    if ( Plugin::app()->is_premium() ) {
-        $result = $client->check_cms_premium( $wp_version, collect_wp_hash_sum() );
-    } else {
-        $result = $client->check_cms_free( $wp_version, collect_wp_hash_sum() );
-    }
+	if( Plugin::app()->is_premium() ) {
+		$result = $client->check_cms_premium($wp_version, collect_wp_hash_sum());
+	} else {
+		$result = $client->check_cms_free($wp_version, collect_wp_hash_sum());
+	}
 
-    if ( is_null( $result ) ) {
-        return [];
-    }
+	if( is_null($result) ) {
+		return [];
+	}
 
-    WBCR\Titan\Logger\Writter::info( sprintf( "Founded %d corrupted files", count( $result->items ) ) );
+	WBCR\Titan\Logger\Writter::info(sprintf("Founded %d corrupted files", count($result->items)));
 
-    foreach ( $result->items as $check_item ) {
-        WBCR\Titan\Logger\Writter::debug( sprintf( "File `%s` (action %s)", $check_item->path, $check_item->action ) );
-        $path = dirname( WP_CONTENT_DIR ) . '/' . $check_item->path;
-        switch ( $check_item->action ) {
-            case CmsCheckItem::ACTION_REMOVE:
-                if ( file_exists( $path ) && is_writable( $path ) ) {
-                    unlink( $path );
-                }
-                break;
+	foreach($result->items as $check_item) {
+		WBCR\Titan\Logger\Writter::debug(sprintf("File `%s` (action %s)", $check_item->path, $check_item->action));
+		$path = dirname(WP_CONTENT_DIR) . '/' . $check_item->path;
+		switch( $check_item->action ) {
+			case CmsCheckItem::ACTION_REMOVE:
+				if( file_exists($path) && is_writable($path) ) {
+					unlink($path);
+				}
+				break;
 
-            case CmsCheckItem::ACTION_REPAIR:
-                if ( file_exists( $path ) && is_writeable( $path ) ) {
-                    $data = file_get_contents( $check_item->url );
-                    file_put_contents( $path, $data );
-                }
-                break;
-        }
-    }
+			case CmsCheckItem::ACTION_REPAIR:
+				if( file_exists($path) && is_writeable($path) ) {
+					$data = file_get_contents($check_item->url);
+					file_put_contents($path, $data);
+				}
+				break;
+		}
+	}
 
-    return $result->items;
+	return $result->items;
 }
 
 #region scanner
@@ -396,72 +209,72 @@ function titan_check_cms()
 /**
  * Creating cron task
  *
- * @param  string|string[]  $path
- * @param  string[]|null    $plugin_in_action
- * @param  bool             $activate
+ * @param string|string[] $path
+ * @param string[]|null $plugin_in_action
+ * @param bool $activate
  */
-function titan_create_scheduler_scanner( $path = ABSPATH, $plugin_in_action = null, $activate = false )
+function titan_create_scheduler_scanner($path = ABSPATH, $plugin_in_action = null, $activate = false)
 {
-    // todo: реализовать уровень проверки сайта
+	// todo: реализовать уровень проверки сайта
 
-    if ( Plugin::app()->is_premium() ) {
-        $license_key = Plugin::app()->premium->get_license()->get_key();
-    } else {
-        $license_key = null;
-    }
+	if( Plugin::app()->is_premium() ) {
+		$license_key = Plugin::app()->premium->get_license()->get_key();
+	} else {
+		$license_key = null;
+	}
 
-    $client = new Client( $license_key );
+	$client = new Client($license_key);
 
-    if ( Plugin::app()->is_premium() ) {
-        $signatures = $client->get_signatures();
-    } else {
-        $signatures = $client->get_free_signatures();
-    }
+	if( Plugin::app()->is_premium() ) {
+		$signatures = $client->get_signatures();
+	} else {
+		$signatures = $client->get_free_signatures();
+	}
 
-    /** @var array[]|WBCR\Titan\Client\Entity\Signature[] $signatures */
+	/** @var array[]|WBCR\Titan\Client\Entity\Signature[] $signatures */
 
-    foreach ( $signatures as $key => $signature ) {
-        $signatures[$key] = $signature->to_array();
-    }
-    $signature_pool = WBCR\Titan\MalwareScanner\SignaturePool::fromArray( $signatures );
+	foreach($signatures as $key => $signature) {
+		$signatures[$key] = $signature->to_array();
+	}
+	$signature_pool = WBCR\Titan\MalwareScanner\SignaturePool::fromArray($signatures);
 
-    $file_hash = get_option( Plugin::app()->getPrefix() . 'files_hash' );
-    if ( ! $file_hash ) {
-        $file_hash_pool = HashListPool::fromArray( $file_hash );
-    } else {
-        $file_hash_pool = null;
-    }
+	$file_hash = get_option(Plugin::app()->getPrefix() . 'files_hash');
+	if( !$file_hash ) {
+		$file_hash_pool = HashListPool::fromArray($file_hash);
+	} else {
+		$file_hash_pool = null;
+	}
 
-    $scanner = new WBCR\Titan\MalwareScanner\Scanner( $path, $signature_pool, $file_hash_pool, [
-        'wp-admin',
-        'wp-includes',
-        'wp-activate.php',
-        'wp-blog-header.php',
-        'wp-comments-post.php',
-        'wp-config-sample.php',
-        'wp-cron.php',
-        'wp-links-opml.php',
-        'wp-load.php',
-        'wp-login.php',
-        'wp-mail.php',
-        'wp-settings.php',
-        'wp-signup.php',
-        'wp-trackback.php',
-        'xmlrpc.php',
-        'debug.log',
-        'node_modules',
-        'vendor',
-        'wp-plugin-titan-security',
-        'anti-spam',
-    ] );
+	$scanner = new WBCR\Titan\MalwareScanner\Scanner($path, $signature_pool, $file_hash_pool, [
+		'wp-admin',
+		'wp-includes',
+		'wp-activate.php',
+		'wp-blog-header.php',
+		'wp-comments-post.php',
+		'wp-config-sample.php',
+		'wp-cron.php',
+		'wp-links-opml.php',
+		'wp-load.php',
+		'wp-login.php',
+		'wp-mail.php',
+		'wp-settings.php',
+		'wp-signup.php',
+		'wp-trackback.php',
+		'xmlrpc.php',
+		'debug.log',
+		'node_modules',
+		'vendor',
+		'wp-plugin-titan-security',
+		'anti-spam',
+	]);
 
-    Plugin::app()->updateOption( 'scanner', $scanner );
-    Plugin::app()->updateOption( 'scanner_plugins_in_action', $plugin_in_action );
-    Plugin::app()->updateOption( 'scanner_activate_plugin', $activate ? 'yes' : 'no' );
-    Plugin::app()->updateOption( 'scanner_malware_matched', [] );
-    Plugin::app()->updateOption( 'scanner_files_count', $scanner->get_files_count() );
-    Plugin::app()->updateOption( 'scanner_status', 'started' );
-    wp_schedule_event( time(), 'minute', 'titan_scheduled_scanner' );
+	Plugin::app()->updateOption('scanner', $scanner);
+	Plugin::app()->updateOption('scanner_plugins_in_action', $plugin_in_action);
+	Plugin::app()->updateOption('scanner_activate_plugin', $activate ? 'yes' : 'no');
+	Plugin::app()->updateOption('scanner_malware_matched', []);
+	Plugin::app()->updateOption('scanner_files_count', $scanner->get_files_count());
+	Plugin::app()->updateOption('scanner_status', 'started');
+	wp_schedule_event(time(), 'minute', 'titan_scheduled_scanner');
 }
 
 /**
@@ -469,65 +282,64 @@ function titan_create_scheduler_scanner( $path = ABSPATH, $plugin_in_action = nu
  */
 function titan_remove_scheduler_scanner()
 {
-    $scanner = get_option( Plugin::app()->getPrefix() . 'scanner' );
-    if ( $scanner ) {
-        $file_hash = [];
-        foreach ( $scanner->getFileList() as $file ) {
-            $file_hash[$file->getPath()] = $file->getFileHash();
-        }
-        Plugin::app()->updateOption( 'files_hash', $file_hash );
-    }
+	$scanner = get_option(Plugin::app()->getPrefix() . 'scanner');
+	if( $scanner ) {
+		$file_hash = [];
+		foreach($scanner->getFileList() as $file) {
+			$file_hash[$file->getPath()] = $file->getFileHash();
+		}
+		Plugin::app()->updateOption('files_hash', $file_hash);
+	}
 
-    wp_unschedule_hook( 'titan_scheduled_scanner' );
-    Plugin::app()->updateOption( 'scanner_status', 'stopped' );
+	wp_unschedule_hook('titan_scheduled_scanner');
+	Plugin::app()->updateOption('scanner_status', 'stopped');
 
-    try {
-        /** @var Match[] $matched */
-        $matched       = get_option( Plugin::app()->getPrefix() . 'scanner_malware_matched', [] );
-        $weeklyMatched = get_option( Plugin::app()->getPrefix() . 'matched_weekly', [] );
+	try {
+		/** @var Match[] $matched */
+		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
+		$weeklyMatched = get_option(Plugin::app()->getPrefix() . 'matched_weekly', []);
 
-        $plugins        = Plugin::app()->getPopulateOption( 'scanner_plugins_in_action', [] );
-        $plugin_matched = Plugin::app()->getPopulateOption( 'scanner_malware_plugin_matched', [] );
-        $activate       = Plugin::app()->getPopulateOption( 'scanner_activate_plugin', 'no' ) === 'yes';
-        foreach ( $plugins as $plugin ) {
-            $plugin_dir = substr( $plugin, 0, strpos( $plugin, "/" ) );
-            if ( isset( $plugin_matched[$plugin_dir] ) && count( $plugin_matched[$plugin_dir] ) > 0 ) {
-                continue;
-            }
+		$plugins = Plugin::app()->getPopulateOption('scanner_plugins_in_action', []);
+		$plugin_matched = Plugin::app()->getPopulateOption('scanner_malware_plugin_matched', []);
+		$activate = Plugin::app()->getPopulateOption('scanner_activate_plugin', 'no') === 'yes';
+		foreach($plugins as $plugin) {
+			$plugin_dir = substr($plugin, 0, strpos($plugin, "/"));
+			if( isset($plugin_matched[$plugin_dir]) && count($plugin_matched[$plugin_dir]) > 0 ) {
+				continue;
+			}
 
-            if ( $activate ) {
-                activate_plugin( $plugin );
-            }
-        }
+			if( $activate ) {
+				activate_plugin($plugin);
+			}
+		}
 
-        Plugin::app()->deletePopulateOption( 'scanner_plugins_in_action' );
-        Plugin::app()->deletePopulateOption( 'scanner_activate_plugin' );
+		Plugin::app()->deletePopulateOption('scanner_plugins_in_action');
+		Plugin::app()->deletePopulateOption('scanner_activate_plugin');
 
-        $weeklyMatched = array_merge( $weeklyMatched, $matched );
-        $weeklyMatched = array_unique( $weeklyMatched, SORT_STRING );
-        Plugin::app()->updateOption( 'matched_weekly', $weeklyMatched );
+		$weeklyMatched = array_merge($weeklyMatched, $matched);
+		$weeklyMatched = array_unique($weeklyMatched, SORT_STRING);
+		Plugin::app()->updateOption('matched_weekly', $weeklyMatched);
 
-        $client = new Client( null );
-        $client->send_notification( 'email', 'digestDaily', get_option( 'admin_email' ),
-            ['infectedFiles' => $weeklyMatched] );
+		$client = new Client(null);
+		$client->send_notification('email', 'digestDaily', get_option('admin_email'), ['infectedFiles' => $weeklyMatched]);
 
-//		if ( count( $matched ) > 0 ) {
-//			if ( Plugin::app()->is_premium() ) {
-//				$license_key = Plugin::app()->premium->get_license()->get_key();
-//			} else {
-//				$license_key = null;
-//			}
-//			$client = new Client( $license_key );
-//
-//			$client->send_notification( 'email', 'virusFound', [
-//				'subject' => 'VIRUS',
-//				'url'     => get_site_url(),
-//				'files'   => $matched
-//			] );
-//		}
-    } catch ( Exception $e ) {
+		//		if ( count( $matched ) > 0 ) {
+		//			if ( Plugin::app()->is_premium() ) {
+		//				$license_key = Plugin::app()->premium->get_license()->get_key();
+		//			} else {
+		//				$license_key = null;
+		//			}
+		//			$client = new Client( $license_key );
+		//
+		//			$client->send_notification( 'email', 'virusFound', [
+		//				'subject' => 'VIRUS',
+		//				'url'     => get_site_url(),
+		//				'files'   => $matched
+		//			] );
+		//		}
+	} catch( Exception $e ) {
 
-    }
+	}
 }
 
 #endregion scanner
@@ -537,105 +349,103 @@ function titan_remove_scheduler_scanner()
  * This is necessary to remind the user to update the configuration of the plugin components,
  * Otherwise, the newly activated components will not be involved in the work of the plugin.
  *
- * @param  Wbcr_Factory000_Plugin                    $plugin
- * @param  Wbcr_FactoryPages000_ImpressiveThemplate  $obj
+ * @param Wbcr_Factory000_Plugin $plugin
+ * @param Wbcr_FactoryPages000_ImpressiveThemplate $obj
  *
  * @return bool
  */
-add_action( 'wbcr/factory/pages/impressive/print_all_notices', function ( $plugin, $obj )
-{
-    if ( $plugin->getPluginName() != Plugin::app()->getPluginName() ) {
-        return;
-    }
+add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin, $obj) {
+	if( $plugin->getPluginName() != Plugin::app()->getPluginName() ) {
+		return;
+	}
 
-    if ( ! empty( $_GET['page'] ) && "sitechecker-" . Plugin::app()->getPluginName() === $_GET['page'] ) {
-        require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
-        $cert    = Cert::get_instance();
-        $output  = false;
-        $message = '';
-        $type    = 'warning';
-        //$plugin_name = WBCR\Titan\Plugin::app()->getPluginTitle();
+	if( !empty($_GET['page']) && "sitechecker-" . Plugin::app()->getPluginName() === $_GET['page'] ) {
+		require_once WTITAN_PLUGIN_DIR . '/includes/audit/classes/class.cert.php';
+		$cert = Cert::get_instance();
+		$output = false;
+		$message = '';
+		$type = 'warning';
+		//$plugin_name = WBCR\Titan\Plugin::app()->getPluginTitle();
 
-        if ( $cert->is_available() ) {
-            if ( ! $cert->is_lets_encrypt() ) {
-                $remaining = $cert->get_expiration_timestamp() - time();
-                if ( $remaining <= 86400 * 90 ) { // 3 month (90 days)
-                    $message = 'The SSL certificate expires in less than three months';
-                    $output  = true;
-                } elseif ( $remaining <= 86400 * 3 ) { // 3 days
-                    $type    = 'notice-error';
-                    $message = 'The SSL certificate expires in less than three days';
-                    $output  = true;
-                }
-            }
-        } else {
-            $output  = true;
-            $type    = 'error';
-            $message = $cert->get_error_message();
-        }
+		if( $cert->is_available() ) {
+			if( !$cert->is_lets_encrypt() ) {
+				$remaining = $cert->get_expiration_timestamp() - time();
+				if( $remaining <= 86400 * 90 ) { // 3 month (90 days)
+					$message = 'The SSL certificate expires in less than three months';
+					$output = true;
+				} elseif( $remaining <= 86400 * 3 ) { // 3 days
+					$type = 'notice-error';
+					$message = 'The SSL certificate expires in less than three days';
+					$output = true;
+				}
+			}
+		} else {
+			$output = true;
+			$type = 'error';
+			$message = $cert->get_error_message();
+		}
 
-        if ( $output ) {
-            switch ( $type ) {
-                case 'error':
-                    $obj->printErrorNotice( $message );
-                    break;
-                case 'warning':
-                    $obj->printWarningNotice( $message );
-                    break;
-            }
-        }
-    }
-}, 10, 2 );
+		if( $output ) {
+			switch( $type ) {
+				case 'error':
+					$obj->printErrorNotice($message);
+					break;
+				case 'warning':
+					$obj->printWarningNotice($message);
+					break;
+			}
+		}
+	}
+}, 10, 2);
 
-add_action( 'init', 'titan_init_https_redirect' );
+add_action('init', 'titan_init_https_redirect');
 function titan_init_https_redirect()
 {
-    $strict_https = Plugin::app()->getPopulateOption( 'strict_https', false );
-    if ( ! is_ssl() && $strict_https ) {
-        wp_redirect( home_url( add_query_arg( $_GET, $_SERVER['REQUEST_URI'] ), 'https' ) );
-        die;
-    }
+	$strict_https = Plugin::app()->getPopulateOption('strict_https', false);
+	if( !is_ssl() && $strict_https ) {
+		wp_redirect(home_url(add_query_arg($_GET, $_SERVER['REQUEST_URI']), 'https'));
+		die;
+	}
 }
 
 #region activation/deactivation license
 
-add_action( Plugin::app()->getPluginName() . "/factory/premium/license_activate", 'titan_set_scanner_speed_active' );
+add_action(Plugin::app()->getPluginName() . "/factory/premium/license_activate", 'titan_set_scanner_speed_active');
 function titan_set_scanner_speed_active()
 {
-    $scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
-    if ( $scanner_speed == 'free' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_speed', 'slow' );
-    }
+	$scanner_speed = Plugin::app()->getPopulateOption('scanner_speed', 'free');
+	if( $scanner_speed == 'free' ) {
+		Plugin::app()->updatePopulateOption('scanner_speed', 'slow');
+	}
 
-    $scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
-    if ( $scanner_schedule == 'disabled' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
-    }
+	$scanner_schedule = Plugin::app()->getPopulateOption('scanner_schedule', 'disabled');
+	if( $scanner_schedule == 'disabled' ) {
+		Plugin::app()->updatePopulateOption('scanner_schedule', 'disabled');
+	}
 
-    $scanner_type = Plugin::app()->getPopulateOption( 'scanner_type', 'basic' );
-    if ( $scanner_type == 'basic' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_type', 'advanced' );
-    }
+	$scanner_type = Plugin::app()->getPopulateOption('scanner_type', 'basic');
+	if( $scanner_type == 'basic' ) {
+		Plugin::app()->updatePopulateOption('scanner_type', 'advanced');
+	}
 }
 
-add_action( Plugin::app()->getPluginName() . "/factory/premium/license_deactivate",
-    'titan_set_scanner_speed_deactive' );
+add_action(Plugin::app()->getPluginName() . "/factory/premium/license_deactivate", 'titan_set_scanner_speed_deactive');
 function titan_set_scanner_speed_deactive()
 {
-    $scanner_speed = Plugin::app()->getPopulateOption( 'scanner_speed', 'free' );
-    if ( $scanner_speed !== 'free' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_speed', 'free' );
-    }
+	$scanner_speed = Plugin::app()->getPopulateOption('scanner_speed', 'free');
+	if( $scanner_speed !== 'free' ) {
+		Plugin::app()->updatePopulateOption('scanner_speed', 'free');
+	}
 
-    $scanner_schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
-    if ( $scanner_schedule !== 'disabled' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_schedule', 'disabled' );
-    }
+	$scanner_schedule = Plugin::app()->getPopulateOption('scanner_schedule', 'disabled');
+	if( $scanner_schedule !== 'disabled' ) {
+		Plugin::app()->updatePopulateOption('scanner_schedule', 'disabled');
+	}
 
-    $scanner_type = Plugin::app()->getPopulateOption( 'scanner_type', 'basic' );
-    if ( $scanner_type !== 'basic' ) {
-        Plugin::app()->updatePopulateOption( 'scanner_type', 'basic' );
-    }
+	$scanner_type = Plugin::app()->getPopulateOption('scanner_type', 'basic');
+	if( $scanner_type !== 'basic' ) {
+		Plugin::app()->updatePopulateOption('scanner_type', 'basic');
+	}
 }
 
 #endregion activation/deactivation license
@@ -647,42 +457,42 @@ function titan_set_scanner_speed_deactive()
  */
 function get_memory_limit()
 {
-    $mem  = ini_get( 'memory_limit' );
-    $last = $mem[strlen( $mem ) - 1];
-    $mem  = (int) $mem;
-    do {
-        switch ( $last ) {
-            case 'g':
-            case 'G':
-                $mem  = $mem * 1024;
-                $last = 'm';
-                break;
+	$mem = ini_get('memory_limit');
+	$last = $mem[strlen($mem) - 1];
+	$mem = (int)$mem;
+	do {
+		switch( $last ) {
+			case 'g':
+			case 'G':
+				$mem = $mem * 1024;
+				$last = 'm';
+				break;
 
-            case 'm':
-            case 'M':
-                break 2;
+			case 'm':
+			case 'M':
+				break 2;
 
-            default:
-                $mem = ((int) $mem) / 1024 / 1024; // bytes to mbytes
-                break 2;
-        }
-    } while ( true );
+			default:
+				$mem = ((int)$mem) / 1024 / 1024; // bytes to mbytes
+				break 2;
+		}
+	} while( true );
 
-    return $mem;
+	return $mem;
 }
 
 function get_recommended_scanner_speed()
 {
-    $mem = get_memory_limit();
-    if ( $mem > 100 ) {
-        $recommendation = Scanner::SPEED_FAST;
-    } elseif ( $mem > 60 ) {
-        $recommendation = Scanner::SPEED_MEDIUM;
-    } else {
-        $recommendation = Scanner::SPEED_SLOW;
-    }
+	$mem = get_memory_limit();
+	if( $mem > 100 ) {
+		$recommendation = Scanner::SPEED_FAST;
+	} elseif( $mem > 60 ) {
+		$recommendation = Scanner::SPEED_MEDIUM;
+	} else {
+		$recommendation = Scanner::SPEED_SLOW;
+	}
 
-    return $recommendation;
+	return $recommendation;
 }
 
 /**
@@ -690,91 +500,91 @@ function get_recommended_scanner_speed()
  *
  * @return int
  */
-function correct_timezone( $time )
+function correct_timezone($time)
 {
-    $localOffset = (new DateTime)->getOffset();
+	$localOffset = (new DateTime)->getOffset();
 
-    return $time + $localOffset;
+	return $time + $localOffset;
 }
 
 /**
  * Collecting hash sums of WP files
  *
- * @param  string  $path
+ * @param string $path
  *
  * @return array
  */
-function collect_wp_hash_sum( $path = ABSPATH )
+function collect_wp_hash_sum($path = ABSPATH)
 {
-    $hash = [];
+	$hash = [];
 
-    foreach ( scandir( $path ) as $item ) {
-        if ( $item === '.' || $item === '..' || $item === 'plugins' || $item === 'themes' ) {
-            continue;
-        }
+	foreach(scandir($path) as $item) {
+		if( $item === '.' || $item === '..' || $item === 'plugins' || $item === 'themes' ) {
+			continue;
+		}
 
-        $newPath      = $path . $item;
-        $relativePath = str_replace( ABSPATH, '', $newPath );
-        if ( is_dir( $newPath ) ) {
-            $hash = array_merge( $hash, collect_wp_hash_sum( $newPath . '/' ) );
-        } else {
-            $hash[$relativePath] = md5_file( $newPath );
-        }
-    }
+		$newPath = $path . $item;
+		$relativePath = str_replace(ABSPATH, '', $newPath);
+		if( is_dir($newPath) ) {
+			$hash = array_merge($hash, collect_wp_hash_sum($newPath . '/'));
+		} else {
+			$hash[$relativePath] = md5_file($newPath);
+		}
+	}
 
-    return $hash;
+	return $hash;
 }
 
 #endregion functions
 
-add_action( 'plugins_loaded', 'titan_init_check_schedule' );
+add_action('plugins_loaded', 'titan_init_check_schedule');
 function titan_init_check_schedule()
 {
-    $format_date = 'Y/m/d H:i';
-    $format_time = 'H:i';
+	$format_date = 'Y/m/d H:i';
+	$format_time = 'H:i';
 
-    $is_schedule = false;
+	$is_schedule = false;
 
-    $lasttime = Plugin::app()->getPopulateOption( 'scanner_schedule_last_time', date_i18n( $format_date ) );
-    $schedule = Plugin::app()->getPopulateOption( 'scanner_schedule', 'disabled' );
-    $last     = date_parse_from_format( $format_time, $lasttime );
+	$lasttime = Plugin::app()->getPopulateOption('scanner_schedule_last_time', date_i18n($format_date));
+	$schedule = Plugin::app()->getPopulateOption('scanner_schedule', 'disabled');
+	$last = date_parse_from_format($format_time, $lasttime);
 
-    switch ( $schedule ) {
-        case 'daily':
-            $daily = Plugin::app()->getPopulateOption( 'scanner_schedule_daily', '2000/01/01 23:00' );
-            $daily = date_parse_from_format( $format_time, $daily );
-            $daily = $daily['hour'] * 60 + $daily['minute'];
-            $last  = $last['hour'] * 60 + $last['minute'];
-            if ( $last <= $daily ) {
-                titan_create_scheduler_scanner();
-                $is_schedule = true;
-            }
-            break;
-        case 'weekly':
-            $week      = Plugin::app()->getPopulateOption( 'scanner_schedule_weekly_day', '7' );
-            $time      = Plugin::app()->getPopulateOption( 'scanner_schedule_weekly_time', '2000/01/01 23:00' );
-            $time      = date_parse_from_format( $format_time, $time );
-            $time      = $time['hour'] * 60 + $time['minute'];
-            $last      = $last['hour'] * 60 + $last['minute'];
-            $this_week = date( 'N' );
-            if ( $this_week == $week && $last <= $time ) {
-                titan_create_scheduler_scanner();
-                $is_schedule = true;
-            }
-            break;
-        case 'custom':
-            $time = Plugin::app()->getPopulateOption( 'scanner_schedule_custom', '2000/01/01 23:00' );
-            $time = strtotime( $time );
-            $last = strtotime( $lasttime );
-            if ( $last <= $time ) {
-                titan_create_scheduler_scanner();
-                $is_schedule = true;
-            }
-            break;
-        case 'disabled':
-            break;
-    }
-    if ( $is_schedule ) {
-        Plugin::app()->updatePopulateOption( 'scanner_schedule_last_time', date_i18n( $format_date ) );
-    }
+	switch( $schedule ) {
+		case 'daily':
+			$daily = Plugin::app()->getPopulateOption('scanner_schedule_daily', '2000/01/01 23:00');
+			$daily = date_parse_from_format($format_time, $daily);
+			$daily = $daily['hour'] * 60 + $daily['minute'];
+			$last = $last['hour'] * 60 + $last['minute'];
+			if( $last <= $daily ) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'weekly':
+			$week = Plugin::app()->getPopulateOption('scanner_schedule_weekly_day', '7');
+			$time = Plugin::app()->getPopulateOption('scanner_schedule_weekly_time', '2000/01/01 23:00');
+			$time = date_parse_from_format($format_time, $time);
+			$time = $time['hour'] * 60 + $time['minute'];
+			$last = $last['hour'] * 60 + $last['minute'];
+			$this_week = date('N');
+			if( $this_week == $week && $last <= $time ) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'custom':
+			$time = Plugin::app()->getPopulateOption('scanner_schedule_custom', '2000/01/01 23:00');
+			$time = strtotime($time);
+			$last = strtotime($lasttime);
+			if( $last <= $time ) {
+				titan_create_scheduler_scanner();
+				$is_schedule = true;
+			}
+			break;
+		case 'disabled':
+			break;
+	}
+	if( $is_schedule ) {
+		Plugin::app()->updatePopulateOption('scanner_schedule_last_time', date_i18n($format_date));
+	}
 }

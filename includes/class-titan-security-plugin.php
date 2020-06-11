@@ -125,6 +125,10 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 
 		self::app()->registerPage('WBCR\Titan\Page\Components', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-components.php');
 
+		if( defined('WPSCANNER_PLUGIN_ACTIVE') ) {
+			$this->registerPage('WBCR\Titan\Page\Components_License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-components-license.php');
+		}
+
 		self::app()->registerPage('WBCR\Titan\Page\License', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-license.php');
 
 		self::app()->registerPage('WBCR\Titan\Page\PluginSettings', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-plugin-settings.php');
