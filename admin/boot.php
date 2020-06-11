@@ -71,15 +71,15 @@ add_action( 'wbcr/factory/admin_notices', function ( $notices, $plugin_name )
 	return $notices;
 }, 10, 2 );
 
-if ( ! \WBCR\Titan\Plugin::app()->getOption( 'trial_notice_dismissed', false ) ) {
+//if ( ! \WBCR\Titan\Plugin::app()->getOption( 'trial_notice_dismissed', false ) ) {
 	/**
 	 * Trial notice on plugin pages
 	 */
-	add_action( 'wbcr/factory/pages/impressive/print_all_notices', function ( $plugin, $obj )
+	/*add_action( 'wbcr/factory/pages/impressive/print_all_notices', function ( $plugin, $obj )
 	{
 		/** @var \Wbcr_Factory000_Plugin $plugin */
 		/** @var \Wbcr_FactoryPages000_ImpressiveThemplate $obj */
-		if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
+		/*if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
 			return;
 		}
 
@@ -87,12 +87,12 @@ if ( ! \WBCR\Titan\Plugin::app()->getOption( 'trial_notice_dismissed', false ) )
 		$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="btn btn-gold btn-sm wt-notice-trial-button">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
 		$notice_text .= "<span id='wt-notice-hide-link' class='wt-notice-hide-link dashicons dashicons-no'></span>";
 		$obj->printWarningNotice( $notice_text );
-	}, 10, 2 );
+	}, 10, 2 );*/
 
 	/**
 	 * Trial notice on all WP admin pages
 	 */
-	add_action( "wbcr/factory/admin_notices", function ( $notices, $plugin_name )
+	/* add_action( "wbcr/factory/admin_notices", function ( $notices, $plugin_name )
 	{
 		if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() ) || ! current_user_can( 'manage_options' ) ) {
 			return $notices;
@@ -109,8 +109,8 @@ if ( ! \WBCR\Titan\Plugin::app()->getOption( 'trial_notice_dismissed', false ) )
 		];
 
 		return $notices;
-	}, 10, 2 );
-}
+	}, 10, 2 ); */
+//}
 
 // Vulner class
 require_once WTITAN_PLUGIN_DIR . "/includes/vulnerabilities/boot.php";

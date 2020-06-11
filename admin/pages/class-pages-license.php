@@ -80,8 +80,8 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 		parent::__construct($plugin);
 
-		add_action('admin_footer', [$this, 'print_confirmation_modal_tpl']);
-		add_action('wp_ajax_wtitan_activate_trial', array($this, 'activate_trial'));
+		//add_action('admin_footer', [$this, 'print_confirmation_modal_tpl']);
+		//add_action('wp_ajax_wtitan_activate_trial', array($this, 'activate_trial'));
 
 		/**
 		 * Adds a new plugin card to license components page
@@ -133,7 +133,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 *
 	 * @see   \FactoryPages000_ImpressiveThemplate
 	 */
-	public function getActionNotices($notices)
+	/*public function getActionNotices($notices)
 	{
 
 		$notices[] = [
@@ -165,7 +165,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		];
 
 		return $notices;
-	}
+	}*/
 
 	/**
 	 * {@inheritdoc}
@@ -184,9 +184,9 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 			$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/libs/sweetalert3.min.js');
 			$this->scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/trial-popup.js', ['jquery'], '', $this->plugin->getPluginVersion(), 'header');
-			$this->scripts->localize('wtitan', [
+			/*$this->scripts->localize('wtitan', [
 				'trial_nonce' => wp_create_nonce("activate_trial"),
-			]);
+			]);*/
 		}
 	}
 
@@ -197,7 +197,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 * @since 6.5.2
 	 */
 
-	public function print_confirmation_modal_tpl()
+	/*public function print_confirmation_modal_tpl()
 	{
 		if( isset($_GET['page']) && $this->getResultId() === $_GET['page'] ) {
 			$terms_url = "https://titansitescanner.com/terms-of-use/";
@@ -231,7 +231,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 
 			<?php
 		}
-	}
+	}*/
 
 
 	/**
@@ -241,7 +241,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 * @since  6.5
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 */
-	public function get_plan_description()
+	/*public function get_plan_description()
 	{
 		$activate_trial_url = wp_nonce_url($this->getActionUrl('activate-trial'), 'activate_trial');
 
@@ -254,20 +254,20 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		}
 
 		return $description;
-	}
+	}*/
 
 	public function showPageContent()
 	{
-		$is_trial = $this->request->get('trial', false, true);
-		if( $is_trial ) {
+		//$is_trial = $this->request->get('trial', false, true);
+		//if( $is_trial ) {
 			?>
 			<script>
-				jQuery(document).ready(function($) {
-					jQuery('#wtitan-activate-trial-button').trigger('click');
-				});
+				//jQuery(document).ready(function($) {
+					//jQuery('#wtitan-activate-trial-button').trigger('click');
+				//});
 			</script>
 			<?php
-		}
+		//}
 
 		parent::showPageContent();
 	}
@@ -298,7 +298,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	 * @since  7.0
 	 */
 
-	public function activate_trial()
+	/*public function activate_trial()
 	{
 		if( !current_user_can('manage_options') ) {
 			return;
@@ -393,5 +393,5 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		wp_send_json_error([
 			'url' => $this->getPageUrl(),
 		]);
-	}
+	}*/
 }
