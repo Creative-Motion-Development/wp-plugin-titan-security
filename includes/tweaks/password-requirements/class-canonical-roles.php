@@ -12,23 +12,22 @@ final class Canonical_Roles {
 	 *
 	 * @return bool
 	 */
-	public static function is_canonical_role_at_least($min_role, $role)
-	{
+	public static function is_canonical_role_at_least( $min_role, $role ) {
 		$roles = array(
-			'super-admin' => 6,
+			'super-admin'   => 6,
 			'administrator' => 5,
-			'editor' => 4,
-			'author' => 3,
-			'contributor' => 2,
-			'subscriber' => 1,
-			'' => 0,
+			'editor'        => 4,
+			'author'        => 3,
+			'contributor'   => 2,
+			'subscriber'    => 1,
+			''              => 0,
 		);
 
-		if( !isset($roles[$role]) || !isset($roles[$min_role]) ) {
+		if ( ! isset( $roles[ $role ] ) || ! isset( $roles[ $min_role ] ) ) {
 			return false;
 		}
 
-		if( $roles[$role] >= $roles[$min_role] ) {
+		if ( $roles[ $role ] >= $roles[ $min_role ] ) {
 			return true;
 		}
 
@@ -43,25 +42,24 @@ final class Canonical_Roles {
 	 *
 	 * @return bool
 	 */
-	public static function is_user_at_least($role, $user = false)
-	{
+	public static function is_user_at_least( $role, $user = false ) {
 		$roles = array(
-			'super-admin' => 6,
+			'super-admin'   => 6,
 			'administrator' => 5,
-			'editor' => 4,
-			'author' => 3,
-			'contributor' => 2,
-			'subscriber' => 1,
-			'' => 0,
+			'editor'        => 4,
+			'author'        => 3,
+			'contributor'   => 2,
+			'subscriber'    => 1,
+			''              => 0,
 		);
 
-		if( !isset($roles[$role]) ) {
+		if ( ! isset( $roles[ $role ] ) ) {
 			return false;
 		}
 
-		$user_role = self::get_user_role($user);
+		$user_role = self::get_user_role( $user );
 
-		if( $roles[$user_role] >= $roles[$role] ) {
+		if ( $roles[ $user_role ] >= $roles[ $role ] ) {
 			return true;
 		}
 
@@ -77,18 +75,17 @@ final class Canonical_Roles {
 	 *
 	 * @return int|string
 	 */
-	public static function get_role_from_caps($caps)
-	{
-		if( is_string($caps) ) {
-			$caps = array($caps);
+	public static function get_role_from_caps( $caps ) {
+		if ( is_string( $caps ) ) {
+			$caps = array( $caps );
 		}
 
 		$canonical_caps = self::get_unique_capabilities();
 
-		foreach($canonical_caps as $role => $role_caps) {
-			$shared_caps = array_intersect($caps, $role_caps);
+		foreach ( $canonical_caps as $role => $role_caps ) {
+			$shared_caps = array_intersect( $caps, $role_caps );
 
-			if( !empty($shared_caps) ) {
+			if ( ! empty( $shared_caps ) ) {
 				return $role;
 			}
 		}
@@ -103,23 +100,22 @@ final class Canonical_Roles {
 	 *
 	 * @return int|string
 	 */
-	public static function get_user_role($user = false)
-	{
-		$user = Password_Requirements_Base::get_user($user);
+	public static function get_user_role( $user = false ) {
+		$user = Password_Requirements_Base::get_user( $user );
 
-		if( false === $user ) {
+		if ( false === $user ) {
 			return '';
 		}
 
-		if( is_multisite() && is_super_admin($user->ID) ) {
+		if ( is_multisite() && is_super_admin( $user->ID ) ) {
 			return 'super-admin';
 		}
 
 		$canonical_caps = self::get_unique_capabilities();
 
-		foreach($canonical_caps as $role => $caps) {
-			foreach($caps as $cap) {
-				if( $user->has_cap($cap) ) {
+		foreach ( $canonical_caps as $role => $caps ) {
+			foreach ( $caps as $cap ) {
+				if ( $user->has_cap( $cap ) ) {
 					return $role;
 				}
 			}
@@ -135,14 +131,13 @@ final class Canonical_Roles {
 	 *
 	 * @return string
 	 */
-	public static function get_canonical_role_from_role($role)
-	{
+	public static function get_canonical_role_from_role( $role ) {
 		// Handle invalid roles or roles that do not exist anymore.
-		if( !$role_object = wp_roles()->get_role($role) ) {
+		if ( ! $role_object = wp_roles()->get_role( $role ) ) {
 			return '';
 		}
 
-		return self::get_role_from_caps(array_keys(array_filter($role_object->capabilities)));
+		return self::get_role_from_caps( array_keys( array_filter( $role_object->capabilities ) ) );
 	}
 
 	/**
@@ -153,29 +148,28 @@ final class Canonical_Roles {
 	 *
 	 * @return string
 	 */
-	public static function get_canonical_role_from_role_and_user($role, $user)
-	{
-		$user = Password_Requirements_Base::get_user($user);
+	public static function get_canonical_role_from_role_and_user( $role, $user ) {
+		$user = Password_Requirements_Base::get_user( $user );
 
-		if( empty($role) ) {
+		if ( empty( $role ) ) {
 			$role_caps = array();
 		} else {
-			$role_caps = array_keys(array_filter(wp_roles()->get_role($role)->capabilities));
+			$role_caps = array_keys( array_filter( wp_roles()->get_role( $role )->capabilities ) );
 		}
 
 		$user_caps = array();
 
-		if( isset($user->caps) ) {
+		if ( isset( $user->caps ) ) {
 			$wp_roles = wp_roles();
 
-			foreach($user->caps as $cap => $has) {
-				if( $has && !$wp_roles->is_role($cap) ) {
+			foreach ( $user->caps as $cap => $has ) {
+				if ( $has && ! $wp_roles->is_role( $cap ) ) {
 					$user_caps[] = $has;
 				}
 			}
 		}
 
-		return self::get_role_from_caps(array_merge($role_caps, $user_caps));
+		return self::get_role_from_caps( array_merge( $role_caps, $user_caps ) );
 	}
 
 	/**
@@ -186,24 +180,23 @@ final class Canonical_Roles {
 	 *
 	 * @return \WP_User[]
 	 */
-	public static function get_users_with_canonical_role($canonical, $additional_args = array())
-	{
+	public static function get_users_with_canonical_role( $canonical, $additional_args = array() ) {
 
-		$canonical = (array)$canonical;
+		$canonical = (array) $canonical;
 
 		$roles = array();
 
-		foreach(wp_roles()->roles as $role => $_) {
-			if( in_array(self::get_canonical_role_from_role($role), $canonical, true) ) {
+		foreach ( wp_roles()->roles as $role => $_ ) {
+			if ( in_array( self::get_canonical_role_from_role( $role ), $canonical, true ) ) {
 				$roles[] = $role;
 			}
 		}
 
-		if( empty($roles) ) {
+		if ( empty( $roles ) ) {
 			return array();
 		}
 
-		return get_users(array_merge($additional_args, array('role__in' => $roles)));
+		return get_users( array_merge( $additional_args, array( 'role__in' => $roles ) ) );
 	}
 
 	/**
@@ -211,8 +204,7 @@ final class Canonical_Roles {
 	 *
 	 * @return array
 	 */
-	public static function get_unique_capabilities()
-	{
+	public static function get_unique_capabilities() {
 		return array(
 			'administrator' => array(
 				'activate_plugins',
@@ -243,7 +235,7 @@ final class Canonical_Roles {
 				'update_plugins',
 				'update_themes',
 			),
-			'editor' => array(
+			'editor'        => array(
 				'delete_others_pages',
 				'delete_others_posts',
 				'delete_pages',
@@ -269,19 +261,19 @@ final class Canonical_Roles {
 				'read_private_posts',
 				'unfiltered_html',
 			),
-			'author' => array(
+			'author'        => array(
 				'delete_published_posts',
 				'edit_published_posts',
 				'level_2',
 				'publish_posts',
 				'upload_files',
 			),
-			'contributor' => array(
+			'contributor'   => array(
 				'delete_posts',
 				'edit_posts',
 				'level_1',
 			),
-			'subscriber' => array(
+			'subscriber'    => array(
 				'level_0',
 				'read',
 			),
@@ -293,8 +285,7 @@ final class Canonical_Roles {
 	 *
 	 * @return array
 	 */
-	public static function get_capabilities()
-	{
+	public static function get_capabilities() {
 		return array(
 			'administrator' => array(
 				'activate_plugins',
@@ -359,7 +350,7 @@ final class Canonical_Roles {
 				'update_themes',
 				'upload_files',
 			),
-			'editor' => array(
+			'editor'        => array(
 				'delete_others_pages',
 				'delete_others_posts',
 				'delete_pages',
@@ -395,7 +386,7 @@ final class Canonical_Roles {
 				'unfiltered_html',
 				'upload_files',
 			),
-			'author' => array(
+			'author'        => array(
 				'delete_posts',
 				'delete_published_posts',
 				'edit_posts',
@@ -407,14 +398,14 @@ final class Canonical_Roles {
 				'read',
 				'upload_files',
 			),
-			'contributor' => array(
+			'contributor'   => array(
 				'delete_posts',
 				'edit_posts',
 				'level_0',
 				'level_1',
 				'read',
 			),
-			'subscriber' => array(
+			'subscriber'    => array(
 				'level_0',
 				'read',
 			),

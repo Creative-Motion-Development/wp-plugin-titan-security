@@ -1,4 +1,5 @@
 <?php
+
 namespace WBCR\Titan;
 
 // Exit if accessed directly
@@ -15,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class AuditResult {
+class AuditResult implements \JsonSerializable {
 
 	/**
 	 * @var string
@@ -62,14 +63,25 @@ class AuditResult {
 	 * @param string $description
 	 * @param string $severity
 	 * @param string $fix
-	 * @param bool   $hided
+	 * @param bool $hided
 	 */
 	public function __construct( $title, $description, $severity, $fix, $hided = false ) {
-		$this->title = $title;
+		$this->title       = $title;
 		$this->description = $description;
-		$this->timestamp = time();
-		$this->severity = $severity;
-		$this->fix = $fix;
-		$this->hided = $hided;
+		$this->timestamp   = time();
+		$this->severity    = $severity;
+		$this->fix         = $fix;
+		$this->hided       = $hided;
 	}
+
+    public function jsonSerialize() {
+        return [
+            'title'       => $this->title,
+            'description' => $this->description,
+            'timestamp'   => $this->timestamp,
+            'severity'    => $this->severity,
+            'fix'         => $this->fix,
+            'hided'       => $this->hided,
+        ];
+    }
 }

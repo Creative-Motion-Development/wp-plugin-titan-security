@@ -1,4 +1,5 @@
 <?php
+
 namespace WBCR\Titan;
 
 // Exit if accessed directly
@@ -48,12 +49,12 @@ class Antispam extends Module_Base {
 		parent::__construct();
 		self::$app = $this;
 
-		$this->module_dir = WTITAN_PLUGIN_DIR."/includes/antispam";
-		$this->module_url = WTITAN_PLUGIN_URL."/includes/antispam";
+		$this->module_dir = WTITAN_PLUGIN_DIR . "/includes/antispam";
+		$this->module_url = WTITAN_PLUGIN_URL . "/includes/antispam";
 
-		$this->mode = $this->plugin->getOption( 'antispam_mode', true);
+		$this->mode = $this->plugin->getOption( 'antispam_mode', true );
 
-		add_action('wp_ajax_wtitan-change-antispam-mode', [$this, 'change_antispam_mode']);
+		add_action( 'wp_ajax_wtitan-change-antispam-mode', [ $this, 'change_antispam_mode' ] );
 	}
 
 	/**
@@ -67,15 +68,14 @@ class Antispam extends Module_Base {
 	/**
 	 * AJAX Enable/Disable anti-spam
 	 */
-	public function change_antispam_mode()
-	{
-		check_ajax_referer('wtitan_change_antispam_mode');
+	public function change_antispam_mode() {
+		check_ajax_referer( 'wtitan_change_antispam_mode' );
 
-		if( !current_user_can('manage_options') ) {
-			wp_send_json(array('error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')));
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json( array( 'error_message' => __( 'You don\'t have enough capability to edit this information.', 'titan-security' ) ) );
 		}
 
-		if(isset($_POST['mode'])) {
+		if ( isset( $_POST['mode'] ) ) {
 
 			$mode_name = $_POST['mode'];
 
@@ -104,10 +104,10 @@ class Antispam extends Module_Base {
 	 *
 	 * If data in the cache, not empty and not expired, then get data from cache. Or get data from server.
 	 *
+	 * @return mixed array
+	 * @since  1.1
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
-	 * @since  1.1
-	 * @return mixed array
 	 */
 
 	public function get_statistic_data() {

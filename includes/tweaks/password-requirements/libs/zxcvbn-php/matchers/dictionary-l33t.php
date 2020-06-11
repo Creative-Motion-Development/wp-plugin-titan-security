@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 
 	private static $l33t_table = array(
@@ -44,14 +45,15 @@ class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
 	public static function match( $password, array $penalty_strings = array(), $class = null ) {
 		$plain_passes = self::l33t_sub( $password );
-		$matches = array();
+		$matches      = array();
 		foreach ( $plain_passes as $plain_pass ) {
 			$match_set = parent::match( $plain_pass, $penalty_strings, __CLASS__ );
 			foreach ( $match_set as &$match ) {
@@ -61,6 +63,7 @@ class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 			}
 			$matches = array_merge( $matches, $match_set );
 		}
+
 		return $matches;
 	}
 
@@ -69,7 +72,7 @@ class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 	}
 
 	public function get_feedback( $is_sole_match = true ) {
-		$feedback = parent::get_feedback( $is_sole_match );
+		$feedback                = parent::get_feedback( $is_sole_match );
 		$feedback->suggestions[] = "Predictable substitutions like '@' instead of 'a' don't help very much";
 
 		if ( 'passwords' == $this->dictionary_name ) {
@@ -85,7 +88,7 @@ class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 
 	protected static function l33t_sub( $password ) {
 		// Handle all single character replacements
-		$password = str_replace( array_keys( self::$l33t_table_reverse_single ), self::$l33t_table_reverse_single, $password );
+		$password  = str_replace( array_keys( self::$l33t_table_reverse_single ), self::$l33t_table_reverse_single, $password );
 		$passwords = array( $password );
 		//Loop through the more complicated replacements (multiple opssible replacements per character, such as | being l or i)
 		foreach ( self::$l33t_table_reverse_multi as $char => $replace_array ) {
@@ -93,22 +96,24 @@ class ITSEC_Zxcvbn_Dictionary_L33t_Match extends ITSEC_Zxcvbn_Dictionary_Match {
 			if ( false !== $pos = strpos( $password, (string) $char ) ) {
 				$new_passwords = array();
 				// Loop through each current password and merge all returns into $new_passwords
-				foreach( $passwords as $password ) {
+				foreach ( $passwords as $password ) {
 					$new_passwords = array_merge( $new_passwords, self::l33t_sub_char( $password, $char, $replace_array ) );
 				}
 				// Replace the old passwords with the newer, bigger set
 				$passwords = $new_passwords;
 			}
 		}
+
 		return $passwords;
 	}
 
 	protected static function l33t_sub_char( $password, $char, $replace_array ) {
 		$passwords = array();
-		foreach( $replace_array as $replace_char ) {
-			$pos = strpos( $password, (string) $char );
+		foreach ( $replace_array as $replace_char ) {
+			$pos         = strpos( $password, (string) $char );
 			$passwords[] = substr_replace( $password, $replace_char, $pos, 1 );
 		}
+
 		return $passwords;
 	}
 }

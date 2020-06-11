@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Scorer {
 
 	/**
@@ -13,7 +14,7 @@ class ITSEC_Zxcvbn_Scorer {
 
 	public function most_guessable_match_sequence( $password, $matches ) {
 		$password_length = strlen( $password );
-		$this->optimal = array(
+		$this->optimal   = array(
 			// optimal.m[k][l] holds final match in the best length-l match sequence covering the
 			// password prefix up to k, inclusive.
 			// if there is no length-l sequence that scores better (fewer guesses) than
@@ -33,11 +34,11 @@ class ITSEC_Zxcvbn_Scorer {
 		);
 
 		// Count up through the characters
-		for ( $i = 0; $i < $password_length; $i++ ) {
+		for ( $i = 0; $i < $password_length; $i ++ ) {
 			// initialize the optimal array
 			//$this->optimal['m'][$i] = $this->optimal['pi'][$i] = new stdClass();
-			$this->optimal['g'][$i] = null;
-			$this->optimal['l'][$i] = 0;
+			$this->optimal['g'][ $i ] = null;
+			$this->optimal['l'][ $i ] = 0;
 		}
 
 		$matches_by_end = array();
@@ -46,13 +47,13 @@ class ITSEC_Zxcvbn_Scorer {
 		}
 
 		// Count up through the characters
-		for ( $i = 0; $i < $password_length; $i++ ) {
+		for ( $i = 0; $i < $password_length; $i ++ ) {
 			// Loop through matches that end on the current character
 			if ( ! empty( $matches_by_end[ $i ] ) ) {
-				foreach ( $matches_by_end[$i] as $m ) {
+				foreach ( $matches_by_end[ $i ] as $m ) {
 					if ( $m->begin > 0 ) {
 						// Process chunk
-						foreach ( $this->optimal['m'][$m->begin - 1] as $l => $om ) {
+						foreach ( $this->optimal['m'][ $m->begin - 1 ] as $l => $om ) {
 							$this->update_optimal( $m, $l + 1 );
 						}
 					} else {
@@ -71,21 +72,34 @@ class ITSEC_Zxcvbn_Scorer {
 		}
 
 		$result = new ITSEC_Zxcvbn_Results( $password, $guesses, $optimal_match_sequence );
+
 		return $result;
 	}
 
 	protected function bruteforce_update( $password, $i ) {
-		$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array( 'begin' => 0, 'end' => $i, 'token' => substr( $password, 0, $i + 1 ) ) );
+		$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array(
+			'begin' => 0,
+			'end'   => $i,
+			'token' => substr( $password, 0, $i + 1 )
+		) );
 		$this->update_optimal( $m, 1 );
 		if ( 0 === $i ) {
 			return;
 		}
 		foreach ( $this->optimal['m'][ $i - 1 ] as $l => $last_match ) {
 			if ( is_a( $last_match, 'ITSEC_Zxcvbn_Bruteforce_Match' ) ) {
-				$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array( 'begin' => $last_match->begin, 'end' => $i, 'token' => substr( $password, $last_match->begin, $i + 1 - $last_match->begin ) ) );
+				$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array(
+					'begin' => $last_match->begin,
+					'end'   => $i,
+					'token' => substr( $password, $last_match->begin, $i + 1 - $last_match->begin )
+				) );
 				$this->update_optimal( $m, $l );
 			} else {
-				$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array( 'begin' => $i, 'end' => $i, 'token' => substr( $password, $i, 1 ) ) );
+				$m = new ITSEC_Zxcvbn_Bruteforce_Match( $password, array(
+					'begin' => $i,
+					'end'   => $i,
+					'token' => substr( $password, $i, 1 )
+				) );
 				$this->update_optimal( $m, $l + 1 );
 			}
 		}
@@ -97,15 +111,16 @@ class ITSEC_Zxcvbn_Scorer {
 			return 1;
 		}
 
-		for ( $i = $n - 1; $i > 0; $i-- ) {
+		for ( $i = $n - 1; $i > 0; $i -- ) {
 			$n *= $i;
 		}
+
 		return $n;
 	}
 
 	protected function update_optimal( $m, $l ) {
 		$end = $m->end;
-		$pi = $m->estimate_guesses();
+		$pi  = $m->estimate_guesses();
 
 		if ( $l > 1 ) {
 			$pi *= $this->optimal['pi'][ $m->begin - 1 ][ $l - 1 ];
@@ -123,14 +138,15 @@ class ITSEC_Zxcvbn_Scorer {
 
 	protected function unwind( $n ) {
 		$optimal_match_sequence = array();
-		$k = $n - 1;
-		$l = $this->optimal['l'][ $k ];
+		$k                      = $n - 1;
+		$l                      = $this->optimal['l'][ $k ];
 		while ( $k >= 0 ) {
 			$m = $this->optimal['m'][ $k ][ $l ];
 			array_unshift( $optimal_match_sequence, $m );
 			$k = $m->begin - 1;
-			--$l;
+			-- $l;
 		}
+
 		return $optimal_match_sequence;
 	}
 }

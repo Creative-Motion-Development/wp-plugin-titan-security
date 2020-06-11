@@ -7,18 +7,18 @@
  */
 
 
-(function($) {
-	'use strict';
+(function ($) {
+    'use strict';
 
-	$.wantispam = {};
+    $.wantispam = {};
 
-	if( $.wbcr_factory_clearfy_000 ) {
-		$.wantispam = $.wbcr_factory_clearfy_000;
-	}
+    if ($.wbcr_factory_clearfy_000) {
+        $.wantispam = $.wbcr_factory_clearfy_000;
+    }
 
-	$('.factory-checkbox--disabled.wantispam-checkbox-premium-label').click(function(e) {
-		e.stopPropagation();
-		window.location.href = 'https://anti-spam.space/pricing/';
-	});
+    $('.factory-checkbox--disabled.wantispam-checkbox-premium-label').click(function (e) {
+        e.stopPropagation();
+        window.location.href = 'https://anti-spam.space/pricing/';
+    });
 
 })(jQuery);

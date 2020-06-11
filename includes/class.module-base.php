@@ -40,10 +40,11 @@ abstract class Module_Base {
 	 * Titan module constructor.
 	 *
 	 */
-	public function __construct( ) {
+	public function __construct() {
 		$this->plugin = Plugin::app();
-		if(Plugin::app()->premium->is_activate())
+		if ( Plugin::app()->premium->is_activate() ) {
 			$this->license_key = Plugin::app()->premium->get_license()->get_key();
+		}
 	}
 
 	/**
@@ -54,16 +55,17 @@ abstract class Module_Base {
 	 *
 	 * @return false|string
 	 */
-	protected function render_template( $template_name, $args = array()) {
-		$path = $this->module_dir."/views/$template_name.php";
-		if( file_exists($path) ) {
+	protected function render_template( $template_name, $args = array() ) {
+		$path = $this->module_dir . "/views/$template_name.php";
+		if ( file_exists( $path ) ) {
 			ob_start();
-			extract($args);
+			extract( $args );
 			include $path;
-			unset($path);
+			unset( $path );
+
 			return ob_get_clean();
 		} else {
-			return __('This template does not exist!', 'titan-security');
+			return __( 'This template does not exist!', 'titan-security' );
 		}
 	}
 
@@ -72,27 +74,28 @@ abstract class Module_Base {
 	 *
 	 * @param string $script_name Template name with ".js" "/module/assets/js/$script_name"
 	 *
-	 * @param array[] $args  Arguments are converted to JS variables similar to the wp_localize_script function
+	 * @param array[] $args Arguments are converted to JS variables similar to the wp_localize_script function
 	 *
 	 * @return false|string
 	 */
-	protected function render_script( $script_name, $args = array()) {
-		$path = $this->module_dir."/assets/js/$script_name";
-		$url = $this->module_url."/assets/js/$script_name";
-		if( file_exists($path) ) {
+	protected function render_script( $script_name, $args = array() ) {
+		$path = $this->module_dir . "/assets/js/$script_name";
+		$url  = $this->module_url . "/assets/js/$script_name";
+		if ( file_exists( $path ) ) {
 			ob_start();
 			echo "<script>";
-			if(is_array( $args)) {
+			if ( is_array( $args ) ) {
 				foreach ( $args as $key => $value ) {
 					echo "var $key = " . json_encode( $value ) . ";\n";
 				}
 			}
 			echo "</script>";
 			echo "<script type='application/javascript' src='{$url}'></script>";
-			unset($path);
+			unset( $path );
+
 			return ob_get_clean();
 		} else {
-			return __('This script file does not exist!', 'titan-security');
+			return __( 'This script file does not exist!', 'titan-security' );
 		}
 	}
 

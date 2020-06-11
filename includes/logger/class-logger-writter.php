@@ -3,7 +3,7 @@
 namespace WBCR\Titan\Logger;
 
 // Exit if accessed directly
-if( !defined('ABSPATH') && !defined('WFWAF_AUTO_PREPEND') ) {
+if ( ! defined( 'ABSPATH' ) && ! defined( 'WFWAF_AUTO_PREPEND' ) ) {
 	exit;
 }
 
@@ -41,7 +41,7 @@ if( !defined('ABSPATH') && !defined('WFWAF_AUTO_PREPEND') ) {
  * @copyright (c) 2018, Webcraftic
  * @version       1.0
  */
-if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
+if ( ! class_exists( '\WBCR\Titan\Logger\Writter' ) ) {
 
 	class Writter {
 
@@ -90,19 +90,17 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		/**
 		 * WRIOP_BackupLogger constructor.
 		 */
-		public function __construct()
-		{
+		public function __construct() {
 			$this->init();
 		}
 
 		/**
 		 * Initiate object.
 		 */
-		public function init()
-		{
-			static::$hash = substr(uniqid(), 0, 6);
+		public function init() {
+			static::$hash = substr( uniqid(), 0, 6 );
 
-			add_action('shutdown', ['\WBCR\Titan\Logger\Writter', 'flush'], 9999, 0);
+			add_action( 'shutdown', [ '\WBCR\Titan\Logger\Writter', 'flush' ], 9999, 0 );
 		}
 
 		/**
@@ -112,39 +110,38 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return string|false false on failure, string on success.
 		 */
-		public static function get_dir()
-		{
+		public static function get_dir() {
 
 			$base_dir = static::get_base_dir();
 
-			if( $base_dir === null ) {
+			if ( $base_dir === null ) {
 				return false;
 			}
 
 			$root_file = $base_dir . static::$file;
 
 			// Check whether file exists and it exceeds rotate size, then should rotate it copy
-			if( file_exists($root_file) && filesize($root_file) >= self::$rotate_size ) {
-				$name_split = explode('.', self::$file);
+			if ( file_exists( $root_file ) && filesize( $root_file ) >= self::$rotate_size ) {
+				$name_split = explode( '.', self::$file );
 
-				if( !empty($name_split) && isset($name_split[0]) ) {
-					$name_split[0] = trim($name_split[0]);
+				if ( ! empty( $name_split ) && isset( $name_split[0] ) ) {
+					$name_split[0] = trim( $name_split[0] );
 
-					for($i = self::$rotate_limit; $i >= 0; $i--) {
+					for ( $i = self::$rotate_limit; $i >= 0; $i -- ) {
 
 						$cur_name = $name_split[0] . $i;
 						$cur_path = $base_dir . $cur_name . '.log';
 
-						$next_path = $i !== 0 ? $base_dir . $name_split[0] . ($i - 1) . '.log' : $root_file;
+						$next_path = $i !== 0 ? $base_dir . $name_split[0] . ( $i - 1 ) . '.log' : $root_file;
 
-						if( file_exists($next_path) ) {
-							@copy($next_path, $cur_path);
+						if ( file_exists( $next_path ) ) {
+							@copy( $next_path, $cur_path );
 						}
 					}
 				}
 
 				// Need to empty root file as it was supposed to be copied to next rotation :)
-				@file_put_contents($root_file, '');
+				@file_put_contents( $root_file, '' );
 			}
 
 			return $root_file;
@@ -155,26 +152,25 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return null|string NULL in case of failure, string on success.
 		 */
-		public static function get_base_dir()
-		{
+		public static function get_base_dir() {
 			$wp_upload_dir = wp_upload_dir();
 
-			if( isset($wp_upload_dir['error']) && $wp_upload_dir['error'] !== false ) {
+			if ( isset( $wp_upload_dir['error'] ) && $wp_upload_dir['error'] !== false ) {
 				return null;
 			}
 
-			$base_path = wp_normalize_path(trailingslashit($wp_upload_dir['basedir']) . 'wtitan-logger/');
+			$base_path = wp_normalize_path( trailingslashit( $wp_upload_dir['basedir'] ) . 'wtitan-logger/' );
 
-			$folders = glob($base_path . 'logs-*');
+			$folders = glob( $base_path . 'logs-*' );
 
-			if( !empty($folders) ) {
-				$exploded_path = explode('/', trim($folders[0]));
-				$selected_logs_folder = array_pop($exploded_path);
+			if ( ! empty( $folders ) ) {
+				$exploded_path        = explode( '/', trim( $folders[0] ) );
+				$selected_logs_folder = array_pop( $exploded_path );
 			} else {
-				if( function_exists('wp_salt') ) {
-					$hash = md5(wp_salt());
+				if ( function_exists( 'wp_salt' ) ) {
+					$hash = md5( wp_salt() );
 				} else {
-					$hash = md5(AUTH_KEY);
+					$hash = md5( AUTH_KEY );
 				}
 
 				$selected_logs_folder = 'logs-' . $hash;
@@ -182,23 +178,23 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 
 			$path = $base_path . $selected_logs_folder . '/';
 
-			if( !file_exists($path) ) {
-				@mkdir($path, 0755, true);
+			if ( ! file_exists( $path ) ) {
+				@mkdir( $path, 0755, true );
 			}
 
 			// Create .htaccess file to protect log files
 			$htaccess_path = $path . '.htaccess';
 
-			if( !file_exists($htaccess_path) ) {
+			if ( ! file_exists( $htaccess_path ) ) {
 				$htaccess_content = 'deny from all';
-				@file_put_contents($htaccess_path, $htaccess_content);
+				@file_put_contents( $htaccess_path, $htaccess_content );
 			}
 
 			// Create index.htm file in case .htaccess is not support as a fallback
 			$index_path = $path . 'index.html';
 
-			if( !file_exists($index_path) ) {
-				@file_put_contents($index_path, '');
+			if ( ! file_exists( $index_path ) ) {
+				@file_put_contents( $index_path, '' );
 			}
 
 			return $path;
@@ -209,17 +205,16 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return array|bool
 		 */
-		public static function get_all()
-		{
+		public static function get_all() {
 			$base_dir = static::get_base_dir();
 
-			if( $base_dir === null ) {
+			if ( $base_dir === null ) {
 				return false;
 			}
 
 			$glob_path = $base_dir . '*.log';
 
-			return glob($glob_path);
+			return glob( $glob_path );
 		}
 
 		/**
@@ -228,17 +223,16 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 * @return int
 		 * @see size_format() for formatting.
 		 */
-		public static function get_total_size()
-		{
-			$logs = static::get_all();
+		public static function get_total_size() {
+			$logs  = static::get_all();
 			$bytes = 0;
 
-			if( empty($logs) ) {
+			if ( empty( $logs ) ) {
 				return $bytes;
 			}
 
-			foreach($logs as $log) {
-				$bytes += @filesize($log);
+			foreach ( $logs as $log ) {
+				$bytes += @filesize( $log );
 			}
 
 			return $bytes;
@@ -249,36 +243,35 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return bool
 		 */
-		public static function clean_up()
-		{
+		public static function clean_up() {
 
 			$base_dir = static::get_base_dir();
 
-			if( $base_dir === null ) {
+			if ( $base_dir === null ) {
 				return false;
 			}
 
 			$glob_path = $base_dir . '*.log';
 
-			$files = glob($glob_path);
+			$files = glob( $glob_path );
 
-			if( $files === false ) {
+			if ( $files === false ) {
 				return false;
 			}
 
-			if( empty($files) ) {
+			if ( empty( $files ) ) {
 				return true;
 			}
 
 			$unlinked_count = 0;
 
-			foreach($files as $file) {
-				if( @unlink($file) ) {
-					$unlinked_count++;
+			foreach ( $files as $file ) {
+				if ( @unlink( $file ) ) {
+					$unlinked_count ++;
 				}
 			}
 
-			return count($files) === $unlinked_count;
+			return count( $files ) === $unlinked_count;
 		}
 
 		/**
@@ -286,19 +279,18 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return bool
 		 */
-		public static function flush()
-		{
+		public static function flush() {
 
 			$messages = self::$_logs;
 
 			self::$_logs = [];
 
-			if( empty($messages) ) {
+			if ( empty( $messages ) ) {
 				return false;
 			}
 
-			$file_content = PHP_EOL . implode(PHP_EOL, $messages);
-			$is_put = @file_put_contents(self::get_dir(), $file_content, FILE_APPEND);
+			$file_content = PHP_EOL . implode( PHP_EOL, $messages );
+			$is_put       = @file_put_contents( self::get_dir(), $file_content, FILE_APPEND );
 
 			return $is_put !== false;
 		}
@@ -310,15 +302,14 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return string
 		 */
-		public static function get_format($level, $message)
-		{
+		public static function get_format( $level, $message ) {
 
 			// Example: 2019-01-14 12:03:29.0593  [127.0.0.1][ee6a12][info] {message}
 			$template = '%s [%s][%s][%s] %s';
 
-			$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
 
-			return sprintf($template, date('d-m-Y H:i:s') . '.' . microtime(true), $ip, static::$hash, $level, $message);
+			return sprintf( $template, date( 'd-m-Y H:i:s' ) . '.' . microtime( true ), $ip, static::$hash, $level, $message );
 		}
 
 		/**
@@ -326,13 +317,12 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return bool|string
 		 */
-		public static function get_content()
-		{
-			if( !file_exists(static::get_dir()) ) {
+		public static function get_content() {
+			if ( ! file_exists( static::get_dir() ) ) {
 				return null;
 			}
 
-			return @file_get_contents(static::get_dir());
+			return @file_get_contents( static::get_dir() );
 		}
 
 		/**
@@ -343,8 +333,7 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @return bool
 		 */
-		public static function add($level, $message)
-		{
+		public static function add( $level, $message ) {
 
 			//if ( $level === self::LEVEL_DEBUG ) {
 			//$log_debug = defined( 'WP_DEBUG' ) && WP_DEBUG;
@@ -354,9 +343,9 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 			//}
 			//}
 
-			static::$_logs[] = static::get_format($level, $message);
+			static::$_logs[] = static::get_format( $level, $message );
 
-			if( count(static::$_logs) >= static::$flush_interval ) {
+			if ( count( static::$_logs ) >= static::$flush_interval ) {
 				static::flush();
 			}
 
@@ -368,9 +357,8 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @param string $message Message to log.
 		 */
-		public static function info($message)
-		{
-			static::add(self::LEVEL_INFO, $message);
+		public static function info( $message ) {
+			static::add( self::LEVEL_INFO, $message );
 		}
 
 		/**
@@ -378,9 +366,8 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @param string $message Message to log.
 		 */
-		public static function error($message)
-		{
-			static::add(self::LEVEL_ERROR, $message);
+		public static function error( $message ) {
+			static::add( self::LEVEL_ERROR, $message );
 		}
 
 		/**
@@ -388,9 +375,8 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @param $message
 		 */
-		public static function debug($message)
-		{
-			static::add(self::LEVEL_DEBUG, $message);
+		public static function debug( $message ) {
+			static::add( self::LEVEL_DEBUG, $message );
 		}
 
 		/**
@@ -398,9 +384,8 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 *
 		 * @param string $message Message to log.
 		 */
-		public static function warning($message)
-		{
-			static::add(self::LEVEL_WARNING, $message);
+		public static function warning( $message ) {
+			static::add( self::LEVEL_WARNING, $message );
 		}
 
 		/**
@@ -409,13 +394,12 @@ if( !class_exists('\WBCR\Titan\Logger\Writter') ) {
 		 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 		 * @since  1.3.6
 		 */
-		public static function memory_usage()
-		{
-			$memory_avail = ini_get('memory_limit');
-			$memory_used = number_format(memory_get_usage(true) / (1024 * 1024), 2);
-			$memory_peak = number_format(memory_get_peak_usage(true) / (1024 * 1024), 2);
+		public static function memory_usage() {
+			$memory_avail = ini_get( 'memory_limit' );
+			$memory_used  = number_format( memory_get_usage( true ) / ( 1024 * 1024 ), 2 );
+			$memory_peak  = number_format( memory_get_peak_usage( true ) / ( 1024 * 1024 ), 2 );
 
-			static::info(sprintf("Memory: %s (avail) / %sM (used) / %sM (peak)", $memory_avail, $memory_used, $memory_peak));
+			static::info( sprintf( "Memory: %s (avail) / %sM (used) / %sM (peak)", $memory_avail, $memory_used, $memory_peak ) );
 		}
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * a "date" is recognized as:
  *   any 3-tuple that starts or ends with a 2- or 4-digit year,
@@ -63,27 +64,27 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
 	public static function match( $password, array $penalty_strings = array() ) {
 		$matches = array();
 
-		$maybe_date_no_separator = '/^\d{4,8}$/';
-		$maybe_date_with_separator =
-	        '#^'            // Anchor to start
-	        . '(\d{1,4})'   // day, month, year
-	        . '([\s/\_.-])' // separator
-			. '(\d{1,2})'   // day, month
-			. '\2'          // same separator
-			. '(\d{1,4})'   // day, month, year
-			. '$#';         // Anchor to end
+		$maybe_date_no_separator   = '/^\d{4,8}$/';
+		$maybe_date_with_separator = '#^'            // Anchor to start
+		                             . '(\d{1,4})'   // day, month, year
+		                             . '([\s/\_.-])' // separator
+		                             . '(\d{1,2})'   // day, month
+		                             . '\2'          // same separator
+		                             . '(\d{1,4})'   // day, month, year
+		                             . '$#';         // Anchor to end
 
 		// dates without separators are between length 4 '1191' and 8 '11111991'
-		for ( $begin = 0; $begin <= strlen( $password ) - 4; $begin++ ) {
-			for ( $end = $begin + 3; $end <= $begin + 7; $end++ ) {
+		for ( $begin = 0; $begin <= strlen( $password ) - 4; $begin ++ ) {
+			for ( $end = $begin + 3; $end <= $begin + 7; $end ++ ) {
 				if ( $end >= strlen( $password ) ) {
 					break;
 				}
@@ -94,17 +95,21 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 					continue;
 				}
 				$candidates = array();
-				for ( $q = 0; $q < count( self::$date_splits[ strlen( $token ) ] ); $q++ ) {
-					$k = self::$date_splits[ strlen( $token ) ][ $q ][0];
-					$l = self::$date_splits[ strlen( $token ) ][ $q ][1];
-					$dmy = self::map_ints_to_dmy( array( substr( $token, 0, $k ), substr( $token, $k, $l - $k ), substr( $token, $l ) ) );
+				for ( $q = 0; $q < count( self::$date_splits[ strlen( $token ) ] ); $q ++ ) {
+					$k   = self::$date_splits[ strlen( $token ) ][ $q ][0];
+					$l   = self::$date_splits[ strlen( $token ) ][ $q ][1];
+					$dmy = self::map_ints_to_dmy( array(
+						substr( $token, 0, $k ),
+						substr( $token, $k, $l - $k ),
+						substr( $token, $l )
+					) );
 					if ( ! empty( $dmy ) ) {
 						$candidates[] = $dmy;
 					}
-		        }
-		        if ( empty( $candidates ) ) {
-		        	continue;
-		        }
+				}
+				if ( empty( $candidates ) ) {
+					continue;
+				}
 				// at this point: different possible dmy mappings for the same i,j substring.
 				// match the candidate date that likely takes the fewest guesses: a year closest to REFERENCE_YEAR.
 				//
@@ -128,7 +133,7 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 		}
 
 		// dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'
-		for ( $begin = 0; $begin <= strlen( $password ) - 6; $begin++ ) {
+		for ( $begin = 0; $begin <= strlen( $password ) - 6; $begin ++ ) {
 			for ( $end = $begin + 5; $end <= $begin + 9; $end ++ ) {
 				if ( $end >= strlen( $password ) ) {
 					break;
@@ -187,7 +192,8 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 		if ( empty( $b['year'] ) ) {
 			return $a;
 		}
-		return ( abs( $a['year'] - self::$reference_year ) <= abs( $b['year'] - self::$reference_year ) )? $a : $b;
+
+		return ( abs( $a['year'] - self::$reference_year ) <= abs( $b['year'] - self::$reference_year ) ) ? $a : $b;
 	}
 
 	private static function map_ints_to_dmy( $ints ) {
@@ -203,18 +209,18 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 			return;
 		}
 		$over_12 = 0;
-	    $over_31 = 0;
-	    $under_1 = 0;
+		$over_31 = 0;
+		$under_1 = 0;
 		foreach ( $ints as $int ) {
 			// If this is the year and it's not valid, return nothing
 			if ( ( 99 < $int && $int < self::$date_min_year ) || $int > self::$date_max_year ) {
 				return;
 			}
 			if ( $int > 31 ) {
-				$over_31++;
+				$over_31 ++;
 			}
 			if ( $int > 12 ) {
-				$over_12++;
+				$over_12 ++;
 			}
 			if ( $int < 1 ) {
 				$under_1 ++;
@@ -247,12 +253,13 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 			}
 		}
 
-	    # given no four-digit year, two digit years are the most flexible int to match, so
-	    # try to parse a day-month out of ints[0..1] or ints[1..0]
+		# given no four-digit year, two digit years are the most flexible int to match, so
+		# try to parse a day-month out of ints[0..1] or ints[1..0]
 		foreach ( $possible_year_splits as $split ) {
 			$dm = self::map_ints_to_dm( $split['rest'] );
 			if ( $dm ) {
 				$split['year'] = self::two_to_four_digit_year( $split['year'] );
+
 				return array(
 					'year'  => $split['year'],
 					'month' => $dm['month'],
@@ -265,7 +272,7 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 	private static function map_ints_to_dm( $ints ) {
 		list( $d, $m ) = $ints;
 
-		for ( $i = 0; $i < 2; $i++ ) {
+		for ( $i = 0; $i < 2; $i ++ ) {
 			if ( ( 1 <= $d && $d <= 31 ) && ( 1 <= $m && $m <= 12 ) ) {
 				return array(
 					'day'   => $d,
@@ -274,9 +281,10 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 			}
 			// Swap day and month
 			$temp = $d;
-			$d = $m;
-			$m = $temp;
+			$d    = $m;
+			$m    = $temp;
 		}
+
 		return;
 	}
 
@@ -286,7 +294,7 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 		} elseif ( $year > 50 ) {
 			# 87 -> 1987
 			return $year + 1900;
-        } else {
+		} else {
 			# 15 -> 2015
 			return $year + 2000;
 		}
@@ -310,8 +318,8 @@ class ITSEC_Zxcvbn_Date_Match extends ITSEC_Zxcvbn_Match {
 	}
 
 	public function get_feedback( $is_sole_match = true ) {
-		$feedback = new stdClass();
-		$feedback->warning = 'Dates are often easy to guess';
+		$feedback              = new stdClass();
+		$feedback->warning     = 'Dates are often easy to guess';
 		$feedback->suggestions = array( 'Avoid dates and years that are associated with you' );
 
 		return $feedback;

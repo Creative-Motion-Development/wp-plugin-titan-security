@@ -77,7 +77,7 @@ class Client {
 		}
 
 		$response = $this->request( true, 'spam', $data );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -91,7 +91,7 @@ class Client {
 	 */
 	public function get_queue_status( $uid ) {
 		$response = $this->request( false, 'spam/queue-status/' . $uid );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -105,7 +105,7 @@ class Client {
 	 */
 	public function get_queues_status( $uids ) {
 		$response = $this->request( true, 'spam/queue-status', $uids );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return [];
 		}
 
@@ -122,7 +122,7 @@ class Client {
 	 */
 	public function get_statistics() {
 		$response = $this->request( false, 'spam/statistics' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -143,7 +143,7 @@ class Client {
 			'version' => $version,
 			'files'   => $files,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -162,7 +162,7 @@ class Client {
 			'version' => $version,
 			'files'   => $files,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -180,7 +180,7 @@ class Client {
 	 */
 	public function check_email( $email ) {
 		$response = $this->request( false, 'check-email', [ 'email' => $email ] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -208,7 +208,7 @@ class Client {
 
 	public function check_black_seo( $domain ) {
 		$response = $this->request( false, 'check/domain', [ 'domain' => $domain ] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -224,7 +224,7 @@ class Client {
 			'email'  => $email,
 			'domain' => $domain,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -236,7 +236,7 @@ class Client {
 			'email'  => $email,
 			'domain' => $domain,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -257,7 +257,7 @@ class Client {
 			'name'    => 'WordPress',
 			'version' => $version,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -276,7 +276,7 @@ class Client {
 	 */
 	public function get_vuln_plugin( $vuln ) {
 		$response = $this->request( true, 'vulnerability/plugin', [ 'data' => $vuln->plugins ] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -298,7 +298,7 @@ class Client {
 	 */
 	public function get_vuln_theme( $vuln ) {
 		$response = $this->request( true, 'vulnerability/theme', [ 'data' => $vuln->themes ] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -322,7 +322,7 @@ class Client {
 	 */
 	public function get_signatures() {
 		$response = $this->request( false, 'antivirus/signature' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -343,7 +343,7 @@ class Client {
 	 */
 	public function get_free_signatures() {
 		$response = $this->request( false, 'antivirus/signature/free' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -368,7 +368,7 @@ class Client {
 	 */
 	public function get_allowed_notice_methods() {
 		$response = $this->request( false, 'notice/methods/get' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -380,7 +380,7 @@ class Client {
 	 */
 	public function get_notice_data() {
 		$response = $this->request( false, 'notice/users-data/get' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -399,7 +399,7 @@ class Client {
 	 */
 	public function set_notice_data( $data ) {
 		$response = $this->request( true, 'notice/users-data/set', $data->data );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -413,22 +413,31 @@ class Client {
 	 */
 	public function delete_notice_data( $ids ) {
 		$response = $this->request( true, 'notice/users-data/delete', [ 'ids' => $ids ] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
 		return $response->response['is_successful_delete'];
 	}
 
-    public function send_notification( $method, $template, $vars = [] ) {
-        $response = $this->request(true, 'notice/send', [
-            'method'   => $method,
-            'template' => $template,
+	/**
+	 * @param string $method
+	 * @param string $template
+	 * @param string|null $email
+	 * @param array $vars
+	 *
+	 * @return bool
+	 */
+	public function send_notification( $method, $template, $email = null, $vars = [] ) {
+		$response = $this->request( true, 'notice/send', [
+			'method'   => $method,
+			'template' => $template,
+			'email'    => $email,
             'vars'     => $vars
         ]);
 
         if ( $response->is_error() ) {
-            return false;
+	        return false;
         }
 
         return true;
@@ -443,7 +452,7 @@ class Client {
 	 */
 	public function get_checker_urls() {
 		$response = $this->request( false, 'url-checker' );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -462,7 +471,7 @@ class Client {
 	 */
 	public function get_checker_url( $id ) {
 		$response = $this->request( false, 'url-checker/' . $id );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return null;
 		}
 
@@ -481,7 +490,7 @@ class Client {
 			'url'       => $url,
 			'frequency' => $frequency,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return false;
 		}
 
@@ -497,7 +506,7 @@ class Client {
 		$response = $this->request( true, 'url-checker/delete', [
 			'ids' => $ids,
 		] );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			return false;
 		}
 
@@ -555,9 +564,10 @@ class Client {
 		$response = json_decode( $response['body'], true );
 
 		$response = Response::from_array( $response );
-		if ( is_null($response) || $response->is_error() ) {
+		if ( is_null( $response ) || $response->is_error() ) {
 			$this->last_error = $response->error;
 		}
 
 		return $response;
-	}}
+	}
+}

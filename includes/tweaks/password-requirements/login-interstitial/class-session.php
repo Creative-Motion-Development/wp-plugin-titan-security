@@ -20,10 +20,9 @@ class Login_Interstitial_Session {
 	 * @param int $id
 	 * @param array $data
 	 */
-	public function __construct(\WP_User $user, $id, $data)
-	{
+	public function __construct( \WP_User $user, $id, $data ) {
 		$this->user = $user;
-		$this->id = $id;
+		$this->id   = $id;
 		$this->data = $data;
 	}
 
@@ -34,10 +33,9 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function set_current_interstitial($action)
-	{
+	public function set_current_interstitial( $action ) {
 		$this->data['current'] = $action;
-		$this->data['state'] = array();
+		$this->data['state']   = array();
 
 		return $this;
 	}
@@ -47,8 +45,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string
 	 */
-	public function get_current_interstitial()
-	{
+	public function get_current_interstitial() {
 		return $this->data['current'];
 	}
 
@@ -59,8 +56,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function add_completed_interstitial($action)
-	{
+	public function add_completed_interstitial( $action ) {
 		$this->data['completed'][] = $action;
 
 		return $this;
@@ -71,8 +67,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string[]
 	 */
-	public function get_completed_interstitials()
-	{
+	public function get_completed_interstitials() {
 		return $this->data['completed'];
 	}
 
@@ -83,8 +78,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function add_show_after($action)
-	{
+	public function add_show_after( $action ) {
 		$this->data['show_after'][] = $action;
 
 		return $this;
@@ -95,8 +89,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string[]
 	 */
-	public function get_show_after()
-	{
+	public function get_show_after() {
 		return $this->data['show_after'];
 	}
 
@@ -105,9 +98,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_remember_me()
-	{
-		return !empty($this->data['remember_me']);
+	public function is_remember_me() {
+		return ! empty( $this->data['remember_me'] );
 	}
 
 	/**
@@ -117,8 +109,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function set_remember_me($remember = true)
-	{
+	public function set_remember_me( $remember = true ) {
 		$this->data['remember_me'] = $remember;
 
 		return $this;
@@ -129,9 +120,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string
 	 */
-	public function get_redirect_to()
-	{
-		return empty($this->data['redirect_to']) ? '' : $this->data['redirect_to'];
+	public function get_redirect_to() {
+		return empty( $this->data['redirect_to'] ) ? '' : $this->data['redirect_to'];
 	}
 
 	/**
@@ -141,8 +131,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function set_redirect_to($redirect)
-	{
+	public function set_redirect_to( $redirect ) {
 		$this->data['redirect_to'] = $redirect;
 
 		return $this;
@@ -153,9 +142,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_interim_login()
-	{
-		return !empty($this->data['interim_login']);
+	public function is_interim_login() {
+		return ! empty( $this->data['interim_login'] );
 	}
 
 	/**
@@ -165,8 +153,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function set_interim_login($is_interim = true)
-	{
+	public function set_interim_login( $is_interim = true ) {
 		$this->data['interim_login'] = $is_interim;
 
 		return $this;
@@ -177,8 +164,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return array
 	 */
-	public function get_state()
-	{
+	public function get_state() {
 		return $this->data['state'];
 	}
 
@@ -191,8 +177,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return $this
 	 */
-	public function set_state(array $state)
-	{
+	public function set_state( array $state ) {
 		$this->data['state'] = $state;
 
 		return $this;
@@ -206,24 +191,23 @@ class Login_Interstitial_Session {
 	 *
 	 * @return true|\WP_Error
 	 */
-	public function verify($user_id, $signature)
-	{
-		if( $this->is_expired() ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-session-expired', esc_html__('Session expired.', 'titan-security'));
+	public function verify( $user_id, $signature ) {
+		if ( $this->is_expired() ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-session-expired', esc_html__( 'Session expired.', 'titan-security' ) );
 		}
 
-		$signature_verified = $this->verify_signature($signature);
+		$signature_verified = $this->verify_signature( $signature );
 
-		if( is_wp_error($signature_verified) ) {
+		if ( is_wp_error( $signature_verified ) ) {
 			return $signature_verified;
 		}
 
-		if( true !== $signature_verified ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-invalid-signature', esc_html__('Invalid signature.', 'titan-security'));
+		if ( true !== $signature_verified ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-invalid-signature', esc_html__( 'Invalid signature.', 'titan-security' ) );
 		}
 
-		if( !$user_id || $this->get_user()->ID !== $user_id ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-invalid-user', esc_html__('Invalid user.', 'titan-security'));
+		if ( ! $user_id || $this->get_user()->ID !== $user_id ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-invalid-user', esc_html__( 'Invalid user.', 'titan-security' ) );
 		}
 
 		return true;
@@ -238,24 +222,23 @@ class Login_Interstitial_Session {
 	 *
 	 * @return true|\WP_Error
 	 */
-	public function verify_for_payload($payload, $user_id, $signature)
-	{
-		if( $this->is_expired() ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-session-expired', esc_html__('Session expired.', 'titan-security'));
+	public function verify_for_payload( $payload, $user_id, $signature ) {
+		if ( $this->is_expired() ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-session-expired', esc_html__( 'Session expired.', 'titan-security' ) );
 		}
 
-		$signature_verified = $this->verify_signature_for_payload($payload, $signature);
+		$signature_verified = $this->verify_signature_for_payload( $payload, $signature );
 
-		if( is_wp_error($signature_verified) ) {
+		if ( is_wp_error( $signature_verified ) ) {
 			return $signature_verified;
 		}
 
-		if( true !== $signature_verified ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-invalid-signature', esc_html__('Invalid signature.', 'titan-security'));
+		if ( true !== $signature_verified ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-invalid-signature', esc_html__( 'Invalid signature.', 'titan-security' ) );
 		}
 
-		if( !$user_id || $this->get_user()->ID !== $user_id ) {
-			return new \WP_Error('titan-lib-login-interstitial-verify-failed-invalid-user', esc_html__('Invalid user.', 'titan-security'));
+		if ( ! $user_id || $this->get_user()->ID !== $user_id ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-verify-failed-invalid-user', esc_html__( 'Invalid user.', 'titan-security' ) );
 		}
 
 		return true;
@@ -266,9 +249,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_expired()
-	{
-		return $this->data['created_at'] + HOUR_IN_SECONDS < current_time('timestamp', true);
+	public function is_expired() {
+		return $this->data['created_at'] + HOUR_IN_SECONDS < current_time( 'timestamp', true );
 	}
 
 	/**
@@ -278,15 +260,14 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool|\WP_Error
 	 */
-	public function verify_signature($actual)
-	{
+	public function verify_signature( $actual ) {
 		$expected = $this->get_signature();
 
-		if( is_wp_error($expected) ) {
+		if ( is_wp_error( $expected ) ) {
 			return $expected;
 		}
 
-		return hash_equals($expected, $actual);
+		return hash_equals( $expected, $actual );
 	}
 
 	/**
@@ -294,14 +275,13 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string|\WP_Error
 	 */
-	public function get_signature()
-	{
-		$to_hash = sprintf('%s|%s|%s|%s', $this->get_user()->ID, $this->get_id(), $this->data['created_at'], $this->data['uuid']);
+	public function get_signature() {
+		$to_hash = sprintf( '%s|%s|%s|%s', $this->get_user()->ID, $this->get_id(), $this->data['created_at'], $this->data['uuid'] );
 
-		$hash = hash_hmac('sha1', $to_hash, wp_salt());
+		$hash = hash_hmac( 'sha1', $to_hash, wp_salt() );
 
-		if( !$hash ) {
-			return new \WP_Error('titan-lib-login-interstitial-signature-failed', esc_html__('Could not calculate signature.', 'titan-security'));
+		if ( ! $hash ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-signature-failed', esc_html__( 'Could not calculate signature.', 'titan-security' ) );
 		}
 
 		return $hash;
@@ -315,15 +295,14 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool|\WP_Error
 	 */
-	public function verify_signature_for_payload($payload, $actual)
-	{
-		$expected = $this->get_signature_for_payload($payload);
+	public function verify_signature_for_payload( $payload, $actual ) {
+		$expected = $this->get_signature_for_payload( $payload );
 
-		if( is_wp_error($expected) ) {
+		if ( is_wp_error( $expected ) ) {
 			return $expected;
 		}
 
-		return hash_equals($expected, $actual);
+		return hash_equals( $expected, $actual );
 	}
 
 	/**
@@ -333,14 +312,13 @@ class Login_Interstitial_Session {
 	 *
 	 * @return string|\WP_Error
 	 */
-	public function get_signature_for_payload($payload)
-	{
-		$to_hash = sprintf('%s|%s|%s|%s|%s', $this->get_user()->ID, $this->get_id(), $this->data['created_at'], $this->data['uuid'], $payload);
+	public function get_signature_for_payload( $payload ) {
+		$to_hash = sprintf( '%s|%s|%s|%s|%s', $this->get_user()->ID, $this->get_id(), $this->data['created_at'], $this->data['uuid'], $payload );
 
-		$hash = hash_hmac('sha1', $to_hash, wp_salt());
+		$hash = hash_hmac( 'sha1', $to_hash, wp_salt() );
 
-		if( !$hash ) {
-			return new \WP_Error('titan-lib-login-interstitial-signature-failed', esc_html__('Could not calculate signature.', 'titan-security'));
+		if ( ! $hash ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-signature-failed', esc_html__( 'Could not calculate signature.', 'titan-security' ) );
 		}
 
 		return $hash;
@@ -353,9 +331,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_interstitial_completed($interstitial)
-	{
-		return in_array($interstitial, $this->get_completed_interstitials(), true);
+	public function is_interstitial_completed( $interstitial ) {
+		return in_array( $interstitial, $this->get_completed_interstitials(), true );
 	}
 
 	/**
@@ -365,9 +342,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_interstitial_requested($interstitial)
-	{
-		return in_array($interstitial, $this->get_show_after(), true);
+	public function is_interstitial_requested( $interstitial ) {
+		return in_array( $interstitial, $this->get_show_after(), true );
 	}
 
 	/**
@@ -375,9 +351,8 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function is_current_requested()
-	{
-		return $this->is_interstitial_requested($this->get_current_interstitial());
+	public function is_current_requested() {
+		return $this->is_interstitial_requested( $this->get_current_interstitial() );
 	}
 
 	/**
@@ -385,8 +360,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return int
 	 */
-	public function get_id()
-	{
+	public function get_id() {
 		return $this->id;
 	}
 
@@ -395,8 +369,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return \WP_User
 	 */
-	public function get_user()
-	{
+	public function get_user() {
 		return $this->user;
 	}
 
@@ -405,21 +378,20 @@ class Login_Interstitial_Session {
 	 *
 	 * This does not set the show afters because this is also used by the show after code.
 	 */
-	public function initialize_from_global_state()
-	{
-		if( isset($_REQUEST['interim-login']) ) {
+	public function initialize_from_global_state() {
+		if ( isset( $_REQUEST['interim-login'] ) ) {
 			$this->set_interim_login();
 		}
 
-		if( !empty($_REQUEST['redirect_to']) ) {
-			$this->set_redirect_to($_REQUEST['redirect_to']);
-		} elseif( !did_action('login_init') && ($ref = wp_get_referer()) ) {
-			$this->set_redirect_to($ref);
-		} elseif( !did_action('login_init') ) {
-			$this->set_redirect_to($_SERVER['REQUEST_URI']);
+		if ( ! empty( $_REQUEST['redirect_to'] ) ) {
+			$this->set_redirect_to( $_REQUEST['redirect_to'] );
+		} elseif ( ! did_action( 'login_init' ) && ( $ref = wp_get_referer() ) ) {
+			$this->set_redirect_to( $ref );
+		} elseif ( ! did_action( 'login_init' ) ) {
+			$this->set_redirect_to( $_SERVER['REQUEST_URI'] );
 		}
 
-		if( !empty($_REQUEST['rememberme']) ) {
+		if ( ! empty( $_REQUEST['rememberme'] ) ) {
 			$this->set_remember_me();
 		}
 	}
@@ -429,15 +401,14 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function save()
-	{
-		$this->log('save', [
-			'current' => $this->get_current_interstitial(),
-			'completed' => $this->get_completed_interstitials(),
+	public function save() {
+		$this->log( 'save', [
+			'current'    => $this->get_current_interstitial(),
+			'completed'  => $this->get_completed_interstitials(),
 			'show_after' => $this->get_show_after(),
-		]);
+		] );
 
-		return update_metadata_by_mid('user', $this->get_id(), $this->data, self::META_KEY);
+		return update_metadata_by_mid( 'user', $this->get_id(), $this->data, self::META_KEY );
 	}
 
 	/**
@@ -445,13 +416,12 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	public function delete()
-	{
-		$deleted = delete_metadata_by_mid('user', $this->get_id());
+	public function delete() {
+		$deleted = delete_metadata_by_mid( 'user', $this->get_id() );
 
-		foreach(get_user_meta($this->get_user()->ID, self::META_KEY) as $entry) {
-			if( !isset($entry['created_at']) || $entry['created_at'] + HOUR_IN_SECONDS < current_time('timestamp', true) ) {
-				delete_user_meta($this->get_user()->ID, self::META_KEY, $entry);
+		foreach ( get_user_meta( $this->get_user()->ID, self::META_KEY ) as $entry ) {
+			if ( ! isset( $entry['created_at'] ) || $entry['created_at'] + HOUR_IN_SECONDS < current_time( 'timestamp', true ) ) {
+				delete_user_meta( $this->get_user()->ID, self::META_KEY, $entry );
 			}
 		}
 
@@ -469,10 +439,9 @@ class Login_Interstitial_Session {
 	 * @param mixed|false $data
 	 * @param array|false $overrides
 	 */
-	protected function log($code, $data = false, $overrides = array())
-	{
-		if( !empty($this->data['log']) ) {
-			$reference = $this->data['log'];
+	protected function log( $code, $data = false, $overrides = array() ) {
+		if ( ! empty( $this->data['log'] ) ) {
+			$reference         = $this->data['log'];
 			$reference['code'] = $code;
 			/*ITSEC_Log::add_process_update( $reference, $data, $overrides );*/
 		}
@@ -486,36 +455,35 @@ class Login_Interstitial_Session {
 	 *
 	 * @return \WBCR\Titan\Tweaks\Login_Interstitial_Session|\WP_Error
 	 */
-	public static function create(\WP_User $user, $current = '')
-	{
+	public static function create( \WP_User $user, $current = '' ) {
 		/*$log = ITSEC_Log::add_process_start( 'login-interstitial', 'create', [
 			'current' => $current,
 			'_server' => $_SERVER,
 		], [ 'user_id' => $user->ID ] );*/
 
 		$data = array(
-			'uuid' => wp_generate_uuid4(),
-			'current' => $current,
-			'completed' => array(),
-			'created_at' => current_time('timestamp', true),
-			'show_after' => array(),
-			'redirect_to' => '',
-			'remember_me' => false,
+			'uuid'          => wp_generate_uuid4(),
+			'current'       => $current,
+			'completed'     => array(),
+			'created_at'    => current_time( 'timestamp', true ),
+			'show_after'    => array(),
+			'redirect_to'   => '',
+			'remember_me'   => false,
 			'interim_login' => false,
-			'state' => array(),
+			'state'         => array(),
 			//'log'           => $log,
 		);
 
-		if( !$mid = add_user_meta($user->ID, self::META_KEY, $data) ) {
-			$error = new \WP_Error('titan-lib-login-interstitial-save-failed', esc_html__('Failed to create interstitial state.', 'titan-security'));
+		if ( ! $mid = add_user_meta( $user->ID, self::META_KEY, $data ) ) {
+			$error = new \WP_Error( 'titan-lib-login-interstitial-save-failed', esc_html__( 'Failed to create interstitial state.', 'titan-security' ) );
 
 			//ITSEC_Log::add_process_stop( $log, $error );
 
 			return $error;
 		}
 
-		$session = new self($user, $mid, $data);
-		$session->log('created', $mid);
+		$session = new self( $user, $mid, $data );
+		$session->log( 'created', $mid );
 
 		return $session;
 	}
@@ -527,16 +495,15 @@ class Login_Interstitial_Session {
 	 *
 	 * @return \WBCR\Titan\Tweaks\Login_Interstitial_Session|\WP_Error
 	 */
-	public static function get($id)
-	{
+	public static function get( $id ) {
 
-		$row = get_metadata_by_mid('user', $id);
+		$row = get_metadata_by_mid( 'user', $id );
 
-		if( !$row || $row->meta_key !== self::META_KEY || !self::validate_meta($row->meta_value) || !$user = get_userdata($row->user_id) ) {
-			return new \WP_Error('titan-lib-login-interstitial-not-found', esc_html__('Interstitial state not found.', 'titan-security'));
+		if ( ! $row || $row->meta_key !== self::META_KEY || ! self::validate_meta( $row->meta_value ) || ! $user = get_userdata( $row->user_id ) ) {
+			return new \WP_Error( 'titan-lib-login-interstitial-not-found', esc_html__( 'Interstitial state not found.', 'titan-security' ) );
 		}
 
-		return new self($user, $id, $row->meta_value);
+		return new self( $user, $id, $row->meta_value );
 	}
 
 	/**
@@ -546,17 +513,16 @@ class Login_Interstitial_Session {
 	 *
 	 * @return \WBCR\Titan\Tweaks\Login_Interstitial_Session[]
 	 */
-	public static function get_all(\WP_User $user)
-	{
+	public static function get_all( \WP_User $user ) {
 
 		global $wpdb;
 
-		$mids = $wpdb->get_col($wpdb->prepare("SELECT `umeta_id` FROM {$wpdb->usermeta} WHERE `meta_key` = %s AND `user_id` = %d", self::META_KEY, $user->ID));
+		$mids = $wpdb->get_col( $wpdb->prepare( "SELECT `umeta_id` FROM {$wpdb->usermeta} WHERE `meta_key` = %s AND `user_id` = %d", self::META_KEY, $user->ID ) );
 
 		$sessions = array();
 
-		foreach($mids as $meta_id) {
-			if( !is_wp_error($session = self::get($meta_id)) ) {
+		foreach ( $mids as $meta_id ) {
+			if ( ! is_wp_error( $session = self::get( $meta_id ) ) ) {
 				$sessions[] = $session;
 			}
 		}
@@ -571,8 +537,7 @@ class Login_Interstitial_Session {
 	 *
 	 * @return bool
 	 */
-	private static function validate_meta($meta_value)
-	{
-		return is_array($meta_value) && isset($meta_value['uuid'], $meta_value['created_at'], $meta_value['completed'], $meta_value['current'], $meta_value['show_after']);
+	private static function validate_meta( $meta_value ) {
+		return is_array( $meta_value ) && isset( $meta_value['uuid'], $meta_value['created_at'], $meta_value['completed'], $meta_value['current'], $meta_value['show_after'] );
 	}
 }

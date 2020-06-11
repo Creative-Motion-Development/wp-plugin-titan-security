@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
@@ -7,8 +8,8 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 	private static $frequency_lists;
 
 	protected static $start_upper_regex = '/^[A-Z][^A-Z]+$/';
-	protected static $end_upper_regex   = '/^[^A-Z]+[A-Z]$/';
-	protected static $all_upper_regex   = '/^[A-Z]+$/';
+	protected static $end_upper_regex = '/^[^A-Z]+[A-Z]$/';
+	protected static $all_upper_regex = '/^[A-Z]+$/';
 
 	public function __construct( $password, $result ) {
 		$this->password = $password;
@@ -19,8 +20,9 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
@@ -28,7 +30,7 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 		if ( ! isset( $class ) ) {
 			$class = __CLASS__;
 		}
-		$matches = array();
+		$matches          = array();
 		$dictionary_names = array(
 			'english_wikipedia',
 			'female_names',
@@ -40,7 +42,10 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 		foreach ( $dictionary_names as $dictionary_name ) {
 			$dictionaries = call_user_func( array( $class, 'get_ranked_dictionary' ), $dictionary_name );
 			foreach ( $dictionaries as $name => $dictionary ) {
-				$matches = array_merge( $matches, call_user_func( array( $class, 'get_dictionary_matches' ), $dictionary, $name, $password, $class ) );
+				$matches = array_merge( $matches, call_user_func( array(
+					$class,
+					'get_dictionary_matches'
+				), $dictionary, $name, $password, $class ) );
 			}
 			if ( ! empty( $penalty_strings ) ) {
 				$dictionary = array();
@@ -52,9 +57,13 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 					$input_lower                = strtolower( $input );
 					$dictionary[ $input_lower ] = $rank;
 				}
-				$matches = array_merge( $matches, call_user_func( array( $class, 'get_dictionary_matches' ), $dictionary, 'user_inputs', $password, $class ) );
+				$matches = array_merge( $matches, call_user_func( array(
+					$class,
+					'get_dictionary_matches'
+				), $dictionary, 'user_inputs', $password, $class ) );
 			}
 		}
+
 		return $matches;
 	}
 
@@ -66,6 +75,7 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 			$result['reversed']        = false;
 			$matches[]                 = new $class( $password, $result );
 		}
+
 		return $matches;
 
 	}
@@ -75,18 +85,18 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 	 * Match password in a single dictionary.
 	 *
 	 * @param string $password
-	 * @param array  $dictionary
+	 * @param array $dictionary
 	 *
 	 * @return array
 	 */
 	protected static function dictionary_match( $password, $dictionary ) {
 		$result = array();
-		$length = strlen($password);
+		$length = strlen( $password );
 
 		$pw_lower = strtolower( $password );
 
-		for ( $i = 0; $i < $length; $i++ ) {
-			for ( $j = $i; $j < $length; $j++ ) {
+		for ( $i = 0; $i < $length; $i ++ ) {
+			for ( $j = $i; $j < $length; $j ++ ) {
 				$word = substr( $pw_lower, $i, $j - $i + 1 );
 
 				if ( isset( $dictionary[ $word ] ) ) {
@@ -115,6 +125,7 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 
 	public function estimate_guesses() {
 		$this->guesses = $this->rank * $this->get_uppercase_variations() * $this->get_l33t_variations() * $this->get_reversed_variations();
+
 		return $this->guesses;
 	}
 
@@ -142,18 +153,19 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 			$ord = ord( $c );
 
 			if ( $this->is_upper( $ord ) ) {
-				++$upper;
+				++ $upper;
 			} elseif ( $this->is_lower( $ord ) ) {
-				++$lower;
+				++ $lower;
 			}
 		}
 
 		// otherwise calculate the number of ways to capitalize U+L uppercase+lowercase letters
 		// with U uppercase letters or less. or, if there's more uppercase than lower (for eg. PASSwORD),
 		// the number of ways to lowercase U+L letters with L lowercase letters or less.
-		for ( $i = 1; $i <= min( $upper, $lower ); $i++ ) {
+		for ( $i = 1; $i <= min( $upper, $lower ); $i ++ ) {
 			$variations += $this->binomial_coefficient( $upper + $lower, $i );
 		}
+
 		return $variations;
 	}
 
@@ -166,8 +178,8 @@ class ITSEC_Zxcvbn_Dictionary_Match extends ITSEC_Zxcvbn_Match {
 	}
 
 	public function get_feedback( $is_sole_match = true ) {
-		$feedback = new stdClass();
-		$feedback->warning = '';
+		$feedback              = new stdClass();
+		$feedback->warning     = '';
 		$feedback->suggestions = array();
 
 		switch ( $this->dictionary_name ) {

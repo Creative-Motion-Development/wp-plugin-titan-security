@@ -84,9 +84,9 @@ class Antispam extends Base {
 	/**
 	 * Antispam page constructor.
 	 *
-	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
-	 *
 	 * @param \Wbcr_Factory000_Plugin $plugin
+	 *
+	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 *
 	 */
 	public function __construct( \Wbcr_Factory000_Plugin $plugin ) {
@@ -100,8 +100,8 @@ class Antispam extends Base {
 	/**
 	 * Enqueue page assets
 	 *
-	 * @since 6.2
 	 * @return void
+	 * @since 6.2
 	 * @see   Wbcr_FactoryPages000_AdminPage
 	 *
 	 */
@@ -118,8 +118,8 @@ class Antispam extends Base {
 	/**
 	 * Permalinks options.
 	 *
-	 * @since 6.2
 	 * @return mixed[]
+	 * @since 6.2
 	 */
 	public function getPageOptions() {
 		$is_premium = wantispam_is_license_activate();

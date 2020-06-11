@@ -1,15 +1,15 @@
-jQuery(function($) {
+jQuery(function ($) {
 
     var chat_html_id = 'wtitan-scan-chart';
-    var ctx = document.getElementById( chat_html_id );
+    var ctx = document.getElementById(chat_html_id);
 
-    window.wtitan_chart = new Chart( ctx, {
-        type:    'doughnut',
+    window.wtitan_chart = new Chart(ctx, {
+        type: 'doughnut',
         data: {
             datasets: [{
                 data: [
-                    $( '#' + chat_html_id ).attr( 'data-cleaned' ),
-                    $( '#' + chat_html_id ).attr( 'data-suspicious' ),
+                    $('#' + chat_html_id).attr('data-cleaned'),
+                    $('#' + chat_html_id).attr('data-suspicious'),
                 ],
                 backgroundColor: [
                     '#5d05b7',
@@ -23,12 +23,12 @@ jQuery(function($) {
             legend: {
                 display: false
             },
-            events:    [],
+            events: [],
             animation: {
                 easing: 'easeOutBounce'
             },
-            responsive:       false,
+            responsive: false,
             cutoutPercentage: 80
         }
-    } );
+    });
 });

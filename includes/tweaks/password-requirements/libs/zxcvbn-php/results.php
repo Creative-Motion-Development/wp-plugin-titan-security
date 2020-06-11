@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Results {
 	/**
 	 * @var string Password
@@ -17,20 +18,20 @@ class ITSEC_Zxcvbn_Results {
 
 	/**
 	 * @var object dictionary of back-of-the-envelope crack time estimations, in seconds, based on a few scenarios {
-	 *     @type int   $offline_fast_hashing_1e10_per_second  offline attack with user-unique salting but a fast hash function like SHA-1, SHA-256 or MD5. A wide range of reasonable numbers anywhere from one billion - one trillion guesses per second, depending on number of cores and machines. ballparking at 10B/sec.
-	 *     @type int   $offline_slow_hashing_1e4_per_second   offline attack. assumes multiple attackers, proper user-unique salting, and a slow hash function w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
-	 *     @type int   $online_no_throttling_10_per_second    online attack on a service that doesn't ratelimit, or where an attacker has outsmarted ratelimiting
-	 *     @type int   $online_throttling_100_per_hour        online attack on a service that ratelimits password auth attempts.
+	 * @type int $offline_fast_hashing_1e10_per_second offline attack with user-unique salting but a fast hash function like SHA-1, SHA-256 or MD5. A wide range of reasonable numbers anywhere from one billion - one trillion guesses per second, depending on number of cores and machines. ballparking at 10B/sec.
+	 * @type int $offline_slow_hashing_1e4_per_second offline attack. assumes multiple attackers, proper user-unique salting, and a slow hash function w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
+	 * @type int $online_no_throttling_10_per_second online attack on a service that doesn't ratelimit, or where an attacker has outsmarted ratelimiting
+	 * @type int $online_throttling_100_per_hour online attack on a service that ratelimits password auth attempts.
 	 * }
 	 */
 	public $crack_times_seconds = array();
 
 	/**
 	 * @var object same keys as result.crack_times_seconds, with friendlier display string values: "less than a second", "3 hours", "centuries", etc. {
-	 *     @type int   $offline_fast_hashing_1e10_per_second  offline attack with user-unique salting but a fast hash function like SHA-1, SHA-256 or MD5. A wide range of reasonable numbers anywhere from one billion - one trillion guesses per second, depending on number of cores and machines. ballparking at 10B/sec.
-	 *     @type int   $offline_slow_hashing_1e4_per_second   offline attack. assumes multiple attackers, proper user-unique salting, and a slow hash function w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
-	 *     @type int   $online_no_throttling_10_per_second    online attack on a service that doesn't ratelimit, or where an attacker has outsmarted ratelimiting
-	 *     @type int   $online_throttling_100_per_hour        online attack on a service that ratelimits password auth attempts.
+	 * @type int $offline_fast_hashing_1e10_per_second offline attack with user-unique salting but a fast hash function like SHA-1, SHA-256 or MD5. A wide range of reasonable numbers anywhere from one billion - one trillion guesses per second, depending on number of cores and machines. ballparking at 10B/sec.
+	 * @type int $offline_slow_hashing_1e4_per_second offline attack. assumes multiple attackers, proper user-unique salting, and a slow hash function w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
+	 * @type int $online_no_throttling_10_per_second online attack on a service that doesn't ratelimit, or where an attacker has outsmarted ratelimiting
+	 * @type int $online_throttling_100_per_hour online attack on a service that ratelimits password auth attempts.
 	 * }
 	 */
 	public $crack_times_display = array();
@@ -40,15 +41,15 @@ class ITSEC_Zxcvbn_Results {
 	 *     0 # too guessable: risky password. (guesses < 10^3)
 	 *     1 # very guessable: protection from throttled online attacks. (guesses < 10^6)
 	 *     2 # somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
-     *     3 # safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
-     *     4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
-     */
+	 *     3 # safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+	 *     4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
+	 */
 	public $score;
 
 	/**
 	 * @var object verbal feedback to help choose better passwords. set when score <= 2. {
-	 *     @type string $warning     explains what's wrong, eg. 'this is a top-10 common password'. not always set -- sometimes an empty string
-	 *     @type array  $suggestions a possibly-empty list of suggestions to help choose a less guessable password. eg. 'Add another word or two'
+	 * @type string $warning explains what's wrong, eg. 'this is a top-10 common password'. not always set -- sometimes an empty string
+	 * @type array $suggestions a possibly-empty list of suggestions to help choose a less guessable password. eg. 'Add another word or two'
 	 * }
 	 */
 	public $feedback;
@@ -103,39 +104,44 @@ class ITSEC_Zxcvbn_Results {
 	}
 
 	protected function display_time( $seconds ) {
-		$minute = 60;
-		$hour = $minute * 60;
-		$day = $hour * 24;
-		$month = $day * 31;
-		$year = $month * 12;
+		$minute  = 60;
+		$hour    = $minute * 60;
+		$day     = $hour * 24;
+		$month   = $day * 31;
+		$year    = $month * 12;
 		$century = $year * 100;
 		if ( $seconds < 1 ) {
 			return 'less than a second';
-		} elseif( $seconds < $minute ) {
-			return sprintf( '%d second%s', $seconds, ( $seconds > 1 )? 's':'' );
-		} elseif( $seconds < $hour ) {
+		} elseif ( $seconds < $minute ) {
+			return sprintf( '%d second%s', $seconds, ( $seconds > 1 ) ? 's' : '' );
+		} elseif ( $seconds < $hour ) {
 			$base = round( $seconds / $minute );
-			return sprintf( '%d minute%s', $base, ( $base > 1 )? 's':'' );
-		} elseif( $seconds < $day ) {
+
+			return sprintf( '%d minute%s', $base, ( $base > 1 ) ? 's' : '' );
+		} elseif ( $seconds < $day ) {
 			$base = round( $seconds / $hour );
-			return sprintf( '%d hour%s', $base, ( $base > 1 )? 's':'' );
-		} elseif( $seconds < $month ) {
+
+			return sprintf( '%d hour%s', $base, ( $base > 1 ) ? 's' : '' );
+		} elseif ( $seconds < $month ) {
 			$base = round( $seconds / $day );
-			return sprintf( '%d day%s', $base, ( $base > 1 )? 's':'' );
-		} elseif( $seconds < $year ) {
+
+			return sprintf( '%d day%s', $base, ( $base > 1 ) ? 's' : '' );
+		} elseif ( $seconds < $year ) {
 			$base = round( $seconds / $month );
-			return sprintf( '%d month%s', $base, ( $base > 1 )? 's':'' );
-		} elseif( $seconds < $century ) {
+
+			return sprintf( '%d month%s', $base, ( $base > 1 ) ? 's' : '' );
+		} elseif ( $seconds < $century ) {
 			$base = round( $seconds / $year );
-			return sprintf( '%d year%s', $base, ( $base > 1 )? 's':'' );
+
+			return sprintf( '%d year%s', $base, ( $base > 1 ) ? 's' : '' );
 		} else {
 			return 'centuries';
 		}
 	}
 
 	protected function feedback() {
-		$this->feedback = new stdClass();
-		$this->feedback->warning = '';
+		$this->feedback              = new stdClass();
+		$this->feedback->warning     = '';
 		$this->feedback->suggestions = array();
 
 		if ( 0 === count( $this->sequence ) ) {
@@ -143,6 +149,7 @@ class ITSEC_Zxcvbn_Results {
 				'Use a few words, avoid common phrases',
 				'No need for symbols, digits, or uppercase letters'
 			);
+
 			return;
 		}
 

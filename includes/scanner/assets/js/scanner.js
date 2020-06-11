@@ -2,17 +2,17 @@
  * @var {Object} wpnonce
  */
 
-(function($) {
+(function ($) {
     var intervalId;
     var loader = jQuery('.wt-scan-icon-loader');
 
 
-    jQuery(document).ready(function($) {
-        if($('#scan').attr('data-action') === 'stop_scan')
+    jQuery(document).ready(function ($) {
+        if ($('#scan').attr('data-action') === 'stop_scan')
             intervalId = setInterval(status_scan, 15000);
     });
 
-    $('#scan').on('click', function(event) {
+    $('#scan').on('click', function (event) {
         event.preventDefault();
 
         var btn = $(this);
@@ -24,7 +24,7 @@
         var action = btn.attr('data-action');
         var nonce;
 
-        if(action === 'start_scan') {
+        if (action === 'start_scan') {
             btn.html('Starting...');
             nonce = wpnonce.start;
             $("div.wt-scanner-chart-clean").css('width', '0%');
@@ -43,7 +43,7 @@
         $.post(ajaxurl, {
             action: action,
             _wpnonce: nonce
-        }, function(response) {
+        }, function (response) {
             btn.removeAttr('disabled');
             btn_loader.hide();
             switch (action) {
@@ -64,40 +64,39 @@
             }
 
             var type;
-            if(response.success) {
+            if (response.success) {
                 type = 'success';
             } else {
                 type = 'warning';
             }
 
             var noticeId = $.wbcr_factory_clearfy_000.app.showNotice(response.data.message, type);
-            setTimeout(function() {
+            setTimeout(function () {
                 $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
             }, 5000);
         });
     });
 
     function status_scan() {
-        if($('#scan').attr('data-action') === 'start_scan') clearInterval(intervalId);
+        if ($('#scan').attr('data-action') === 'start_scan') clearInterval(intervalId);
         $.post(ajaxurl, {
             action: 'status_scan',
             _wpnonce: wpnonce.status
-        }, function(response) {
-            if(typeof response.data === 'undefined' || response.data === false) {
+        }, function (response) {
+            if (typeof response.data === 'undefined' || response.data === false) {
                 return;
             }
 
-            $("div.wt-scanner-chart-clean").css('width',response.data.progress[0] + '%');
-            $("div.wt-scanner-chart-suspicious").css('width',response.data.progress[1] + '%');
-            $("div.wt-scanner-chart-notverified").css('width',response.data.progress[2] + '%');
+            $("div.wt-scanner-chart-clean").css('width', response.data.progress[0] + '%');
+            $("div.wt-scanner-chart-suspicious").css('width', response.data.progress[1] + '%');
+            $("div.wt-scanner-chart-notverified").css('width', response.data.progress[2] + '%');
 
             $("#wtitan-files-num").html(response.data.scanned);
             $("#wtitan-cleaned-num").html(response.data.cleaned);
             $("#wtitan-suspicious-num").html(response.data.suspicious);
             $("#wtitan-notverified-num").html(response.data.notfiltered);
 
-            if(response.data.notfiltered === 0)
-            {
+            if (response.data.notfiltered === 0) {
                 $('#scan').attr('data-action', 'start_scan');
                 $('#scan').html('Start scan');
             }

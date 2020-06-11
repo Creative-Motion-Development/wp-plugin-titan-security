@@ -8,7 +8,7 @@ function audit_ajax(action_before = true) {
             _ajax_nonce: wtaudit.nonce
         },
         beforeSend: function () {
-            if(action_before) {
+            if (action_before) {
                 wtitan_progress_status(jQuery('#wt-scan-progress-audit .wt-scan-step-icon'), 'loader');
                 wtitan_target.html("");
                 wtitan_hide_target.html("");
@@ -18,18 +18,17 @@ function audit_ajax(action_before = true) {
             console.log('audit - ok');
 
             var status = loader.attr('data-status');
-            if((status === '11') || (action_before && status === '1')) {
+            if ((status === '11') || (action_before && status === '1')) {
                 loader.hide();
                 jQuery('#wt-checker-check').removeAttr('disabled');
-            }
-            else loader.attr('data-status', loader.attr('data-status')+1);
+            } else loader.attr('data-status', loader.attr('data-status') + 1);
 
             var noticeId = jQuery.wbcr_factory_clearfy_000.app.showNotice('Security audit success', 'success');
-            setTimeout(function() {
+            setTimeout(function () {
                 jQuery.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
             }, 5000);
 
-            if(action_before) {
+            if (action_before) {
                 wtitan_target.html(result);
                 wtitan_progress_status(jQuery('#wt-scan-progress-audit .wt-scan-step-icon'), 'ok');
             }

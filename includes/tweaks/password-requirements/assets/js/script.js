@@ -1,3 +1,3 @@
-jQuery( document ).ready( function () {
-	jQuery( '.pw-weak' ).remove();
-} );
+jQuery(document).ready(function () {
+    jQuery('.pw-weak').remove();
+});

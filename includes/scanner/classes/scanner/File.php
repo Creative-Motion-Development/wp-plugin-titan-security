@@ -10,7 +10,7 @@ use WBCR\Titan\Logger\Writter;
  *
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
-class File {
+class File implements \JsonSerializable {
 	/**
 	 * @var string
 	 */
@@ -83,23 +83,23 @@ class File {
 		$this->content = null;
 	}
 
-    public function toArray()
-    {
-        return [
-            'path'=>$this->path,
-            'hash_file'=>$this->hashFile,
-            'content' => $this->content
-        ];
-    }
+	public function toArray() {
+		return [
+			'path'      => $this->path,
+			'hash_file' => $this->hashFile,
+			'content'   => $this->content
+		];
+	}
 
 
-    /**
+	/**
+	 * @param bool $short
+	 *
 	 * @return string
 	 *
-	 * @param bool $short
 	 */
-	public function getPath($short = false) {
-		return $short ? str_replace( ABSPATH, '', $this->path) : $this->path;
+	public function getPath( $short = false ) {
+		return $short ? str_replace( ABSPATH, '', $this->path ) : $this->path;
 	}
 
 	/**
@@ -114,5 +114,9 @@ class File {
 	 */
 	public function getContent() {
 		return $this->loadData();
+	}
+
+	public function jsonSerialize() {
+		return $this->toArray();
 	}
 }

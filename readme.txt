@@ -175,6 +175,10 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+= 7.0.3 - 20.05.2020 =
+* Added an option to send a weekly security digest to admin email.
+* Fixed: Minor bugs
+
 = 7.0.2 - 30.04.2020 =
 * Add COMPONENTS tab
 * Fixed: Minor bugs

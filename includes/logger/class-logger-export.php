@@ -37,9 +37,8 @@ class Export {
 	 *
 	 * @param null $archive_name
 	 */
-	public function __construct($archive_name = null)
-	{
-		if( $archive_name !== null ) {
+	public function __construct( $archive_name = null ) {
+		if ( $archive_name !== null ) {
 			$this->_archive_name = $archive_name;
 		}
 	}
@@ -49,11 +48,10 @@ class Export {
 	 *
 	 * @return bool
 	 */
-	public function prepare()
-	{
+	public function prepare() {
 
-		if( !class_exists('\ZipArchive') ) {
-			\WBCR\Titan\Logger\Writter::error('App does not have \ZipArchive class available. It is not possible to prepare export');
+		if ( ! class_exists( '\ZipArchive' ) ) {
+			\WBCR\Titan\Logger\Writter::error( 'App does not have \ZipArchive class available. It is not possible to prepare export' );
 
 			return false;
 		}
@@ -62,38 +60,38 @@ class Export {
 
 		$log_base_dir = \WBCR\Titan\Logger\Writter::get_base_dir();
 
-		if( $log_base_dir === false ) {
-			\WBCR\Titan\Logger\Writter::error(sprintf('Failed to get log path %s', $log_base_dir));
+		if ( $log_base_dir === false ) {
+			\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to get log path %s', $log_base_dir ) );
 
 			return false;
 		}
 
 		$uploads = wp_get_upload_dir();
 
-		if( isset($uploads['error']) && $uploads['error'] !== false ) {
-			\WBCR\Titan\Logger\Writter::error('Unable to get save path of ZIP archive from wp_get_upload_dir()');
+		if ( isset( $uploads['error'] ) && $uploads['error'] !== false ) {
+			\WBCR\Titan\Logger\Writter::error( 'Unable to get save path of ZIP archive from wp_get_upload_dir()' );
 
 			return false;
 		}
 
-		$save_base_path = isset($uploads['basedir']) ? $uploads['basedir'] : null;
-		$zip_archive_name = sprintf("titan_debug_report-%s.zip", date('Y-m-d'));
-		$zip_save_path = $save_base_path . DIRECTORY_SEPARATOR . $zip_archive_name;
+		$save_base_path   = isset( $uploads['basedir'] ) ? $uploads['basedir'] : null;
+		$zip_archive_name = sprintf( "titan_debug_report-%s.zip", date( 'Y-m-d' ) );
+		$zip_save_path    = $save_base_path . DIRECTORY_SEPARATOR . $zip_archive_name;
 
-		if( !$zip->open($zip_save_path, \ZipArchive::CREATE) ) {
-			\WBCR\Titan\Logger\Writter::error(sprintf('Failed to created ZIP archive in path %s. Skipping export...', $zip_save_path));
+		if ( ! $zip->open( $zip_save_path, \ZipArchive::CREATE ) ) {
+			\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to created ZIP archive in path %s. Skipping export...', $zip_save_path ) );
 
 			return false;
 		}
 
 		// Add all logs to ZIP archive
 		$glob_path = $log_base_dir . '*.log';
-		$log_files = glob($glob_path);
+		$log_files = glob( $glob_path );
 
-		if( !empty($log_files) ) {
-			foreach($log_files as $file) {
-				if( !$zip->addFile($file, wp_basename($file)) ) {
-					\WBCR\Titan\Logger\Writter::error(sprintf('Failed to add %s to %s archive. Skipping it.', $file, $zip_save_path));
+		if ( ! empty( $log_files ) ) {
+			foreach ( $log_files as $file ) {
+				if ( ! $zip->addFile( $file, wp_basename( $file ) ) ) {
+					\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to add %s to %s archive. Skipping it.', $file, $zip_save_path ) );
 
 					return false;
 				}
@@ -102,25 +100,25 @@ class Export {
 
 		$system_info = $this->prepare_system_info();
 
-		if( !empty($system_info) ) {
+		if ( ! empty( $system_info ) ) {
 			$system_info_file_name = 'titan-system-info.txt';
-			$system_info_path = $save_base_path . DIRECTORY_SEPARATOR . $system_info_file_name;
-			if( false !== @file_put_contents($system_info_path, $system_info) ) {
-				if( !$zip->addFile($system_info_path, $system_info_file_name) ) {
-					\WBCR\Titan\Logger\Writter::error(sprintf('Failed to add %s to %s archive. Skipping it.', $system_info_file_name, $system_info_path));
+			$system_info_path      = $save_base_path . DIRECTORY_SEPARATOR . $system_info_file_name;
+			if ( false !== @file_put_contents( $system_info_path, $system_info ) ) {
+				if ( ! $zip->addFile( $system_info_path, $system_info_file_name ) ) {
+					\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to add %s to %s archive. Skipping it.', $system_info_file_name, $system_info_path ) );
 				}
 			} else {
-				\WBCR\Titan\Logger\Writter::error(sprintf('Failed to save %s in %s', $system_info_file_name, $zip_save_path));
+				\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to save %s in %s', $system_info_file_name, $zip_save_path ) );
 			}
 		}
 
-		if( !$zip->close() ) {
-			\WBCR\Titan\Logger\Writter::error(sprintf('Failed to close ZIP archive %s for unknown reason. \ZipArchive::close() failed.'));
+		if ( ! $zip->close() ) {
+			\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to close ZIP archive %s for unknown reason. \ZipArchive::close() failed.' ) );
 		}
 
-		if( isset($system_info_path) ) {
+		if ( isset( $system_info_path ) ) {
 			// Clean-up as this is just temp file
-			@unlink($system_info_path);
+			@unlink( $system_info_path );
 		}
 
 		$this->_archive_save_path = $zip_save_path;
@@ -133,11 +131,10 @@ class Export {
 	 *
 	 * @return string
 	 */
-	public function prepare_system_info()
-	{
+	public function prepare_system_info() {
 
 		$space = PHP_EOL . PHP_EOL;
-		$nl = PHP_EOL;
+		$nl    = PHP_EOL;
 
 		$report = 'Plugin version: ' . \WBCR\Titan\Plugin::app()->getPluginVersion() . $nl;
 
@@ -146,43 +143,43 @@ class Export {
 		$report .= 'WordPress Version: ' . $wp_version . $nl;
 		$report .= 'PHP Version: ' . PHP_VERSION . $nl;
 		$report .= 'Locale: ' . get_locale() . $nl;
-		$report .= 'HTTP Accept: ' . (isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '*empty*') . $nl;
-		$report .= 'HTTP User Agent: ' . (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '*empty*') . $nl;
-		$report .= 'Server software: ' . (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '*empty*') . $nl;
+		$report .= 'HTTP Accept: ' . ( isset( $_SERVER['HTTP_ACCEPT'] ) ? $_SERVER['HTTP_ACCEPT'] : '*empty*' ) . $nl;
+		$report .= 'HTTP User Agent: ' . ( isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '*empty*' ) . $nl;
+		$report .= 'Server software: ' . ( isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '*empty*' ) . $nl;
 
 		$report .= $space;
 
-		$active_plugins = get_option('active_plugins', null);
+		$active_plugins = get_option( 'active_plugins', null );
 
-		if( $active_plugins !== null ) {
+		if ( $active_plugins !== null ) {
 
 			$prepared_plugins = [];
 
 			$all_plugins = get_plugins();
 
-			foreach($active_plugins as $active_plugin) {
-				if( isset($all_plugins[$active_plugin]) ) {
-					$advanced_info = $all_plugins[$active_plugin];
-					$name = isset($advanced_info['Name']) ? $advanced_info['Name'] : '';
-					$version = isset($advanced_info['Version']) ? $advanced_info['Version'] : '';
-					$prepared_plugins[] = sprintf("%s (%s)", $name, $version);
+			foreach ( $active_plugins as $active_plugin ) {
+				if ( isset( $all_plugins[ $active_plugin ] ) ) {
+					$advanced_info      = $all_plugins[ $active_plugin ];
+					$name               = isset( $advanced_info['Name'] ) ? $advanced_info['Name'] : '';
+					$version            = isset( $advanced_info['Version'] ) ? $advanced_info['Version'] : '';
+					$prepared_plugins[] = sprintf( "%s (%s)", $name, $version );
 				}
 			}
 
 			$report .= 'Active plugins:' . PHP_EOL;
-			$report .= implode(PHP_EOL, $prepared_plugins);
+			$report .= implode( PHP_EOL, $prepared_plugins );
 		}
 
-		if( function_exists('get_loaded_extensions') ) {
+		if ( function_exists( 'get_loaded_extensions' ) ) {
 
 			$report .= PHP_EOL . PHP_EOL;
 			$report .= 'Active extensions: ' . $nl;
-			$report .= implode(', ', get_loaded_extensions());
+			$report .= implode( ', ', get_loaded_extensions() );
 		}
 
 		$report .= $space;
 
-		$report .= 'Generated at: ' . date('c');
+		$report .= 'Generated at: ' . date( 'c' );
 
 		return $report;
 	}
@@ -198,40 +195,39 @@ class Export {
 	 *
 	 * @return bool
 	 */
-	public function download($should_clean_up = true)
-	{
+	public function download( $should_clean_up = true ) {
 
 		$zip_save_path = $this->_archive_save_path;
 
-		if( empty($zip_save_path) ) {
+		if ( empty( $zip_save_path ) ) {
 			return false;
 		}
 
-		$zip_content = @file_get_contents($zip_save_path);
+		$zip_content = @file_get_contents( $zip_save_path );
 
-		if( $zip_save_path === false ) {
-			\WBCR\Titan\Logger\Writter::error(sprintf('Failed to get ZIP %s content as file_get_contents() returned false', $zip_save_path));
+		if ( $zip_save_path === false ) {
+			\WBCR\Titan\Logger\Writter::error( sprintf( 'Failed to get ZIP %s content as file_get_contents() returned false', $zip_save_path ) );
 
 			return false;
 		}
 
-		if( $should_clean_up ) {
+		if ( $should_clean_up ) {
 			// Delete as ZIP is just for temporary usage
-			@unlink($zip_save_path);
+			@unlink( $zip_save_path );
 		}
 
-		$archive_name = str_replace('{datetime}', date('c'), $this->_archive_name);
+		$archive_name = str_replace( '{datetime}', date( 'c' ), $this->_archive_name );
 
 		// Set-up headers to download export file
-		header('Content-Description: File Transfer');
-		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename=' . $archive_name);
-		header('Content-Transfer-Encoding: binary');
-		header('Connection: Keep-Alive');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
-		header('Content-Length: ' . strlen($zip_content));
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Type: application/zip' );
+		header( 'Content-Disposition: attachment; filename=' . $archive_name );
+		header( 'Content-Transfer-Encoding: binary' );
+		header( 'Connection: Keep-Alive' );
+		header( 'Expires: 0' );
+		header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+		header( 'Pragma: public' );
+		header( 'Content-Length: ' . strlen( $zip_content ) );
 
 		echo $zip_content;
 		exit();
@@ -242,8 +238,7 @@ class Export {
 	 *
 	 * @return string
 	 */
-	public function get_temp_archive_path()
-	{
+	public function get_temp_archive_path() {
 		return $this->_archive_save_path;
 	}
 
@@ -252,8 +247,7 @@ class Export {
 	 *
 	 * @return bool
 	 */
-	public function delete_temp_archive()
-	{
-		return @unlink($this->get_temp_archive_path());
+	public function delete_temp_archive() {
+		return @unlink( $this->get_temp_archive_path() );
 	}
 }

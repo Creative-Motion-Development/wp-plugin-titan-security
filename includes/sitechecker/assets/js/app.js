@@ -32,16 +32,16 @@
             getToken();
         }
 
-        subscribe_bt.on('click', function() {
+        subscribe_bt.on('click', function () {
             showNotice('Subscribing...', 'info', 1500);
             getToken();
         });
 
-        unsubscribe_bt.on('click', function() {
+        unsubscribe_bt.on('click', function () {
             messaging.getToken()
-                .then(function(currentToken) {
+                .then(function (currentToken) {
                     messaging.deleteToken(currentToken)
-                        .then(function() {
+                        .then(function () {
                             console.log('Token deleted');
                             sendTokenToServer(undefined);
                             resetUI();
@@ -50,23 +50,23 @@
         });
 
         navigator.serviceWorker
-            .register(wtitan.path, {scope:wtitan.scope})
-            .then(function() {
+            .register(wtitan.path, {scope: wtitan.scope})
+            .then(function () {
                 console.log("ServiceWorker was registered");
             });
 
-        messaging.onMessage(function(payload) {
+        messaging.onMessage(function (payload) {
             console.log('Message received', payload);
 
             Notification.requestPermission()
-                .then(function(permission) {
+                .then(function (permission) {
                     if (permission === 'granted') {
-                        navigator.serviceWorker.ready.then(function(registration) {
+                        navigator.serviceWorker.ready.then(function (registration) {
                             // Copy data object to get parameters in the click handler
                             payload.data.data = JSON.parse(JSON.stringify(payload.data));
 
                             registration.showNotification(payload.data.title, payload.data);
-                        }).catch(function(error) {
+                        }).catch(function (error) {
                             // registration failed :(
                             showError('ServiceWorker registration failed', error);
                         });
@@ -75,14 +75,14 @@
         });
 
         // Callback fired if Instance ID token is updated.
-        messaging.onTokenRefresh(function() {
+        messaging.onTokenRefresh(function () {
             messaging.getToken()
-                .then(function(refreshedToken) {
+                .then(function (refreshedToken) {
                     console.log('Token refreshed');
                     // Send Instance ID token to app server.
                     sendTokenToServer(refreshedToken);
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     showError('Unable to retrieve refreshed token', error);
                 });
         });
@@ -100,7 +100,7 @@
             console.warn('postMessage not supported');
         }
 
-        if(!window.location.protocol.startsWith('https')) {
+        if (!window.location.protocol.startsWith('https')) {
             showErrorNearButton(wt_app.https);
         }
 
@@ -118,18 +118,18 @@
     /**
      * @param {String} currentToken
      */
-    function sendTokenToServer (currentToken) {
-        if(typeof currentToken === 'undefined') {
+    function sendTokenToServer(currentToken) {
+        if (typeof currentToken === 'undefined') {
             window.localStorage.removeItem(storageTokenKey);
         }
 
-        if(!isTokenSentToServer(currentToken)) {
+        if (!isTokenSentToServer(currentToken)) {
             $.post(ajaxurl, {
                 action: 'push_token',
                 _wpnonce: wtitan.pushTokenNonce,
                 token: currentToken
-            }, function(response) {
-                if(response.success) {
+            }, function (response) {
+                if (response.success) {
                     showNotice(response.data.message, 'success', 5000);
                 } else {
                     showNotice(response.data.error_message, 'danger', 5000);
@@ -158,7 +158,7 @@
         }
     }
 
-    function showError (error, error_data) {
+    function showError(error, error_data) {
         if (typeof error_data !== "undefined") {
             console.error(error, error_data);
         } else {
@@ -168,22 +168,22 @@
         showNotice(error, 'danger', 0);
     }
 
-    function showErrorNearButton (error, error_data) {
+    function showErrorNearButton(error, error_data) {
         if (typeof error_data !== "undefined") {
             console.error(error, error_data);
         } else {
             console.error(error);
         }
 
-        $('.wt-sitechecker-button-subscribe#subscribe').after('<div class="wt-checker-error">'+error+'</div>');
+        $('.wt-sitechecker-button-subscribe#subscribe').after('<div class="wt-checker-error">' + error + '</div>');
         //showNotice(error, 'danger', 0);
     }
 
     function getToken() {
         messaging.requestPermission()
-            .then(function() {
+            .then(function () {
                 messaging.getToken()
-                    .then(function(currentToken) {
+                    .then(function (currentToken) {
                         if (currentToken) {
                             console.log("Token received: ", currentToken);
                             sendTokenToServer(currentToken);
@@ -195,32 +195,32 @@
                             setSentTokenToServer(undefined);
                         }
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         showError('An error occurred while retrieving token', error);
                         setSentTokenToServer(undefined);
                     });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 showError('Unable to get permission to notify', error);
             });
     }
 
     function showNotice(message, type, timeout) {
-        if(typeof type === 'undefined') {
+        if (typeof type === 'undefined') {
             type = 'success';
         }
 
-        if(typeof timeout === 'undefined') {
+        if (typeof timeout === 'undefined') {
             timeout = 5000;
         }
 
-        if(typeof $ === 'undefined' || typeof $.wbcr_factory_clearfy_000 === 'undefined') {
+        if (typeof $ === 'undefined' || typeof $.wbcr_factory_clearfy_000 === 'undefined') {
             return;
         }
 
         var noticeId = $.wbcr_factory_clearfy_000.app.showNotice(message, type);
-        if(timeout > 0) {
-            setTimeout(function() {
+        if (timeout > 0) {
+            setTimeout(function () {
                 $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
             }, timeout);
         }

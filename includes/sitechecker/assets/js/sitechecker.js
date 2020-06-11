@@ -1,20 +1,20 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     function showNotice(message, type, timeout) {
-        if(typeof type === 'undefined') {
+        if (typeof type === 'undefined') {
             type = 'success';
         }
 
-        if(typeof timeout === 'undefined') {
+        if (typeof timeout === 'undefined') {
             timeout = 5000;
         }
 
-        if(typeof $ === 'undefined' || typeof $.wbcr_factory_clearfy_000 === 'undefined') {
+        if (typeof $ === 'undefined' || typeof $.wbcr_factory_clearfy_000 === 'undefined') {
             return;
         }
 
         var noticeId = $.wbcr_factory_clearfy_000.app.showNotice(message, type);
-        if(timeout > 0) {
-            setTimeout(function() {
+        if (timeout > 0) {
+            setTimeout(function () {
                 $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
             }, timeout);
         }
@@ -36,15 +36,13 @@ jQuery(document).ready(function($) {
             },
             success: function (response) {
                 //console.log(response);
-                if(response.success) {
-                    console.log(response.data.notice+": "+$btn.data('id'));
+                if (response.success) {
+                    console.log(response.data.notice + ": " + $btn.data('id'));
                     $btn.closest('tr').fadeOut();
-                }
-                else
-                {
+                } else {
                     $spinner.hide();
                     $btn.show();
-                    console.log(response.data.notice+": "+$btn.data('id'));
+                    console.log(response.data.notice + ": " + $btn.data('id'));
                 }
                 showNotice(response.data.notice, response.data.type, 5000);
             },
@@ -69,8 +67,8 @@ jQuery(document).ready(function($) {
             },
             success: function (response) {
                 //console.log(response);
-                if(response.success) {
-                    console.log(response.data.notice+": "+$url);
+                if (response.success) {
+                    console.log(response.data.notice + ": " + $url);
                     window.location.reload();
                 }
                 showNotice(response.data.notice, response.data.type, 5000);

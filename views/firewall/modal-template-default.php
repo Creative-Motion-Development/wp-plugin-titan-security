@@ -1,6 +1,6 @@
 <?php
 // Exit if accessed directly
-if( !defined('ABSPATH') ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 /**
@@ -9,11 +9,11 @@ if( !defined('ABSPATH') ) {
  */
 ?>
 
-<script type="text/html" id="wtitan-tmpl-<?php echo esc_attr($data['id']); ?>">
-	<h2 class="wtitan-modal__title">
+<script type="text/html" id="wtitan-tmpl-<?php echo esc_attr( $data['id'] ); ?>">
+    <h2 class="wtitan-modal__title">
 		<?php echo $data['title']; ?>
-	</h2>
-	<div class="wtitan-modal__content">
+    </h2>
+    <div class="wtitan-modal__content">
 		<?php echo $data['content']; ?>
-	</div>
+    </div>
 </script>

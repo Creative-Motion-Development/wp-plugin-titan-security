@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 
 	protected static $max_delta = 5;
@@ -12,8 +13,9 @@ class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
@@ -23,8 +25,8 @@ class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 			return array();
 		}
 		$matches = array();
-		$begin = 0;
-		for ( $k = 1; $k < strlen( $password ); $k++ ) {
+		$begin   = 0;
+		for ( $k = 1; $k < strlen( $password ); $k ++ ) {
 			$delta = ord( $password[ $k ] ) - ord( $password[ $k - 1 ] );
 			if ( ! isset( $last_delta ) ) {
 				$last_delta = $delta;
@@ -32,18 +34,19 @@ class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 			if ( $delta === $last_delta ) {
 				continue;
 			}
-			$end = $k - 1;
+			$end    = $k - 1;
 			$result = self::update( $password, $begin, $end, $last_delta );
 			if ( $result ) {
 				$matches[] = new self( $password, $result );
 			}
-			$begin = $end;
+			$begin      = $end;
 			$last_delta = $delta;
 		}
 		$result = self::update( $password, $begin, strlen( $password ) - 1, $last_delta );
 		if ( $result ) {
 			$matches[] = new self( $password, $result );
 		}
+
 		return $matches;
 	}
 
@@ -53,28 +56,30 @@ class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 			if ( 0 < $abs_delta && $abs_delta <= self::$max_delta ) {
 				$token = substr( $password, $begin, $end - $begin + 1 );
 				if ( preg_match( '/^[a-z]+$/', $token ) ) {
-					$sequence_name = 'lower';
+					$sequence_name  = 'lower';
 					$sequence_space = 26;
 				} elseif ( preg_match( '/^[A-Z]+$/', $token ) ) {
-					$sequence_name = 'upper';
+					$sequence_name  = 'upper';
 					$sequence_space = 26;
 				} elseif ( preg_match( '/^\d+$/', $token ) ) {
-					$sequence_name = 'digits';
+					$sequence_name  = 'digits';
 					$sequence_space = 10;
 				} else {
-					$sequence_name = 'unicode';
+					$sequence_name  = 'unicode';
 					$sequence_space = 26;
 				}
+
 				return array(
-					'begin'         => $begin,
-					'end'           => $end,
-					'token'         => $token,
-					'sequence_name' => $sequence_name,
-					'sequence_space'=> $sequence_space,
-					'ascending'     => ( $delta > 0 ),
+					'begin'          => $begin,
+					'end'            => $end,
+					'token'          => $token,
+					'sequence_name'  => $sequence_name,
+					'sequence_space' => $sequence_space,
+					'ascending'      => ( $delta > 0 ),
 				);
 			}
 		}
+
 		// We don't want this as a match
 		return false;
 	}
@@ -93,12 +98,13 @@ class ITSEC_Zxcvbn_Sequence_Match extends ITSEC_Zxcvbn_Match {
 		}
 
 		$this->guesses = $base_guesses * strlen( $this->token );
+
 		return $this->guesses;
 	}
 
 	public function get_feedback( $is_sole_match = true ) {
-		$feedback = new stdClass();
-		$feedback->warning = 'Sequences like abc or 6543 are easy to guess';
+		$feedback              = new stdClass();
+		$feedback->warning     = 'Sequences like abc or 6543 are easy to guess';
 		$feedback->suggestions = array( 'Avoid sequences' );
 
 		return $feedback;

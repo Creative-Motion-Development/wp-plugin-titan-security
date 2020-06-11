@@ -1,4 +1,5 @@
 <?php
+
 class ITSEC_Zxcvbn_Matcher {
 
 	private $penalty_strings = array();
@@ -28,11 +29,12 @@ class ITSEC_Zxcvbn_Matcher {
 	public function omnimatch( $password ) {
 		$matches = array();
 		foreach ( $this->matchers as $class => $file ) {
-			$matched = call_user_func( array( $class, 'match'), $password, $this->penalty_strings );
+			$matched = call_user_func( array( $class, 'match' ), $password, $this->penalty_strings );
 			if ( ! empty( $matched ) && is_array( $matched ) ) {
 				$matches = array_merge( $matches, $matched );
 			}
 		}
+
 		return $matches;
 	}
 
@@ -54,12 +56,14 @@ abstract class ITSEC_Zxcvbn_Match {
 
 	/**
 	 * Finds matches in the password.
-	 * @param string $password         Password to check for match
-	 * @param array  $penalty_strings  Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
+	 *
+	 * @param string $password Password to check for match
+	 * @param array $penalty_strings Strings that should be penalized if in the password. This should be things like the username, first and last name, etc.
 	 *
 	 * @return ITSEC_Zxcvbn_Match[]    Array of Match objects
 	 */
-	public static function match($password, array $penalty_strings = array()) {}
+	public static function match( $password, array $penalty_strings = array() ) {
+	}
 
 	protected function is_digit( $ord ) {
 		return $ord >= 0x30 && $ord <= 0x39;
@@ -93,10 +97,11 @@ abstract class ITSEC_Zxcvbn_Match {
 			return 1;
 		}
 		$r = 1;
-		for ( $d = 1; $d <= $k; $d++ ) {
-			$r *= $n--;
+		for ( $d = 1; $d <= $k; $d ++ ) {
+			$r *= $n --;
 			$r /= $d;
 		}
+
 		return $r;
 	}
 
