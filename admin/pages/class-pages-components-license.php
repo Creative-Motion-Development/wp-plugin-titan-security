@@ -109,7 +109,7 @@ class Components_License extends Base {
 		 * @since 7.0.2
 		 *
 		 */
-		$components = apply_filters('wbcr/clearfy/license/list_components', []);
+		$components = apply_filters('wbcr/titan/license/list_components', []);
 
 		?>
 		<div class="wbcr-factory-page-group-header"><?php _e('<strong>Products activation</strong>.', 'clearfy') ?>
@@ -124,7 +124,7 @@ class Components_License extends Base {
 			 *
 			 * @since  7.0.2
 			 */
-			do_action('wbcr/clearfy/license/custom_plugins_card', $components);
+			do_action('wbcr/titan/license/custom_plugins_card', $components);
 			?>
 
 			<?php foreach((array)$components as $component): ?>

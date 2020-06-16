@@ -89,7 +89,7 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 		 * @since  1.6.2
 		 */
-		add_filter('wbcr/clearfy/license/list_components', function ($components) {
+		add_filter('wbcr/titan/license/list_components', function ($components) {
 			$title = 'Free';
 			$icon = 'clearfy-premium-icon-256x256--lock.png';
 
@@ -233,7 +233,6 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		}
 	}*/
 
-
 	/**
 	 * {@inheritdoc}
 	 *
@@ -260,13 +259,13 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 	{
 		//$is_trial = $this->request->get('trial', false, true);
 		//if( $is_trial ) {
-			?>
-			<script>
-				//jQuery(document).ready(function($) {
-					//jQuery('#wtitan-activate-trial-button').trigger('click');
-				//});
-			</script>
-			<?php
+		?>
+		<script>
+			//jQuery(document).ready(function($) {
+			//jQuery('#wtitan-activate-trial-button').trigger('click');
+			//});
+		</script>
+		<?php
 		//}
 
 		parent::showPageContent();
