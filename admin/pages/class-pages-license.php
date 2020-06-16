@@ -91,11 +91,11 @@ class License extends \Wbcr_FactoryClearfy000_LicensePage {
 		 */
 		add_filter('wbcr/titan/license/list_components', function ($components) {
 			$title = 'Free';
-			$icon = 'clearfy-premium-icon-256x256--lock.png';
+			$icon = 'titan-plugin-256x256-lock.png';
 
 			if( $this->is_premium ) {
 				$title = 'Premium';
-				$icon = 'clearfy-premium-icon-256x256--default.png';
+				$icon = 'titan-plugin-256x256.png';
 			}
 
 			$components[] = [
