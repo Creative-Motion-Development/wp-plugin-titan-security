@@ -199,7 +199,7 @@ class Components extends Base {
 				'url' => 'https://titansitescanner.com/plugin-scanner/',
 				'type' => 'wordpress',
 				'build' => 'freemium',
-				'base_path' => 'wp-plugin-plugins-scanner-premium/plugins-scanner-premium.php',
+				'base_path' => 'plugins-scanner-premium/plugins-scanner-premium.php',
 				'icon' => WTITAN_PLUGIN_URL . '/admin/assets/img/titan-plugin-scanner-icon-256x256-pro.png',
 				'description' => __('Preventively prevents infection of the site when activated by the plugin.', 'titan-security'),
 				//'settings_url' => admin_url( 'admin.php?page=hlp_hide_login-' . $this->plugin->getPluginName() )
