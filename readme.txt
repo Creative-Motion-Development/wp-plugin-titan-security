@@ -179,7 +179,7 @@ The plugin is pretty small and easy to read.
 * Added notice in the plugin interface
 * Fixed: Minor bugs
 
-= 7.0.4 - 16.06.2020 =
+= 7.1.2 - 16.06.2020 =
 * Added: options search in the plugin interface. You can enter the option name, the plugin will automatically redirect you to the desired page where the option is located.
 * Removed: trial for the premium plugin
 * Updated: main navigation menu.
