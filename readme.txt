@@ -175,6 +175,9 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+= 7.1.4 - 22.06.2020 =
+* Updated: translations
+
 = 7.1.3 - 19.06.2020 =
 * Added notice in the plugin interface
 * Fixed: Minor bugs
