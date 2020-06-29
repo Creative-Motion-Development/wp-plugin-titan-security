@@ -54,7 +54,7 @@ if( is_array($data) ) {
 			<div class="plugin-card-top">
 				<div class="name column-name">
 					<h3>
-						<a href="<?php echo esc_url($component['url']) ?>" class="thickbox open-plugin-details-modal">
+						<a href="<?php echo esc_url($component['url']) ?>" class="open-plugin-details-modal">
 							<?php echo esc_html($component['title']) ?>
 							<img src="<?php echo esc_attr($component['icon']) ?>" class="plugin-icon"
 							     alt="<?php echo esc_attr($component['title']) ?>">
