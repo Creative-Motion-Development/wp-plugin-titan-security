@@ -32,542 +32,541 @@ use WBCR\Titan\Client\Response\Response;
  * @copyright (c) 2020 Creative Motion
  */
 class Client {
-	const ENDPOINT = 'https://api.titansitescanner.com/api/v1.0/';
+    #region props and consts
 
-	/**
-	 * @var string|null
-	 */
-	private $license_key;
+    const ENDPOINT = 'https://api.titansitescanner.com/api/v1.0/';
 
-	/**
-	 * @var Error|null
-	 */
-	private $last_error;
+    /**
+     * @var string|null
+     */
+    private $license_key;
 
-	/**
-	 * Client constructor.
-	 *
-	 * @param string|null $license_key
-	 */
-	public function __construct( $license_key ) {
-		$this->license_key = $license_key;
-	}
+    /**
+     * @var int|null
+     */
+    private $plugin_id;
 
-	/**
-	 * @return Error|null
-	 */
-	public function get_last_error() {
-		return $this->last_error;
-	}
+    /**
+     * @var Error|null
+     */
+    private $last_error;
 
-	// spam
+    #endregion props and consts
 
-	/**
-	 * @param CheckSpam|CheckSpam[] $data
-	 *
-	 * @return SpamResult|null
-	 */
-	public function check_spam( $data ) {
-		if ( is_array( $data ) ) {
-			foreach ( $data as $key => $item ) {
-				$data[ $key ] = $item->toArray();
-			}
-		} else {
-			$data = $data->toArray();
-		}
+    /**
+     * Client constructor.
+     *
+     * @param  string|null  $license_key
+     * @param  int|null     $plugin_id
+     */
+    public function __construct( $license_key, $plugin_id = null ) {
+        $this->license_key = $license_key;
+        $this->plugin_id = $plugin_id;
+    }
 
-		$response = $this->request( true, 'spam', $data );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @return Error|null
+     */
+    public function get_last_error() {
+        return $this->last_error;
+    }
 
-		return SpamResult::from_array( $response->response );
-	}
+    #region spam
 
-	/**
-	 * @param string $uid
-	 *
-	 * @return SpamResult|null
-	 */
-	public function get_queue_status( $uid ) {
-		$response = $this->request( false, 'spam/queue-status/' . $uid );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @param CheckSpam|CheckSpam[] $data
+     *
+     * @return SpamResult|null
+     */
+    public function check_spam( $data ) {
+        if ( is_array( $data ) ) {
+            foreach ( $data as $key => $item ) {
+                $data[ $key ] = $item->toArray();
+            }
+        } else {
+            $data = $data->toArray();
+        }
 
-		return SpamResult::from_array( $response->response );
-	}
+        $response = $this->request( true, 'spam', $data );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @param string[] $uids
-	 *
-	 * @return array
-	 */
-	public function get_queues_status( $uids ) {
-		$response = $this->request( true, 'spam/queue-status', $uids );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return [];
-		}
+        return SpamResult::from_array( $response->response );
+    }
 
-		$results = [];
-		foreach ( $response->response as $item ) {
-			$results[] = SpamResult::from_array( $item );
-		}
+    /**
+     * @param string $uid
+     *
+     * @return SpamResult|null
+     */
+    public function get_queue_status( $uid ) {
+        $response = $this->request( false, 'spam/queue-status/' . $uid );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return $results;
-	}
+        return SpamResult::from_array( $response->response );
+    }
 
-	/**
-	 * @return SpamStatistics|null
-	 */
-	public function get_statistics() {
-		$response = $this->request( false, 'spam/statistics' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @param string[] $uids
+     *
+     * @return array
+     */
+    public function get_queues_status( $uids ) {
+        $response = $this->request( true, 'spam/queue-status', $uids );
+        if ( is_null($response) || $response->is_error() ) {
+            return [];
+        }
 
-		return SpamStatistics::from_array( $response->response );
-	}
+        $results = [];
+        foreach ( $response->response as $item ) {
+            $results[] = SpamResult::from_array( $item );
+        }
 
-	// system integrity
+        return $results;
+    }
 
-	/**
-	 * @param $version
-	 * @param $files
-	 *
-	 * @return CmsCheck|null
-	 */
-	public function check_cms_premium( $version, $files ) {
-		$response = $this->request( true, 'cms/check/premium', [
-			'system'  => 'WordPress',
-			'version' => $version,
-			'files'   => $files,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @return SpamStatistics|null
+     */
+    public function get_statistics() {
+        $response = $this->request( false, 'spam/statistics' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return CmsCheck::from_array( $response->response );
-	}
+        return SpamStatistics::from_array( $response->response );
+    }
 
-	/**
-	 * @param $version
-	 * @param $files
-	 *
-	 * @return bool|null
-	 */
-	public function check_cms_free( $version, $files ) {
-		$response = $this->request( true, 'cms/check/free', [
-			'system'  => 'WordPress',
-			'version' => $version,
-			'files'   => $files,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    #endregion spam
 
-		return $response->response['haveProblems'];
-	}
+    #region system integrity
 
-	//
-	// email
-	//
+    /**
+     * @param $version
+     * @param $files
+     *
+     * @return CmsCheck|null
+     */
+    public function check_cms_premium( $version, $files ) {
+        $response = $this->request( true, 'cms/check/premium', [
+            'system'  => 'WordPress',
+            'version' => $version,
+            'files'   => $files,
+        ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @param $email
-	 *
-	 * @return CheckEmail|null
-	 */
-	public function check_email( $email ) {
-		$response = $this->request( false, 'check-email', [ 'email' => $email ] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        return CmsCheck::from_array( $response->response );
+    }
 
-		return CheckEmail::from_array( $response->response );
-	}
+    /**
+     * @param $version
+     * @param $files
+     *
+     * @return bool|null
+     */
+    public function check_cms_free( $version, $files ) {
+        $response = $this->request( true, 'cms/check/free', [
+            'system'  => 'WordPress',
+            'version' => $version,
+            'files'   => $files,
+        ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @param $ips
-	 *
-	 * @return BlacklistedIP[]|null
-	 */
-	public function check_ips( $ips ) {
-		$blacklistedIps = [];
-		$response       = $this->request( true, 'check/ips', $ips );
-		if ( ! $response->is_error() ) {
-			return null;
-		}
+        return $response->response['haveProblems'];
+    }
 
-		foreach ( $response->response as $ip ) {
-			$blacklistedIps[] = BlacklistedIP::from_array( $ip );
-		}
+    #endregion system integrity
 
-		return $blacklistedIps;
-	}
+    #region email
 
-	public function check_black_seo( $domain ) {
-		$response = $this->request( false, 'check/domain', [ 'domain' => $domain ] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @param $email
+     *
+     * @return CheckEmail|null
+     */
+    public function check_email( $email ) {
+        $response = $this->request( false, 'check-email', [ 'email' => $email ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return BlackSEO::from_array( $response->response );
-	}
+        return CheckEmail::from_array( $response->response );
+    }
 
-	//
-	// trial
-	//
+    /**
+     * @param $ips
+     *
+     * @return BlacklistedIP[]|null
+     */
+    public function check_ips( $ips ) {
+        $blacklistedIps = [];
+        $response       = $this->request( true, 'check/ips', $ips );
+        if ( ! $response->is_error() ) {
+            return null;
+        }
 
-	public function trial_register( $email, $domain ) {
-		$response = $this->request( true, 'trial/register', [
-			'email'  => $email,
-			'domain' => $domain,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        foreach ( $response->response as $ip ) {
+            $blacklistedIps[] = BlacklistedIP::from_array( $ip );
+        }
 
-		return Trial::from_array( $response->response );
-	}
+        return $blacklistedIps;
+    }
 
-	public function trial_check( $email, $domain ) {
-		$response = $this->request( true, 'trial/register', [
-			'email'  => $email,
-			'domain' => $domain,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    public function check_black_seo( $domain ) {
+        $response = $this->request( false, 'check/domain', [ 'domain' => $domain ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return is_null( $response->response );
-	}
+        return BlackSEO::from_array( $response->response );
+    }
 
-	//
-	// vulnerabilities
-	//
+    #endregion email
 
-	/**
-	 * @param string $version
-	 *
-	 * @return Vulnerability[]|null
-	 */
-	public function get_vuln_cms( $version ) {
-		$response = $this->request( false, 'vulnerability/cms', [
-			'name'    => 'WordPress',
-			'version' => $version,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    #region trial
 
-		$vuln = [];
-		foreach ( $response->response as $item ) {
-			$vuln[] = Vulnerability::from_array( $item );
-		}
+    public function trial_register( $email, $domain ) {
+        $response = $this->request( true, 'trial/register', [
+            'email'  => $email,
+            'domain' => $domain,
+        ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return $vuln;
-	}
+        return Trial::from_array( $response->response );
+    }
 
-	/**
-	 * @param VulnerabilityPlugin $vuln
-	 *
-	 * @return Vulnerability[]|null
-	 */
-	public function get_vuln_plugin( $vuln ) {
-		$response = $this->request( true, 'vulnerability/plugin', [ 'data' => $vuln->plugins ] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    public function trial_check( $email, $domain ) {
+        $response = $this->request( true, 'trial/register', [
+            'email'  => $email,
+            'domain' => $domain,
+        ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		$vuln = [];
-		foreach ( $response->response as $slug => $item ) {
-			$vuln[ $slug ] = [];
-			foreach ( $item as $v ) {
-				$vuln[ $slug ][] = Vulnerability::from_array( $v );
-			}
-		}
+        return is_null( $response->response );
+    }
 
-		return $vuln;
-	}
+    #endregion trial
 
-	/**
-	 * @param VulnerabilityTheme $vuln
-	 *
-	 * @return Vulnerability[]|null
-	 */
-	public function get_vuln_theme( $vuln ) {
-		$response = $this->request( true, 'vulnerability/theme', [ 'data' => $vuln->themes ] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    #region vulnerabilities
 
-		$vuln = [];
-		foreach ( $response->response as $slug => $item ) {
-			$vuln[ $slug ] = [];
-			foreach ( $item as $v ) {
-				$vuln[ $slug ][] = Vulnerability::from_array( $v );
-			}
-		}
+    /**
+     * @param string $version
+     *
+     * @return Vulnerability[]|null
+     */
+    public function get_vuln_cms( $version ) {
+        $response = $this->request( false, 'vulnerability/cms', [
+            'name'    => 'WordPress',
+            'version' => $version,
+        ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return $vuln;
-	}
+        $vuln = [];
+        foreach ( $response->response as $item ) {
+            $vuln[] = Vulnerability::from_array( $item );
+        }
 
-	//
-	// signatures
-	//
+        return $vuln;
+    }
 
-	/**
-	 * @return Signature[]|null
-	 */
-	public function get_signatures() {
-		$response = $this->request( false, 'antivirus/signature' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    /**
+     * @param VulnerabilityPlugin $vuln
+     *
+     * @return Vulnerability[]|null
+     */
+    public function get_vuln_plugin( $vuln ) {
+        $response = $this->request( true, 'vulnerability/plugin', [ 'data' => $vuln->plugins ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		if ( is_null( $response->response ) ) {
-			return [];
-		}
+        $vuln = [];
+        foreach ( $response->response as $slug => $item ) {
+            $vuln[ $slug ] = [];
+            foreach ( $item as $v ) {
+                $vuln[ $slug ][] = Vulnerability::from_array( $v );
+            }
+        }
 
-		$s = [];
-		foreach ( $response->response as $item ) {
-			$s[] = Signature::from_array( $item );
-		}
+        return $vuln;
+    }
 
-		return $s;
-	}
+    /**
+     * @param VulnerabilityTheme $vuln
+     *
+     * @return Vulnerability[]|null
+     */
+    public function get_vuln_theme( $vuln ) {
+        $response = $this->request( true, 'vulnerability/theme', [ 'data' => $vuln->themes ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @return Signature[]|null
-	 */
-	public function get_free_signatures() {
-		$response = $this->request( false, 'antivirus/signature/free' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        $vuln = [];
+        foreach ( $response->response as $slug => $item ) {
+            $vuln[ $slug ] = [];
+            foreach ( $item as $v ) {
+                $vuln[ $slug ][] = Vulnerability::from_array( $v );
+            }
+        }
 
-		if ( is_null( $response->response ) ) {
-			return [];
-		}
+        return $vuln;
+    }
 
-		$s = [];
-		foreach ( $response->response as $item ) {
-			$s[] = Signature::from_array( $item );
-		}
+    #endregion vulnerabilities
 
-		return $s;
-	}
+    #region signatures
 
-	//
-	// notices
-	//
+    /**
+     * @return Signature[]|null
+     */
+    public function get_signatures() {
+        $response = $this->request( false, 'antivirus/signature' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @return string[]|null
-	 */
-	public function get_allowed_notice_methods() {
-		$response = $this->request( false, 'notice/methods/get' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        if ( is_null( $response->response ) ) {
+            return [];
+        }
 
-		return $response->response;
-	}
+        $s = [];
+        foreach ( $response->response as $item ) {
+            $s[] = Signature::from_array( $item );
+        }
 
-	/**
-	 * @return NoticeData[]|null
-	 */
-	public function get_notice_data() {
-		$response = $this->request( false, 'notice/users-data/get' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        return $s;
+    }
 
-		$data = [];
-		foreach ( $response->response as $item ) {
-			$data[] = NoticeData::from_array( $item );
-		}
+    /**
+     * @return Signature[]|null
+     */
+    public function get_free_signatures() {
+        $response = $this->request( false, 'antivirus/signature/free' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return $data;
-	}
+        if ( is_null( $response->response ) ) {
+            return [];
+        }
 
-	/**
-	 * @param SetNoticeData $data
-	 *
-	 * @return bool|null
-	 */
-	public function set_notice_data( $data ) {
-		$response = $this->request( true, 'notice/users-data/set', $data->data );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        $s = [];
+        foreach ( $response->response as $item ) {
+            $s[] = Signature::from_array( $item );
+        }
 
-		return $response->response['is_successful_create'];
-	}
+        return $s;
+    }
 
-	/**
-	 * @param $ids
-	 *
-	 * @return bool|null
-	 */
-	public function delete_notice_data( $ids ) {
-		$response = $this->request( true, 'notice/users-data/delete', [ 'ids' => $ids ] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    #endregion signatures
 
-		return $response->response['is_successful_delete'];
-	}
+    #region notices
 
-	/**
-	 * @param string $method
-	 * @param string $template
-	 * @param string|null $email
-	 * @param array $vars
-	 *
-	 * @return bool
-	 */
-	public function send_notification( $method, $template, $email = null, $vars = [] ) {
-		$response = $this->request( true, 'notice/send', [
-			'method'   => $method,
-			'template' => $template,
-			'email'    => $email,
+    /**
+     * @return string[]|null
+     */
+    public function get_allowed_notice_methods() {
+        $response = $this->request( false, 'notice/methods/get' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
+
+        return $response->response;
+    }
+
+    /**
+     * @return NoticeData[]|null
+     */
+    public function get_notice_data() {
+        $response = $this->request( false, 'notice/users-data/get' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
+
+        $data = [];
+        foreach ( $response->response as $item ) {
+            $data[] = NoticeData::from_array( $item );
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param SetNoticeData $data
+     *
+     * @return bool|null
+     */
+    public function set_notice_data( $data ) {
+        $response = $this->request( true, 'notice/users-data/set', $data->data );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
+
+        return $response->response['is_successful_create'];
+    }
+
+    /**
+     * @param $ids
+     *
+     * @return bool|null
+     */
+    public function delete_notice_data( $ids ) {
+        $response = $this->request( true, 'notice/users-data/delete', [ 'ids' => $ids ] );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
+
+        return $response->response['is_successful_delete'];
+    }
+
+    public function send_notification( $method, $template, $vars = [] ) {
+        $response = $this->request(true, 'notice/send', [
+            'method'   => $method,
+            'template' => $template,
             'vars'     => $vars
         ]);
 
-        if ( $response->is_error() ) {
-	        return false;
-        }
-
-        return true;
+        return ! (is_null( $response ) || $response->is_error());
     }
 
-	//
-	// checker urls
-	//
+    #endregion notices
 
-	/**
-	 * @return UrlChecker[]|null
-	 */
-	public function get_checker_urls() {
-		$response = $this->request( false, 'url-checker' );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+    #region checker urls
 
-		$urls = [];
-		foreach ( $response->response as $url ) {
-			$urls[] = UrlChecker::from_array( $url );
-		}
+    /**
+     * @return UrlChecker[]|null
+     */
+    public function get_checker_urls() {
+        $response = $this->request( false, 'url-checker' );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-		return $urls;
-	}
+        $urls = [];
+        foreach ( $response->response as $url ) {
+            $urls[] = UrlChecker::from_array( $url );
+        }
 
-	/**
-	 * @param $id
-	 *
-	 * @return UrlChecker|null
-	 */
-	public function get_checker_url( $id ) {
-		$response = $this->request( false, 'url-checker/' . $id );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return null;
-		}
+        return $urls;
+    }
 
-		return UrlChecker::from_array( $response->response );
-	}
+    /**
+     * @param $id
+     *
+     * @return UrlChecker|null
+     */
+    public function get_checker_url( $id ) {
+        $response = $this->request( false, 'url-checker/' . $id );
+        if ( is_null($response) || $response->is_error() ) {
+            return null;
+        }
 
-	/**
-	 * @param int $id
-	 * @param string $url
-	 * @param int $frequency
-	 *
-	 * @return bool
-	 */
-	public function update_checker_url( $id, $url, $frequency ) {
-		$response = $this->request( true, 'url-checker/' . $id . '/update', [
-			'url'       => $url,
-			'frequency' => $frequency,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return false;
-		}
+        return UrlChecker::from_array( $response->response );
+    }
 
-		return true;
-	}
+    /**
+     * @param int $id
+     * @param string $url
+     * @param int $frequency
+     *
+     * @return bool
+     */
+    public function update_checker_url( $id, $url, $frequency ) {
+        $response = $this->request( true, 'url-checker/' . $id . '/update', [
+            'url'       => $url,
+            'frequency' => $frequency,
+        ] );
 
-	/**
-	 * @param int[] $ids
-	 *
-	 * @return bool
-	 */
-	public function delete_checker_url( $ids ) {
-		$response = $this->request( true, 'url-checker/delete', [
-			'ids' => $ids,
-		] );
-		if ( is_null( $response ) || $response->is_error() ) {
-			return false;
-		}
+        return ! (is_null( $response ) || $response->is_error());
+    }
 
-		return true;
-	}
+    /**
+     * @param int[] $ids
+     *
+     * @return bool
+     */
+    public function delete_checker_url( $ids ) {
+        $response = $this->request( true, 'url-checker/delete', [
+            'ids' => $ids,
+        ] );
 
-	/**
-	 * @param CreateCheckerUrl $request
-	 *
-	 * @return bool
-	 */
-	public function create_checker_url( $request ) {
-		$response = $this->request( true, 'url-checker/create', [ 'urls' => $request->urls ] );
+        return ! (is_null( $response ) || $response->is_error());
+    }
 
-		return ! $response->is_error();
-	}
+    /**
+     * @param CreateCheckerUrl $request
+     *
+     * @return bool
+     */
+    public function create_checker_url( $request ) {
+        $response = $this->request( true, 'url-checker/create', [ 'urls' => $request->urls ] );
 
-	/**
-	 * @param bool $post
-	 * @param string $apiMethod
-	 * @param array $body
-	 *
-	 * @return Response
-	 */
-	public function request( $post, $apiMethod, $body = [] ) {
-		$headers = [
-			"Content-Type" => "application/json",
-			"Accept"       => "application/json",
-		];
-		if ( ! empty ( $this->license_key ) ) {
-			$headers["Authorization"] = "Bearer " . base64_encode( $this->license_key );
-		}
+        return ! (is_null( $response ) || $response->is_error());
+    }
 
-		$url = sprintf( "%s%s", self::ENDPOINT, $apiMethod );
+    #endregion checker urls
 
-		if ( $post ) {
-			$response = wp_remote_post( $url, [
-				'headers' => $headers,
-				'body'    => json_encode( $body ),
-			] );
-		} else {
-			if ( ! empty ( $body ) ) {
-				$url .= "?" . http_build_query( $body );
-			}
+    /**
+     * @param bool $post
+     * @param string $apiMethod
+     * @param array $body
+     *
+     * @return Response
+     */
+    public function request( $post, $apiMethod, $body = [] ) {
+        $headers = [
+            "Content-Type" => "application/json",
+            "Accept"       => "application/json",
+        ];
+        if ( ! empty ( $this->license_key ) ) {
+            $headers["Authorization"] = "Bearer " . base64_encode( $this->license_key );
+        }
 
-			$response = wp_remote_get( $url, [
-				"headers" => $headers
-			] );
-		}
+        if ( !empty ( $this->plugin_id ) ) {
+            $headers['PluginId'] = $this->plugin_id;
+        }
 
-		if ( is_wp_error( $response ) ) {
-			return null;
-		}
+        $url = sprintf( "%s%s", self::ENDPOINT, $apiMethod );
 
-		$response = json_decode( $response['body'], true );
+        if ( $post ) {
+            $response = wp_remote_post( $url, [
+                'headers' => $headers,
+                'body'    => json_encode( $body ),
+            ] );
+        } else {
+            if ( ! empty ( $body ) ) {
+                $url .= "?" . http_build_query( $body );
+            }
 
-		$response = Response::from_array( $response );
-		if ( is_null( $response ) || $response->is_error() ) {
-			$this->last_error = $response->error;
-		}
+            $response = wp_remote_get( $url, [
+                "headers" => $headers
+            ] );
+        }
 
-		return $response;
-	}
-}
+        if ( is_wp_error( $response ) ) {
+            return null;
+        }
+
+        $response = json_decode( $response['body'], true );
+
+        $response = Response::from_array( $response );
+        if ( is_null($response) || $response->is_error() ) {
+            $this->last_error = $response->error;
+        }
+
+        return $response;
+    }}
