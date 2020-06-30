@@ -229,3 +229,31 @@ input[id*="scanner_schedule"], select[id*="scanner_schedule"] {
     float: right;
     cursor: pointer;
 }
+
+.wtitan-get-plugins-scanner__notice .dashicons-plugins-checked {
+    /*border: 1px solid #222;*/
+    color: #222;
+
+}
+
+.wtitan-get-plugins-scanner__notice p {
+    font-size: 17px;
+    font-weight: normal;
+    color: #222;
+}
+
+.wtitan-get-plugins-scanner__btn {
+    display: inline-block;
+    padding: 3px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    background-color: #ff6fb8 !important;
+    color: #fff;
+    float: right;
+}
+
+.wtitan-get-plugins-scanner__btn:hover {
+    background-color: #ff6fb8 !important;
+    color: #fff;
+}

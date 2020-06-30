@@ -11,7 +11,7 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
 /**
@@ -30,31 +30,29 @@ add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
 } );
 */
 
-
 /**
  * Print admin notice: "Would you like to send them for spam checking?"
  *
  * If user clicked button "Yes, do it", plugin will exec action,
  * that put all unapproved comments to spam check queue.
  */
-add_action( 'wbcr/factory/admin_notices', function ( $notices, $plugin_name )
-{
-	if ( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined( 'WTITAN_PLUGIN_ACTIVE' ) ) {
+add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
+	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WTITAN_PLUGIN_ACTIVE') ) {
 		return $notices;
 	}
 
-	if ( ! \WBCR\Titan\Plugin::app()->is_premium() ) {
+	if( !\WBCR\Titan\Plugin::app()->is_premium() ) {
 		return $notices;
 	}
 
-	$about_plugin_url   = "https://anti-spam.space";
-	$install_plugin_url = admin_url( 'update.php?action=install-plugin&plugin=anti-spam&_wpnonce=' . wp_create_nonce( 'activate-plugin_titan-security' ) );
+	$about_plugin_url = "https://anti-spam.space";
+	$install_plugin_url = admin_url('update.php?action=install-plugin&plugin=anti-spam&_wpnonce=' . wp_create_nonce('activate-plugin_titan-security'));
 
-	$notice_text = sprintf( __( 'Thanks for activating the premium Titan security plugin. You got a bonus, premium <a href="%s" target="_blank" rel="noopener">Anti-spam</a> plugin. Want to <a href="%s" target="_blank" rel="noopener">install it now</a>?', "titan-security" ), $about_plugin_url, $install_plugin_url );
+	$notice_text = sprintf(__('Thanks for activating the premium Titan security plugin. You got a bonus, premium <a href="%s" target="_blank" rel="noopener">Anti-spam</a> plugin. Want to <a href="%s" target="_blank" rel="noopener">install it now</a>?', "titan-security"), $about_plugin_url, $install_plugin_url);
 
 	$notices[] = [
-		'id'              => 'wtitan_bonus_suggestion',
-		'type'            => 'success',
+		'id' => 'wtitan_bonus_suggestion',
+		'type' => 'success',
 		/*'where' => [
 			'edit-comments',
 			'plugins',
@@ -63,53 +61,61 @@ add_action( 'wbcr/factory/admin_notices', function ( $notices, $plugin_name )
 			'edit',
 			'settings'
 		],*/
-		'dismissible'     => true,
+		'dismissible' => true,
 		'dismiss_expires' => 0,
-		'text'            => '<p><strong>Titan:</strong><br>' . $notice_text . '</p>'
+		'text' => '<p><strong>Titan:</strong><br>' . $notice_text . '</p>'
 	];
 
 	return $notices;
-}, 10, 2 );
+}, 10, 2);
 
 //if ( ! \WBCR\Titan\Plugin::app()->getOption( 'trial_notice_dismissed', false ) ) {
-	/**
-	 * Trial notice on plugin pages
-	 */
-	/*add_action( 'wbcr/factory/pages/impressive/print_all_notices', function ( $plugin, $obj )
-	{
-		/** @var \Wbcr_Factory000_Plugin $plugin */
-		/** @var \Wbcr_FactoryPages000_ImpressiveThemplate $obj */
-		/*if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
-			return;
-		}
+/**
+ * Trial notice on plugin pages
+ */
+add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin, $obj) {
+	if( is_plugin_active('plugins-scanner-premium/plugins-scanner-premium.php') || ($plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName()) ) {
+		return;
+	}
 
-		$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
-		$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="btn btn-gold btn-sm wt-notice-trial-button">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
-		$notice_text .= "<span id='wt-notice-hide-link' class='wt-notice-hide-link dashicons dashicons-no'></span>";
-		$obj->printWarningNotice( $notice_text );
-	}, 10, 2 );*/
+	$notice_text = __('Plugins scanner - detect vulnerabilities in any of your plugins before activation', 'titan-security');
+	$notice_text .= '&nbsp;<a href="https://titansitescanner.com/plugin-scanner/" target="_blank" rel="noopener" class="wtitan-get-plugins-scanner__btn">' . __('Sign Up for $9.99', 'titan-security') . '</a>';
 
-	/**
-	 * Trial notice on all WP admin pages
-	 */
-	/* add_action( "wbcr/factory/admin_notices", function ( $notices, $plugin_name )
-	{
-		if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() ) || ! current_user_can( 'manage_options' ) ) {
-			return $notices;
-		}
+	echo '<div class="alert alert-warning wbcr-factory-warning-notice wtitan-get-plugins-scanner__notice"><p><span class="dashicons dashicons-plugins-checked"></span> ' . $notice_text . '</p></div>';
+	//$obj->printWarningNotice($notice_text);
 
-		$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
-		$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="button button-primary">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
-		$notices[]   = [
-			'id'              => 'get_trial_for_' . \WBCR\Titan\Plugin::app()->getPluginName(),
-			'type'            => 'info',
-			'dismissible'     => true,
-			'dismiss_expires' => 0,
-			'text'            => "<p><b>" . \WBCR\Titan\Plugin::app()->getPluginTitle() . ":</b> " . $notice_text . '</p>'
-		];
+	/** @var \Wbcr_Factory000_Plugin $plugin */ /** @var \Wbcr_FactoryPages000_ImpressiveThemplate $obj */
+	/*if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
+		return;
+	}
 
+	$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
+	$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="btn btn-gold btn-sm wt-notice-trial-button">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
+	$notice_text .= "<span id='wt-notice-hide-link' class='wt-notice-hide-link dashicons dashicons-no'></span>";
+	$obj->printWarningNotice( $notice_text );*/
+}, 10, 2);
+
+/**
+ * Trial notice on all WP admin pages
+ */
+/* add_action( "wbcr/factory/admin_notices", function ( $notices, $plugin_name )
+{
+	if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() ) || ! current_user_can( 'manage_options' ) ) {
 		return $notices;
-	}, 10, 2 ); */
+	}
+
+	$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
+	$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="button button-primary">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
+	$notices[]   = [
+		'id'              => 'get_trial_for_' . \WBCR\Titan\Plugin::app()->getPluginName(),
+		'type'            => 'info',
+		'dismissible'     => true,
+		'dismiss_expires' => 0,
+		'text'            => "<p><b>" . \WBCR\Titan\Plugin::app()->getPluginTitle() . ":</b> " . $notice_text . '</p>'
+	];
+
+	return $notices;
+}, 10, 2 ); */
 //}
 
 // Vulner class
