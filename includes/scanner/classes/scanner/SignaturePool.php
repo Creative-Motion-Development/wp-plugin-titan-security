@@ -106,7 +106,7 @@ class SignaturePool {
 			}
 		}
 
-		if ( $isMedia ) {
+		if ( $isHTML || $isMedia || $isJS || $isBinary ) {
 			return null;
 		}
 
