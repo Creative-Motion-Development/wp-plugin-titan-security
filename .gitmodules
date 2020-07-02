@@ -27,7 +27,7 @@
 	url = ssh://git@bitbucket.org/webcraftic/wp-plugin-hide-login-page
 [submodule "libs/two-factor"]
 	path = libs/two-factor
-	url = https://github.com/Creative-Motion-Development/wp-plugin-two-factor-auth
+	url = ssh://git@github.com/Creative-Motion-Development/wp-plugin-two-factor-auth
 [submodule "libs/backups"]
 	path = libs/backups
-	url = https://github.com/Creative-Motion-Development/wp-plugin-backup-master
+	url = ssh://git@github.com/Creative-Motion-Development/wp-plugin-backup-master
