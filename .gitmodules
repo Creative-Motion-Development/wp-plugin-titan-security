@@ -22,3 +22,12 @@
 [submodule "libs/factory/feedback"]
 	path = libs/factory/feedback
 	url = ssh://git@bitbucket.org/webcraftic/wp-plugins-factory-feedback
+[submodule "libs/hide-login-page"]
+	path = libs/hide-login-page
+	url = ssh://git@bitbucket.org/webcraftic/wp-plugin-hide-login-page
+[submodule "libs/two-factor"]
+	path = libs/two-factor
+	url = ssh://git@github.com/Creative-Motion-Development/wp-plugin-two-factor-auth
+[submodule "libs/backups"]
+	path = libs/backups
+	url = ssh://git@github.com/Creative-Motion-Development/wp-plugin-backup-master

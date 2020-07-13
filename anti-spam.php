@@ -96,12 +96,16 @@ $wtitan_plugin_info = [
 		['libs/factory/freemius', 'factory_freemius_000', 'all'],
 		['libs/factory/feedback', 'factory_feedback_000', 'admin']
 	],
-	/*'load_plugin_components' => array(
-		'hide-login-page' => array(
-			'autoload' => 'libs/hide-login-page/titan.php',
-			'plugin_prefix' => 'WHLP_'
+	'load_plugin_components' => array(
+		'backup-master'   => array(
+			'autoload'      => 'libs/backups/titan.php',
+			'plugin_prefix' => 'WBM_'
+		),
+		'two-factor-auth' => array(
+			'autoload'      => 'libs/two-factor/titan.php',
+			'plugin_prefix' => 'WTFA_'
 		)
-	)*/
+	)
 
 ];
 
