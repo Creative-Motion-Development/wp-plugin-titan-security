@@ -31,7 +31,7 @@
     }
   },
   "constants": {
-    "version": "7.2.0",
+    "version": "7.1.4",
     "name": [
       {
         "value": "anti-spam"

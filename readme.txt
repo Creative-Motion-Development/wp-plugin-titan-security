@@ -175,10 +175,6 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
-= 7.2.0 - 15.07.2020 =
-* Added backups of the site
-* Added two-factor authentication
-
 = 7.1.4 - 22.06.2020 =
 * Updated: translations
 
