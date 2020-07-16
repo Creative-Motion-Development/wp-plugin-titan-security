@@ -170,11 +170,15 @@ If site has caching plugin enabled and cache is not cleared or if theme does not
 and there is no plugin inputs in comments form - plugin tries to add hidden fields automatically using JavaScript.
 
 = Not enough information about the plugin? =
-
+two
 You may check out the [source code of the plugin](http://plugins.trac.wordpress.org/browser/anti-spam/trunk/anti-spam.php).
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+= 7.2.0 - 17.07.2020 =
+* Added: creation of backups of the site [PRO]
+* Added: Two-Factor authentication [PRO]
+
 = 7.1.4 - 22.06.2020 =
 * Updated: translations
 
