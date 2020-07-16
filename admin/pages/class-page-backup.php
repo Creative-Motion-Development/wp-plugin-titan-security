@@ -2,8 +2,6 @@
 
 namespace WBCR\Titan\Page;
 
-use WBCR\BackupMaster\AjaxHandler;
-use WBCR\BackupMaster\Methods\Provider;
 use WBCR\Titan\Plugin;
 
 class Backup extends Base
@@ -58,16 +56,6 @@ class Backup extends Base
         $this->view = Plugin::app()->view();
 
         parent::__construct( $plugin );
-    }
-
-    /**
-     * @noinspection PhpUnused
-     */
-    public function oauthAccessTokenAction()
-    {
-        Provider::save_store_data( $_GET['storage'], $_GET['access_token'] );
-        $link = $this->plugin->getPluginPageUrl( 'bm_settings' );
-        wp_redirect( $link );
     }
 
     /**
