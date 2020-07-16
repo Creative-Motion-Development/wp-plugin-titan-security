@@ -132,12 +132,18 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 		//Hidden page
 		self::app()->registerPage( 'WBCR\Titan\Page\Check', WTITAN_PLUGIN_DIR . '/admin/pages/class-pages-check.php' );
 
-		// Firewall
 		if ( ! defined( 'WTITANP_PLUGIN_ACTIVE' ) ) {
+            // Firewall
 			self::app()->registerPage( 'WBCR\Titan\Page\Firewall', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall.php' );
 			self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Settings', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-settings.php' );
 			self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Blocking', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-blocking.php' );
 			self::app()->registerPage( 'WBCR\Titan\Page\Firewall_Attacks_Log', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-firewall-attacks-log.php' );
+
+			// TwoFactor
+			self::app()->registerPage( 'WBCR\Titan\Page\TwoFactor', WTITAN_PLUGIN_DIR . '/admin/pages/class-page-two-factor.php' );
+
+			// Backup
+			self::app()->registerPage( 'WBCR\Titan\Page\Backup', WTITAN_PLUGIN_DIR . '/admin/pages/class-page-backup.php' );
 		}
 
 		self::app()->registerPage( 'WBCR\Titan\Page\Brute_Force', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-bruteforce.php' );

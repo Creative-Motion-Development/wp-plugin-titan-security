@@ -1,0 +1,124 @@
+.store {
+	cursor: pointer;
+}
+
+.wt-row {
+	padding: 15px 0 15px;
+	/*padding: 15px 0 0 15px;*/
+}
+
+.col-md-12 {
+	padding-top: 15px;
+}
+
+.table thead {
+	background-color: #fff;
+	border-bottom: 2px solid #ccd0d4;
+}
+
+.table tbody tr {
+	background-color: #f9f9f9;
+}
+
+#store-data {
+	padding-bottom: 15px;
+}
+
+#store-data .store-item {
+	padding-bottom: 15px;
+	padding-left: 15px;
+}
+
+.button {
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	padding: 0 18px;
+}
+
+.button.primary {
+	background-color: #fff;
+	color: #000;
+	border-color: #d3d3d3;
+}
+
+.button.primary:hover {
+	background-color: #6a04d3;
+	color: #fff;
+}
+
+.button.delete, .button.delete:hover {
+	background-color: #cd057b;
+	color: #fff;
+}
+
+.button.primary.backup, .button.primary.backup:hover {
+	background-color: #6a04d3;
+	color: #fff;
+}
+
+.button.primary:disabled, .button.primary[disabled], .button.primary:hover {
+	background-color: #b687e5 !important;
+	text-shadow: none !important;
+	color: #fff !important;
+}
+
+ul.schedule-buttons li {
+	display: inline;
+	margin-left: -5px;
+}
+
+ul.schedule-buttons li:not(:first-child) .button, ul.schedule-buttons li:not(:last-child) .button {
+	border-radius: 0;
+}
+
+ul.schedule-buttons li:last-child .button {
+	border-radius: 0 5px 5px 0;
+}
+ul.schedule-buttons li:first-child .button {
+	border-radius: 5px 0 0 5px;
+}
+
+.old-archives {
+	margin-left: 15px;
+}
+
+.old-archives input[type="checkbox"] {
+	margin-right: 5px;
+	margin-top: -4px;
+}
+
+.badge.storage {
+	background-color: #6929d3;
+	border-radius: 0;
+	padding: 9px;
+}
+
+.badge.in-progress {
+	background-color: #6929d3;
+	border-radius: 0;
+	padding: 5px;
+}
+
+.backup-progress-block {}
+
+.backup-progress-block > div:first-child {
+	text-align: center;
+	font-weight: bold;
+	padding-top: 6px;
+}
+
+.backup-progress-block .backup-progress {
+	position: relative;
+	height: 32px;
+	width: 100%;
+	border-radius: 5px;
+	border: 1px solid #6929d3;
+}
+
+.backup-progress-block .backup-progress > div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background-color: #6929d3;
+}

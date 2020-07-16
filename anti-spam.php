@@ -97,14 +97,6 @@ $wtitan_plugin_info = [
 		['libs/factory/feedback', 'factory_feedback_000', 'admin']
 	],
 	'load_plugin_components' => array(
-		'backup-master'   => array(
-			'autoload'      => 'libs/backups/titan.php',
-			'plugin_prefix' => 'WBM_'
-		),
-		'two-factor-auth' => array(
-			'autoload'      => 'libs/two-factor/titan.php',
-			'plugin_prefix' => 'WTFA_'
-		)
 	)
 
 ];
