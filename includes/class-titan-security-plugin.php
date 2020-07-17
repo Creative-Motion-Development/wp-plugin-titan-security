@@ -143,7 +143,7 @@ class Plugin extends \Wbcr_Factory000_Plugin {
 			self::app()->registerPage( 'WBCR\Titan\Page\TwoFactor', WTITAN_PLUGIN_DIR . '/admin/pages/class-page-two-factor.php' );
 
 			// Backup
-			self::app()->registerPage( 'WBCR\Titan\Page\Backup', WTITAN_PLUGIN_DIR . '/admin/pages/class-page-backup.php' );
+//			self::app()->registerPage( 'WBCR\Titan\Page\Backup', WTITAN_PLUGIN_DIR . '/admin/pages/class-page-backup.php' );
 		}
 
 		self::app()->registerPage( 'WBCR\Titan\Page\Brute_Force', WTITAN_PLUGIN_DIR . '/admin/pages/firewall/class-pages-bruteforce.php' );

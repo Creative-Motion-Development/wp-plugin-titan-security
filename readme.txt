@@ -176,7 +176,6 @@ The plugin is pretty small and easy to read.
 
 == Changelog ==
 = 7.2.0 - 17.07.2020 =
-* Added: creation of backups of the site [PRO]
 * Added: Two-Factor authentication [PRO]
 
 = 7.1.4 - 22.06.2020 =
