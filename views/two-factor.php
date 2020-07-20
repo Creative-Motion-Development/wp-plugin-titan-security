@@ -80,7 +80,7 @@ $user_list = $data['user_list']
     </div>
 
     <?php if ( current_user_can( 'list_users' ) ): ?>
-        <div class="tw-row">
+        <div class="wt-row">
             <div class="col-md-12 wt-block-gutter">
                 <div class="row">
                     <div class="col-md-12">
