@@ -5,10 +5,10 @@
  */
 
 $user_list = $data['user_list']
-?><div class="wbcr-content-section wtitan-section-disabled">
+?><div class="wt-dashboard-container wtitan-section-disabled">
     <div class="wt-row">
         <div class="col-md-12 wt-block-gutter important-block manual-block">
-            <div class="row">
+            <div class="wt-row" style="margin: 0">
                 <div class="col-md-4">
                     <div class="title">
                         <span class="step"><?php echo sprintf(__('Step %d', 'two-factor-auth'), 1) ?></span>
@@ -51,11 +51,11 @@ $user_list = $data['user_list']
 
     <div class="wt-row">
         <div class="col-md-12 wt-block-gutter wt-register-2fa">
-            <div class="row">
-                <div class="col-lg-2 col-sm-12 qr-block">
-                    <img class="wtfa-qr-code" id="qr-code" src="https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=Buy%20me%20pls" alt="">
+            <div class="wt-row" style="margin: 0">
+                <div class="col-lg-2 qr-block">
+                    <img class="wtfa-qr-code" id="qr-code" src="<?php echo $qr_link ?>" alt="">
                 </div>
-                <div class="col-lg-10 col-sm-12 qr-answer-block">
+                <div class="col-lg-10 qr-answer-block">
                     <div class="action-description">
                         <h4><?php echo __('Scan QR code', 'two-factor-auth') ?></h4>
                         <div class="text">
@@ -63,12 +63,12 @@ $user_list = $data['user_list']
                                     'two-factor-auth') ?></p>
                         </div>
                         <div class="buttons">
-                            <input type="text" id="code">
+                            <input type="text" id="code" disabled>
                             <button id="send-code" class="register_2fa_app button primary"
-                                    data-process-message="<?php echo __('Sending...', 'two-factor-auth') ?>">
+                                    data-process-message="<?php echo __('Sending...', 'two-factor-auth') ?>" disabled>
                                 <?php echo __('Send auth code', 'two-factor-auth') ?>
                             </button>
-                            <button id="qr-refresh" data-process-message="<?php echo __('Updating...', 'two-factor-auth') ?>">
+                            <button id="qr-refresh" data-process-message="<?php echo __('Updating...', 'two-factor-auth') ?>" disabled>
                                 <span class="dashicons dashicons-update"></span>
                                 <?php echo __('Refresh', 'two-factor-auth') ?>
                             </button>
@@ -82,12 +82,12 @@ $user_list = $data['user_list']
     <?php if ( current_user_can( 'list_users' ) ): ?>
         <div class="wt-row">
             <div class="col-md-12 wt-block-gutter">
-                <div class="row">
+                <div class="wt-row" style="margin: 0">
                     <div class="col-md-12">
                         <p style="font-weight: bold;"><?php echo __('Users', 'two-factor-auth') ?></p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="wt-row" style="margin: 0">
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <thead>
@@ -103,13 +103,13 @@ $user_list = $data['user_list']
                                     <td><?php echo $u->user_login ?></td>
                                     <td>No</td>
                                     <td>
-                                        <button data-action="change-2fa-state" data-value="on"
-                                                data-user-id="<?php echo $u->ID ?>"
-                                                class="button"
-                                                data-process-message="<?php echo __('Enabling...',
-                                                    'two-factor-auth') ?>">
-                                            <?php echo __('Enable', 'two-factor-auth') ?>
-                                        </button>
+                                            <button data-action="change-2fa-state" data-value="on"
+                                                    data-user-id="<?php echo $u->ID ?>"
+                                                    class="button" disabled
+                                                    data-process-message="<?php echo __('Enabling...',
+                                                        'two-factor-auth') ?>">
+                                                <?php echo __('Enable', 'two-factor-auth') ?>
+                                            </button>
                                     </td>
                                 </tr>
                             <?php endforeach ?>

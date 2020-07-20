@@ -108,8 +108,13 @@
     }
 }
 
+.wt-dashboard-container div.row {
+    margin-left: 0 !important;
+}
+
 .wt-register-2fa {
-    height: 250px;
+    min-height: 250px;
+    padding: 15px 0 !important;
 }
 
 .wt-register-2fa .wtfa-qr-code {
@@ -200,6 +205,24 @@
 
 #save_ip_whitelist {
 
+}
+
+input[type="text"] {
+    box-shadow: 0 0 0 transparent;
+    border-radius: 4px;
+    border: 1px solid #7e8993;
+    background-color: #fff;
+    color: #32373c;
+    padding: 0 8px;
+    min-height: 30px;
+}
+
+button.register_2fa_app {
+    box-shadow: none;
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 0px 10px;
+    min-height: 30px;
 }
 
 /*@media all and (max-width: 1800px) {*/
