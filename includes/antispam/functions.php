@@ -85,7 +85,7 @@ function wantispam_get_sidebar_premium_widget() {
 	?>
     <div class="wbcr-factory-sidebar-widget">
         <p>
-            <a href="https://anti-spam.space/pricing/" target="_blank" rel="noopener nofollow">
+            <a href="https://titansitescanner.com/pricing/" target="_blank" rel="noopener nofollow">
                 <img style="width: 100%;"
                      src="https://api.cm-wp.com/wp-content/uploads/2019/12/baner_antispam_vertical.jpg" alt="">
             </a>

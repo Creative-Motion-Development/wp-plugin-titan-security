@@ -18,7 +18,7 @@
 
     $('.factory-checkbox--disabled.wantispam-checkbox-premium-label').click(function (e) {
         e.stopPropagation();
-        window.location.href = 'https://anti-spam.space/pricing/';
+        window.location.href = 'https://titansitescanner.com/pricing/';
     });
 
 })(jQuery);
