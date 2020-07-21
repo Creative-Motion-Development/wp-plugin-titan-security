@@ -53,7 +53,7 @@ $user_list = $data['user_list']
         <div class="col-md-12 wt-block-gutter wt-register-2fa">
             <div class="wt-row" style="margin: 0">
                 <div class="col-lg-2 qr-block">
-                    <img class="wtfa-qr-code" id="qr-code" src="<?php echo $qr_link ?>" alt="">
+                    <img class="wtfa-qr-code" id="qr-code" src="https://chart.googleapis.com/chart?chs=220x220&chld=M%7C0&cht=qr&chl=Buy%20me%20pls" alt="">
                 </div>
                 <div class="col-lg-10 qr-answer-block">
                     <div class="action-description">
