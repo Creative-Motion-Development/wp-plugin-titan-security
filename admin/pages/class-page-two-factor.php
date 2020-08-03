@@ -77,6 +77,7 @@ class TwoFactor extends Base
         }
 
         $this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall/firewall-dashboard.css');
+        $this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/dashboard-dashboard.css');
         $this->styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/2fa.css');
 
 //        $this->scripts->add(WTFA_PLUGIN_URL.'/admin/assets/2fa.js', ['jquery']);
