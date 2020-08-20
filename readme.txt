@@ -175,6 +175,9 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+= 7.1.6 =
+* Fixed: jQuery.fn.load() and other bugs after update to Wordpress 5.5
+
 = 7.1.5 =
 * Added: Two-Factor authentication [PRO]
 

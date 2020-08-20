@@ -75,9 +75,7 @@ class PluginSettings extends Base {
 
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/import.js' );
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/settings.js' );
-
-		//$this->scripts->add( WTITAN_PLUGIN_URL.'/admin/assets/js/bootstrap-datepicker.min.js' );
-		//$this->styles->add( WTITAN_PLUGIN_URL.'/admin/assets/css/bootstrap-datepicker.min.css' );
+		wp_enqueue_script( 'winp_page_settings_js', WTITAN_PLUGIN_URL . '/admin/assets/js/settings.js');
 
 		$params = [
 			'import_options_nonce' => wp_create_nonce( 'wtitan_import_options' ),
@@ -86,7 +84,7 @@ class PluginSettings extends Base {
 				'unknown_error'           => __( 'During the setup, an unknown error occurred, please try again or contact the plugin support.', 'titan-security' ),
 			]
 		];
-		wp_localize_script( 'jquery', 'wtitan_ajax', $params );
+		wp_localize_script( 'winp_page_settings_js', 'wtitan_ajax', $params );
 
 	}
 
