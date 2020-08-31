@@ -1,94 +1,68 @@
-.wtitan-attacks-log
-{
-	padding: 0 20px;
+.wtitan-attacks-log {
+  padding: 0 20px;
 }
-
-.wtitan-attacks-log.wtitan-section-disabled
-{
-	opacity: 0.4;
+.wtitan-attacks-log.wtitan-section-disabled {
+  opacity: 0.4;
 }
-
 .wtitan-attacks-log.wtitan-section-disabled select,
 .wtitan-attacks-log.wtitan-section-disabled button,
-.wtitan-attacks-log.wtitan-section-disabled a
-{
-	pointer-events: none;
-	cursor: not-allowed;
-	opacity: 0.65;
-	filter: alpha(opacity=65);
-	-webkit-box-shadow: none;
-	box-shadow: none;
+.wtitan-attacks-log.wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
-
-.wtitan-attacks-log__nav
-{
-	padding: 15px;
-	text-align: right;
+.wtitan-attacks-log__nav {
+  padding: 15px;
+  text-align: right;
 }
-
-.wtitan-attacks-log__pages
-{
-	display: inline-block;
+.wtitan-attacks-log__pages {
+  display: inline-block;
 }
-
-.wtitan-attacks-log__pages .page-numbers
-{
-	display: inline-block;
-	vertical-align: baseline;
-	text-decoration: none;
-	min-width: 30px;
-	min-height: 30px;
-	margin: 0;
-	padding: 0 4px;
-	font-size: 13px;
-	line-height: 2.1;
-	text-align: center;
-	box-shadow: 0 0 0 transparent;
-	border-radius: 4px;
-	border: 1px solid #e6e6e6;
-	background-color: #efefef;
-	color: #424242;
+.wtitan-attacks-log__pages .page-numbers {
+  display: inline-block;
+  vertical-align: baseline;
+  text-decoration: none;
+  min-width: 30px;
+  min-height: 30px;
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  line-height: 2.1;
+  text-align: center;
+  box-shadow: 0 0 0 transparent;
+  border-radius: 4px;
+  border: 1px solid #e6e6e6;
+  background-color: #efefef;
+  color: #424242;
 }
-
-.wtitan-attacks-log__pages .page-numbers.current
-{
-	background-color: #fff;
+.wtitan-attacks-log__pages .page-numbers.current {
+  background-color: #fff;
 }
-
 .wtitan-attacks-log__table td,
-.wtitan-attacks-log__table th
-{
-	padding: 10px 20px !important;
+.wtitan-attacks-log__table th {
+  padding: 10px 20px !important;
 }
-
-.wtitan-attacks-log__table-column-event ul
-{
-	margin: 0;
-	padding: 0;
+.wtitan-attacks-log__table-column-event ul {
+  margin: 0;
+  padding: 0;
 }
-
-.wtitan-attacks-log__table-column-event ul li
-{
-	display: block;
-	margin: 0;
-	padding: 3px 0;
+.wtitan-attacks-log__table-column-event ul li {
+  display: block;
+  margin: 0;
+  padding: 3px 0;
 }
-
-.wtitan-attacks-log__table-label--red
-{
-	background: #dc7a7a;
-	color: #fff;
-	padding: 3px;
+.wtitan-attacks-log__table-label--red {
+  background: #dc7a7a;
+  color: #fff;
+  padding: 3px;
 }
-
-.wtitan-ip-blocking__form
-{
-	margin: 0 auto;
+.wtitan-ip-blocking__form {
+  margin: 0 auto;
 }
-
-.wtitan-ip-blocking__form__form-label
-{
-	display: block;
+.wtitan-ip-blocking__form__form-label {
+  display: block;
 }
-
 /*# sourceMappingURL=firewall-attacks-log.css.map */

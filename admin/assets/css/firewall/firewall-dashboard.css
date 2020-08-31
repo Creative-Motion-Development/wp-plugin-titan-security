@@ -1,109 +1,83 @@
-#wtitan-firewall-dashboard-top-section table
-{
-	width: 100%;
-	table-layout: fixed;
+#wtitan-firewall-dashboard-top-section table {
+  width: 100%;
+  table-layout: fixed;
 }
-
-#wtitan-firewall-dashboard-top-section table td
-{
-	border: 1px solid #efefef;
-	background: #fff;
-	text-align: center;
-	padding: 20px;
+#wtitan-firewall-dashboard-top-section table td {
+  border: 1px solid #efefef;
+  background: #fff;
+  text-align: center;
+  padding: 20px;
 }
-
-#wtitan-firewall-dashboard-top-section table td h4
-{
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 16px;
+#wtitan-firewall-dashboard-top-section table td h4 {
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
 }
-
-.wtitan-status-circular
-{
-	position: relative;
-	margin: 0 auto;
+.wtitan-status-circular {
+  position: relative;
+  margin: 0 auto;
 }
-
-.wtitan-status-circular-text
-{
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	padding: 0;
-	margin: 0;
-	transform: translate(-50%, -50%);
-	color: #aaa;
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 1.3125rem;
-	font-weight: 300;
-	line-height: 1.5;
+.wtitan-status-circular-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  color: #aaa;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.3125rem;
+  font-weight: 300;
+  line-height: 1.5;
 }
-
-.wtitan-status-circular .wf-status-overlay-text
-{
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	padding: 0;
-	margin: 0;
-	width: 200%;
-	text-align: center;
-	transform: translate(-50%, -50%);
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 0.875rem;
-	font-weight: normal;
-	line-height: 1.3125;
-	opacity: 0;
-	color: #777;
+.wtitan-status-circular .wf-status-overlay-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  margin: 0;
+  width: 200%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: 1.3125;
+  opacity: 0;
+  color: #777;
 }
-
 .wf-status-warning,
 .wf-status-critical,
 .wf-status-payment-expiring,
-.wf-status-renewing
-{
-	width: 100px;
-	height: 100px;
-	margin-bottom: 1rem;
+.wf-status-renewing {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
 }
-
-.wf-status-warning svg path
-{
-	fill: #fcb214;
+.wf-status-warning svg path {
+  fill: #fcb214;
 }
-
-.wf-status-critical svg path
-{
-	fill: #930000;
+.wf-status-critical svg path {
+  fill: #930000;
 }
-
 .wf-status-payment-expiring svg rect,
-.wf-status-payment-expiring svg path
-{
-	fill: #930000;
+.wf-status-payment-expiring svg path {
+  fill: #930000;
 }
-
 .wf-status-renewing svg rect,
-.wf-status-renewing svg path
-{
-	fill: #11967a;
+.wf-status-renewing svg path {
+  fill: #11967a;
 }
-
-.wtitan-section-disabled
-{
-	opacity: 0.4;
+.wtitan-section-disabled {
+  opacity: 0.4;
 }
-
 .wtitan-section-disabled select,
 .wtitan-section-disabled button,
-.wtitan-section-disabled a
-{
-	pointer-events: none;
-	cursor: not-allowed;
-	opacity: 0.65;
-	filter: alpha(opacity=65);
-	-webkit-box-shadow: none;
-	box-shadow: none;
+.wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
-
 /*# sourceMappingURL=firewall-dashboard.css.map */

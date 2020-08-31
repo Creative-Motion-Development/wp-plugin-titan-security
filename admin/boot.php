@@ -14,6 +14,41 @@
 if( !defined('ABSPATH') ) {
 	exit;
 }
+
+/**
+ * Этот хук реализует условную логику перенаправления на страницу мастера настроек,
+ * сразу после активации плагина.
+ */
+add_action('admin_init', function () {
+
+	$plugin = \WBCR\Titan\Plugin::app();
+
+	// If the user has updated the plugin or activated it for the first time,
+	// you need to show the page "What's new?"
+	if( !$plugin->isNetworkAdmin() ) {
+		$setup_page_viewed = $plugin->request->get('wtitan_setup_page_viewed', null);
+		if( is_null($setup_page_viewed) ) {
+			if( \WBCR\Titan\Plugin\Helper::is_need_show_setup_page() ) {
+				try {
+					$redirect_url = '';
+					if( class_exists('Wbcr_FactoryPages000') ) {
+						$redirect_url = $plugin->getPluginPageUrl('setup', ['wtitan_setup_page_viewed' => 1]);
+					}
+					if( $redirect_url ) {
+						wp_safe_redirect($redirect_url);
+						die();
+					}
+				} catch( Exception $e ) {
+				}
+			}
+		} else {
+			if( \WBCR\Titan\Plugin\Helper::is_need_show_setup_page() ) {
+				delete_option($plugin->getOptionName('setup_wizard'));
+			}
+		}
+	}
+});
+
 /**
  * Выводит кнопку настроек в шапке интерфейса плагина
  */

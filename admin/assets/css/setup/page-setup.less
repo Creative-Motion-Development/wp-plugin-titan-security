@@ -1,0 +1,140 @@
+
+.wtitan-setup__install-component-button {
+  background-color: #ff1c40 !important;
+  border-color: #ff1c40 !important;
+  color: white !important;
+  text-transform: uppercase !important;
+  border-radius: 5px !important;
+  padding: 10px 30px !important;
+  text-decoration: none !important;
+
+  &:link, &:active {
+    text-decoration: none !important;
+  }
+
+  &:hover {
+    color: #f3f4ef;
+  }
+}
+
+/*.wtitan-danger-message {
+  position: relative;
+  padding: 15px;
+  background: #ffe0de;
+  color: #9c6e6e;
+  border-radius: 3px;
+}*/
+
+.wtitan-step-audit__preloader {
+  display: block;
+  width: 100%;
+  height: 100px;
+  background: url("../../img/setup-preloader-124x124.gif") center no-repeat;
+}
+
+.wtitan-vulner-table-first-col {
+  padding: 0 2px !important;
+}
+
+.wtitan-vulner-table-name {
+  width: 250px;
+}
+
+.wtitan-vulner-table__td {
+  vertical-align: top;
+}
+
+.wtitan-vulner-table__td.wtitan-vulner-table__title {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.wtitan-vulner-table__td.wtitan-vulner-table__description {
+  font-size: 12px;
+}
+
+.wt-severity-low {
+  box-shadow: inset 20px 0px 0px 0px #cecece;
+}
+
+.wt-severity-medium {
+  box-shadow: inset 20px 0px 0px 0px #f9dfa6;
+}
+
+.wt-severity-high {
+  box-shadow: inset 20px 0px 0px 0px #f5a0a0;
+}
+
+.wt-scanner-hide-button {
+  margin-bottom: 5px !important;
+}
+
+/*--- Scanner -------*/
+.wt-dashboard-scan-button-loader, .wt-scan-icon-loader {
+  display: inline-block;
+  height: 34px;
+  width: 34px;
+  background: transparent url("../img/loader.gif") no-repeat center bottom;
+  background-size: contain;
+  vertical-align: bottom;
+
+}
+
+.wt-scanner-chart, .wt-scanner-legend {
+  border-radius: 5px;
+  margin: 0 10px 10px 10px;
+}
+
+.wt-scanner-chart-clean[style*="width: 0%"],
+.wt-scanner-chart-suspicious[style*="width: 0%"],
+.wt-scanner-chart-notverified[style*="width: 0%"] {
+  display: none !important;
+}
+
+.wt-scanner-chart-clean, .wt-scanner-chart-suspicious, .wt-scanner-chart-notverified {
+  border: 1px solid #c1c1c1;
+  border-radius: 5px;
+  display: inline-block !important;
+  content: "";
+  height: 30px;
+  margin: 0 -5px;
+  position: relative;
+}
+
+.wt-scanner-chart-clean {
+  background-color: #5d05b7;
+  z-index: 10;
+  border-right: 0;
+}
+
+.wt-scanner-chart-suspicious {
+  background-color: #f6065b;
+  z-index: 9;
+  border-right: 0;
+}
+
+.wt-scanner-chart-notverified {
+  background-color: #dadada;
+  z-index: 8;
+}
+
+.wt-scanner-legend td {
+  padding: 0 0 0 10px;
+  font-size: 12px;
+  -webkit-transition: background-color 200ms ease-in-out;
+  -moz-transition: background-color 200ms ease-in-out;
+  -o-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
+}
+
+span.wt-legend-item {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  //padding-top: 6px;
+}
+
+.wt-scanner-legend td:nth-child(odd) {
+  padding: 0 0 0 20px !important;
+}

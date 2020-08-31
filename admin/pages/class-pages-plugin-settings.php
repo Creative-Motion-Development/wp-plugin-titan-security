@@ -344,8 +344,6 @@ class PluginSettings extends Base {
 	 * Ajax действите, выполняется для получения всех доступных опций для экспорта.
 	 */
 	public function import_settings() {
-		require_once WTITAN_PLUGIN_DIR . "/includes/helpers.php";
-
 		global $wpdb;
 
 		check_ajax_referer( 'wtitan_import_options' );

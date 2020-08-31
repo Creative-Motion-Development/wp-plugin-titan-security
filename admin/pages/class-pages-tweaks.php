@@ -88,8 +88,6 @@ class Tweaks extends Base {
 				'control.dropdown',
 				'control.checkbox'
 			], 'bootstrap' );
-
-			add_action( 'wbcr/factory/update_option', [ $this, 'before_save' ] );
 		}
 	}
 

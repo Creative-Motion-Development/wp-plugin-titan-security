@@ -1,140 +1,98 @@
-.wtitan-ips-blocking
-{
-	padding: 5px 20px;
+.wtitan-ips-blocking {
+  padding: 5px 20px;
 }
-
-.wtitan-ips-blocking.wtitan-section-disabled
-{
-	opacity: 0.4;
+.wtitan-ips-blocking.wtitan-section-disabled {
+  opacity: 0.4;
 }
-
 .wtitan-ips-blocking.wtitan-section-disabled select,
 .wtitan-ips-blocking.wtitan-section-disabled button,
-.wtitan-ips-blocking.wtitan-section-disabled a
-{
-	pointer-events: none;
-	cursor: not-allowed;
-	opacity: 0.65;
-	filter: alpha(opacity=65);
-	-webkit-box-shadow: none;
-	box-shadow: none;
+.wtitan-ips-blocking.wtitan-section-disabled a {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
-
-.wtitan-ips-blocking__controls
-{
-	display: flex;
-	flex-direction: row;
+.wtitan-ips-blocking__controls {
+  display: flex;
+  flex-direction: row;
 }
-
-.wtitan-ips-blocking__controls-left
-{
-	flex-grow: 0 !important;
+.wtitan-ips-blocking__controls-left {
+  flex-grow: 0 !important;
 }
-
-.wtitan-ips-blocking__controls-right
-{
-	flex-grow: 1 !important;
-	text-align: right;
+.wtitan-ips-blocking__controls-right {
+  flex-grow: 1 !important;
+  text-align: right;
 }
-
-.wtitan-ips-blocking__controls li
-{
-	display: block;
+.wtitan-ips-blocking__controls li {
+  display: block;
 }
-
 .wtitan-ips-blocking__table th,
-.wtitan-ips-blocking__table td
-{
-	padding: 20px;
+.wtitan-ips-blocking__table td {
+  padding: 20px;
 }
-
-.wtitan-ips-blocking__table th
-{
-	background-color: #ebebeb;
-	color: #777;
-	font-weight: bold;
-	text-align: left;
-	border-left: 1px solid #bdbdbd;
+.wtitan-ips-blocking__table th {
+  background-color: #ebebeb;
+  color: #777;
+  font-weight: bold;
+  text-align: left;
+  border-left: 1px solid #bdbdbd;
 }
-
-.wtitan-ips-blocking__table th:first-child
-{
-	border: 0;
+.wtitan-ips-blocking__table th:first-child {
+  border: 0;
 }
-
-.wtitan-ips-blocking-modal__tabs
-{
-	border-bottom: 1px solid #d0d0d0;
+.wtitan-ips-blocking-modal__tabs {
+  border-bottom: 1px solid #d0d0d0;
 }
-
-.wtitan-ips-blocking-modal__tab
-{
-	display: inline-block;
-	border: 1px solid #ccc;
-	border-bottom: none;
-	margin: 0;
-	padding: 5px 10px;
-	font-size: 14px;
-	line-height: 1.71428571;
-	font-weight: 600;
-	background: #e5e5e5;
-	color: #555;
-	text-decoration: none;
-	white-space: nowrap;
+.wtitan-ips-blocking-modal__tab {
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 1.71428571;
+  font-weight: 600;
+  background: #e5e5e5;
+  color: #555;
+  text-decoration: none;
+  white-space: nowrap;
 }
-
-.wtitan-ips-blocking-modal__tab a
-{
-	color: #555;
-	text-decoration: none;
-	font-size: 13px;
+.wtitan-ips-blocking-modal__tab a {
+  color: #555;
+  text-decoration: none;
+  font-size: 13px;
 }
-
 .wtitan-ips-blocking-modal__tab a:active,
-.wtitan-ips-blocking-modal__tab a:focus
-{
-	outline: none;
-	box-shadow: none;
+.wtitan-ips-blocking-modal__tab a:focus {
+  outline: none;
+  box-shadow: none;
 }
-
-.wtitan-ips-blocking-modal__tab--active
-{
-	background: #ffffff;
-	box-shadow: 0 2px 0 #efefef;
+.wtitan-ips-blocking-modal__tab--active {
+  background: #ffffff;
+  box-shadow: 0 2px 0 #efefef;
 }
-
-.wtitan-ips-blocking-modal__tab-content
-{
-	display: none;
+.wtitan-ips-blocking-modal__tab-content {
+  display: none;
 }
-
-.wtitan-ips-blocking-modal__tab-content--active
-{
-	display: block;
+.wtitan-ips-blocking-modal__tab-content--active {
+  display: block;
 }
-
-.wtitan-ips-blocking-modal__form
-{
-	margin: 0 auto;
+.wtitan-ips-blocking-modal__form {
+  margin: 0 auto;
 }
-
-.wtitan-ips-blocking-modal__form-label
-{
-	display: block;
-	font-size: 14px;
-	font-weight: 600;
+.wtitan-ips-blocking-modal__form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
 }
-
-.wtitan-ips-blocking-modal__form input[type="text"]
-{
-	width: 100%;
-	height: 40px;
+.wtitan-ips-blocking-modal__form input[type="text"] {
+  width: 100%;
+  height: 40px;
 }
-
-.wtitan-ips-blocking-modal__form textarea
-{
-	width: 100%;
-	height: 100px;
+.wtitan-ips-blocking-modal__form textarea {
+  width: 100%;
+  height: 100px;
 }
-
 /*# sourceMappingURL=firewall-ips-blocking.css.map */

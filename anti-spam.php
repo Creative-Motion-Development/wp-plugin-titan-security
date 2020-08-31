@@ -96,8 +96,7 @@ $wtitan_plugin_info = [
 		['libs/factory/freemius', 'factory_freemius_000', 'all'],
 		['libs/factory/feedback', 'factory_feedback_000', 'admin']
 	],
-	'load_plugin_components' => array(
-	)
+	'load_plugin_components' => array()
 
 ];
 
@@ -232,6 +231,7 @@ if( !defined('WTITAN_DEBUG') ) {
  */
 require_once(WTITAN_PLUGIN_DIR . '/libs/factory/core/boot.php');
 require_once(WTITAN_PLUGIN_DIR . '/includes/antispam/functions.php');
+require_once WTITAN_PLUGIN_DIR . "/includes/helpers.php";
 require_once(WTITAN_PLUGIN_DIR . '/includes/class-titan-security-plugin.php');
 
 try {
