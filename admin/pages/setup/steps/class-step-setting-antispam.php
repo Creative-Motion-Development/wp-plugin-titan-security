@@ -21,7 +21,7 @@ class Step_Setting_Antispam extends \WBCR\FactoryClearfy000\Pages\Step_Form {
 
 	public function get_form_description()
 	{
-		return 'Recommended settings that can complement your SEO plugin.';
+		return _e("The antispam module protects comment forms on your site from spam attacks. We recommend enabling protection if you do not use other antispam plugins and use comments in your articles.", "titan-security");
 	}
 
 	public function get_form_options()

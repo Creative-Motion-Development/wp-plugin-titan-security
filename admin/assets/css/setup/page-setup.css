@@ -1,3 +1,42 @@
+.wtitan-status-circular {
+  position: relative;
+  margin: 0 auto;
+}
+.wtitan-status-circular-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  color: #aaa;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.3125rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+.wtitan-status-circular .wf-status-overlay-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  margin: 0;
+  width: 200%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: 1.3125;
+  opacity: 0;
+  color: #777;
+}
+.wtitan-setup__color--red > .dashicons {
+  color: red;
+}
+.wtitan-setup__color--green > .dashicons {
+  color: green;
+}
 .wtitan-setup__install-component-button {
   background-color: #ff1c40 !important;
   border-color: #ff1c40 !important;

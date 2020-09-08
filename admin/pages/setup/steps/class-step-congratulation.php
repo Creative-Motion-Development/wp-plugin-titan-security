@@ -13,11 +13,24 @@ class Step_Congratulation extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 	protected $prev_id = 'step5';
 	protected $id = 'step6';
 
-	//protected $next_id = 'step2';
-
 	public function get_title()
 	{
-		return __("Finish", "clearfy");
+		return __("Finish", "titan-security");
+	}
+
+	/**
+	 * Requests assets (js and css) for the page.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 * @see   FactoryPages000_AdminPage
+	 *
+	 */
+	public function assets($scripts, $styles)
+	{
+		$styles->add(WTITAN_PLUGIN_URL . '/admin/assets/css/firewall/firewall-dashboard.css');
+		$scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/libs/circular-progress.js', ['jquery']);
+		$scripts->add(WTITAN_PLUGIN_URL . '/admin/assets/js/libs/popover.min.js');
 	}
 
 	public function html()
@@ -25,97 +38,140 @@ class Step_Congratulation extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 		$pricing_page_url = $this->plugin->get_support()->get_pricing_url(true, 'setup_wizard');
 		?>
 		<div class="w-factory-clearfy-000-setup__inner-wrap">
-			<h3><?php echo __("Congratulations, the plugin configuration is complete!", "clearfy"); ?></h3>
-			<p style="text-align: left;">
-				<?php _e('You have successfully completed the basic plugin setup! You can go to the general plugin settings to enable other options that we did not offer you.', 'clearfy'); ?>
-			</p>
+			<h3><?php _e("Congratulations, the plugin configuration is complete!", "titan-security"); ?></h3>
+			<script>
+				jQuery(document).ready(function($) {
+					$('#wtitan-circle-firewall-coverage').wfCircularProgress({
+						endPercent: 0.6,
+						color: '#ca4a1f',
+						inactiveColor: '#ececec',
+						strokeWidth: 2,
+						diameter: 100,
+					});
+					$("#wtitan-circle-firewall-coverage").fu_popover({
+						content: $('#wtitan-status-tooltip').html(),
+						dismissable: true,
+						placement: 'right',
+						trigger: 'hover',
+						width: '350px',
+						autoHide: false
+					});
+				});
+			</script>
+			<table>
+				<tr>
+					<td>
+						<div id="wtitan-circle-firewall-coverage" class="wtitan-status-circular"></div>
+
+						<div id="wtitan-status-tooltip" style="display: none">
+							<strong><?php _e('How do I get to 100%?', 'titan-security'); ?></strong>
+							<ul>
+								<li><?php _e('15% Use the Titan Firewall', 'titan-security'); ?></li>
+								<li><?php _e('10% Use WordPress Security Scanner PRO', 'titan-security'); ?></li>
+								<li><?php _e('10% Use Malware scanner PRO', 'titan-security'); ?></li>
+								<li><?php _e('5% Use Site Checker', 'titan-security'); ?></li>
+								<li>
+									<a href="#"><?php _e('How does Titan determine this?', 'titan-security'); ?></a>
+								</li>
+							</ul>
+						</div>
+					</td>
+					<td style="vert-align: top">
+						<p style="text-align: left;margin:0;">
+							<?php _e('You have successfully completed the basic plugin setup! You can go to the general plugin settings to enable other options that we did not offer you. Your site is 60% secure.', 'titan-security'); ?>
+						</p>
+					</td>
+				</tr>
+			</table>
 			<hr>
 			<div>
 				<p style="text-align: left;">
-					<?php _e("However, you can still improve your site's Google Page Speed score by simply purchasing the Pro version of our plugin.", "clearfy") ?>
+					<?php _e("Basic protection will help you avoid many security problems for your site, but to fully protect your site, we recommend that you purchase the premium version of the plugin.", "titan-security") ?>
 				</p>
 				<table style="width: 100%">
 					<thead>
 					<tr>
 						<th></th>
-						<th>Free</th>
-						<th>PRO</th>
+						<th><?php _e('Free', 'titan-security'); ?></th>
+						<th><?php _e('PRO', 'titan-security'); ?></th>
 					</tr>
 					</thead>
 					<tbody>
 					<tr>
 						<td>Antispam</td>
-						<td><span class="dashicons dashicons-yes"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Malware scanner</td>
-						<td><span class="dashicons dashicons-yes"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>WordPress Security Scanner</td>
-						<td><span class="dashicons dashicons-yes"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Hide login page</td>
-						<td><span class="dashicons dashicons-yes"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Strong password</td>
-						<td><span class="dashicons dashicons-yes"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Antispam PRO</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Firewall (WAF)</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>WordPress Security Scanner PRO</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Malware scanner PRO</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Real-time IP Blacklist</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>
 							Detect Malicious Code in Themes and Plugins
 						</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>
 							Site Checker
 						</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					<tr>
 						<td>Premium support</td>
-						<td><span class="dashicons dashicons-minus"></span></td>
-						<td><span class="dashicons dashicons-yes"></span></td>
+						<td class="wtitan-setup__color--red"><span class="dashicons dashicons-minus"></span></td>
+						<td class="wtitan-setup__color--green"><span class="dashicons dashicons-yes"></span></td>
 					</tr>
 					</tbody>
 				</table>
 				<p>
-					<a href="<?php echo esc_url($pricing_page_url); ?>" class="wtitan-setup__install-component-button" target="_blank"><?php _e('Go Pro', 'clearfy') ?></a>
+					<a href="<?php echo esc_url($pricing_page_url); ?>" class="wtitan-setup__install-component-button" target="_blank">
+						<?php _e('Go Pro', 'titan-security') ?>
+					</a>
 				</p>
 			</div>
 		</div>

@@ -21,7 +21,7 @@ class Step_Setting_Tweaks extends \WBCR\FactoryClearfy000\Pages\Step_Form {
 
 	public function get_form_description()
 	{
-		return 'Recommended settings that can complement your SEO plugin.';
+		return __('Tweaks are minor security fixes to your site. Enabling tweaks can prevent your site from being hacked.', 'titan-security');
 	}
 
 	public function get_form_options()
@@ -82,7 +82,7 @@ class Step_Setting_Tweaks extends \WBCR\FactoryClearfy000\Pages\Step_Form {
 			'type' => 'checkbox',
 			'way' => 'buttons',
 			'name' => 'remove_meta_generator',
-			'title' => __('Remove meta generator', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
+			'title' => __('Remove meta generator', 'titan-security'),
 			'layout' => array('hint-type' => 'icon'),
 			'hint' => __('Allows attacker to learn the version of WP installed on the site. This meta tag has no useful function.', 'titan-security') . '<br><b>Titan: </b>' . sprintf(__('Removes the meta tag from the %s section', 'titan-security'), '&lt;head&gt;'),
 			'default' => true
@@ -92,7 +92,7 @@ class Step_Setting_Tweaks extends \WBCR\FactoryClearfy000\Pages\Step_Form {
 			'type' => 'checkbox',
 			'way' => 'buttons',
 			'name' => 'remove_js_version',
-			'title' => __('Remove Version from Script', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
+			'title' => __('Remove Version from Script', 'titan-security'),
 			'layout' => ['hint-type' => 'icon'],
 			'hint' => __('To make it more difficult for others to hack your website you can remove the WordPress version number from your site, your css and js. Without that number it\'s not possible to see if you run not the current version to exploit bugs from the older versions. <br><br>
 					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Titan: </b>' . __('Removes wordpress version number from scripts (not logged in user only).', 'titan-security'),
@@ -103,7 +103,7 @@ class Step_Setting_Tweaks extends \WBCR\FactoryClearfy000\Pages\Step_Form {
 			'type' => 'checkbox',
 			'way' => 'buttons',
 			'name' => 'remove_style_version',
-			'title' => __('Remove Version from Stylesheet', 'titan-security') . ' <span class="wbcr-clearfy-recomended-text">(' . __('Recommended', 'titan-security') . ')</span>',
+			'title' => __('Remove Version from Stylesheet', 'titan-security'),
 			'layout' => ['hint-type' => 'icon'],
 			'hint' => __('To make it more difficult for others to hack your website you can remove the WordPress version number from your site, your css and js. Without that number it\'s not possible to see if you run not the current version to exploit bugs from the older versions. <br><br>
 					Additionally it can improve the loading speed of your site, because without query strings in the URL the css and js files can be cached.', 'titan-security') . '<br><br><b>Titan: </b>' . __('Removes the wordpress version number from stylesheets (not logged in user only).', 'titan-security'),

@@ -43,6 +43,10 @@ class Setup extends \WBCR\FactoryClearfy000\Pages\Setup {
 		$this->register_step($path . '/class-step-congratulation.php', '\WBCR\Titan\Page\Step_Congratulation');
 	}
 
+	public function get_close_wizard_url()
+	{
+		return $this->getBaseUrl('dashboard');
+	}
 
 	/**
 	 * Requests assets (js and css) for the page.

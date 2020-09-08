@@ -38,29 +38,30 @@ $firewall_status_color   = $data['firewall_status_color'];
                     </div>
                 </td>
                 <td>
-                    <div id="wtitan-circle-firewall-coverage" class="wtitan-status-circular"></div>
-                    <script>
-                        jQuery(document).ready(function ($) {
-                            $('#wtitan-circle-firewall-coverage').wfCircularProgress({
-                                endPercent: <?php echo $firewall_status_percent; ?>,
-                                color: '<?php echo $firewall_status_color; ?>',
-                                inactiveColor: '#ececec',
-                                strokeWidth: 1,
-                                diameter: 100,
-                            });
-                        });
-                    </script>
-                    <h4><?php _e( 'Web Application Firewall', 'titan-security' ); ?></h4>
-                    <p><?php _e( 'Stops Complex Attacks', 'titan-security' ); ?></p>
-                    <div id="wtitan-status-tooltip" style="display: none">
-                        <strong><?php _e( 'How do I get to 100%?', 'titan-security' ); ?></strong>
-                        <ul>
-                            <li><?php _e( '30% Enable the Titan Firewall.', 'titan-security' ); ?></li>
-                            <li><?php _e( '70% Optimize the Titan Firewall.', 'titan-security' ); ?></li>
-                            <!--<li>30% Disable learning mode.</li>
+	                <div id="wtitan-circle-firewall-coverage" class="wtitan-status-circular"></div>
+	                <script>
+		                jQuery(document).ready(function($) {
+			                $('#wtitan-circle-firewall-coverage').wfCircularProgress({
+				                endPercent: <?php echo $firewall_status_percent; ?>,
+				                color: '<?php echo $firewall_status_color; ?>',
+				                inactiveColor: '#ececec',
+				                strokeWidth: 1,
+				                diameter: 100,
+			                });
+		                });
+	                </script>
+	                <h4><?php _e('Web Application Firewall', 'titan-security'); ?></h4>
+	                <p><?php _e('Stops Complex Attacks', 'titan-security'); ?></p>
+	                <div id="wtitan-status-tooltip" style="display: none">
+		                <strong><?php _e('How do I get to 100%?', 'titan-security'); ?></strong>
+		                <ul>
+			                <li><?php _e('30% Enable the Titan Firewall.', 'titan-security'); ?></li>
+			                <li><?php _e('70% Optimize the Titan Firewall.', 'titan-security'); ?></li>
+			                <!--<li>30% Disable learning mode.</li>
 							<li>35% Enable Real-Time IP Blacklist.</li>-->
-                            <li><a href="#"><?php _e( 'How does Titan determine this?', 'titan-security' ); ?></a></li>
-                        </ul>
+			                <li><a href="#"><?php _e('How does Titan determine this?', 'titan-security'); ?></a></li>
+		                </ul>
+	                </div>
                 </td>
             </tr>
         </table>
