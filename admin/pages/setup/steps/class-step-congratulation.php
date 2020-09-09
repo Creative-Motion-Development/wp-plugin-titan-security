@@ -170,7 +170,7 @@ class Step_Congratulation extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 				</table>
 				<p>
 					<a href="<?php echo esc_url($pricing_page_url); ?>" class="wtitan-setup__install-component-button" target="_blank">
-						<?php _e('Go Pro', 'titan-security') ?>
+						<?php _e('Get Pro', 'titan-security') ?>
 					</a>
 				</p>
 			</div>

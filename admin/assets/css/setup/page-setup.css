@@ -1,3 +1,9 @@
+.w-factory-clearfy-000-setup-steps li.active {
+  border-color: #5d05b7 !important;
+}
+.w-factory-clearfy-000-setup-steps li.active::before {
+  border-color: #5d05b7 !important;
+}
 .wtitan-status-circular {
   position: relative;
   margin: 0 auto;
@@ -38,8 +44,8 @@
   color: green;
 }
 .wtitan-setup__install-component-button {
-  background-color: #ff1c40 !important;
-  border-color: #ff1c40 !important;
+  background-color: #5d05b7 !important;
+  border-color: #5d05b7 !important;
   color: white !important;
   text-transform: uppercase !important;
   border-radius: 5px !important;
@@ -83,13 +89,13 @@
   font-size: 12px;
 }
 .wt-severity-low {
-  box-shadow: inset 20px 0px 0px 0px #cecece;
+  box-shadow: inset 20px 0px 0px 0px #5d05b7;
 }
 .wt-severity-medium {
-  box-shadow: inset 20px 0px 0px 0px #f9dfa6;
+  box-shadow: inset 20px 0px 0px 0px #ff8f62;
 }
 .wt-severity-high {
-  box-shadow: inset 20px 0px 0px 0px #f5a0a0;
+  box-shadow: inset 20px 0px 0px 0px #ff0035;
 }
 .wt-scanner-hide-button {
   margin-bottom: 5px !important;

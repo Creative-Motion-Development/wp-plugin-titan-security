@@ -108,8 +108,8 @@ add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
 /**
  * Trial notice on plugin pages
  */
-add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin, $obj) {
-	if( is_plugin_active('plugins-scanner-premium/plugins-scanner-premium.php') || ($plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName()) ) {
+//add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin, $obj) {
+/*	if( is_plugin_active('plugins-scanner-premium/plugins-scanner-premium.php') || ($plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName()) ) {
 		return;
 	}
 
@@ -117,18 +117,19 @@ add_action('wbcr/factory/pages/impressive/print_all_notices', function ($plugin,
 	$notice_text .= '&nbsp;<a href="https://titansitescanner.com/plugin-scanner/" target="_blank" rel="noopener" class="wtitan-get-plugins-scanner__btn">' . __('Sign Up for $9.99', 'titan-security') . '</a>';
 
 	echo '<div class="alert alert-warning wbcr-factory-warning-notice wtitan-get-plugins-scanner__notice"><p><span class="dashicons dashicons-plugins-checked"></span> ' . $notice_text . '</p></div>';
-	//$obj->printWarningNotice($notice_text);
+	*///$obj->printWarningNotice($notice_text);
 
-	/** @var \Wbcr_Factory000_Plugin $plugin */ /** @var \Wbcr_FactoryPages000_ImpressiveThemplate $obj */
-	/*if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
-		return;
-	}
+/** @var \Wbcr_Factory000_Plugin $plugin */
+/** @var \Wbcr_FactoryPages000_ImpressiveThemplate $obj */
+/*if ( ( \WBCR\Titan\Plugin::app()->premium->is_activate() ) || ( $plugin->getPluginName() != \WBCR\Titan\Plugin::app()->getPluginName() ) || $obj->id == 'license' ) {
+	return;
+}
 
-	$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
-	$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="btn btn-gold btn-sm wt-notice-trial-button">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
-	$notice_text .= "<span id='wt-notice-hide-link' class='wt-notice-hide-link dashicons dashicons-no'></span>";
-	$obj->printWarningNotice( $notice_text );*/
-}, 10, 2);
+$notice_text = __( 'Get the free trial edition (no credit card) contains all of the features included in the paid-for version of the product.', 'titan-security' );
+$notice_text .= '&nbsp;<a href="' . add_query_arg( [ 'trial' => 1 ], \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ) ) . '" class="btn btn-gold btn-sm wt-notice-trial-button">' . __( 'Activate 30 days trial', 'titan-security' ) . '</a>';
+$notice_text .= "<span id='wt-notice-hide-link' class='wt-notice-hide-link dashicons dashicons-no'></span>";
+$obj->printWarningNotice( $notice_text );*/
+//}, 10, 2);
 
 /**
  * Trial notice on all WP admin pages

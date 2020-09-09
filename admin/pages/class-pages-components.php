@@ -192,7 +192,7 @@ class Components extends Base {
 
 		]);
 
-		if( is_plugin_active('plugins-scanner-premium/plugins-scanner-premium.php') || is_plugin_active('wp-plugin-plugins-scanner-premium/plugins-scanner-premium.php') ) {
+		/*if( is_plugin_active('plugins-scanner-premium/plugins-scanner-premium.php') || is_plugin_active('wp-plugin-plugins-scanner-premium/plugins-scanner-premium.php') ) {
 			$response[] = [
 				'name' => 'titan_plugin_scanner',
 				'title' => __('Titan Plugins Scanner', 'titan-security'),
@@ -216,7 +216,7 @@ class Components extends Base {
 				'description' => __('Preventively prevents infection of the site when activated by the plugin.', 'titan-security'),
 				//'settings_url' => admin_url( 'admin.php?page=hlp_hide_login-' . $this->plugin->getPluginName() )
 			];
-		}
+		}*/
 
 		/**
 		 * @param array $response

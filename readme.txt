@@ -176,6 +176,10 @@ The plugin is pretty small and easy to read.
 
 == Changelog ==
 = 7.1.6 =
+* Added: Setup wizard
+* Improved: Compatibility with Wordpress 5.5
+
+= 7.1.6 =
 * Fixed: jQuery.fn.load() and other bugs after update to Wordpress 5.5
 
 = 7.1.5 =

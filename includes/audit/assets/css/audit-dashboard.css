@@ -1,19 +1,15 @@
-.wt-severity-low
-{
-	box-shadow: inset 20px 0px 0px 0px rgb(128, 128, 128);
+.wt-severity-low {
+    box-shadow: inset 20px 0px 0 0 #5d05b7;
 }
 
-.wt-severity-medium
-{
-	box-shadow: inset 20px 0px 0px 0px rgb(255, 177, 0);
+.wt-severity-medium {
+    box-shadow: inset 20px 0px 0px 0px #ff8f62;
 }
 
-.wt-severity-high
-{
-	box-shadow: inset 20px 0px 0px 0px rgb(255, 0, 0);
+.wt-severity-high {
+    box-shadow: inset 20px 0px 0px 0px #ff0035;
 }
 
-.wt-scanner-hide-button
-{
-	margin-bottom: 5px !important;
+.wt-scanner-hide-button {
+    margin-bottom: 5px !important;
 }
