@@ -31,7 +31,7 @@ class TwoFactor extends Base
     /**
      * @var bool
      */
-    public $show_right_sidebar_in_options = false;
+    public $show_right_sidebar_in_options = true;
 
     /**
      * @var object|\WBCR\Titan\Views

@@ -38,7 +38,7 @@ class PluginSettings extends Base {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $show_right_sidebar_in_options = false;
+	public $show_right_sidebar_in_options = true;
 
 	/**
 	 * {@inheritdoc}

@@ -2,6 +2,10 @@ h2.nav-tab-wrapper {
     margin-left: 10px !important;
 }
 
+.wbcr-factory-subscribe-widget__button {
+	background-color:#5d05b7 !important;
+}
+
 /*#WBCR .wbcr-factory-pages-000-impressive-page-template .alert
 {
     padding: 10px !important;

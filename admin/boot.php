@@ -16,6 +16,41 @@ if( !defined('ABSPATH') ) {
 }
 
 /**
+ * Widget with the offer to buy Clearfy Business
+ *
+ * @param array $widgets
+ * @param string $position
+ * @param Wbcr_Factory439_Plugin $plugin
+ */
+
+add_filter('wbcr/factory/pages/impressive/widgets', function ($widgets, $position, $plugin) {
+
+	if( $plugin->getPluginName() == \WBCR\Titan\Plugin::app()->getPluginName() ) {
+
+		if(\WBCR\Titan\Plugin::app()->premium->is_activate() ) {
+			unset($widgets['donate_widget']);
+
+			if( $position == 'right' ) {
+				unset($widgets['adverts_widget']);
+				unset($widgets['business_suggetion']);
+				unset($widgets['rating_widget']);
+				unset($widgets['info_widget']);
+			}
+
+			return $widgets;
+		} else {
+			if( $position == 'right' ) {
+				unset($widgets['business_suggetion']);
+				unset($widgets['info_widget']);
+				unset($widgets['rating_widget']);
+			}
+		}
+	}
+
+	return $widgets;
+}, 9999, 3);
+
+/**
  * Этот хук реализует условную логику перенаправления на страницу мастера настроек,
  * сразу после активации плагина.
  */

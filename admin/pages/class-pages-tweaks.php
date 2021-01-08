@@ -40,7 +40,7 @@ class Tweaks extends Base {
 	 * @since  1.0
 	 * @var bool
 	 */
-	public $show_right_sidebar_in_options = false;
+	public $show_right_sidebar_in_options = true;
 
 	/**
 	 * WBCR\Page\Settings constructor.

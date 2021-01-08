@@ -92,6 +92,10 @@ $wtitan_plugin_info = [
 			]
 		]
 	],
+	
+	// PLUGIN SUBSCRIBE FORM
+	'subscribe_widget' => true,
+	'subscribe_settings' => ['group_id' => '105407158'],
 
 	// PLUGIN ADVERTS
 	'render_adverts' => true,

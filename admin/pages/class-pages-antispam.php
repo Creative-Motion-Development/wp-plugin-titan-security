@@ -39,7 +39,7 @@ class Antispam extends Base {
 	 * @since  6.0
 	 * @var bool
 	 */
-	public $show_right_sidebar_in_options = false;
+	public $show_right_sidebar_in_options = true;
 
 	/**
 	 *
