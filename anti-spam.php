@@ -62,7 +62,7 @@ $wtitan_plugin_info = [
 		]
 	],
 
-	'has_updates' => false,
+	'has_updates' => true,
 	'updates_settings' => [
 		'repository' => 'github',
 		'alternate_updates_mode' => true,
@@ -92,7 +92,7 @@ $wtitan_plugin_info = [
 			]
 		]
 	],
-	
+
 	// PLUGIN SUBSCRIBE FORM
 	'subscribe_widget' => true,
 	'subscribe_settings' => ['group_id' => '105407158'],
