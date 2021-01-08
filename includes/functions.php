@@ -11,7 +11,7 @@ use WBCR\Titan\Client\Client;
 use WBCR\Titan\Client\Entity\CmsCheckItem;
 use WBCR\Titan\Logger\Writter;
 use WBCR\Titan\MalwareScanner\HashListPool;
-use WBCR\Titan\MalwareScanner\Match;
+use WBCR\Titan\MalwareScanner\Result;
 use WBCR\Titan\MalwareScanner\Scanner;
 use WBCR\Titan\MalwareScanner\Signature;
 use WBCR\Titan\Plugin;
@@ -53,7 +53,7 @@ add_action('titan_malware_weekly_digest', 'titan_malware_weekly_digest');
 function titan_malware_weekly_digest()
 {
 	/**
-	 * @var Match[] $matched
+	 * @var Result[] $matched
 	 */
 	$matched = get_option(Plugin::app()->getPrefix() . 'matched_weekly', []);
 
@@ -111,7 +111,7 @@ function titan_scheduled_scanner()
 	$matched = Plugin::app()->getOption('scanner_malware_matched', []);
 
 	foreach($scanner->scan($files_count) as $match) {
-		/** @var Match $match */
+		/** @var Result $match */
 		if( $match->getSignature()->getSever() === Signature::SEVER_CRITICAL ) {
 			array_unshift($matched, $match);
 		} else {
@@ -267,7 +267,7 @@ function titan_remove_scheduler_scanner()
 	Plugin::app()->updateOption('scanner_status', 'stopped');
 
 	try {
-		/** @var Match[] $matched */
+		/** @var Result[] $matched */
 		$matched = get_option(Plugin::app()->getPrefix() . 'scanner_malware_matched', []);
 		$weeklyMatched = get_option(Plugin::app()->getPrefix() . 'matched_weekly', []);
 

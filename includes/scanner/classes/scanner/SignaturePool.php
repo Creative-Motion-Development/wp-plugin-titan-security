@@ -70,7 +70,7 @@ class SignaturePool {
 	/**
 	 * @param File $file
 	 *
-	 * @return Match|null
+	 * @return Result|null
 	 */
 	public function scanFile( $file ) {
 		$fData = fopen($file->getPath(), 'rb' );
@@ -156,7 +156,7 @@ class SignaturePool {
 					PREG_OFFSET_CAPTURE);
 				if($found) {
 					$match = $matched[0];
-					return new Match($signature, $file, $match[1], $match[0]);
+					return new Result($signature, $file, $match[1], $match[0]);
 				}
 			}
 		}

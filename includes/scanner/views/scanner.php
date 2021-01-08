@@ -1,13 +1,13 @@
 <?php
 /**
  * @var bool $scanner_started
- * @var Match[] $matched
+ * @var Result[] $matched
  * @var float $progress
  * @var int $cleaned
  * @var int $suspicious
  */
 
-use WBCR\Titan\MalwareScanner\Match;
+use WBCR\Titan\MalwareScanner\Result;
 
 ?>
 <div class="wbcr-content-section">

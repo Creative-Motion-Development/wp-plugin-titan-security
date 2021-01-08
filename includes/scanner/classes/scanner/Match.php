@@ -4,11 +4,11 @@ namespace WBCR\Titan\MalwareScanner;
 
 
 /**
- * Class Match
+ * Class Result
  *
  * @author Alexander Gorenkov <g.a.androidjc2@ya.ru>
  */
-class Match implements \JsonSerializable {
+class Result implements \JsonSerializable {
 	/**
 	 * @var Signature
 	 */
@@ -30,7 +30,7 @@ class Match implements \JsonSerializable {
 	private $match;
 
 	/**
-	 * Match constructor.
+	 * Result constructor.
 	 *
 	 * @param Signature $signature
 	 * @param File $file

@@ -1,13 +1,13 @@
 <?php
 /**
  * @var bool $scanner_started
- * @var Match[] $matched
+ * @var Result[] $matched
  * @var float $progress
  * @var int $cleaned
  * @var int $suspicious
  */
 
-use WBCR\Titan\MalwareScanner\Match;
+use WBCR\Titan\MalwareScanner\Result;
 
 if ( $matched === false ) {
 	?>
@@ -31,7 +31,7 @@ if ( $matched === false ) {
             </thead>
             <tbody>
 			<?php foreach ( $matched as $file_path => $match ): ?>
-				<?php if ( $match instanceof Match ): ?>
+				<?php if ( $match instanceof Result ): ?>
                     <tr>
 						<?php switch ( $match->getSignature()->getSever() ) {
 							case \WBCR\Titan\MalwareScanner\Signature::SEVER_CRITICAL: ?>

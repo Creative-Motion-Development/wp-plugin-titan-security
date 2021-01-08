@@ -3,7 +3,7 @@
 Plugin Name: Titan Anti-spam & Security
 Plugin URI: http://wordpress.org/plugins/anti-spam/
 Description: Titan Security - Anti-spam, Anti-virus, Firewall and Malware Scan
-Version: 7.2.0
+Version: 7.2.1
 Author: CreativeMotion
 Text Domain: titan-security
 Author URI: https://cm-wp.com/
@@ -59,6 +59,20 @@ $wtitan_plugin_info = [
 			'support' => 'support',           // {site}/support
 			'docs' => 'docs',               // {site}/docs
 			'pricing' => 'pricing',           // {site}/prices
+		]
+	],
+
+	'has_updates' => false,
+	'updates_settings' => [
+		'repository' => 'github',
+		'alternate_updates_mode' => true,
+		'github_username' => 'Creative-Motion-Development', // обязательно, имя пользователя репозитория в Github
+		'github_authorize_token' => '', // необязательно, только если репозиторий приватный
+		'github_repository' => 'wp-plugin-titan-security', // необязательно, если не заполнено берется из slug
+		'slug' => 'anti-spam', // обязательно, slug плагина
+		'maybe_rollback' => false,
+		'rollback_settings' => [
+			'prev_stable_version' => '0.0.0'
 		]
 	],
 
