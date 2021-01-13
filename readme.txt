@@ -80,6 +80,24 @@ Your browser will receive push notifications if one of the URLS is unavailable.
 * Hide author login
 * Hide WordPress versions. WordPress itself and many plugins show their version at the visible areas of your site. An attacker who received this information may be aware of the vulnerabilities found in the version of the WordPress core or plugins.
 
+== Translations ==
+
+<ul>
+<li>English (default), always included</li>
+<li>Korean — big thanks to @cansmile</li>
+<li>Spanish (Venezuela) — big thanks to @yordansoares, @nobnob, @bragnieljimenez</li>
+<li>Spanish (Spain) — big thanks to @garridinsi, @nobnob, @nobnob, @nilovelez, @fernandot</li>
+<li>Italian — big thanks to @deadpool76</li>
+<li>Persian — big thanks to @1farakav</li>
+<li>Arabic — big thanks to @alzintani</li>
+<li>Swedish — big thanks to @elbogen </li>
+<li>Tibetan — big thanks to @bumpagyal </li>
+<li>Albanian — big thanks to @besnik </li>
+<li>Dutch — big thanks to @robelia </li>
+</ul>
+<p>We are very need for your help with <a href="https://translate.wordpress.org/projects/wp-plugins/anti-spam/" rel="nofollow ugc">translating the
+Titan Anti-spam & Security plugin</a> into your native language. We want to make it international and understandable for everyone. Please contact us via email inside the plugin, or create a topic on our <a href="https://wordpress.org/support/plugin/anti-spam/">support forum</a> if you can help with the translations. In exchange for your help, we will give you better support and our premium plugins absolutely free!</p>
+
 == Screenshots ==
 1. Dashboard
 2. General Settings
@@ -175,6 +193,16 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+7.2.5 – 13.01.2020
+* Fixed: Minor bugs
+
+7.2.4 – 12.01.2020
+* Fixed: Fatal error after activate/update
+
+7.2.3 – 12.01.2020
+* Added: Support php 8
+* Fixed: Minor bugs
+
 = 7.2.1 =
 * Added: Subscribe form
 * Improved: Compatibility with Wordpress 5.6

@@ -27,7 +27,7 @@ add_filter('wbcr/factory/pages/impressive/widgets', function ($widgets, $positio
 
 	if( $plugin->getPluginName() == \WBCR\Titan\Plugin::app()->getPluginName() ) {
 
-		if(\WBCR\Titan\Plugin::app()->premium->is_activate() ) {
+		if( \WBCR\Titan\Plugin::app()->premium->is_activate() ) {
 			unset($widgets['donate_widget']);
 
 			if( $position == 'right' ) {
@@ -43,6 +43,7 @@ add_filter('wbcr/factory/pages/impressive/widgets', function ($widgets, $positio
 				unset($widgets['business_suggetion']);
 				unset($widgets['info_widget']);
 				unset($widgets['rating_widget']);
+				$widgets['adverts_widget'] = wtitan_get_sidebar_adverts_widget();
 			}
 		}
 	}
@@ -107,30 +108,23 @@ add_action( 'wbcr/factory/pages/impressive/header', function ( $plugin_name ) {
  * that put all unapproved comments to spam check queue.
  */
 add_action('wbcr/factory/admin_notices', function ($notices, $plugin_name) {
-	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() || defined('WTITAN_PLUGIN_ACTIVE') ) {
+	if( $plugin_name != \WBCR\Titan\Plugin::app()->getPluginName() ) {
 		return $notices;
 	}
 
-	if( !\WBCR\Titan\Plugin::app()->is_premium() ) {
-		return $notices;
-	}
-
-	$about_plugin_url = "https://anti-spam.space";
-	$install_plugin_url = admin_url('update.php?action=install-plugin&plugin=anti-spam&_wpnonce=' . wp_create_nonce('activate-plugin_titan-security'));
-
-	$notice_text = sprintf(__('Thanks for activating the premium Titan security plugin. You got a bonus, premium <a href="%s" target="_blank" rel="noopener">Anti-spam</a> plugin. Want to <a href="%s" target="_blank" rel="noopener">install it now</a>?', "titan-security"), $about_plugin_url, $install_plugin_url);
+	$notice_text = sprintf(__('Maintenance, Security, Backups & Support for your WordPress Install. <a href="%s" target="_blank" rel="noopener">Now 49$/month!</a>', "titan-security"), 'https://cm-wp.com/wp-support/');
 
 	$notices[] = [
-		'id' => 'wtitan_bonus_suggestion',
+		'id' => 'wtitan_creativemotion_support_suggestion',
 		'type' => 'success',
-		/*'where' => [
+		'where' => [
 			'edit-comments',
 			'plugins',
 			'themes',
 			'dashboard',
 			'edit',
 			'settings'
-		],*/
+		],
 		'dismissible' => true,
 		'dismiss_expires' => 0,
 		'text' => '<p><strong>Titan:</strong><br>' . $notice_text . '</p>'

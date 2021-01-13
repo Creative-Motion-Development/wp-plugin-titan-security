@@ -449,7 +449,7 @@ function titan_set_scanner_speed_deactive()
 /**
  * @return int|float [Memory limit in MB]
  */
-function get_memory_limit()
+function titan_get_memory_limit()
 {
 	$mem = ini_get('memory_limit');
 	$last = $mem[strlen($mem) - 1];
@@ -477,7 +477,7 @@ function get_memory_limit()
 
 function get_recommended_scanner_speed()
 {
-	$mem = get_memory_limit();
+	$mem = titan_get_memory_limit();
 	if( $mem > 100 ) {
 		$recommendation = Scanner::SPEED_FAST;
 	} elseif( $mem > 60 ) {
@@ -551,4 +551,27 @@ function titan_init_check_schedule()
 	if( $is_schedule ) {
 		Plugin::app()->updatePopulateOption('scanner_schedule_last_time', date_i18n($format_date));
 	}
+}
+
+/**
+ * Return premium widget markup
+ *
+ * @return string
+ */
+function wtitan_get_sidebar_adverts_widget()
+{
+	ob_start();
+	?>
+	<div id="wtitan-adverts-widget" class="wbcr-factory-sidebar-widget">
+		<a href="https://cm-wp.com/wp-support/" target="_blank" rel="noopener noreferrer">
+			<img src="https://api.cm-wp.com/wp-content/uploads/2021/01/vertical_maintance.jpg" width="100%" alt="">
+		</a>
+	</div>
+	<?php
+
+	$output = ob_get_contents();
+
+	ob_end_clean();
+
+	return $output;
 }
