@@ -121,7 +121,7 @@ $wtitan_plugin_info = [
 $wtitan_compatibility = new Wbcr_Factory000_Requirements(__FILE__, array_merge($wtitan_plugin_info, [
 	'plugin_already_activate' => defined('WTITAN_PLUGIN_ACTIVE'),
 	'required_php_version' => '7.0',
-	'required_wp_version' => '5.2.0',
+	'required_wp_version' => '5.4.0',
 	'required_clearfy_check_component' => false
 ]));
 
