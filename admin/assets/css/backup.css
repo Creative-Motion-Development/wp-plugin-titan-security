@@ -122,3 +122,14 @@ ul.schedule-buttons li:first-child .button {
 	height: 100%;
 	background-color: #6929d3;
 }
+
+.backup-pro-span {
+	background: #f6065b;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 10px;
+	line-height: 1;
+	font-style: normal;
+	padding: 4px 6px;
+	margin-left: 4px;
+}
