@@ -40,11 +40,11 @@ jQuery(document).ready(function ($) {
                     console.log(data);
 
                     if (data) {
-                        noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.error_message, 'danger');
+                        noticeId = $.wbcr_factory_templates_000.app.showNotice(data.error_message, 'danger');
                     }
 
                     setTimeout(function () {
-                        $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                        $.wbcr_factory_templates_000.app.hideNotice(noticeId);
                     }, 5000);
                     return;
                 }
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
                 console.log(xhr.responseText);
                 console.log(thrownError);
 
-                var noticeId = $.wbcr_factory_clearfy_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
+                var noticeId = $.wbcr_factory_templates_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
             }
         });
     });
@@ -104,11 +104,11 @@ jQuery(document).ready(function ($) {
                                 console.log(data);
 
                                 if (data) {
-                                    noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.error_message, 'danger');
+                                    noticeId = $.wbcr_factory_templates_000.app.showNotice(data.error_message, 'danger');
                                 }
 
                                 setTimeout(function () {
-                                    $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                                    $.wbcr_factory_templates_000.app.hideNotice(noticeId);
                                 }, 5000);
                                 return data;
                             }
@@ -120,7 +120,7 @@ jQuery(document).ready(function ($) {
                             console.log(xhr.responseText);
                             console.log(thrownError);
 
-                            var noticeId = $.wbcr_factory_clearfy_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
+                            var noticeId = $.wbcr_factory_templates_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
                             reject(thrownError)
                         }
                     });
@@ -265,7 +265,7 @@ jQuery(document).ready(function ($) {
                                 console.log(xhr.responseText);
                                 console.log(thrownError);
 
-                                var noticeId = $.wbcr_factory_clearfy_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
+                                var noticeId = $.wbcr_factory_templates_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
 
                             }
                         });

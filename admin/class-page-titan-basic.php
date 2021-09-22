@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @copyright (c) 2020 Creative Motion
  * @version       1.0
  */
-class Base extends \Wbcr_FactoryClearfy000_PageBase {
+class Base extends \WBCR\Factory_Templates_000\Pages\PageBase {
 
 	/**
 	 * Scanner page constructor.

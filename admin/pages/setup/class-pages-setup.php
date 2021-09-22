@@ -13,7 +13,7 @@ if( !defined('ABSPATH') ) {
 	exit;
 }
 
-class Setup extends \WBCR\FactoryClearfy000\Pages\Setup {
+class Setup extends \WBCR\Factory_Templates_000\Pages\Setup {
 
 	/**
 	 * @param \Wbcr_Factory000_Plugin $plugin
@@ -24,10 +24,10 @@ class Setup extends \WBCR\FactoryClearfy000\Pages\Setup {
 
 		$path = WTITAN_PLUGIN_DIR . '/admin/pages/setup/steps';
 
-		#Step 1 is default \WBCR\FactoryClearfy000\Pages\Step_Plugins
+		#Step 1 is default \WBCR\Factory_Templates_000\Pages\Step_Plugins
 		$this->register_step($path . '/class-step-default.php', '\WBCR\Titan\Page\Step_Default');
 
-		#Step 2 \WBCR\FactoryClearfy000\Pages\Step_Plugins
+		#Step 2 \WBCR\Factory_Templates_000\Pages\Step_Plugins
 		$this->register_step($path . '/class-step-plugins.php', '\WBCR\Titan\Page\Step_Plugins');
 		#Step 3
 		$this->register_step($path . '/class-step-security-audit.php', '\WBCR\Titan\Page\Step_Security_Audit');

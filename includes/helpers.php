@@ -115,7 +115,7 @@ class Helper {
 	 */
 	public static function getEscapeJson(array $data)
 	{
-		return \WbcrFactoryClearfy000_Helpers::getEscapeJson($data);
+		return \WBCR\Factory_Templates_000\Helpers::getEscapeJson($data);
 	}
 
 	/**

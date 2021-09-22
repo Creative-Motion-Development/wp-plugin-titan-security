@@ -1,27 +1,27 @@
-[submodule "libs/factory/bootstrap"]
-	path = libs/factory/bootstrap
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-bootstrap/
-[submodule "libs/factory/core"]
-	path = libs/factory/core
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-core/
-[submodule "libs/factory/forms"]
-	path = libs/factory/forms
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-forms/
-[submodule "libs/factory/pages"]
-	path = libs/factory/pages
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-pages/
 [submodule "libs/onepress/compiler"]
 	path = libs/onepress/compiler
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-compiler/
-[submodule "libs/factory/clearfy"]
-	path = libs/factory/clearfy
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-clearfy
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-compiler.git
+[submodule "libs/factory/core"]
+	path = libs/factory/core
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-core.git
+[submodule "libs/factory/bootstrap"]
+	path = libs/factory/bootstrap
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-bootstrap.git
+[submodule "libs/factory/forms"]
+	path = libs/factory/forms
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-forms.git
+[submodule "libs/factory/pages"]
+	path = libs/factory/pages
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-pages.git
+[submodule "libs/factory/templates"]
+	path = libs/factory/templates
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-templates.git
 [submodule "libs/factory/freemius"]
 	path = libs/factory/freemius
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-freemius
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-freemius.git
 [submodule "libs/factory/feedback"]
 	path = libs/factory/feedback
-	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-feedback
+	url = ssh://git@github.com/Creative-Motion-Development/wp-framework-factory-feedback.git
 [submodule "libs/hide-login-page"]
 	path = libs/hide-login-page
-	url = ssh://git@bitbucket.org/webcraftic/wp-plugin-hide-login-page
+	url = ssh://git@github.com/Creative-Motion-Development/wp-plugin-hide-login-page.git

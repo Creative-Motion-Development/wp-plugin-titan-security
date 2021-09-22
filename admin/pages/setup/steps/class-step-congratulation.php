@@ -8,7 +8,7 @@ namespace WBCR\Titan\Page;
  * @copyright (c) 23.07.2020, Webcraftic
  * @version 1.0
  */
-class Step_Congratulation extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
+class Step_Congratulation extends \WBCR\Factory_Templates_000\Pages\Step_Custom {
 
 	protected $prev_id = 'step5';
 	protected $id = 'step6';
@@ -37,7 +37,7 @@ class Step_Congratulation extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 	{
 		$pricing_page_url = $this->plugin->get_support()->get_pricing_url(true, 'setup_wizard');
 		?>
-		<div class="w-factory-clearfy-000-setup__inner-wrap">
+		<div class="w-factory-templates-000-setup__inner-wrap">
 			<h3><?php _e("Congratulations, the plugin configuration is complete!", "titan-security"); ?></h3>
 			<script>
 				jQuery(document).ready(function($) {

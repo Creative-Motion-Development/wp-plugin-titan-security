@@ -20,12 +20,12 @@
                     $this = $(this);
 
                 if (!settings) {
-                    $.wbcr_factory_clearfy_000.app.showNotice('Import options is empty!', 'danger');
+                    $.wbcr_factory_templates_000.app.showNotice('Import options is empty!', 'danger');
                     return false;
                 }
 
                 if (void 0 == wtitan_ajax || !wtitan_ajax.import_options_nonce) {
-                    $.wbcr_factory_clearfy_000.app.showNotice('Unknown Javascript error, most likely the wtitan_ajax variable does not exist!', 'danger');
+                    $.wbcr_factory_templates_000.app.showNotice('Unknown Javascript error, most likely the wtitan_ajax variable does not exist!', 'danger');
                     return false;
                 }
 
@@ -39,7 +39,7 @@
                     $this.prop('disabled', false);
 
                     if (response.data.update_notice) {
-                        $.wbcr_factory_clearfy_000.app.showNotice(response.data.update_notice);
+                        $.wbcr_factory_templates_000.app.showNotice(response.data.update_notice);
                     } else {
                         $('.wbcr-clr-update-package').closest('.wbcr-factory-warning-notice').remove();
                     }
@@ -73,15 +73,15 @@
                         console.log(data);
 
                         if (data) {
-                            noticeId = $.wbcr_factory_clearfy_000.app.showNotice(data.error_message, 'danger');
+                            noticeId = $.wbcr_factory_templates_000.app.showNotice(data.error_message, 'danger');
                         } else {
                             if (void 0 !== wtitan_ajax) {
-                                noticeId = $.wbcr_factory_clearfy_000.app.showNotice(wtitan_ajax.i18n.unknown_error, 'danger');
+                                noticeId = $.wbcr_factory_templates_000.app.showNotice(wtitan_ajax.i18n.unknown_error, 'danger');
                             }
                         }
 
                         setTimeout(function () {
-                            $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                            $.wbcr_factory_templates_000.app.hideNotice(noticeId);
                         }, 5000);
                         return;
                     }
@@ -90,10 +90,10 @@
 
                     if (!request_data.flush_redirect) {
                         if (void 0 !== wtitan_ajax) {
-                            noticeId = $.wbcr_factory_clearfy_000.app.showNotice(wtitan_ajax.i18n.success_update_settings, 'success');
+                            noticeId = $.wbcr_factory_templates_000.app.showNotice(wtitan_ajax.i18n.success_update_settings, 'success');
 
                             setTimeout(function () {
-                                $.wbcr_factory_clearfy_000.app.hideNotice(noticeId);
+                                $.wbcr_factory_templates_000.app.hideNotice(noticeId);
                             }, 5000);
                         }
                         return;
@@ -108,7 +108,7 @@
                     console.log(xhr.responseText);
                     console.log(thrownError);
 
-                    var noticeId = $.wbcr_factory_clearfy_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
+                    var noticeId = $.wbcr_factory_templates_000.app.showNotice('Error: [' + thrownError + '] Status: [' + xhr.status + '] Error massage: [' + xhr.responseText + ']', 'danger');
                 }
             });
         }

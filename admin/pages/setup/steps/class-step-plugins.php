@@ -8,7 +8,7 @@ namespace WBCR\Titan\Page;
  * @copyright (c) 23.07.2020, Webcraftic
  * @version 1.0
  */
-class Step_Plugins extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
+class Step_Plugins extends \WBCR\Factory_Templates_000\Pages\Step_Custom {
 
 	protected $prev_id = 'step0';
 	protected $id = 'step1';
@@ -23,7 +23,7 @@ class Step_Plugins extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 	{
 		$install_hide_login_page_btn = $this->plugin->get_install_component_button('wordpress', 'hide-login-page/hide-login-page.php');
 		?>
-		<div class="w-factory-clearfy-000-setup__inner-wrap">
+		<div class="w-factory-templates-000-setup__inner-wrap">
 			<h3><?php _e('Installing plugins', 'titan-security') ?></h3>
 			<p style="text-align: left;"><?php _e('We analyzed your site and decided that in order to get the maximum result in
 				optimizing your site, you will need to install additional plugins.', 'titan-security') ?></p>

@@ -8,7 +8,7 @@ namespace WBCR\Titan\Page;
  * @copyright (c) 23.07.2020, Webcraftic
  * @version 1.0
  */
-class Step_Security_Audit extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
+class Step_Security_Audit extends \WBCR\Factory_Templates_000\Pages\Step_Custom {
 
 	protected $prev_id = 'step1';
 	protected $id = 'step2';
@@ -78,7 +78,7 @@ class Step_Security_Audit extends \WBCR\FactoryClearfy000\Pages\Step_Custom {
 				});
 			});
 		</script>
-		<div class="w-factory-clearfy-000-setup__inner-wrap">
+		<div class="w-factory-templates-000-setup__inner-wrap">
 			<h3><?php _e("Security Audit", "titan-security"); ?> (<?php _e("Issues", "titan-security"); ?>)</h3>
 			<p style="text-align: left;">
 				<?php _e("We will audit your site for potential threats, vulnerabilities and security issues. Please see the list
