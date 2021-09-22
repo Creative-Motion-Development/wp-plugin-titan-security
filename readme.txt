@@ -193,6 +193,9 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+7.2.7 – 12.03.2021
+* Added: Backup system (PRO)
+
 7.2.6 – 12.03.2021
 * Fixed: Minor bugs
 

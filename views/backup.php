@@ -2,7 +2,10 @@
 /**
  * @var array $data
  */
-?><div class="wbcr-content-section wtitan-section-disabled">
+?>
+<br>
+<span class="backup-pro-span" style="margin-left: 15px;">PRO</span>
+<div class="wbcr-content-section wtitan-section-disabled">
     <div class="wt-row">
         <div class="col-sm-12">
             <p><?= __( 'Schedule:', 'wbcr-backup-master' ) ?></p>
