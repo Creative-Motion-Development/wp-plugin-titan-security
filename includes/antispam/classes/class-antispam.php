@@ -34,7 +34,7 @@ class Antispam extends Module_Base {
 	 *
 	 * @since 1.1
 	 */
-	const SERVER_UNAVAILABLE_INTERVAL = 4;
+	const SERVER_UNAVAILABLE_INTERVAL = 1;
 
 	/**
 	 * @var bool
@@ -72,7 +72,7 @@ class Antispam extends Module_Base {
 		check_ajax_referer( 'wtitan_change_antispam_mode' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json( array( 'error_message' => __( 'You don\'t have enough capability to edit this information.', 'titan-security' ) ) );
+			wp_send_json( [ 'error_message' => __( 'You don\'t have enough capability to edit this information.', 'titan-security' ) ] );
 		}
 
 		if ( isset( $_POST['mode'] ) ) {
@@ -84,7 +84,7 @@ class Antispam extends Module_Base {
 			if ( (bool) $mode_name ) {
 				wp_send_json( [
 					'message' => __( "Anti-spam successfully enabled", "titan-security" ),
-					'mode'    => $mode_name
+					'mode'    => $mode_name,
 				] );
 			} else {
 				wp_send_json( [ 'message' => __( "Anti-spam successfully disabled", "titan-security" ) ] );
@@ -117,6 +117,8 @@ class Antispam extends Module_Base {
 
 		if ( $cached !== false ) {
 			if ( isset( $cached->error_code ) && isset( $cached->error ) ) {
+				delete_transient( $key );
+
 				return new \WP_Error( $cached->error_code, $cached->error );
 			}
 
@@ -129,7 +131,7 @@ class Antispam extends Module_Base {
 		if ( is_wp_error( $data ) ) {
 			set_transient( $key, (object) [
 				'error'      => $data->get_error_message(),
-				'error_code' => $data->get_error_code()
+				'error_code' => $data->get_error_code(),
 			], self::SERVER_UNAVAILABLE_INTERVAL * HOUR_IN_SECONDS );
 
 			return $data;

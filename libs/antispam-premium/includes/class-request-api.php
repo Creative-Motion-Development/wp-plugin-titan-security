@@ -11,7 +11,8 @@ namespace WBCR\Titan\Premium\Api;
  */
 class Request {
 
-	const SERVER_API_URL_V1 = 'https://api.anti-spam.space/api/v1.0';
+	//const SERVER_API_URL_V1 = 'https://api.anti-spam.space/api/v1.0';
+	const SERVER_API_URL_V1 = 'https://api.titansitescanner.com/api/v1.0';
 	//const SERVER_API_URL_V1 = 'https://dev.anti-spam.space/api/v1.0';
 	const STAT_ENDPOINT = '/spam/statistics';
 

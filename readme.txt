@@ -193,6 +193,9 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+7.2.9
+* Fixed: API errors
+
 7.2.8
 * Compatibility WP 5.8
 * Update components
