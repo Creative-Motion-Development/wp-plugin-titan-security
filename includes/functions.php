@@ -182,8 +182,8 @@ function titan_check_cms()
  * Creating cron task
  *
  * @param string|string[] $path
- * @param string[]|null $plugin_in_action
- * @param bool $activate
+ * @param string[]|null   $plugin_in_action
+ * @param bool            $activate
  */
 function titan_create_scheduler_scanner($path = ABSPATH, $plugin_in_action = null, $activate = false)
 {
@@ -274,7 +274,8 @@ function titan_remove_scheduler_scanner()
 		$plugins = Plugin::app()->getPopulateOption('scanner_plugins_in_action', []);
 		$plugin_matched = Plugin::app()->getPopulateOption('scanner_malware_plugin_matched', []);
 		$activate = Plugin::app()->getPopulateOption('scanner_activate_plugin', 'no') === 'yes';
-		foreach($plugins as $plugin) {
+
+		foreach((array)$plugins as $plugin) {
 			$plugin_dir = substr($plugin, 0, strpos($plugin, "/"));
 			if( isset($plugin_matched[$plugin_dir]) && count($plugin_matched[$plugin_dir]) > 0 ) {
 				continue;
@@ -289,7 +290,8 @@ function titan_remove_scheduler_scanner()
 		Plugin::app()->deletePopulateOption('scanner_activate_plugin');
 
 		$weeklyMatched = array_merge($weeklyMatched, $matched);
-		$weeklyMatched = array_unique($weeklyMatched, SORT_STRING);
+		//todo: глупая конструкция, так как входные данные идут массивом, а не строкой. Закоментировал, чтобы не вызывала ошибку.
+		//$weeklyMatched = array_unique($weeklyMatched, SORT_STRING);
 		Plugin::app()->updateOption('matched_weekly', $weeklyMatched);
 
 		$client = new Client(null);
@@ -349,7 +351,7 @@ function collect_wp_hash_sum($path = ABSPATH)
  * This is necessary to remind the user to update the configuration of the plugin components,
  * Otherwise, the newly activated components will not be involved in the work of the plugin.
  *
- * @param Wbcr_Factory000_Plugin $plugin
+ * @param Wbcr_Factory000_Plugin                   $plugin
  * @param Wbcr_FactoryPages000_ImpressiveThemplate $obj
  *
  * @return bool
@@ -480,7 +482,7 @@ function get_recommended_scanner_speed()
 	$mem = titan_get_memory_limit();
 	if( $mem > 100 ) {
 		$recommendation = Scanner::SPEED_FAST;
-	} elseif( $mem > 60 ) {
+	} else if( $mem > 60 ) {
 		$recommendation = Scanner::SPEED_MEDIUM;
 	} else {
 		$recommendation = Scanner::SPEED_SLOW;
@@ -575,3 +577,4 @@ function wtitan_get_sidebar_adverts_widget()
 
 	return $output;
 }
+

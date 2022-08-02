@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
         jQuery.ajax({
             method: 'POST', url: ajaxurl, data: {
                 action: 'wtitan_hide_trial_notice',
-                _ajax_nonce: wtitan_trial
+                _ajax_nonce: wtitan_trial.nonce
             },
             beforeSend: function () {
                 btn.parent().parent('.wbcr-factory-warning-notice').animate({opacity: 'hide', height: 'hide'}, 300);

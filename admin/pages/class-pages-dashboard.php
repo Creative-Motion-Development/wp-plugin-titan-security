@@ -209,7 +209,7 @@ class Dashboard extends Base {
 
 		$this->styles->add( WTITAN_PLUGIN_URL . '/includes/check/assets/css/check-dashboard.css' );
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/includes/check/assets/js/check.js', [ 'jquery' ] );
-		$this->scripts->localize( 'update_nonce', wp_create_nonce( "updates" ) );
+		//$this->scripts->localize( 'update_nonce', wp_create_nonce( "updates" ) );
 		$this->scripts->localize( 'wtscanner', [
 			'update_nonce' => wp_create_nonce( "updates" ),
 			'hide_nonce'   => wp_create_nonce( "hide" ),

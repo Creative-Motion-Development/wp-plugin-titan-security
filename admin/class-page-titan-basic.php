@@ -38,7 +38,7 @@ class Base extends \WBCR\Factory_Templates_000\Pages\PageBase {
 	public function assets( $scripts, $styles ) {
 		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/titan-security.css' );
 		$this->scripts->add( WTITAN_PLUGIN_URL . '/admin/assets/js/titan-security.js' );
-		$this->scripts->localize( 'wtitan_trial', wp_create_nonce( "wtitan_hide_trial_notice" ) );
+		$this->scripts->localize( 'wtitan_trial', ["nonce" => wp_create_nonce( "wtitan_hide_trial_notice" )] );
 
 		/* Install addons styles and scripts */
 		$this->styles->add( WTITAN_PLUGIN_URL . '/admin/assets/css/install-addons.css' );

@@ -152,7 +152,7 @@ class Check extends Base {
 
 		$this->styles->add( $this->MODULE_URL . '/assets/css/check-dashboard.css' );
 		$this->scripts->add( $this->MODULE_URL . '/assets/js/check.js', [ 'jquery' ] );
-		$this->scripts->localize( 'update_nonce', wp_create_nonce( "updates" ) );
+		//$this->scripts->localize( 'update_nonce', wp_create_nonce( "updates" ) );
 		$this->scripts->localize( 'wtscanner', [
 			'update_nonce' => wp_create_nonce( "updates" ),
 			'hide_nonce'   => wp_create_nonce( "hide" ),
