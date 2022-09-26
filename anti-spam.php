@@ -213,7 +213,7 @@ if( !defined('FACTORY_UPDATES_DEBUG') ) {
  * рекламы.
  */
 if( !defined('FACTORY_ADVERTS_DEBUG') ) {
-	define('FACTORY_ADVERTS_DEBUG', true);
+	define('FACTORY_ADVERTS_DEBUG', false);
 }
 
 /**
@@ -259,10 +259,6 @@ try {
 	]));
 
 	require_once(WTITAN_PLUGIN_DIR . '/includes/functions.php');
-
-	if( $plugin->is_premium() ) {
-		require_once(WTITAN_PLUGIN_DIR . '/libs/antispam-premium/anti-spam-premium.php');
-	}
 } catch( Exception $e ) {
 	// Plugin wasn't initialized due to an error
 	define('WTITAN_PLUGIN_THROW_ERROR', true);
@@ -275,4 +271,6 @@ try {
 	add_action('admin_notices', $wtitan_plugin_error_func);
 	add_action('network_admin_notices', $wtitan_plugin_error_func);
 }
+
+// remove plugin options
 // @formatter:on
