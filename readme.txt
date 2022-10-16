@@ -193,6 +193,10 @@ You may check out the [source code of the plugin](http://plugins.trac.wordpress.
 The plugin is pretty small and easy to read.
 
 == Changelog ==
+7.3.2 – 10.09.2022
+* Added: Compatibility with the new version of the premium plugin
+* Fixed: Minor bugs
+
 7.3.1 – 02.08.2022
 Added: Compatibility with WordPress 6.0
 Fixed: Minor bugs
