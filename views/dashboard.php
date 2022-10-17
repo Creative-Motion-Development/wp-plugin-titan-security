@@ -117,8 +117,8 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
 							<?php
 							if ( $is_premium ) {
 								$count = $antispam->get_statistic_data()->total;
-								echo __( 'Spam blocked in the last 7 days: ', 'titan-security' );
-								echo "<span class='wt-magenta-text'>{$count}</span>";
+								_e( 'Spam blocked in the last 7 days: ', 'titan-security' );
+								echo "<span class='wt-magenta-text'>".esc_html($count)."</span>";
 							}
 							?>
                         </div>
@@ -138,7 +138,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                                 </button>
                                 <input type="checkbox" style="display: none" id="wt-antispam-status"
                                        class="factory-result" name="wt-antispam-status"
-                                       value="<?php echo $antispam->mode; ?>" checked="checked"
+                                       value="<?php echo esc_attr($antispam->mode); ?>" checked="checked"
                                        data-nonce="<?php echo wp_create_nonce( 'wtitan_change_antispam_mode' ) ?>">
                             </div>
                         </div>
@@ -165,30 +165,30 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                     <div class="row">
                         <div class="col-md-6 wt-dashboard-block-content" style="line-height: 34px;">
 							<?php
-							echo __( 'Scanned: ', 'titan-security' );
+							_e( 'Scanned: ', 'titan-security' );
 							$counter = 0;
 							if ( $scanned > 0 ) {
 								$counter = "{$scanned} / {$files_count}";
 							}
-							echo "<span class='wt-magenta-text' id='wtitan-files-num'>{$counter}</span>&nbsp;" . __( 'files', 'titan-security' );
+							echo "<span class='wt-magenta-text' id='wtitan-files-num'>".esc_html($counter)."</span>&nbsp;" . __( 'files', 'titan-security' );
 							?>
                         </div>
                         <div class="col-md-6 wt-dashboard-block-content-right">
                             <div class="wt-dashboard-scan-button-loader" style="display: none;"></div>
 							<?php if ( $scanner_started ): ?>
                                 <button class="btn btn-primary wt-dashboard-scan-button" id="scan"
-                                        data-action="stop_scan"><?php echo __( 'Stop scanning', 'titan-security' ); ?></button>
+                                        data-action="stop_scan"><?php _e( 'Stop scanning', 'titan-security' ); ?></button>
 							<?php else: ?>
                                 <button class="btn btn-primary wt-dashboard-scan-button" id="scan"
-                                        data-action="start_scan"><?php echo __( 'Start scan', 'titan-security' ); ?></button>
+                                        data-action="start_scan"><?php _e( 'Start scan', 'titan-security' ); ?></button>
 							<?php endif; ?>
 
                         </div>
                     </div>
                     <div class="row">
                         <div class="wt-scanner-chart">
-                            <div class="wt-scanner-chart-clean" style="width: <?php echo $progress[0]; ?>%;"></div>
-                            <div class="wt-scanner-chart-suspicious" style="width: <?php echo $progress[1]; ?>%;"></div>
+                            <div class="wt-scanner-chart-clean" style="width: <?php echo esc_attr($progress[0]); ?>%;"></div>
+                            <div class="wt-scanner-chart-suspicious" style="width: <?php echo esc_attr($progress[1]); ?>%;"></div>
                             <div class="wt-scanner-chart-notverified"
                                  style="width: <?php echo $progress[2]; ?>%;"></div>
                         </div>
@@ -217,22 +217,22 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                         <div class="col-md-4 wt-dashboard-block-content" style="text-align: left;">
                             <div class="form-group form-group-dropdown  factory-control-scanner_speed">
                                 <div class="control-group col-sm-12">
-                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>"
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?php echo $pro_class; ?>"
                                          data-way="buttons">
-                                        <div class="wt-dashboard-form-label"><?= __( 'Scheduled scan', 'titan-security' ); ?></div>
+                                        <div class="wt-dashboard-form-label"><?php _e( 'Scheduled scan', 'titan-security' ); ?></div>
                                         <div class="btn-group factory-buttons-group">
 											<?php foreach ( $schedules as $sched ) : ?>
                                                 <button type="button"
-                                                        class="btn btn-default btn-small wt-scanner-schedule-button factory-<?= $sched[0]; ?> <?php echo $sched[0] == $schedule ? 'active' : ''; ?>"
-                                                        data-value="<?= $sched[0]; ?>"><?= $sched[1]; ?></button>
+                                                        class="btn btn-default btn-small wt-scanner-schedule-button factory-<?php echo $sched[0]; ?> <?php echo $sched[0] == $schedule ? 'active' : ''; ?>"
+                                                        data-value="<?php echo $sched[0]; ?>"><?php echo $sched[1]; ?></button>
 											<?php endforeach; ?>
                                             <input type="hidden" id="titan_scanner_speed" class="factory-result"
-                                                   name="titan_scanner_speed" value="<?= $schedule; ?>">
+                                                   name="titan_scanner_speed" value="<?php echo $schedule; ?>">
                                         </div>
                                         <div class="factory-hints" style="">
 											<?php foreach ( $schedules as $sched ) : ?>
-                                                <div class="factory-hint factory-hint-<?= $sched[0]; ?>"
-                                                     style="display: <?php echo $sched[0] == $schedule ? '' : 'none'; ?>;"><?= $sched[2]; ?></div>
+                                                <div class="factory-hint factory-hint-<?php echo $sched[0]; ?>"
+                                                     style="display: <?php echo $sched[0] == $schedule ? '' : 'none'; ?>;"><?php echo $sched[2]; ?></div>
 											<?php endforeach; ?>
                                         </div>
                                     </div>
@@ -244,22 +244,22 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                                 <div class="control-group col-sm-12">
                                     <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way"
                                          data-way="buttons">
-                                        <div class="wt-dashboard-form-label"><?= __( 'Digest', 'titan-security' ) ?></div>
+                                        <div class="wt-dashboard-form-label"><?php _e( 'Digest', 'titan-security' ) ?></div>
                                         <div class="btn-group factory-buttons-groups">
-                                            <button class="btn btn-default btn-small factory-<?= $isDigestEnabled ? 'disabled active' : 'enabled' ?>"
-												<?= $isDigestEnabled ? 'disabled' : 'enabled' ?>
+                                            <button class="btn btn-default btn-small factory-<?php echo $isDigestEnabled ? 'disabled active' : 'enabled' ?>"
+												<?php echo $isDigestEnabled ? 'disabled' : 'enabled' ?>
                                                     data-action="digest-state" data-value="enable">
-												<?= __( 'Enable', 'titan-security' ) ?>
+												<?php _e( 'Enable', 'titan-security' ) ?>
                                             </button>
-                                            <button class="btn btn-default btn-small factory-<?= ! $isDigestEnabled ? 'disabled active' : 'enabled' ?>"
-												<?= ! $isDigestEnabled ? 'disabled' : 'enabled' ?>
+                                            <button class="btn btn-default btn-small factory-<?php echo ! $isDigestEnabled ? 'disabled active' : 'enabled' ?>"
+												<?php echo ! $isDigestEnabled ? 'disabled' : 'enabled' ?>
                                                     data-action="digest-state" data-value="disable">
-												<?= __( 'Disable', 'titan-security' ) ?>
+												<?php _e( 'Disable', 'titan-security' ) ?>
                                             </button>
                                         </div>
                                         <div class="factory-hints" style="">
                                             <div class="factory-hint">
-												<?= __( 'You can get a weekly digest on threats found', 'titan-security' ) ?>
+												<?php _e( 'You can get a weekly digest on threats found', 'titan-security' ) ?>
                                             </div>
                                         </div>
                                     </div>
@@ -269,22 +269,22 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                         <div class="col-md-4 wt-dashboard-block-content" style="text-align: left;">
                             <div class="form-group form-group-dropdown  factory-control-scanner_speed">
                                 <div class="control-group col-sm-12">
-                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?= $pro_class; ?>"
+                                    <div class="factory-dropdown factory-from-control-dropdown factory-buttons-way <?php echo $pro_class; ?>"
                                          data-way="buttons">
-                                        <div class="wt-dashboard-form-label"><?= __( 'Scanning speed', 'titan-security' ); ?></div>
+                                        <div class="wt-dashboard-form-label"><?php _e( 'Scanning speed', 'titan-security' ); ?></div>
                                         <div class="btn-group factory-buttons-group">
 											<?php foreach ( $scanner_speeds as $speeds ) : ?>
                                                 <button type="button"
-                                                        class="btn btn-default btn-small wt-scanner-speed-button factory-<?= $speeds[0]; ?> <?php echo $speeds[0] == $scanner_speed ? 'active' : ''; ?>"
-                                                        data-value="<?= $speeds[0]; ?>"><?= $speeds[1]; ?></button>
+                                                        class="btn btn-default btn-small wt-scanner-speed-button factory-<?php echo $speeds[0]; ?> <?php echo $speeds[0] == $scanner_speed ? 'active' : ''; ?>"
+                                                        data-value="<?php echo $speeds[0]; ?>"><?php echo $speeds[1]; ?></button>
 											<?php endforeach; ?>
                                             <input type="hidden" id="titan_scanner_speed" class="factory-result"
-                                                   name="titan_scanner_speed" value="<?= $scanner_speed; ?>">
+                                                   name="titan_scanner_speed" value="<?php echo $scanner_speed; ?>">
                                         </div>
                                         <div class="factory-hints" style="">
 											<?php foreach ( $scanner_speeds as $speeds ) : ?>
-                                                <div class="factory-hint factory-hint-<?= $speeds[0]; ?>"
-                                                     style="display: <?php echo $speeds[0] == $scanner_speed ? '' : 'none'; ?>;"><?= $speeds[2]; ?></div>
+                                                <div class="factory-hint factory-hint-<?php echo $speeds[0]; ?>"
+                                                     style="display: <?php echo $speeds[0] == $scanner_speed ? '' : 'none'; ?>;"><?php echo $speeds[2]; ?></div>
 											<?php endforeach; ?>
                                         </div>
                                     </div>
@@ -307,7 +307,7 @@ $pro_class = $is_premium ? '' : 'factory-checkbox--disabled wtitan-control-premi
                             <div class="col-md-6 wt-dashboard-block-header-right">
                                 <div class="wt-scan-icon-loader" data-status="" style="display: none;"></div>
                                 <button class="btn btn-primary wt-dashboard-audit-button"
-                                        id="wt-checker-check"><?php echo __( 'Check now', 'titan-security' ); ?></button>
+                                        id="wt-checker-check"><?php _e( 'Check now', 'titan-security' ); ?></button>
                             </div>
                         </div>
                         <div class="row">

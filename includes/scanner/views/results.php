@@ -12,7 +12,7 @@ use WBCR\Titan\MalwareScanner\Result;
 if ( $matched === false ) {
 	?>
     <div class="wtitan-audit-empty-container">
-		<?= sprintf( __( 'Click %1s to start scanning for malware', 'titan-security' ), '<span class="btn btn-primary wt-nobutton">' . __( 'Start scan', 'titan-security' ) . '</span>' ); ?>
+		<?php echo sprintf( __( 'Click %1s to start scanning for malware', 'titan-security' ), '<span class="btn btn-primary wt-nobutton">' . __( 'Start scan', 'titan-security' ) . '</span>' ); ?>
     </div>
 	<?php
 
@@ -77,7 +77,7 @@ if ( $matched === false ) {
 } else {
 	?>
     <div class="wtitan-audit-empty-container">
-		<?= __( 'No malware found', 'titan-security' ); ?>
+		<?php _e( 'No malware found', 'titan-security' ); ?>
     </div>
 	<?php
 

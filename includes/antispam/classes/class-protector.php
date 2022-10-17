@@ -131,12 +131,12 @@ class Protector {
 		$commentdata['comment_parent'] = ( 'approved' == $parent_status || 'unapproved' == $parent_status ) ? $commentdata['comment_parent'] : 0;
 
 		if ( ! isset( $commentdata['comment_author_IP'] ) ) {
-			$commentdata['comment_author_IP'] = $_SERVER['REMOTE_ADDR'];
+			$commentdata['comment_author_IP'] = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 		}
 		$commentdata['comment_author_IP'] = preg_replace( '/[^0-9a-fA-F:., ]/', '', $commentdata['comment_author_IP'] );
 
 		if ( ! isset( $commentdata['comment_agent'] ) ) {
-			$commentdata['comment_agent'] = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+			$commentdata['comment_agent'] = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
 		}
 		$commentdata['comment_agent'] = substr( $commentdata['comment_agent'], 0, 254 );
 

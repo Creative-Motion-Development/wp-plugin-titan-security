@@ -3,7 +3,7 @@
 namespace WBCR\Titan;
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined('ABSPATH') ) {
 	exit;
 }
 
@@ -45,49 +45,52 @@ class Antispam extends Module_Base {
 	 * Vulnerabilities constructor.
 	 *
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		self::$app = $this;
 
 		$this->module_dir = WTITAN_PLUGIN_DIR . "/includes/antispam";
 		$this->module_url = WTITAN_PLUGIN_URL . "/includes/antispam";
 
-		$this->mode = $this->plugin->getOption( 'antispam_mode', true );
+		$this->mode = $this->plugin->getOption('antispam_mode', true);
 
-		add_action( 'wp_ajax_wtitan-change-antispam-mode', [ $this, 'change_antispam_mode' ] );
+		add_action('wp_ajax_wtitan-change-antispam-mode', [$this, 'change_antispam_mode']);
 	}
 
 	/**
 	 * @return Antispam
 	 * @since  7.0
 	 */
-	public static function app() {
+	public static function app()
+	{
 		return self::$app;
 	}
 
 	/**
 	 * AJAX Enable/Disable anti-spam
 	 */
-	public function change_antispam_mode() {
-		check_ajax_referer( 'wtitan_change_antispam_mode' );
+	public function change_antispam_mode()
+	{
+		check_ajax_referer('wtitan_change_antispam_mode');
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json( [ 'error_message' => __( 'You don\'t have enough capability to edit this information.', 'titan-security' ) ] );
+		if( !current_user_can('manage_options') ) {
+			wp_send_json(['error_message' => __('You don\'t have enough capability to edit this information.', 'titan-security')]);
 		}
 
-		if ( isset( $_POST['mode'] ) ) {
+		if( isset($_POST['mode']) ) {
 
-			$mode_name = $_POST['mode'];
+			$mode_name = sanitize_text_field($_POST['mode']);
 
-			\WBCR\Titan\Plugin::app()->updatePopulateOption( 'antispam_mode', $mode_name );
+			\WBCR\Titan\Plugin::app()->updatePopulateOption('antispam_mode', $mode_name);
 
-			if ( (bool) $mode_name ) {
-				wp_send_json( [
-					'message' => __( "Anti-spam successfully enabled", "titan-security" ),
-					'mode'    => $mode_name,
-				] );
+			if( (bool)$mode_name ) {
+				wp_send_json([
+					'message' => __("Anti-spam successfully enabled", "titan-security"),
+					'mode' => $mode_name,
+				]);
 			} else {
-				wp_send_json( [ 'message' => __( "Anti-spam successfully disabled", "titan-security" ) ] );
+				wp_send_json(['message' => __("Anti-spam successfully disabled", "titan-security")]);
 			}
 		}
 	}
@@ -96,7 +99,8 @@ class Antispam extends Module_Base {
 	 *
 	 * @since  7.0
 	 */
-	public function showPageContent() {
+	public function showPageContent()
+	{
 	}
 
 	/**
@@ -110,36 +114,44 @@ class Antispam extends Module_Base {
 	 *
 	 */
 
-	public function get_statistic_data() {
+	public function get_statistic_data()
+	{
 		$key = \WBCR\Titan\Plugin::app()->getPrefix() . 'stats_transient_';
 
-		$cached = get_transient( $key );
+		$cached = get_transient($key);
 
-		if ( $cached !== false ) {
-			if ( isset( $cached->error_code ) && isset( $cached->error ) ) {
-				delete_transient( $key );
+		if( $cached !== false ) {
+			if( isset($cached->error_code) && isset($cached->error) ) {
+				delete_transient($key);
 
-				return new \WP_Error( $cached->error_code, $cached->error );
+				return new \WP_Error($cached->error_code, $cached->error);
 			}
 
 			return $cached;
 		}
 
-		$api  = new \WBCR\Titan\Premium\Api\Request();
-		$data = $api->get_statistic( 7 );
+		if( class_exists('\WBCR\Titan\Premium\Api\Request') ) {
+			$api = new \WBCR\Titan\Premium\Api\Request();
+			$data = $api->get_statistic(7);
 
-		if ( is_wp_error( $data ) ) {
-			set_transient( $key, (object) [
-				'error'      => $data->get_error_message(),
-				'error_code' => $data->get_error_code(),
-			], self::SERVER_UNAVAILABLE_INTERVAL * HOUR_IN_SECONDS );
+			if( is_wp_error($data) ) {
+				set_transient($key, (object)[
+					'error' => $data->get_error_message(),
+					'error_code' => $data->get_error_code(),
+				], self::SERVER_UNAVAILABLE_INTERVAL * HOUR_IN_SECONDS);
 
-			return $data;
+				return $data;
+			}
+
+			set_transient($key, $data->response, self::DEFAULT_REQUESTS_INTERVAL * HOUR_IN_SECONDS);
+
+			return $data->response;
 		}
 
-		set_transient( $key, $data->response, self::DEFAULT_REQUESTS_INTERVAL * HOUR_IN_SECONDS );
+		$obj = new \stdClass();
+		$obj->total = 0;
 
-		return $data->response;
+		return $obj;
 	}
 
 }

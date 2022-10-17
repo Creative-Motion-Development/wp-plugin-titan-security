@@ -566,7 +566,7 @@ function wtitan_get_sidebar_adverts_widget()
 	?>
 	<div id="wtitan-adverts-widget" class="wbcr-factory-sidebar-widget">
 		<a href="https://cm-wp.com/wp-support/" target="_blank" rel="noopener noreferrer">
-			<img src="https://api.cm-wp.com/wp-content/uploads/2021/01/vertical_maintance.jpg" width="100%" alt="">
+			<img src="<?php echo WTITAN_PLUGIN_URL; ?>/assets/img/vertical_maintance.jpg" width="100%" alt="">
 		</a>
 	</div>
 	<?php

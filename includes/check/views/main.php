@@ -9,14 +9,14 @@
         <table>
             <tr>
                 <td>
-                    <h4><?php echo __( 'Security audit', 'titan-security' ); ?></h4>
+                    <h4><?php _e( 'Security audit', 'titan-security' ); ?></h4>
                     <button class="btn btn-primary wt-scanner-scanbutton"
-                            id="wt-checker-check"><?php echo __( 'Check now', 'titan-security' ); ?></button>
+                            id="wt-checker-check"><?php _e( 'Check now', 'titan-security' ); ?></button>
                     <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                 </td>
                 <td>
-                    <h4><?php echo __( 'Description', 'titan-security' ); ?></h4>
-                    <p><?php echo __( 'After launching, the it will check your site for vulnerabilities and doing security audit. After you solve the detected security problems , you need to run the check again.', 'titan-security' ); ?>
+                    <h4><?php _e( 'Description', 'titan-security' ); ?></h4>
+                    <p><?php _e( 'After launching, the it will check your site for vulnerabilities and doing security audit. After you solve the detected security problems , you need to run the check again.', 'titan-security' ); ?>
                     </p>
                 </td>
             </tr>

@@ -13,9 +13,9 @@ $pro_class = $is_premium ? '' : 'wt-element-pro';
             <tbody>
             <tr>
                 <td>
-                    <div class="<?= $pro_class; ?>">
+                    <div class="<?php echo $pro_class; ?>">
                         <button class="btn btn-primary btn-lg wt-sitechecker-button-subscribe"
-                                id="subscribe" <?= $disabled; ?>>
+                                id="subscribe" <?php echo $disabled; ?>>
                             Subscribe
                         </button>
                     </div>
@@ -79,11 +79,11 @@ $pro_class = $is_premium ? '' : 'wt-element-pro';
 		}
 		?>
     </div>
-    <div class="wt-sitechecker-form-add <?= $pro_class; ?>">
+    <div class="wt-sitechecker-form-add <?php echo $pro_class; ?>">
         <label for="wt-sitechecker-url">Add URL to Site Checker</label>
         <input type="text" name="wt-sitechecker-url" id="wt-sitechecker-url" class="form-control"
-               placeholder="URL" <?= $disabled; ?>>
-        <button class="btn btn-primary wt-sitechecker-button-add"<?= $disabled; ?>>ADD</button>
+               placeholder="URL" <?php echo $disabled; ?>>
+        <button class="btn btn-primary wt-sitechecker-button-add"<?php echo $disabled; ?>>ADD</button>
         <span class="wt-spinner" id="wt-spinner" style="display: none;"></span>
     </div>
     <!-- ############################### -->

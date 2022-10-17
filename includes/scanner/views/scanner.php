@@ -15,23 +15,23 @@ use WBCR\Titan\MalwareScanner\Result;
         <table>
             <tr>
                 <td>
-                    <h4><?php echo __( 'Malware scan', 'titan-security' ); ?></h4>
+                    <h4><?php _e( 'Malware scan', 'titan-security' ); ?></h4>
                     <div class="wrio-statistic-buttons-wrap">
 						<?php if ( $scanner_started ): ?>
                             <button type="button" id="scan" data-action="stop_scan" class="wt-malware-scan-button">
-                                <span class="text"><?php echo __( 'Stop scanning', 'titan-security' ) ?></span>
+                                <span class="text"><?php _e( 'Stop scanning', 'titan-security' ) ?></span>
                             </button>
 						<?php else: ?>
                             <button type="button" id="scan" data-action="start_scan" class="wt-malware-scan-button">
-								<?php echo __( 'Scan', 'titan-security' ) ?>
+								<?php _e( 'Scan', 'titan-security' ) ?>
                             </button>
 						<?php endif; ?>
                         <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                     </div>
                 </td>
                 <td>
-                    <h4><?php echo __( 'Description', 'titan-security' ); ?></h4>
-                    <p><?php echo __( 'Scanning all files of your site for malware. At each launch, site scanning starts from the beginning', 'titan-security' ); ?>
+                    <h4><?php _e( 'Description', 'titan-security' ); ?></h4>
+                    <p><?php _e( 'Scanning all files of your site for malware. At each launch, site scanning starts from the beginning', 'titan-security' ); ?>
                     </p>
                 </td>
             </tr>

@@ -15,7 +15,7 @@ class Helpers {
 			return;
 		}
 
-		echo '<div id="message" class="updated fade"><p>' . $msg . '</p></div>';
+		echo '<div id="message" class="updated fade"><p>' . esc_html($msg) . '</p></div>';
 	}
 
 	/**

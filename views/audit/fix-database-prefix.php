@@ -17,7 +17,7 @@
                    value="<?php echo $data['random_prefix'] ?>">
         </p>
         <p>
-            <strong><?php echo __( 'You current table prefix is', 'titan-security' ); ?>:</strong>
+            <strong><?php _e( 'You current table prefix is', 'titan-security' ); ?>:</strong>
 			<?php echo $data['current_prefix'] ?>
         </p>
 		<?php if ( ! is_null( $data['random_prefix'] ) ): ?>

@@ -3,7 +3,7 @@
 Plugin Name: Titan Anti-spam & Security
 Plugin URI: http://wordpress.org/plugins/anti-spam/
 Description: Titan Security - Anti-spam, Anti-virus, Firewall and Malware Scan
-Version: 7.3.2
+Version: 7.3.3
 Author: CreativeMotion
 Text Domain: titan-security
 Author URI: https://cm-wp.com/
@@ -265,7 +265,7 @@ try {
 
 	$wtitan_plugin_error_func = function () use ($e) {
 		$error = sprintf("The %s plugin has stopped. <b>Error:</b> %s Code: %s", 'CreativeMotion Titan security', $e->getMessage(), $e->getCode());
-		echo '<div class="notice notice-error"><p>' . $error . '</p></div>';
+		echo '<div class="notice notice-error"><p>' . esc_html($error) . '</p></div>';
 	};
 
 	add_action('admin_notices', $wtitan_plugin_error_func);

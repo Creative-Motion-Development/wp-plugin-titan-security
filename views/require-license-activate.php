@@ -52,18 +52,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 </style>
 <div class="wbcr-content-section">
     <div class="wt-container wt-block-nolicense">
-        <h1><?php echo __( 'Please activate your license to use this plugin feature.', 'titan-security' ) ?></h1>
+        <h1><?php _e( 'Please activate your license to use this plugin feature.', 'titan-security' ) ?></h1>
     </div>
     <table>
         <tbody>
         <tr>
             <td>
-                <a href="<?php echo \WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' ); ?>"
-                   class="btn btn-primary"><?php echo __( 'Activate license', 'titan-security' ) ?></a>
+                <a href="<?php echo esc_url(\WBCR\Titan\Plugin::app()->getPluginPageUrl( 'license' )); ?>"
+                   class="btn btn-primary"><?php _e( 'Activate license', 'titan-security' ) ?></a>
             </td>
             <td>
                 <a href="https://titansitescanner.com/pricing/"
-                   class="btn btn-gold"><?php echo __( 'Buy license', 'titan-security' ) ?></a>
+                   class="btn btn-gold"><?php _e( 'Buy license', 'titan-security' ) ?></a>
             </td>
         </tr>
         </tbody>

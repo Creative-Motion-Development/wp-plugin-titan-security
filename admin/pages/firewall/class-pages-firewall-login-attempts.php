@@ -144,8 +144,8 @@ class Firewall_Login_Attempts extends Base {
                             <td class="wtitan-attacks-log__table-column">
 								<?php if ( ! empty( $lockouts[ $user_info['ip'] ] ) && $lockouts[ $user_info['ip'] ] > time() ) : ?>
                                     <a href="#" class="button limit-login-unlock"
-                                       data-ip="<?= esc_attr( $user_info['ip'] ) ?>"
-                                       data-username="<?= esc_attr( $user_info['username'] ) ?>">Unlock</a>
+                                       data-ip="<?php echo esc_attr( $user_info['ip'] ) ?>"
+                                       data-username="<?php echo esc_attr( $user_info['username'] ) ?>">Unlock</a>
 								<?php elseif ( $user_info['unlocked'] ): ?>
                                     Unlocked
 								<?php endif ?>

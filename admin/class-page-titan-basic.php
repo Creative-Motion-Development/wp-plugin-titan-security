@@ -69,7 +69,7 @@ class Base extends \WBCR\Factory_Templates_000\Pages\PageBase {
                 </p>
                 <ul>
                     <li><span class="dashicons dashicons-sos"></span>
-                        <a href="<?= $free_support_url ?>" target="_blank"
+                        <a href="<?php echo esc_url($free_support_url); ?>" target="_blank"
                            rel="noopener"><?php _e( 'Get starting free support', 'titan-security' ); ?></a>
                     </li>
                     <li style="margin-top: 15px;background: #fff4f1;padding: 10px;color: #a58074;">
@@ -113,7 +113,7 @@ class Base extends \WBCR\Factory_Templates_000\Pages\PageBase {
 				<span class="dashicons dashicons-star-filled"></span>
 				<span class="dashicons dashicons-star-filled"></span>
 			</span>
-                <a href="<?= $page_url ?>" title="Go rate us" target="_blank">
+                <a href="<?php echo esc_url($page_url); ?>" title="Go rate us" target="_blank">
                     <strong><?php _e( 'Go rate us and push ideas', 'titan-security' ); ?></strong>
                 </a>
             </p>

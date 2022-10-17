@@ -38,9 +38,9 @@ if ( isset( $scanner ) ) {
         <table>
             <tr>
                 <td>
-                    <h4><?php echo __( 'Quick start', 'titan-security' ); ?></h4>
+                    <h4><?php _e( 'Quick start', 'titan-security' ); ?></h4>
                     <button class="btn btn-primary"
-                            id="wt-quickstart-scan"><?php echo __( 'Start scan', 'titan-security' ); ?></button>
+                            id="wt-quickstart-scan"><?php _e( 'Start scan', 'titan-security' ); ?></button>
 					<?php if ( $data['scanner_started'] ): ?>
                         <button type="button" id="scan" data-action="stop_scan" class="wt-malware-scan-button"
                                 style="display: none;">Malware scan
@@ -53,7 +53,7 @@ if ( isset( $scanner ) ) {
                     <div class="wt-scan-icon-loader" data-status="" style="display: none"></div>
                 </td>
                 <td>
-                    <p><?php echo __( 'Full scan your site.', 'titan-security' ); ?></p>
+                    <p><?php _e( 'Full scan your site.', 'titan-security' ); ?></p>
                 </td>
             </tr>
         </table>
@@ -63,16 +63,16 @@ if ( isset( $scanner ) ) {
             <thead>
             <tr>
                 <td>
-                    <div class="wt-caption-block"><h4><?php echo __( 'Firewall', 'titan-security' ); ?></h4></div>
+                    <div class="wt-caption-block"><h4><?php _e( 'Firewall', 'titan-security' ); ?></h4></div>
                     <div class="wt-manage-link-block"><a
-                                href="<?php echo $this_plugin->getPluginPageUrl( 'firewall' ); ?>"
-                                class="btn btn-secondary"><?php echo __( 'Manage Firewall', 'titan-security' ); ?></a>
+                                href="<?php echo esc_url($this_plugin->getPluginPageUrl( 'firewall' )); ?>"
+                                class="btn btn-secondary"><?php _e( 'Manage Firewall', 'titan-security' ); ?></a>
                     </div>
                 </td>
                 <td>
-                    <div class="wt-caption-block"><h4><?php echo __( 'Security audit', 'titan-security' ); ?></h4></div>
-                    <div class="wt-manage-link-block"><a href="<?php echo $this_plugin->getPluginPageUrl( 'check' ); ?>"
-                                                         class="btn btn-secondary"><?php echo __( 'View more details', 'titan-security' ); ?></a>
+                    <div class="wt-caption-block"><h4><?php _e( 'Security audit', 'titan-security' ); ?></h4></div>
+                    <div class="wt-manage-link-block"><a href="<?php echo esc_url($this_plugin->getPluginPageUrl( 'check' )); ?>"
+                                                         class="btn btn-secondary"><?php _e( 'View more details', 'titan-security' ); ?></a>
                     </div>
                 </td>
             </tr>
@@ -119,8 +119,8 @@ if ( isset( $scanner ) ) {
                         <script>
                             jQuery(document).ready(function ($) {
                                 $('#wtitan-circle-firewall-coverage').wfCircularProgress({
-                                    endPercent: <?php echo $firewall_status_percent; ?>,
-                                    color: '<?php echo $firewall_status_color; ?>',
+                                    endPercent: <?php echo esc_attr($firewall_status_percent); ?>,
+                                    color: '<?php echo esc_attr($firewall_status_color); ?>',
                                     inactiveColor: '#ececec',
                                     strokeWidth: 1,
                                     diameter: 100,
@@ -138,16 +138,16 @@ if ( isset( $scanner ) ) {
                     <div class="wt-full-block">
                         <div class="wt-left-block">
                             <h4>
-                                <span class="dashicons dashicons-plugins-checked"></span><?php echo __( 'Security audit', 'titan-security' ); ?>
-                                (<?php echo $audit->get_count(); ?>)</h4>
+                                <span class="dashicons dashicons-plugins-checked"></span><?php _e( 'Security audit', 'titan-security' ); ?>
+                                (<?php echo esc_html($audit->get_count()); ?>)</h4>
                             <div class="wt-block-span"><?php if ( $audit->get_count() ) {
-									echo __( 'Security issues detected!', 'titan-security' );
+									_e( 'Security issues detected!', 'titan-security' );
 								} ?></div>
                         </div>
                         <div class="wt-right-block">
                             <h4>
-                                <span class="dashicons dashicons-buddicons-replies"></span><?php echo __( 'Vulnerabilities', 'titan-security' ); ?>
-                                (<?php echo $vulnerabilities->get_count(); ?>)</h4>
+                                <span class="dashicons dashicons-buddicons-replies"></span><?php _e( 'Vulnerabilities', 'titan-security' ); ?>
+                                (<?php echo esc_html($vulnerabilities->get_count()); ?>)</h4>
                             <div class="wt-block-span-count">
 								<?php if ( count( $vulnerabilities->wordpress ) ) {
 									echo "<div>" . count( $vulnerabilities->wordpress ) . "</div> " . __( 'Wordpress', 'titan-security' ) . "<br>";
@@ -169,17 +169,17 @@ if ( isset( $scanner ) ) {
             <thead>
             <tr>
                 <td>
-                    <div class="wt-caption-block"><h4><?php echo __( 'Scanner', 'titan-security' ); ?></h4></div>
+                    <div class="wt-caption-block"><h4><?php _e( 'Scanner', 'titan-security' ); ?></h4></div>
                     <div class="wt-manage-link-block"><a
-                                href="<?php echo $this_plugin->getPluginPageUrl( 'scanner' ); ?>"
-                                class="btn btn-secondary"><?php echo __( 'Manage scanner', 'titan-security' ); ?></a>
+                                href="<?php echo esc_url($this_plugin->getPluginPageUrl( 'scanner' )); ?>"
+                                class="btn btn-secondary"><?php _e( 'Manage scanner', 'titan-security' ); ?></a>
                     </div>
                 </td>
                 <td>
-                    <div class="wt-caption-block"><h4><?php echo __( 'Site checker', 'titan-security' ); ?></h4></div>
+                    <div class="wt-caption-block"><h4><?php _e( 'Site checker', 'titan-security' ); ?></h4></div>
                     <div class="wt-manage-link-block"><a
-                                href="<?php echo $this_plugin->getPluginPageUrl( 'sitechecker' ); ?>"
-                                class="btn btn-secondary"><?php echo __( 'Manage site checker', 'titan-security' ); ?></a>
+                                href="<?php echo esc_url($this_plugin->getPluginPageUrl( 'sitechecker' )); ?>"
+                                class="btn btn-secondary"><?php _e( 'Manage site checker', 'titan-security' ); ?></a>
                     </div>
                 </td>
             </tr>
@@ -191,8 +191,8 @@ if ( isset( $scanner ) ) {
                         <div class="wt-left-block">
                             <div class="wio-chart-container wio-overview-chart-container">
                                 <canvas id="wtitan-scan-chart" width="100" height="100"
-                                        data-cleaned="<?php echo $cleaned ?>"
-                                        data-suspicious="<?php echo $suspicious ?>"
+                                        data-cleaned="<?php echo esc_attr($cleaned); ?>"
+                                        data-suspicious="<?php echo esc_attr($suspicious); ?>"
                                         style="display: block;">
                                 </canvas>
                                 <div id="wt-total-percent-chart" class="wio-chart-percent">
@@ -212,12 +212,12 @@ if ( isset( $scanner ) ) {
                                     <li>
                                         <span style="background-color:#5d05b7">&nbsp;</span>
                                         Cleaned -
-										<?php echo $cleaned ?>
+										<?php echo esc_html($cleaned); ?>
                                     </li>
                                     <li>
                                         <span style="background-color:#f1b1b6">&nbsp;</span>
                                         Suspicious -
-										<?php echo $suspicious ?>
+										<?php echo esc_html($suspicious); ?>
                                     </li>
                                 </ul>
                             </div>
@@ -228,17 +228,17 @@ if ( isset( $scanner ) ) {
                         <table class="wt-sitechecker-block-table">
                             <thead>
                             <tr>
-                                <td><h4><?php echo __( "URL's", 'titan-security' ); ?></h4></td>
-                                <td><h4><?php echo __( "Frequency", 'titan-security' ); ?></h4></td>
-                                <td><h4><?php echo __( "Uptime", 'titan-security' ); ?></h4></td>
-                                <td><h4><?php echo __( "Push", 'titan-security' ); ?></h4></td>
+                                <td><h4><?php _e( "URL's", 'titan-security' ); ?></h4></td>
+                                <td><h4><?php _e( "Frequency", 'titan-security' ); ?></h4></td>
+                                <td><h4><?php _e( "Uptime", 'titan-security' ); ?></h4></td>
+                                <td><h4><?php _e( "Push", 'titan-security' ); ?></h4></td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td><?php echo $sites->get_count(); ?></td>
+                                <td><?php echo esc_html($sites->get_count()); ?></td>
                                 <td>5<span>min</span></td>
-                                <td class="wt-pink"><?php echo $sites->get_average_uptime(); ?><span>%</span></td>
+                                <td class="wt-pink"><?php echo esc_html($sites->get_average_uptime()); ?><span>%</span></td>
                                 <td><span class="wt-push-status"></span></td>
                             </tr>
                             </tbody>

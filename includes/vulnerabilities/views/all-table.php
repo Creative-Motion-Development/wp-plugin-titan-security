@@ -13,7 +13,7 @@ if ( is_array( $args ) && ! empty( $args ) ) {
 	} else if ( $wordpress === false && $plugins === false && $themes === false ) {
 		?>
         <div class="wtitan-audit-empty-container">
-			<?= sprintf( __( 'Click %1s to search for vulnerabilities', 'titan-security' ), '<span class="btn btn-primary wt-nobutton">' . __( 'Check now', 'titan-security' ) . '</span>' ); ?>
+			<?php echo sprintf( __( 'Click %1s to search for vulnerabilities', 'titan-security' ), '<span class="btn btn-primary wt-nobutton">' . __( 'Check now', 'titan-security' ) . '</span>' ); ?>
         </div>
 		<?php
 
@@ -37,7 +37,7 @@ if ( is_array( $args ) && ! empty( $args ) ) {
 					?>
                     <tr>
                     <td colspan="5"
-                        class="wtitan-vulner-table-section"><?php echo __( 'Wordpress', 'titan-security' ); ?></td>
+                        class="wtitan-vulner-table-section"><?php _e( 'Wordpress', 'titan-security' ); ?></td>
                     </tr><?php
 					foreach ( $wordpress as $vulner ) {
 						if ( empty( $vulner->description ) ) {
@@ -67,7 +67,7 @@ if ( is_array( $args ) && ! empty( $args ) ) {
 					?>
                     <tr>
                     <td colspan="5"
-                        class="wtitan-vulner-table-section"><?php echo __( 'Plugins', 'titan-security' ); ?></td>
+                        class="wtitan-vulner-table-section"><?php _e( 'Plugins', 'titan-security' ); ?></td>
                     </tr><?php
 					foreach ( $plugins as $plug ) {
 						foreach ( $plug as $vulner ) {
@@ -102,7 +102,7 @@ if ( is_array( $args ) && ! empty( $args ) ) {
 					?>
                     <tr>
                     <td colspan="5"
-                        class="wtitan-vulner-table-section"><?php echo __( 'Themes', 'titan-security' ); ?></td>
+                        class="wtitan-vulner-table-section"><?php _e( 'Themes', 'titan-security' ); ?></td>
                     </tr><?php
 					foreach ( $themes as $theme ) {
 						foreach ( $theme as $vulner ) {
@@ -142,7 +142,7 @@ if ( is_array( $args ) && ! empty( $args ) ) {
 	} else {
 		?>
         <div class="wtitan-audit-empty-container">
-			<?= __( 'No vulnerabilities', 'titan-security' ); ?>
+			<?php _e( 'No vulnerabilities', 'titan-security' ); ?>
         </div>
 		<?php
 

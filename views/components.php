@@ -80,7 +80,7 @@ if( is_array($data) ) {
 					?>
 					<?php if( !empty($component['settings_url']) ): ?>
 					<a href="<?php echo esc_url($component['settings_url']) ?>"
-					   class="button button-primary settings-button" <?php echo $display; ?>><?php _e('Settings', 'titan-security'); ?></a>
+					   class="button button-primary settings-button" <?php echo esc_attr($display); ?>><?php _e('Settings', 'titan-security'); ?></a>
 				<?php endif;
 					$install_button->renderButton();
 				endif; ?>

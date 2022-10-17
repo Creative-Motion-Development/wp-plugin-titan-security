@@ -28,10 +28,10 @@ if ( is_array( $args ) && isset( $args['results'] ) ) {
 						<?php
 						switch ( $type ) {
 							case 'audit':
-								echo __( 'Security audit', 'titan-security' );
+								_e( 'Security audit', 'titan-security' );
 								break;
 							case 'malware':
-								echo __( 'Malware', 'titan-security' );
+								_e( 'Malware', 'titan-security' );
 								break;
 						}
 						?>

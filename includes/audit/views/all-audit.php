@@ -8,7 +8,7 @@ if( is_array($args) && !empty($args) ) {
 	if( $audit === false ) {
 		?>
 		<div class="wtitan-audit-empty-container">
-			<?= sprintf(__('Click %1s to perform a security audit', 'titan-security'), '<span class="btn btn-primary wt-nobutton">' . __('Check now', 'titan-security') . '</span>'); ?>
+			<?php echo sprintf(__('Click %1s to perform a security audit', 'titan-security'), '<span class="btn btn-primary wt-nobutton">' . __('Check now', 'titan-security') . '</span>'); ?>
 		</div>
 		<?php
 	} else if( !empty($audit) ) {
@@ -34,13 +34,13 @@ if( is_array($args) && !empty($args) ) {
 					}
 					?>
 					<tr>
-						<td class="wtitan-vulner-table__td wt-severity-<?php echo $result->severity; ?> wtitan-vulner-table-first-col"></td>
-						<td class="wtitan-vulner-table__td wtitan-vulner-table__title"><?php echo $result->title; ?></td>
-						<td class="wtitan-vulner-table__td wtitan-vulner-table__description"><?php echo $result->description; ?></td>
+						<td class="wtitan-vulner-table__td wt-severity-<?php echo esc_attr($result->severity); ?> wtitan-vulner-table-first-col"></td>
+						<td class="wtitan-vulner-table__td wtitan-vulner-table__title"><?php echo esc_html($result->title); ?></td>
+						<td class="wtitan-vulner-table__td wtitan-vulner-table__description"><?php echo esc_html($result->description); ?></td>
 						<td class="wtitan-vulner-table__td"><?php echo date_i18n('d.m.Y H:i', $result->timestamp); ?></td>
 						<td class="wtitan-vulner-table__td">
 							<a class="button button-default wt-scanner-hide-button"
-							   data-id="<?php echo $key; ?>"
+							   data-id="<?php echo esc_attr($key); ?>"
 							   data-type="audit">Hide it</a>
 							<?php if( empty($result->fix) ): ?>
 							<?php elseif( $result->fix == "js" ): ?>
@@ -62,7 +62,7 @@ if( is_array($args) && !empty($args) ) {
 	} else {
 		?>
 		<div class="wtitan-audit-empty-container">
-			<?= __('No security issues', 'titan-security'); ?>
+			<?php _e('No security issues', 'titan-security'); ?>
 		</div>
 		<?php
 	}

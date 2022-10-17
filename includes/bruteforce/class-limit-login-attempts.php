@@ -923,7 +923,7 @@ class Limit_Login_Attempts {
 
 			if ( isset( $_SERVER[ $origin ] ) && ! empty( $_SERVER[ $origin ] ) ) {
 
-				$ip = $_SERVER[ $origin ];
+				$ip = sanitize_text_field($_SERVER[ $origin ]);
 				break;
 			}
 		}
@@ -992,7 +992,7 @@ class Limit_Login_Attempts {
 
 	public function ajax_unlock() {
 		check_ajax_referer( 'limit-login-unlock', 'sec' );
-		$ip = (string) @$_POST['ip'];
+		$ip = sanitize_text_field($_POST['ip']);
 
 		$lockouts = (array) $this->plugin->getOption( 'bruteforce_lockouts' );
 
@@ -1002,7 +1002,7 @@ class Limit_Login_Attempts {
 		}
 
 		//save to log
-		$user_login = @(string) $_POST['username'];
+		$user_login = sanitize_text_field($_POST['username']);
 		$log        = $this->plugin->getOption( 'bruteforce_logged' );
 
 		if ( @$log[ $ip ][ $user_login ] ) {

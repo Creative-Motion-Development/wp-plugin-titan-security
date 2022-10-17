@@ -70,7 +70,7 @@ function wantispam_display_comment_form_privacy_notice( $echo = false ) {
 		return $output;
 	}
 
-	echo $output;
+	echo esc_html($output);
 }
 
 /**

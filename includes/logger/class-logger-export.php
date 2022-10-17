@@ -228,7 +228,7 @@ class Export {
 		header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
 		header( 'Pragma: public' );
 		header( 'Content-Length: ' . strlen( $zip_content ) );
-
+		
 		echo $zip_content;
 		exit();
 	}
