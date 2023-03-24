@@ -3,7 +3,7 @@
 Plugin Name: Titan Anti-spam & Security
 Plugin URI: http://wordpress.org/plugins/anti-spam/
 Description: Titan Security - Anti-spam, Anti-virus, Firewall and Malware Scan
-Version: 7.3.3
+Version: 7.3.4
 Author: CreativeMotion
 Text Domain: titan-security
 Author URI: https://cm-wp.com/
